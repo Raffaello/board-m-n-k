@@ -1,27 +1,10 @@
-import game.{BoardMNK, BoardMNKP, BoardTicTacToe}
+import game.BoardTicTacToe
+
+import scala.util.control.Breaks
 
 package object ai {
 
-  /**
-    * @todo compute valid moves until depth, and choose the best ones, for P players >=2
-    * @param game
-    * @param depth
-    * @param isMaximizingPlayer
-    */
-  def minimax(game: BoardMNKP, depth: Int, isMaximizingPlayer: Boolean) = {
-
-  }
-
-  def minimax(game: BoardMNK, depth: Int, isMaximizingPlayer: Boolean) = {
-    if (depth == 0 || game.ended()) {
-      game.score()
-    }
-
-  }
-
-
   def minimax(game: BoardTicTacToe, isMaximizingPlayer: Boolean): Int = {
-//    game.display()
     if (game.ended()) {
       return game.score()
     }
@@ -59,7 +42,6 @@ package object ai {
 
   def negamax(game: BoardTicTacToe, color: Byte): Int = {
     require(color == 1 || color == -1)
-
     if (game.ended()) {
       return color * game.score()
     }
@@ -78,15 +60,15 @@ package object ai {
       game.undoMove(is, js)
     }
 
-    return value
+    value
   }
 
   def negamaxNextMove(game: BoardTicTacToe, color: Byte): (Int, Short, Short) = {
     require(color == 1 || color == -1)
 
     var value = Int.MinValue
-    var ibest:Short = -1
-    var jbest:Short = -1
+    var ibest: Short = -1
+    var jbest: Short = -1
     var player = color
     if (player == -1) player = 2
     for {
@@ -108,5 +90,50 @@ package object ai {
     (value, ibest, jbest)
   }
 
-  //  def alphaBeta(game: BoardMNK)
+  def alphaBeta(game: BoardTicTacToe, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue, maximizingPlayer: Boolean): Int = {
+    if (game.ended()) {
+//      return game.score()
+      return game.score() * (1/(depth + 1))
+    }
+
+    if (maximizingPlayer) {
+      var best = Int.MinValue
+      var a = alpha
+      for {
+        i <- 0 until game.m
+        j <- 0 until game.n
+        if game.board(i)(j) == 0
+      } {
+        val (is, js) = (i.toShort, j.toShort)
+        game.playMove(is, js, 1)
+        best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
+        a = Math.max(a, best)
+        game.undoMove(is, js)
+        if (a >= beta) {
+          return best
+        }
+      }
+
+      best
+    } else {
+      var best = Int.MaxValue
+      var b = beta
+      for {
+        i <- 0 until game.m
+        j <- 0 until game.n
+        if game.board(i)(j) == 0
+      } {
+        val (is, js) = (i.toShort, j.toShort)
+        game.playMove(is, js, 2)
+        best = Math.min(best, alphaBeta(game, depth + 1, alpha, b, true))
+        b = Math.min(b, best)
+        game.undoMove(is, js)
+        if (alpha >= b) {
+          return best
+        }
+      }
+
+      best
+    }
+  }
 }

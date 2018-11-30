@@ -6,7 +6,7 @@ package game
   * @param k          number of same move of a player "in a row" (or col or diagonal)
   * @param numPlayers 0 is not used, 1 or 2 is the player using the cell
   */
-class BoardMNKP(m: Short, n: Short, k: Short, numPlayers: Byte) {
+class BoardMNKP(val m: Short, val n: Short, val k: Short, val numPlayers: Byte) {
   require(m > 0 && n > 0 && k > 0)
   require(k <= m || k <= n)
   require(numPlayers >= 2)
@@ -38,112 +38,89 @@ class BoardMNKP(m: Short, n: Short, k: Short, numPlayers: Byte) {
   def undoMove(row: Short, col: Short): Unit = board(row)(col) = 0
 
   /**
-    *
+    * @deprecated
     * @return Some((row, col)) index  OR None
     */
-  def findFirstEmptyCell(): Option[(Short, Short)] = {
-    for {
-      i <- 0 until m
-      j <- 0 until n
-      if board(i)(j) == 0
-    } {
-      return Some((i.toShort, j.toShort))
-    }
+//  def findFirstEmptyCell(): Option[(Short, Short)] = {
+//    for {
+//      i <- 0 until m
+//      j <- 0 until n
+//      if board(i)(j) == 0
+//    } {
+//      return Some((i.toShort, j.toShort))
+//    }
+//
+//    None
+//  }
 
-    None
-  }
+//  protected def checkWinRows(): Boolean = {
+//    for {
+//      i <- 0 until m
+//      p <- 1 to numPlayers
+//      if scoreRow(i.toShort, p.toByte) > 0
+//    } {
+//      return true
+//    }
+//
+//    false
+//  }
+//
+//  protected def checkWinCols(): Boolean = {
+//    for {
+//      j <- 0 until n
+//      p <- 1 to numPlayers
+//      if scoreCol(j.toShort, p.toByte) > 0
+//    } {
+//      return true
+//    }
+//
+//    false
+//  }
+//
+//  /**
+//    * @todo cache the current board state for the wining, optimizing the method. for now is recomputing everytime,
+//    *       *       would be better store with a delta change for each move.
+//    * @return
+//    */
+//  protected def checkWinDiagonals(): Boolean = {
+//    for {
+//      i <- 0 until m
+//      p <- 1 to numPlayers
+//      if scoreDiagTL(i.toShort, p.toByte) > 0 || scoreDiagBR(i.toShort, p.toByte) > 0
+//    } {
+//      return true
+//    }
+//
+//    false
+//  }
+//
+//  protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
 
-  protected def checkWinRows(): Boolean = {
-    for {
-      i <- 0 until m
-      p <- 1 to numPlayers
-      if scoreRow(i.toShort, p.toByte) > 0
-    } {
-      return true
-    }
+//  protected def scoreRow(row: Short, p: Byte): Int = {
+//    var countK = 0
+//    for(j <- 0 until n) {
+//      if (board(row)(j) == p) {
+//        countK += 1
+//      }
+//    }
+//
+//    if (countK == k) 1 else 0
+//  }
 
-    false
-  }
+//  protected def scoreRows(player: Byte): Int = (0 until m).foldLeft(0)((acc, i) => acc + scoreRow(i.toShort, player))
 
-  protected def checkWinCols(): Boolean = {
-    for {
-      j <- 0 until n
-      p <- 1 to numPlayers
-      if scoreCol(j.toShort, p.toByte) > 0
-    } {
-      return true
-    }
-
-    false
-  }
-
-  /**
-    * @todo cache the current board state for the wining, optimizing the method. for now is recomputing everytime,
-    *       *       would be better store with a delta change for each move.
-    * @return
-    */
-  protected def checkWinDiagonals(): Boolean = {
-    for {
-      i <- 0 until m
-      p <- 1 to numPlayers
-      if scoreDiagTL(i.toShort, p.toByte) > 0 || scoreDiagBR(i.toShort, p.toByte) > 0
-    } {
-      return true
-    }
-
-    false
-  }
-
-  protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
-
-  protected def scoreRow(row: Short, p: Byte): Int = {
-    var countK = 0
-    for(j <- 0 until n) {
-      if (board(row)(j) == p) {
-        countK += 1
-      }
-    }
-
-    if (countK == k) 1 else 0
-  }
-
-  protected def scoreRows(player: Byte): Int = (0 until m).foldLeft(0)((acc, i) => acc + scoreRow(i.toShort, player))
-
-  protected def scoreCol(col: Short, p: Byte): Int = {
-    var countK = 0
-    for(i <- 0 until m) {
-      if(board(i)(col) == p) {
-        countK += 1
-      }
-    }
-
-    if (countK == k) 1 else 0
-  }
-
-  protected def scoreCols(player: Byte): Int = (0 until n).foldLeft(0)((acc, j) => acc + scoreCol(j.toShort, player))
-
-  /**
-    * @TODO NOT WORKING FOR weird diagonal when k < m or n
-    * @param r
-    * @param p
-    * @return
-    */
-  protected def scoreDiagTL(r: Short, p: Byte): Int = {
-    if (m - r < k) {
-      return 0
-    }
-
-    var countK = 0
-    for(i <- r until mnMin) {
-      if (board(i)(i) == p) {
-        countK += 1
-      }
-    }
-
-    if (countK == k) 1 else 0
-  }
-
-  protected def scoreDiagsTL(player: Byte): Int = (0 until m).foldLeft(0)((acc, i) => acc + scoreDiagTL(i.toShort, player))
+//  protected def scoreCol(col: Short, p: Byte): Int = {
+//    var countK = 0
+//    for(i <- 0 until m) {
+//      if(board(i)(col) == p) {
+//        countK += 1
+//      }
+//    }
+//
+//    if (countK == k) 1 else 0
+//  }
+//
+//  protected def scoreCols(player: Byte): Int = (0 until n).foldLeft(0)((acc, j) => acc + scoreCol(j.toShort, player))
 
   /**
     * @TODO NOT WORKING FOR weird diagonal when k < m or n
@@ -151,38 +128,61 @@ class BoardMNKP(m: Short, n: Short, k: Short, numPlayers: Byte) {
     * @param p
     * @return
     */
-  protected def scoreDiagBR(r: Short, p: Byte): Int = {
-    if (r < k-1) {
-      return 0
-    }
+//  protected def scoreDiagTL(r: Short, p: Byte): Int = {
+//    if (m - r < k) {
+//      return 0
+//    }
+//
+//    var countK = 0
+//    for(i <- r until mnMin) {
+//      if (board(i)(i) == p) {
+//        countK += 1
+//      }
+//    }
+//
+//    if (countK == k) 1 else 0
+//  }
 
-    var countK = 0
-    for(i <- r to 0 by -1) {
-      if(board(i)(i) == p) {
-        countK += 1
-      }
-    }
+//  protected def scoreDiagsTL(player: Byte): Int = (0 until m).foldLeft(0)((acc, i) => acc + scoreDiagTL(i.toShort, player))
 
-    if (countK == k) 1 else 0
-  }
+  /**
+    * @TODO NOT WORKING FOR weird diagonal when k < m or n
+    * @param r
+    * @param p
+    * @return
+    */
+//  protected def scoreDiagBR(r: Short, p: Byte): Int = {
+//    if (r < k-1) {
+//      return 0
+//    }
+//
+//    var countK = 0
+//    for(i <- r to 0 by -1) {
+//      if(board(i)(i) == p) {
+//        countK += 1
+//      }
+//    }
+//
+//    if (countK == k) 1 else 0
+//  }
 
-  protected def scoreDiagsBR(player:Byte): Int = (0 until m).foldLeft(0)((acc, i) => acc + scoreDiagBR(i.toShort, player))
+//  protected def scoreDiagsBR(player:Byte): Int = (0 until m).foldLeft(0)((acc, i) => acc + scoreDiagBR(i.toShort, player))
 
-  def score(player: Byte): Int = {
-    scoreRows(player) + scoreCols(player) + scoreDiagsTL(player) + scoreDiagsBR(player)
-  }
+//  def score(player: Byte): Int = {
+//    scoreRows(player) + scoreCols(player) + scoreDiagsTL(player) + scoreDiagsBR(player)
+//  }
 
-  def ended(): Boolean = {
-    if (!checkWin()) {
-      for {
-        i <- 0 until m
-        j <- 0 until n
-        if board(i)(j) == 0
-      } {
-        return false
-      }
-    }
-
-    true
-  }
+//  def ended(): Boolean = {
+//    if (!checkWin()) {
+//      for {
+//        i <- 0 until m
+//        j <- 0 until n
+//        if board(i)(j) == 0
+//      } {
+//        return false
+//      }
+//    }
+//
+//    true
+//  }
 }

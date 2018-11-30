@@ -19,8 +19,6 @@ object TitTacToe extends App {
 
     println("Number of players (-1 exit)?")
 
-
-
     val numPlayers = scala.io.StdIn.readInt()
     if (numPlayers == -1) System.exit(0)
     val game = new BoardTicTacToe()
@@ -93,5 +91,5 @@ object TitTacToe extends App {
         case 2 => println("[BUG] Player 2 (Computer) wins")
       }
     }
-  }while (true)
+  } while (true)
 }
