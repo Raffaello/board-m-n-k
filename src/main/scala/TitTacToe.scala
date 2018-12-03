@@ -53,12 +53,15 @@ object TitTacToe extends App {
         case _ => ???
       }
     } else {
+      var depth = 0
       // Joshua player
-      var joshuaPlay = Random.nextBoolean()
+      var joshuaPlay = true //Random.nextBoolean()
       while (!game.ended()) {
         game.display()
         var color: Byte = 0
         var player: Byte = 0
+        var a = Double.MinValue
+        var b = Double.MaxValue
         if (joshuaPlay)  {
           color = 1
           player = joshuaPlayer
@@ -68,7 +71,12 @@ object TitTacToe extends App {
           player = computerPlayer
         }
 
-        val (score, i, j) = negamaxNextMove(game, color)
+//        val (score, i, j) = negamaxNextMove(game, color)
+        val (score, i, j, a2 , b2) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
+        a = a2
+        b = b2
+        depth +=1
+
         game.playMove(i, j, player)
         joshuaPlay = !joshuaPlay
       }

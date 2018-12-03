@@ -1,19 +1,8 @@
 package game
 
-import scala.collection.immutable.NumericRange
-//import scala.util.control.Breaks._
-
 final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
 
   protected def scoreRows(): Int = {
-    //    for (i <- NumericRange[Short](0, m, 1)) {
-    //      val s = scoreRow(i)
-    //      if (s > 0) {
-    //        return s
-    //      }
-    //    }
-    //    0
-
     scoreRow(0) + scoreRow(1) + scoreRow(2)
   }
 
