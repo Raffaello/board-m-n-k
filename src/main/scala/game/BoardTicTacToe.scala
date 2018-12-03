@@ -2,70 +2,25 @@ package game
 
 final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
 
-  protected def scoreRows(): Int = {
-    scoreRow(0) + scoreRow(1) + scoreRow(2)
-  }
-
-  protected def scoreCols(): Int = {
-    scoreCol(0) + scoreCol(1) + scoreCol(2)
-  }
-
-  protected def scoreRow(row: Short): Int = {
-    if (board(row)(0) == board(row)(1) && board(row)(0) == board(row)(2)) {
-      board(row)(0)
-    } else {
-      0
-    }
-  }
-
-  protected def checkWinRows(): Boolean = {
-    for {
-      i <- 0 until m
-      if scoreRow(i.toShort) > 0
-    } {
-      return true
-    }
-
-    false
-  }
-
+//  override protected def scoreRow(row: Short): Int = {
+//    if (board(row)(0) == board(row)(1) && board(row)(0) == board(row)(2)) {
+//      board(row)(0)
+//    } else {
+//      0
+//    }
+//  }
   /**
     *
     * @param col
     * @return 0 none, or player wins
     */
-  protected def scoreCol(col: Short): Int = {
-    if (board(0)(col) == board(1)(col) && board(0)(col) == board(2)(col)) {
-      board(0)(col)
-    } else {
-      0
-    }
-  }
-
-  protected def checkWinCols(): Boolean = {
-    for {
-      j <- 0 until n
-      if scoreCol(j.toShort) > 0
-    } {
-      return true
-    }
-
-    false
-  }
-
-  def ended(): Boolean = {
-    if (!checkWin()) {
-      for {
-        i <- 0 until m
-        j <- 0 until n
-        if board(i)(j) == 0
-      } {
-        return false
-      }
-    }
-
-    true
-  }
+//  override protected def scoreCol(col: Short): Int = {
+//    if (board(0)(col) == board(1)(col) && board(0)(col) == board(2)(col)) {
+//      board(0)(col)
+//    } else {
+//      0
+//    }
+//  }
 
   /**
     * @todo cache the current board state for the wining, optimizing the method. for now is recomputing everytime,
@@ -73,9 +28,9 @@ final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
     * @return
     */
 
-  protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
+//  protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
 
-  def score(): Int = {
+  override def score(): Int = {
     def evaluate(score: Int): Option[Int] = {
       score match {
         case 2 => Some(-1)
@@ -96,25 +51,6 @@ final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
   //---------------------------------------------------------------
   //---------------------------------------------------------------
 
-  def display(): Unit = {
-    def value(p: Byte): Char = {
-      p match {
-        case 0 => '_'
-        case 1 => 'X'
-        case 2 => 'O'
-      }
-    }
-
-    for (i <- 0 until m) {
-      for (j <- 0 until n - 1) {
-        print(s" ${value(board(i)(j))} |")
-      }
-      println(s" ${value(board(i)(n - 1))}")
-    }
-
-    println()
-  }
-
   protected def scoreDiagTL(): Int = {
     if (board(0)(0) == board(1)(1) && board(0)(0) == board(2)(2)) {
       board(0)(0)
@@ -131,7 +67,7 @@ final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
     }
   }
 
-  protected def checkWinDiagonals(): Boolean = {
+  override protected def checkWinDiagonals(): Boolean = {
     scoreDiagTL() > 0 || scoreDiagBR() > 0
   }
 }
