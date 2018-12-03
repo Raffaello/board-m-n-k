@@ -91,7 +91,7 @@ final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
       score match {
         case 2 => Some(-1)
         case 1 => Some(1)
-        case 0 => Some(0)
+        case 0 => None
         case _ => None
       }
     }
@@ -99,7 +99,7 @@ final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
         .orElse(evaluate(scoreCols()))
         .orElse(evaluate(scoreDiagTL()))
         .orElse(evaluate(scoreDiagBR()))
-        .getOrElse(throw new IllegalStateException(s"score value is not evaluated"))
+        .getOrElse(0)
   }
 
   // --------------------------------------------------------------
