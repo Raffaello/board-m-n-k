@@ -87,15 +87,20 @@ final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
   protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
 
   def score(): Int = {
-    val score = scoreRows() + scoreCols() + scoreDiagTL() + scoreDiagBR()
-    score match {
-      case 2 => -1
-      case 1 => 1
-      case 0 => 0
-      case x => throw new IllegalStateException(s"score value $x is not valid")
+    def evaluate(score: Int): Option[Int] = {
+      score match {
+        case 2 => Some(-1)
+        case 1 => Some(1)
+        case 0 => Some(0)
+        case _ => None
+      }
     }
+      evaluate(scoreRows())
+        .orElse(evaluate(scoreCols()))
+        .orElse(evaluate(scoreDiagTL()))
+        .orElse(evaluate(scoreDiagBR()))
+        .getOrElse(throw new IllegalStateException(s"score value is not evaluated"))
   }
-
 
   // --------------------------------------------------------------
   //---------------------------------------------------------------
