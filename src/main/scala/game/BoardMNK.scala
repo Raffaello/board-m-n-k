@@ -14,8 +14,51 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def scoreCols(): Int = (0 until n).foldLeft(0)((a, i) => a + scoreCol(i.toShort))
 
-  def score(): Int = ???
+  def score(): Int = {
+    def evaluate(score: Int): Option[Int] = {
+      score match {
+        case 2 => Some(-1)
+        case 1 => Some(1)
+        case 0 => None
+        case _ => None
+      }
+    }
 
+    evaluate(scoreRows())
+      .orElse(evaluate(scoreCols()))
+      .orElse(evaluate(scoreDiagsTL()))
+      .orElse(evaluate(scoreDiagsBR()))
+      .getOrElse(0)
+  }
+
+  protected def scoreDiagTL(col: Short): Int = {
+    def cmpTail(h:Byte, i:Int, start:Int, stop: Int): Int = {
+        if (start == stop) {
+          board(i)(col)
+        } else {
+          if (h != board(i+start)(col + start)) {
+            0
+          } else cmpTail(h, i, start+1, stop)
+        }
+    }
+
+    for {
+      i <- 0 to Math.max(m, n) - k
+      if board(i)(col) > 0
+    } {
+      val h = board(i)(col)
+      val r  =cmpTail(h, i, 1, k)
+      if (r > 0) return r
+    }
+    0
+  }
+
+  protected def scoreDiagsTL(): Int = NumericRange[Short](0, (m - k).toShort, 1).map(scoreDiagTL).sum
+
+  protected def scoreDiagsBR(): Int = {
+    // TODO
+    ???
+  }
 
   protected def scoreCol(col: Short): Int = {
     def cmp(i: Int, col: Short, h: Byte): Int = {
@@ -31,7 +74,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     }
 
     for {
-      i <- 0 until m - k
+      i <- 0 to m-k
     } {
       val h = board(i)(col)
       if (cmp(i, col, h) > 0) {
@@ -41,18 +84,18 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     }
 
     0
-
-    //    if (board(0)(col) == board(1)(col) && board(0)(col) == board(2)(col)) {
-    //      board(0)(col)
-    //    } else {
-    //      0
-    //    }
   }
 
   protected def scoreRow(row: Short): Int = {
-    board(row).combinations(k).foreach { x =>
-      if (x.toSet.size == 1) {
-        //        if (x.tail.forall(_ == x.head)) {
+    for {
+      i <- 0 to m - k
+    } {
+      val x = board(row).slice(i, i + k)
+      //      if (x.toSet.size == 1) {
+      //        return x.head
+      //      }
+
+      if (x.tail.forall(x.head > 0 && _ == x.head)) {
         return x.head
       }
     }
@@ -82,7 +125,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     false
   }
 
-  protected def checkWinDiagonals(): Boolean = ???
+  protected def checkWinDiagonals(): Boolean = scoreDiagsTL() > 0 || scoreDiagsBR() > 0
 
   protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
 
