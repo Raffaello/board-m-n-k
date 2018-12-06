@@ -1,10 +1,14 @@
-import ai._
-import game.BoardTicTacToe
+import ai.{alphaBetaNextMove, negamaxNextMove}
+import game.BoardMNK
 
-object TitTacToe extends App {
+object FiveFiveThree extends App {
   val humanPlayer: Byte = 1
   val computerPlayer: Byte = 2
   val joshuaPlayer: Byte = 1 // :)
+  // TODO TEST this case: error
+  val m: Short = 4
+  val n: Short = 3
+  val k: Short = 3
 
   do {
     println(
@@ -19,7 +23,8 @@ object TitTacToe extends App {
 
     val numPlayers = scala.io.StdIn.readInt()
     if (numPlayers == -1) System.exit(0)
-    val game = new BoardTicTacToe()
+    val game = new BoardMNK(m ,n, k)
+
     if (numPlayers > 0) {
       println("Do you want to start? [y, yes]")
       val playerStart = scala.io.StdIn.readBoolean()
@@ -69,11 +74,11 @@ object TitTacToe extends App {
           player = computerPlayer
         }
 
-//        val (score, i, j) = negamaxNextMove(game, color)
         val (score, i, j, a2 , b2) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
         a = a2
         b = b2
         depth +=1
+        println (s"depth = $depth")
 
         game.playMove(i, j, player)
         joshuaPlay = !joshuaPlay

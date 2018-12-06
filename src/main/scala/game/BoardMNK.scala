@@ -1,5 +1,6 @@
 package game
 
+import scala.annotation.tailrec
 import scala.collection.immutable.NumericRange
 
 /**
@@ -32,6 +33,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   }
 
   protected def scoreDiagTL(col: Short): Int = {
+    @tailrec
     def cmpTail(h:Byte, i:Int, start:Int, stop: Int): Int = {
         if (start == stop) {
           board(i)(col)
@@ -53,12 +55,34 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     0
   }
 
-  protected def scoreDiagsTL(): Int = NumericRange[Short](0, (m - k).toShort, 1).map(scoreDiagTL).sum
+  protected def scoreDiagsTL(): Int = NumericRange.inclusive[Short](0, (n - k).toShort, 1).map(scoreDiagTL).sum
 
-  protected def scoreDiagsBR(): Int = {
-    // TODO
-    ???
+  protected def scoreDiagBR(col: Short): Int = {
+    @tailrec
+    def cmpTail(h:Byte, i:Int, start:Int, stop: Int): Int = {
+      if (start == stop) {
+        board(i)(col)
+      } else {
+        if (h != board(i-start)(col + start)) {
+          0
+        } else cmpTail(h, i, start+1, stop)
+      }
+    }
+
+    for {
+      row <- k-1 until m
+      if board(row)(col) > 0
+    } {
+      val h = board(row)(col)
+      val r = cmpTail(h, row, 1, k)
+      if (r > 0) {
+        return r
+      }
+    }
+    0
   }
+
+  protected def scoreDiagsBR(): Int = NumericRange.inclusive[Short](0, (n - k).toShort, 1).map(scoreDiagBR).sum
 
   protected def scoreCol(col: Short): Int = {
     def cmp(i: Int, col: Short, h: Byte): Int = {

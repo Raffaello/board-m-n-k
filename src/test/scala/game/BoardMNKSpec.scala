@@ -4,11 +4,14 @@ import org.scalatest.{Matchers, WordSpec}
 
 import scala.collection.immutable.NumericRange
 
-class BoardTicTacToeSpec extends WordSpec with Matchers {
-
-  "A Game" should {
+class BoardMNKSpec extends WordSpec with Matchers {
+  
+  "5x5x3 Game" should {
+    val m: Short = 5
+    val n: Short = 5
+    val k: Short = 3
     "in progress" in {
-      val game = new BoardTicTacToe()
+      val game = new BoardMNK(m, n, k)
 
       game.ended() should be(false)
     }
@@ -22,29 +25,33 @@ class BoardTicTacToeSpec extends WordSpec with Matchers {
           score = -1
         }
         "by rows player" in {
-
-          for (i <- 0 until 3) {
-            val game = new BoardTicTacToe()
-            game.board.update(i, Array.fill(3)(p))
-            game.ended() should be(true)
-            game.score() should be(score)
+          
+          for (i <- 0 until m) {
+            for (j <- 0 to n-k) {
+              val game = new BoardMNK(m, n, k)
+              game.board.update(i, Array.tabulate(n)(x => if(x >= j && x< k + j) p else 0))
+              game.ended() should be(true)
+              game.score() should be(score)
+            }
           }
         }
 
         "by cols" in {
-          for (j <- 0 until 3) {
-            val game = new BoardTicTacToe()
-            for (i <- 0 until 3) {
-              game.board(i)(j) = p
-            }
+          for (j <- 0 until n) {
+            for (i <- 0 to m-k) {
+              val game = new BoardMNK(m, n, k)
+              for(kk <- 0 until k) {
+                game.board(i+kk)(j) = p
+              }
 
-            game.ended() should be(true)
-            game.score() should be(score)
+              game.ended() should be(true)
+              game.score() should be(score)
+            }
           }
         }
 
         "by Diagonals Top Left -> Bottom Right" in {
-          val game = new BoardTicTacToe()
+          val game = new BoardMNK(m, n, k)
           for (i <- 0 until 3) {
             game.board(i)(i) = p
           }
@@ -54,7 +61,7 @@ class BoardTicTacToeSpec extends WordSpec with Matchers {
         }
 
         "by diagonals Bottom Left -> Top Right" in {
-          val game = new BoardTicTacToe()
+          val game = new BoardMNK(m, n, k)
           for (i <- 0 until 3) {
             game.board(2 - i)(i) = p
           }
