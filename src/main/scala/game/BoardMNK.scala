@@ -34,24 +34,27 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def scoreDiagTL(col: Short): Int = {
     @tailrec
-    def cmpTail(h:Byte, i:Int, start:Int, stop: Int): Int = {
-        if (start == stop) {
+    def cmpTail(h:Byte, i:Int, start:Int): Int = {
+        if (start == k) {
           board(i)(col)
         } else {
           if (h != board(i+start)(col + start)) {
             0
-          } else cmpTail(h, i, start+1, stop)
+          } else cmpTail(h, i, start+1)
         }
     }
 
-    for {
-      i <- 0 to Math.max(m, n) - k
-      if board(i)(col) > 0
-    } {
-      val h = board(i)(col)
-      val r  =cmpTail(h, i, 1, k)
-      if (r > 0) return r
+    if (n-col>=k) {
+      for {
+        i <- 0 to m - k
+        if board(i)(col) > 0
+      } {
+        val h = board(i)(col)
+        val r = cmpTail(h, i, 1)
+        if (r > 0) return r
+      }
     }
+
     0
   }
 
@@ -112,13 +115,9 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def scoreRow(row: Short): Int = {
     for {
-      i <- 0 to m - k
+      i <- 0 to n - k
     } {
       val x = board(row).slice(i, i + k)
-      //      if (x.toSet.size == 1) {
-      //        return x.head
-      //      }
-
       if (x.tail.forall(x.head > 0 && _ == x.head)) {
         return x.head
       }
