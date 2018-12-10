@@ -5,9 +5,15 @@ object FiveFiveThree extends App {
   val humanPlayer: Byte = 1
   val computerPlayer: Byte = 2
   val joshuaPlayer: Byte = 1 // :)
-  // TODO TEST this case: error
+  // TODO TEST this case: cut-off also states were lead to no one wins already
+  // when checking game ended/score ? find a strategy to penalize further exploration
+  // in the non winning direction. ???????
+  // use flag to force exploring or cuts when dead end game detected and avoid checking,
+  // just return 0 and depth value would be lower so higher score
+  // also change instead of score * (1/depth) in a way that can be modified
+  // score + (Math.signum(score) * (1/(depth + 1)))
   val m: Short = 4
-  val n: Short = 3
+  val n: Short = 4
   val k: Short = 3
 
   do {

@@ -20,6 +20,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
         val game = new BoardMNK(m, n, k)
 
         game.ended() should be(false)
+        game.stale() should be(false)
       }
 
       for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {
@@ -37,6 +38,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
                 val game = new BoardMNK(m, n, k)
                 game.board.update(i, Array.tabulate(n)(x => if (x >= j && x < k + j) p else 0))
                 game.ended() should be(true)
+                game.stale() should be(false)
                 game.score() should be(score)
               }
             }
@@ -51,6 +53,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
                 }
 
                 game.ended() should be(true)
+                game.stale() should be(false)
                 game.score() should be(score)
               }
             }
@@ -63,6 +66,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
             }
 
             game.ended() should be(true)
+            game.stale() should be(false)
             game.score() should be(score)
           }
 
@@ -73,6 +77,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
             }
 
             game.ended() should be(true)
+            game.stale() should be(false)
             game.score() should be(score)
           }
         }

@@ -68,4 +68,6 @@ final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
   override protected def checkWinDiagonals(): Boolean = {
     scoreDiagsTL() > 0 || scoreDiagsBR() > 0
   }
+
+  override def stale(): Boolean = false
 }

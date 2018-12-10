@@ -166,6 +166,20 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     true
   }
 
+  def stale(): Boolean = {
+    ???
+    // check if it is not possible to win anymore
+    // eg:
+    /*
+    x | x | O | _
+    o | o | x | _
+    x | _ | o | o
+    o | _ | _ | x
+     */
+    // and return true in this case, false by default by now
+    // wrote test.
+  }
+
   def display(): Unit = {
     def value(p: Byte): Char = {
       p match {
