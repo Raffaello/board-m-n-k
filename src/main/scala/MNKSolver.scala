@@ -13,15 +13,15 @@ object MNKSolver extends App {
   val board = new BoardMNK(m, n, k)
 
   val score = ai.alphaBeta(board)
+  println()
   board.display()
   println({
     s"score value = $score => "
   } + {
     score match {
-      case 0 => "STALE GAME"
-      case 1 => "P1 WIN"
-      case -1 => "P2 WIN"
-      case _ => ???
+      case 0.0 => "STALE GAME"
+      case x if x>0.0 => "P1 WIN"
+      case _ => "P2 WIN"
     }
   })
 }
