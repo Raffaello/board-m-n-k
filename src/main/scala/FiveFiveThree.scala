@@ -12,8 +12,9 @@ object FiveFiveThree extends App {
   // just return 0 and depth value would be lower so higher score
   // also change instead of score * (1/depth) in a way that can be modified
   // score + (Math.signum(score) * (1/(depth + 1)))
-  val m: Short = 4
-  val n: Short = 4
+  // No use Transposition table.
+  val m: Short = 5
+  val n: Short = 5
   val k: Short = 3
 
   do {

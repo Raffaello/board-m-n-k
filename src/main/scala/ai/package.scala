@@ -95,10 +95,10 @@ package object ai {
   }
 
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean): Double = {
-    if (game.ended() || game.stale()) {
+    if (game.ended()) {
       //      return game.score()
 //      return game.score() * (1.0/(depth + 1))
-      return game.score + (Math.signum(game.score) * (1.0/(depth + 1.0)))
+      return game.score + (Math.signum(game.score()) * (1.0/(depth + 1.0)))
 
     }
 
@@ -150,7 +150,7 @@ package object ai {
 
     if (game.ended()) {
 //      return (game.score() * (1 / (depth + 1)), ibest, jbest, alpha, beta)
-      return (game.score + (Math.signum(game.score) * (1.0/(depth + 1.0))), ibest, jbest, alpha, beta)
+      return (game.score + (Math.signum(game.score()) * (1.0/(depth + 1.0))), ibest, jbest, alpha, beta)
     }
 
     var best: Double = 0.0
