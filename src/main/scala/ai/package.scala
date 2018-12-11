@@ -94,7 +94,7 @@ package object ai {
     (value, ibest, jbest)
   }
 
-  def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean): Double = {
+  def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     if (game.ended()) {
       //      return game.score()
 //      return game.score() * (1.0/(depth + 1))
