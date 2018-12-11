@@ -12,41 +12,13 @@ final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
       0
     }
   }
-  /**
-    *
-    * @param col
-    * @return 0 none, or player wins
-    */
+
   override protected def scoreCol(col: Short): Int = {
     if (board(0)(col) == board(1)(col) && board(0)(col) == board(2)(col)) {
       board(0)(col)
     } else {
       0
     }
-  }
-
-  /**
-    * @todo cache the current board state for the wining, optimizing the method. for now is recomputing everytime,
-    *       *       would be better store with a delta change for each move.
-    * @return
-    */
-
-//  protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
-
-  override def score(): Int = {
-    def evaluate(score: Int): Option[Int] = {
-      score match {
-        case 2 => Some(-1)
-        case 1 => Some(1)
-        case 0 => None
-        case _ => None
-      }
-    }
-      evaluate(scoreRows())
-        .orElse(evaluate(scoreCols()))
-        .orElse(evaluate(scoreDiagsTL()))
-        .orElse(evaluate(scoreDiagsBR()))
-        .getOrElse(0)
   }
 
   override protected def scoreDiagsTL(): Int = {
@@ -63,9 +35,5 @@ final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
     } else {
       0
     }
-  }
-
-  override protected def checkWinDiagonals(): Boolean = {
-    scoreDiagsTL() > 0 || scoreDiagsBR() > 0
   }
 }

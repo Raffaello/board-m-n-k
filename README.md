@@ -17,9 +17,18 @@ At the moment is the only one implemented and playable board. Plus a easter egg.
 ## alpha-beta
 
 
-## alpha-beta depth optimization
+### Basic
+
+
+### depth optimization
 
 combined with a less depth solution to gain a higher score, it reduces the search space even more.
+
+
+## Transposition Table
+
+
+## Principal Variation
 
 
 ## Results

@@ -13,8 +13,6 @@ object MNKSolver extends App {
   val board = new BoardMNK(m, n, k)
 
   val score = ai.alphaBeta(board)
-  println()
-  board.display()
   println({
     s"score value = $score => "
   } + {

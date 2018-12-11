@@ -2,6 +2,11 @@ import game.{BoardMNK, BoardTicTacToe}
 
 package object ai {
 
+  object Stats {
+    protected var _totalCalls: Int = 0
+    def totalCalls = _totalCalls
+    def totalCalls_=(v: Int): Unit = _totalCalls = v
+  }
 
   def minimax(game: BoardTicTacToe, isMaximizingPlayer: Boolean): Int = {
     def minMaxLoop(maximizing: Boolean): Int = {
@@ -63,6 +68,7 @@ package object ai {
 
     value
   }
+
   def negamaxNextMove(game: BoardMNK, color: Byte): (Int, Short, Short) = {
     require(color == 1 || color == -1)
 
@@ -97,8 +103,8 @@ package object ai {
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     if (game.ended()) {
       //      return game.score()
-//      return game.score() * (1.0/(depth + 1))
-      return game.score + (Math.signum(game.score()) * (1.0/(depth + 1.0)))
+      //      return game.score() * (1.0/(depth + 1))
+      return game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
 
     }
 
@@ -149,8 +155,8 @@ package object ai {
     var jbest: Short = -1
 
     if (game.ended()) {
-//      return (game.score() * (1 / (depth + 1)), ibest, jbest, alpha, beta)
-      return (game.score + (Math.signum(game.score()) * (1.0/(depth + 1.0))), ibest, jbest, alpha, beta)
+      //      return (game.score() * (1 / (depth + 1)), ibest, jbest, alpha, beta)
+      return (game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0))), ibest, jbest, alpha, beta)
     }
 
     var best: Double = 0.0
