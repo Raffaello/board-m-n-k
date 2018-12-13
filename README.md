@@ -31,6 +31,9 @@ combined with a less depth solution to gain a higher score, it reduces the searc
 ## Principal Variation
 
 
+## Monte Carlo Tree Search
+
+
 ## Results
 
 

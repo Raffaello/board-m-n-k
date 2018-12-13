@@ -7,11 +7,11 @@ package game
   * @param numPlayers 0 is not used, 1 or 2 is the player using the cell
   */
 class BoardMNKP(val m: Short, val n: Short, val k: Short, val numPlayers: Byte) {
-  require(m > 0 && n > 0 && k > 0)
+  require(m > 2 && n > 2 && k > 2)
   require(k <= m || k <= n)
   require(numPlayers >= 2)
 
-  val board: Array[Array[Byte]] = Array.ofDim[Byte](m, n)
+  val board: Board = Array.ofDim[Byte](m, n)
 
   val mnMin: Short = Math.min(m, n).toShort
 
