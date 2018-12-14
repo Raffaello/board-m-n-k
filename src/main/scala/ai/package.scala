@@ -158,6 +158,8 @@ package object ai {
     val transposition = statuses.get(game.board)
 
     if(transposition.isDefined) {
+      val score = alphaBeta(game, depth, alpha, beta, maximizingPlayer)
+      if (score != transposition.get.score) throw new IllegalStateException(s"score: $score --- transpostion: ${transposition}  -- $maximizingPlayer")
       return transposition.get.score
     }
 
