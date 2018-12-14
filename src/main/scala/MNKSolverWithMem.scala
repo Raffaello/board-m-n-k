@@ -10,13 +10,13 @@ object MNKSolverWithMem extends App {
   print("k = ")
   val k:Short = 3//scala.io.StdIn.readShort()
 
-  val board = new BoardMNK(m, n, k)
-  val states = new TranspositionTable {}
+  val board = new BoardMNK(m, n, k) with TranspositionTable
+//  val states = new TranspositionTable {}
   val time = System.currentTimeMillis()
-  val score = ai.alphaBetaWithMem(states, board)
+  val score = ai.alphaBetaWithMem(board, board)
   println(s"total time: ${System.currentTimeMillis() - time}")
   println(s"Total calls: ${ai.Stats.totalCalls}")
-  println(s"Total cache: ${states.transpositions.size}")
+  println(s"Total cache: ${board.transpositions.size}")
   println({
     s"score value = $score => "
   } + {

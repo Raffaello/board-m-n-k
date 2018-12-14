@@ -152,8 +152,15 @@ package object ai {
     }
   }
 
-  def alphaBetaWithMem(states: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
+  def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     Stats.totalCalls += 1
+
+    val transposition = statuses.get(game.board)
+
+    if(transposition.isDefined) {
+      return transposition.get.score
+    }
+
     if (game.ended()) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
@@ -164,62 +171,48 @@ package object ai {
     if (maximizingPlayer) {
       var best = Double.MinValue
       var a = alpha
-      states.get(game.board) match {
-        case None =>
-          for {
-            i <- 0 until game.m
-            j <- 0 until game.n
-            if game.board(i)(j) == 0
-          } {
-            val (is, js) = (i.toShort, j.toShort)
-            game.playMove(is, js, 1)
-            best = Math.max(best, alphaBetaWithMem(states, game, depth + 1, a, beta, false))
-//            val abm = alphaBetaWithMem(states, game, depth + 1, a, beta, false)
-//            states.add(game.board, Transposition(abm, a, beta))
-//            best = Math.max(best, abm)
-            a = Math.max(a, best)
-            states.add(game.board, Transposition(best, a, beta))
-            game.undoMove(is, js)
-          }
-        case Some(x) =>
-          best = Math.max(best, x.score)
-          a = Math.max(a, x.alpha)
-      }
-
-      if (a >= beta) {
-        return best
+      for {
+        i <- 0 until game.m
+        j <- 0 until game.n
+        if game.board(i)(j) == 0
+      } {
+        val (is, js) = (i.toShort, j.toShort)
+        game.playMove(is, js, 1)
+        best = Math.max(best, alphaBetaWithMem(statuses, game, depth + 1, a, beta, false))
+        //            val abm = alphaBetaWithMem(states, game, depth + 1, a, beta, false)
+        //            states.add(game.board, Transposition(abm, a, beta))
+        //            best = Math.max(best, abm)
+        a = Math.max(a, best)
+        statuses.add(game.board, Transposition(best, a, beta, 1))
+        game.undoMove(is, js)
+        if (a >= beta) {
+          return best
+        }
       }
 
       best
     } else {
       var best = Double.MaxValue
       var b = beta
-      states.get(game.board) match {
-        case None =>
-          for {
-            i <- 0 until game.m
-            j <- 0 until game.n
-            if game.board(i)(j) == 0
-          } {
-            val (is, js) = (i.toShort, j.toShort)
-            game.playMove(is, js, 2)
+      for {
+        i <- 0 until game.m
+        j <- 0 until game.n
+        if game.board(i)(j) == 0
+      } {
+        val (is, js) = (i.toShort, j.toShort)
+        game.playMove(is, js, 2)
 
-            best = Math.min(best, alphaBetaWithMem(states, game, depth + 1, alpha, b, true))
+        best = Math.min(best, alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true))
 
-//            val abm = alphaBetaWithMem(states, game, depth + 1, alpha, b, true)
-//            states.add(game.board, Transposition(abm, alpha, b))
-//            best = Math.min(best, abm)
-            b = Math.min(b, best)
-            states.add(game.board, Transposition(best, alpha, b))
-            game.undoMove(is, js)
-          }
-        case Some(x) =>
-          best = Math.min(x.score, best)
-          b = Math.min(x.beta, b)
-      }
-
-      if (alpha >= b) {
-        return best
+        //            val abm = alphaBetaWithMem(states, game, depth + 1, alpha, b, true)
+        //            states.add(game.board, Transposition(abm, alpha, b))
+        //            best = Math.min(best, abm)
+        b = Math.min(b, best)
+        statuses.add(game.board, Transposition(best, alpha, b, 2))
+        game.undoMove(is, js)
+        if (alpha >= b) {
+          return best
+        }
       }
 
       best

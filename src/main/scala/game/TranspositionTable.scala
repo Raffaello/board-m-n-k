@@ -4,8 +4,10 @@ import scala.collection.mutable
 
 
 trait TranspositionTable {
+//  val board: Board
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 
+//  def hash() = board.map(_.mkString("")).mkString("")
   def hash(board: Board) = board.map(_.mkString("")).mkString("")
 
   def add(board: Board, t: Transposition) = {
