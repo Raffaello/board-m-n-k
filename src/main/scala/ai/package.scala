@@ -103,6 +103,7 @@ package object ai {
   }
 
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
+    Stats.totalCalls += 1
     if (game.ended()) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
@@ -152,6 +153,7 @@ package object ai {
   }
 
   def alphaBetaWithMem(states: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
+    Stats.totalCalls += 1
     if (game.ended()) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
@@ -162,66 +164,62 @@ package object ai {
     if (maximizingPlayer) {
       var best = Double.MinValue
       var a = alpha
-      for {
-        i <- 0 until game.m
-        j <- 0 until game.n
-        if game.board(i)(j) == 0
-      } {
-        states.get(game.board) match {
-          case None =>
+      states.get(game.board) match {
+        case None =>
+          for {
+            i <- 0 until game.m
+            j <- 0 until game.n
+            if game.board(i)(j) == 0
+          } {
             val (is, js) = (i.toShort, j.toShort)
             game.playMove(is, js, 1)
             best = Math.max(best, alphaBetaWithMem(states, game, depth + 1, a, beta, false))
+//            val abm = alphaBetaWithMem(states, game, depth + 1, a, beta, false)
+//            states.add(game.board, Transposition(abm, a, beta))
+//            best = Math.max(best, abm)
             a = Math.max(a, best)
             states.add(game.board, Transposition(best, a, beta))
-            // DEBUG
-            println(s"Store position at ($best):  depth = $depth --- row = $i --- col = $j --- hash = ${states.hash(game.board)} --- states.size = ${states.transpositions.size} --- player = 1")
             game.undoMove(is, js)
+          }
+        case Some(x) =>
+          best = Math.max(best, x.score)
+          a = Math.max(a, x.alpha)
+      }
 
-          case Some(x) =>
-            // DEBUG
-            println(s"Sub tree already computed at:  depth = $depth --- row = $i --- col = $j --- hash = ${states.hash(game.board)} --- states.size = ${states.transpositions.size} --- player = 1")
-//            game.display()
-            best = x.score
-            a = x.alpha
-        }
-
-        if (a >= beta) {
-          return best
-        }
+      if (a >= beta) {
+        return best
       }
 
       best
     } else {
       var best = Double.MaxValue
       var b = beta
-      for {
-        i <- 0 until game.m
-        j <- 0 until game.n
-        if game.board(i)(j) == 0
-      } {
-        states.get(game.board) match {
-          case None =>
+      states.get(game.board) match {
+        case None =>
+          for {
+            i <- 0 until game.m
+            j <- 0 until game.n
+            if game.board(i)(j) == 0
+          } {
             val (is, js) = (i.toShort, j.toShort)
             game.playMove(is, js, 2)
+
             best = Math.min(best, alphaBetaWithMem(states, game, depth + 1, alpha, b, true))
+
+//            val abm = alphaBetaWithMem(states, game, depth + 1, alpha, b, true)
+//            states.add(game.board, Transposition(abm, alpha, b))
+//            best = Math.min(best, abm)
             b = Math.min(b, best)
             states.add(game.board, Transposition(best, alpha, b))
-            // DEBUG
-            println(s"Store position at ($best):  depth = $depth --- row = $i --- col = $j --- hash = ${states.hash(game.board)} --- states.size = ${states.transpositions.size} --- player = 2")
             game.undoMove(is, js)
+          }
+        case Some(x) =>
+          best = Math.min(x.score, best)
+          b = Math.min(x.beta, b)
+      }
 
-          case Some(x) =>
-            // DEBUG
-            println(s"Sub tree already computed at:  depth = $depth --- row = $i --- col = $j --- hash = ${states.hash(game.board)} --- states.size = ${states.transpositions.size} --- player = 2")
-//            game.display()
-            best = x.score
-            b = x.beta
-        }
-
-        if (alpha >= b) {
-          return best
-        }
+      if (alpha >= b) {
+        return best
       }
 
       best

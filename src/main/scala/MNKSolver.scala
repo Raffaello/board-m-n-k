@@ -11,8 +11,10 @@ object MNKSolver extends App {
   val k = scala.io.StdIn.readShort()
 
   val board = new BoardMNK(m, n, k)
-
+  val time = System.currentTimeMillis()
   val score = ai.alphaBeta(board)
+  println(s"total time: ${System.currentTimeMillis() - time}")
+  println(s"Total calls: ${ai.Stats.totalCalls}")
   println({
     s"score value = $score => "
   } + {

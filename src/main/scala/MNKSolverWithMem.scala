@@ -4,15 +4,19 @@ object MNKSolverWithMem extends App {
 
   println("Insert the board size:")
   print("m = ")
-  val m = scala.io.StdIn.readShort()
+  val m:Short = 3//scala.io.StdIn.readShort()
   print("n = ")
-  val n = scala.io.StdIn.readShort()
+  val n:Short = 3//scala.io.StdIn.readShort()
   print("k = ")
-  val k = scala.io.StdIn.readShort()
+  val k:Short = 3//scala.io.StdIn.readShort()
 
   val board = new BoardMNK(m, n, k)
   val states = new TranspositionTable {}
+  val time = System.currentTimeMillis()
   val score = ai.alphaBetaWithMem(states, board)
+  println(s"total time: ${System.currentTimeMillis() - time}")
+  println(s"Total calls: ${ai.Stats.totalCalls}")
+  println(s"Total cache: ${states.transpositions.size}")
   println({
     s"score value = $score => "
   } + {
@@ -22,4 +26,6 @@ object MNKSolverWithMem extends App {
       case _ => "P2 WIN"
     }
   })
+
+//  println(states.transpositions.mkString("\n"))
 }

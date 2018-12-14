@@ -9,7 +9,14 @@ trait TranspositionTable {
   def hash(board: Board) = board.map(_.mkString("")).mkString("")
 
   def add(board: Board, t: Transposition) = {
-    transpositions.getOrElseUpdate(hash(board), t)
+//    require(t.score>=t.alpha)
+//    require(t.score<=t.beta)
+//    require(t.alpha<=t.beta)
+    transpositions.update(hash(board), t)
+  }
+
+  def upd(board: Board, t: Transposition) = {
+    transpositions.update(hash(board), t)
   }
 
   def del(board: Board): Option[Transposition] = {
