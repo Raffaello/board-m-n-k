@@ -43,7 +43,6 @@ object TitTacToe extends App {
       }
 
       game.display()
-      var winner = ""
       game.score() match {
         case 0 => println("STALEMATE!")
         case 1 => println("Player 1 (Human) wins")

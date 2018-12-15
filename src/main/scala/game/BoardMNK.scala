@@ -11,6 +11,10 @@ import scala.collection.immutable.NumericRange
   */
 class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
+  val nkDiff: Short = (n - k).toShort
+  val mkDiff: Short = (m - k).toShort
+  val k1: Short = (k - 1).toShort
+
   protected def scoreRows(): Int = NumericRange[Short](0, m, 1).map(scoreRow).sum
 
   protected def scoreCols(): Int = (0 until n).foldLeft(0)((a, i) => a + scoreCol(i.toShort))
@@ -34,19 +38,19 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def scoreDiagTL(col: Short): Int = {
     @tailrec
-    def cmpTail(h:Byte, i:Int, start:Int): Int = {
-        if (start == k) {
-          board(i)(col)
-        } else {
-          if (h != board(i+start)(col + start)) {
-            0
-          } else cmpTail(h, i, start+1)
-        }
+    def cmpTail(h: Byte, i: Short, start: Int): Int = {
+      if (start == k) {
+        board(i)(col)
+      } else {
+        if (h != board(i + start)(col + start)) {
+          0
+        } else cmpTail(h, i, start + 1)
+      }
     }
 
-    if (n-col>=k) {
+    if (n - col >= k) {
       for {
-        i <- 0 to m - k
+        i <- NumericRange.inclusive[Short](0, mkDiff, 1)
         if board(i)(col) > 0
       } {
         val h = board(i)(col)
@@ -62,52 +66,41 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def scoreDiagBR(col: Short): Int = {
     @tailrec
-    def cmpTail(h:Byte, i:Int, start:Int, stop: Int): Int = {
+    def cmpTail(h: Byte, i: Short, start: Int, stop: Int): Int = {
       if (start == stop) {
         board(i)(col)
       } else {
-        if (h != board(i-start)(col + start)) {
-          0
-        } else cmpTail(h, i, start+1, stop)
+        if (h != board(i - start)(col + start)) 0 else cmpTail(h, i, start + 1, stop)
       }
     }
 
     for {
-      row <- k-1 until m
+      row <- NumericRange[Short](k1, m, 1)
       if board(row)(col) > 0
     } {
       val h = board(row)(col)
       val r = cmpTail(h, row, 1, k)
-      if (r > 0) {
-        return r
-      }
+      if (r > 0) return r
     }
+
     0
   }
 
-  protected def scoreDiagsBR(): Int = NumericRange.inclusive[Short](0, (n - k).toShort, 1).map(scoreDiagBR).sum
+  protected def scoreDiagsBR(): Int = NumericRange.inclusive[Short](0, nkDiff, 1).map(scoreDiagBR).sum
 
   protected def scoreCol(col: Short): Int = {
-    def cmp(i: Int, col: Short, h: Byte): Int = {
-      for {
-        j <- 1 until k
-      } {
-        if (h != board(i + j)(col)) {
-          return 0
-        }
-      }
-
-      h
+    @tailrec
+    def cmp(i: Short, j: Short, col: Short, h: Byte): Int = {
+      if (j == k) h
+      else if (h != board(i + j)(col)) 0
+      else cmp(i, (j+1).toShort, col, h)
     }
 
-    for {
-      i <- 0 to m-k
-    } {
+    for (i <- NumericRange.inclusive[Short](0, mkDiff, 1)) {
       val h = board(i)(col)
-      if (cmp(i, col, h) > 0) {
+      if (cmp(i, 1, col, h) > 0) {
         return h
       }
-
     }
 
     0
@@ -115,12 +108,11 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def scoreRow(row: Short): Int = {
     for {
-      i <- 0 to n - k
+      i <- NumericRange.inclusive[Short](0, nkDiff, 1)
+      x = board(row).slice(i, i + k)
     } {
-      val x = board(row).slice(i, i + k)
-      if (x.tail.forall(x.head > 0 && _ == x.head)) {
-        return x.head
-      }
+      val h = x.head
+      if (x.tail.forall(h > 0 && _ == h)) return h
     }
 
     0
@@ -128,22 +120,18 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def checkWinRows(): Boolean = {
     for {
-      i <- 0 until m
-      if scoreRow(i.toShort) > 0
-    } {
-      return true
-    }
+      i <- NumericRange[Short](0, m, 1)
+      if scoreRow(i) > 0
+    } return true
 
     false
   }
 
   protected def checkWinCols(): Boolean = {
     for {
-      j <- 0 until n
-      if scoreCol(j.toShort) > 0
-    } {
-      return true
-    }
+      j <- NumericRange[Short](0, n, 1)
+      if scoreCol(j) > 0
+    } return true
 
     false
   }

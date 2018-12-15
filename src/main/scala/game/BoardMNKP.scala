@@ -12,18 +12,11 @@ class BoardMNKP(val m: Short, val n: Short, val k: Short, val numPlayers: Byte) 
   require(numPlayers >= 2)
 
   val board: Board = Array.ofDim[Byte](m, n)
-
   val mnMin: Short = Math.min(m, n).toShort
 
-  /**
-    * this is only for human player in theory at the moment...
-    *
-    * @param  row
-    * @param  col
-    * @param  player
-    * @return true if valid move false otherwise
-    */
-  def playMove(row: Short, col: Short, player: Byte): Boolean = {
+  def playMove(position: Position, player: Byte): Boolean = {
+    val row = position._1
+    val col = position._2
     require(row < m && col < n)
     require(player <= numPlayers && player > 0)
 
@@ -35,154 +28,7 @@ class BoardMNKP(val m: Short, val n: Short, val k: Short, val numPlayers: Byte) 
     }
   }
 
-  def undoMove(row: Short, col: Short): Unit = board(row)(col) = 0
+  def playMove(row: Short, col: Short, player: Byte): Boolean = playMove((row, col), player)
 
-  /**
-    * @deprecated
-    * @return Some((row, col)) index  OR None
-    */
-//  def findFirstEmptyCell(): Option[(Short, Short)] = {
-//    for {
-//      i <- 0 until m
-//      j <- 0 until n
-//      if board(i)(j) == 0
-//    } {
-//      return Some((i.toShort, j.toShort))
-//    }
-//
-//    None
-//  }
-
-//  protected def checkWinRows(): Boolean = {
-//    for {
-//      i <- 0 until m
-//      p <- 1 to numPlayers
-//      if scoreRow(i.toShort, p.toByte) > 0
-//    } {
-//      return true
-//    }
-//
-//    false
-//  }
-//
-//  protected def checkWinCols(): Boolean = {
-//    for {
-//      j <- 0 until n
-//      p <- 1 to numPlayers
-//      if scoreCol(j.toShort, p.toByte) > 0
-//    } {
-//      return true
-//    }
-//
-//    false
-//  }
-//
-//  /**
-//    * @todo cache the current board state for the wining, optimizing the method. for now is recomputing everytime,
-//    *       *       would be better store with a delta change for each move.
-//    * @return
-//    */
-//  protected def checkWinDiagonals(): Boolean = {
-//    for {
-//      i <- 0 until m
-//      p <- 1 to numPlayers
-//      if scoreDiagTL(i.toShort, p.toByte) > 0 || scoreDiagBR(i.toShort, p.toByte) > 0
-//    } {
-//      return true
-//    }
-//
-//    false
-//  }
-//
-//  protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
-
-//  protected def scoreRow(row: Short, p: Byte): Int = {
-//    var countK = 0
-//    for(j <- 0 until n) {
-//      if (board(row)(j) == p) {
-//        countK += 1
-//      }
-//    }
-//
-//    if (countK == k) 1 else 0
-//  }
-
-//  protected def scoreRows(player: Byte): Int = (0 until m).foldLeft(0)((acc, i) => acc + scoreRow(i.toShort, player))
-
-//  protected def scoreCol(col: Short, p: Byte): Int = {
-//    var countK = 0
-//    for(i <- 0 until m) {
-//      if(board(i)(col) == p) {
-//        countK += 1
-//      }
-//    }
-//
-//    if (countK == k) 1 else 0
-//  }
-//
-//  protected def scoreCols(player: Byte): Int = (0 until n).foldLeft(0)((acc, j) => acc + scoreCol(j.toShort, player))
-
-  /**
-    * @TODO NOT WORKING FOR weird diagonal when k < m or n
-    * @param r
-    * @param p
-    * @return
-    */
-//  protected def scoreDiagTL(r: Short, p: Byte): Int = {
-//    if (m - r < k) {
-//      return 0
-//    }
-//
-//    var countK = 0
-//    for(i <- r until mnMin) {
-//      if (board(i)(i) == p) {
-//        countK += 1
-//      }
-//    }
-//
-//    if (countK == k) 1 else 0
-//  }
-
-//  protected def scoreDiagsTL(player: Byte): Int = (0 until m).foldLeft(0)((acc, i) => acc + scoreDiagTL(i.toShort, player))
-
-  /**
-    * @TODO NOT WORKING FOR weird diagonal when k < m or n
-    * @param r
-    * @param p
-    * @return
-    */
-//  protected def scoreDiagBR(r: Short, p: Byte): Int = {
-//    if (r < k-1) {
-//      return 0
-//    }
-//
-//    var countK = 0
-//    for(i <- r to 0 by -1) {
-//      if(board(i)(i) == p) {
-//        countK += 1
-//      }
-//    }
-//
-//    if (countK == k) 1 else 0
-//  }
-
-//  protected def scoreDiagsBR(player:Byte): Int = (0 until m).foldLeft(0)((acc, i) => acc + scoreDiagBR(i.toShort, player))
-
-//  def score(player: Byte): Int = {
-//    scoreRows(player) + scoreCols(player) + scoreDiagsTL(player) + scoreDiagsBR(player)
-//  }
-
-//  def ended(): Boolean = {
-//    if (!checkWin()) {
-//      for {
-//        i <- 0 until m
-//        j <- 0 until n
-//        if board(i)(j) == 0
-//      } {
-//        return false
-//      }
-//    }
-//
-//    true
-//  }
+  def undoMove(position: Position): Unit = board(position._1)(position._2) = 0
 }

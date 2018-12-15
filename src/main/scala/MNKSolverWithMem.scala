@@ -20,7 +20,7 @@ object MNKSolverWithMem extends App {
   println({
     s"score value = $score => "
   } + {
-    score match {
+    score.score match {
       case 0.0 => "STALE GAME"
       case x if x>0.0 => "P1 WIN"
       case _ => "P2 WIN"

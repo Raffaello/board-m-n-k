@@ -10,7 +10,7 @@ trait TranspositionTable {
 //  def hash() = board.map(_.mkString("")).mkString("")
   def hash(board: Board) = board.map(_.mkString("")).mkString("")
 
-  def add(board: Board, t: Transposition) = {
+  def add(board: Board, t: Transposition): Unit = {
 //    require(t.score>=t.alpha)
 //    require(t.score<=t.beta)
 //    require(t.alpha<=t.beta)

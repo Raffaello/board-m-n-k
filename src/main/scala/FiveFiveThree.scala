@@ -31,6 +31,7 @@ object FiveFiveThree extends App {
     val numPlayers = scala.io.StdIn.readInt()
     if (numPlayers == -1) System.exit(0)
     val game = new BoardMNK(m ,n, k)
+//    val game = new BoardMNK(m ,n, k) with NegaMax { val game = this }
 
     if (numPlayers > 0) {
       println("Do you want to start? [y, yes]")

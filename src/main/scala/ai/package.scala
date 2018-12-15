@@ -1,4 +1,6 @@
-import game.{BoardMNK, BoardTicTacToe, Transposition, TranspositionTable}
+import game._
+
+import scala.collection.immutable.NumericRange
 
 package object ai {
 
@@ -8,6 +10,24 @@ package object ai {
     def totalCalls = _totalCalls
 
     def totalCalls_=(v: Int): Unit = _totalCalls = v
+  }
+
+  private[ai] trait AiBoard {
+    val game: BoardMNK
+
+    private[ai] def generateMoves(): IndexedSeq[Position] = {
+      for {
+        i <- NumericRange[Short](0, game.m, 1)
+        j <- NumericRange[Short](0, game.n, 1)
+        if game.board(i)(j) == 0
+      } yield (i,j)
+    }
+
+    private[ai] def consumeMoves()(f: Position => Unit): Unit = {
+      generateMoves().foreach(f)
+    }
+
+    private[ai] def endGame[T: Numeric](f:Int => T):T = f(game.score())
   }
 
   def minimax(game: BoardTicTacToe, isMaximizingPlayer: Boolean): Int = {
@@ -33,7 +53,7 @@ package object ai {
         if game.board(i)(j) == 0
       } {
         val (is, js) = (i.toShort, j.toShort)
-        game.playMove(is, js, player)
+        game.playMove((is, js), player)
         best = cmp(best, minimax(game, !maximizing))
         game.undoMove(is, js)
       }
@@ -48,6 +68,12 @@ package object ai {
     minMaxLoop(isMaximizingPlayer)
   }
 
+  /**
+    * @deprecated
+    * @param game
+    * @param color
+    * @return
+    */
   def negamax(game: BoardMNK, color: Byte): Int = {
     require(color == 1 || color == -1)
     if (game.ended()) {
@@ -71,6 +97,12 @@ package object ai {
     value
   }
 
+  /**
+    * @deprecated
+    * @param game
+    * @param color
+    * @return
+    */
   def negamaxNextMove(game: BoardMNK, color: Byte): (Int, Short, Short) = {
     require(color == 1 || color == -1)
 
@@ -152,72 +184,74 @@ package object ai {
     }
   }
 
-  def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
+  def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
     Stats.totalCalls += 1
 
     val transposition = statuses.get(game.board)
 
     if(transposition.isDefined) {
-      val score = alphaBeta(game, depth, alpha, beta, maximizingPlayer)
-      if (score != transposition.get.score) throw new IllegalStateException(s"score: $score --- transpostion: ${transposition}  -- $maximizingPlayer")
-      return transposition.get.score
+//      val score = alphaBeta(game, depth, alpha, beta, maximizingPlayer)
+//      if (score != transposition.get.score) throw new IllegalStateException(s"score: $score --- transpostion: ${transposition}  -- $maximizingPlayer")
+      return transposition.get
     }
 
     if (game.ended()) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
-      return game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
-
+      val score = game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
+      val t = Transposition(
+        score,
+        depth,
+        Math.max(alpha, score),
+        Math.min(beta, score),
+        maximizingPlayer
+      )
+      statuses.add(game.board, t)
+      return t
     }
 
     if (maximizingPlayer) {
       var best = Double.MinValue
       var a = alpha
       for {
-        i <- 0 until game.m
-        j <- 0 until game.n
+        i <- NumericRange[Short](0, game.m, 1)
+        j <- NumericRange[Short](0, game.n, 1)
         if game.board(i)(j) == 0
       } {
-        val (is, js) = (i.toShort, j.toShort)
-        game.playMove(is, js, 1)
-        best = Math.max(best, alphaBetaWithMem(statuses, game, depth + 1, a, beta, false))
-        //            val abm = alphaBetaWithMem(states, game, depth + 1, a, beta, false)
-        //            states.add(game.board, Transposition(abm, a, beta))
-        //            best = Math.max(best, abm)
-        a = Math.max(a, best)
-        statuses.add(game.board, Transposition(best, a, beta, 1))
-        game.undoMove(is, js)
+        game.playMove(i, j, 1)
+        val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
+        best = Math.max(best, t.score)
+        a = t.alpha
+        game.undoMove(i, j)
         if (a >= beta) {
-          return best
+          return t
         }
       }
 
-      best
+      val t = Transposition(best, depth, alpha, beta, maximizingPlayer)
+      statuses.add(game.board, t)
+      t
     } else {
       var best = Double.MaxValue
       var b = beta
       for {
-        i <- 0 until game.m
-        j <- 0 until game.n
+        i <- NumericRange[Short](0, game.m, 1)
+        j <- NumericRange[Short](0, game.n, 1)
         if game.board(i)(j) == 0
       } {
-        val (is, js) = (i.toShort, j.toShort)
-        game.playMove(is, js, 2)
-
-        best = Math.min(best, alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true))
-
-        //            val abm = alphaBetaWithMem(states, game, depth + 1, alpha, b, true)
-        //            states.add(game.board, Transposition(abm, alpha, b))
-        //            best = Math.min(best, abm)
-        b = Math.min(b, best)
-        statuses.add(game.board, Transposition(best, alpha, b, 2))
-        game.undoMove(is, js)
+        game.playMove(i, j, 2)
+        val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
+        best = Math.min(best, t.score)
+        b = t.beta
+        game.undoMove(i, j)
         if (alpha >= b) {
-          return best
+          return t
         }
       }
 
-      best
+      val t = Transposition(best, depth, alpha, beta, maximizingPlayer)
+      statuses.add(game.board, t)
+      t
     }
   }
 

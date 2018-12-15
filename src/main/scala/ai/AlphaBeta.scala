@@ -1,0 +1,5 @@
+package ai
+
+trait AlphaBeta {
+
+}

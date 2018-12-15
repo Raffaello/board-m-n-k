@@ -6,4 +6,4 @@ package game
   * @param alpha value at game end status
   * @param beta  value at game end status
   */
-case class Transposition(score: Double, alpha: Double, beta: Double, player: Byte)
+case class Transposition(score: Double, depth: Int, alpha: Double, beta: Double, isMaximizing: Boolean)
