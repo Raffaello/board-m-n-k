@@ -2,30 +2,44 @@ package game
 
 import scala.collection.mutable
 
-
-trait TranspositionTable {
-//  val board: Board
+trait TranspositionTable /*extends BoardMN*/ {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
+/*
+  def hash() = board.map(_.mkString("")).mkString("")
 
-//  def hash() = board.map(_.mkString("")).mkString("")
-  def hash(board: Board) = board.map(_.mkString("")).mkString("")
-
-  def add(board: Board, t: Transposition): Unit = {
-//    require(t.score>=t.alpha)
-//    require(t.score<=t.beta)
-//    require(t.alpha<=t.beta)
-    transpositions.update(hash(board), t)
+  def add(t: Transposition): Unit = {
+    transpositions.update(hash(), t)
   }
 
-  def upd(board: Board, t: Transposition) = {
-    transpositions.update(hash(board), t)
+  def upd(t: Transposition) = {
+    transpositions.update(hash(), t)
   }
 
-  def del(board: Board): Option[Transposition] = {
-    transpositions.remove(hash(board))
+  def del(): Option[Transposition] = {
+    transpositions.remove(hash())
   }
 
-  def get(board: Board): Option[Transposition] = {
-    transpositions.get(hash(board))
+  def get(): Option[Transposition] = {
+    transpositions.get(hash())
+  }
+*/
+
+  /**
+    * @deprecated
+    */
+  def hash(b: Board) = b.map(_.mkString("")).mkString("")
+
+  /**
+    * @deprecated
+    */
+  def add(b: Board, t: Transposition): Unit = {
+    transpositions.update(hash(b), t)
+  }
+
+  /**
+    * @deprecated
+    */
+  def get(b: Board): Option[Transposition] = {
+    transpositions.get(hash(b))
   }
 }

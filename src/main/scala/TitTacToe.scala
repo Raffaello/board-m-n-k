@@ -24,7 +24,7 @@ object TitTacToe extends App {
       println("Do you want to start? [y, yes]")
       val playerStart = scala.io.StdIn.readBoolean()
       var playerTurn = playerStart
-      while (!game.ended()) {
+      while (!game.gameEnded()) {
         game.display()
         if (playerTurn) {
           var valid = false
@@ -53,7 +53,7 @@ object TitTacToe extends App {
       var depth = 0
       // Joshua player
       var joshuaPlay = true //Random.nextBoolean()
-      while (!game.ended()) {
+      while (!game.gameEnded()) {
         game.display()
         var color: Byte = 0
         var player: Byte = 0

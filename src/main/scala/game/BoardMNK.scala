@@ -4,7 +4,6 @@ import scala.annotation.tailrec
 import scala.collection.immutable.NumericRange
 
 /**
-  * @todo it could be generalized for p players....
   * @param m number of rows
   * @param n number of cols
   * @param k number of same move of a player "in a row" (or col or diagonal)
@@ -19,7 +18,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def scoreCols(): Int = (0 until n).foldLeft(0)((a, i) => a + scoreCol(i.toShort))
 
-  def score(): Int = {
+  override def score(): Int = {
     def evaluate(score: Int): Option[Int] = {
       score match {
         case 2 => Some(-1)
@@ -111,7 +110,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
       i <- NumericRange.inclusive[Short](0, nkDiff, 1)
       x = board(row).slice(i, i + k)
     } {
-      val h = x.head
+      val h = x.headOption.getOrElse(return 0)
       if (x.tail.forall(h > 0 && _ == h)) return h
     }
 
@@ -140,7 +139,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
 
-  def ended(): Boolean = {
+  override def gameEnded(): Boolean = {
     if (!checkWin()) {
       for {
         i <- 0 until m

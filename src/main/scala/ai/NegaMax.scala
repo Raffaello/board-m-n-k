@@ -2,27 +2,33 @@ package ai
 
 import game.{Status, Position}
 
+/**
+  * Basically same class as
+  * @see MiniMax
+  */
 trait NegaMax extends AiBoard {
 
   private def mainBlock(color: Byte)(eval: Status[Int] => Int): Int = {
-    if (game.ended()) {
-      return endGame[Int](score => score * color)
+    if (gameEnded()) {
+      score() * color
+    } else {
+
+      var value = Int.MinValue
+      val player: Byte = if (color == -1) 2 else 1
+
+      consumeMoves() { p =>
+        playMove(p, player)
+        value = eval((value, p))
+        undoMove(p)
+      }
+
+      value
     }
-
-    var value = Int.MinValue
-    val player: Byte = if (color == -1) 2 else 1
-
-    consumeMoves() { p =>
-      game.playMove(p, player)
-      value = eval((value, p))
-      game.undoMove(p)
-    }
-
-    value
   }
 
   def solve(color: Byte): Int = {
     require(color == 1 || color == -1)
+
     mainBlock(color) { status =>
       val newValue = -solve((-color).toByte)
       Math.max(status._1, newValue)

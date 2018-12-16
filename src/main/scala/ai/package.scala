@@ -12,24 +12,6 @@ package object ai {
     def totalCalls_=(v: Int): Unit = _totalCalls = v
   }
 
-  private[ai] trait AiBoard {
-    val game: BoardMNK
-
-    private[ai] def generateMoves(): IndexedSeq[Position] = {
-      for {
-        i <- NumericRange[Short](0, game.m, 1)
-        j <- NumericRange[Short](0, game.n, 1)
-        if game.board(i)(j) == 0
-      } yield (i,j)
-    }
-
-    private[ai] def consumeMoves()(f: Position => Unit): Unit = {
-      generateMoves().foreach(f)
-    }
-
-    private[ai] def endGame[T: Numeric](f:Int => T):T = f(game.score())
-  }
-
   def minimax(game: BoardTicTacToe, isMaximizingPlayer: Boolean): Int = {
     def minMaxLoop(maximizing: Boolean): Int = {
       var best: Int = 0
@@ -61,7 +43,7 @@ package object ai {
       best
     }
 
-    if (game.ended()) {
+    if (game.gameEnded()) {
       return game.score()
     }
 
@@ -76,7 +58,7 @@ package object ai {
     */
   def negamax(game: BoardMNK, color: Byte): Int = {
     require(color == 1 || color == -1)
-    if (game.ended()) {
+    if (game.gameEnded()) {
       return color * game.score()
     }
 
@@ -106,7 +88,7 @@ package object ai {
   def negamaxNextMove(game: BoardMNK, color: Byte): (Int, Short, Short) = {
     require(color == 1 || color == -1)
 
-    if (game.ended()) {
+    if (game.gameEnded()) {
       return (color * game.score(), -1, -1)
     }
 
@@ -136,7 +118,7 @@ package object ai {
 
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     Stats.totalCalls += 1
-    if (game.ended()) {
+    if (game.gameEnded()) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
       return game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
@@ -195,7 +177,7 @@ package object ai {
       return transposition.get
     }
 
-    if (game.ended()) {
+    if (game.gameEnded()) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
       val score = game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
@@ -260,7 +242,7 @@ package object ai {
     var ibest: Short = -1
     var jbest: Short = -1
 
-    if (game.ended()) {
+    if (game.gameEnded()) {
       //      return (game.score() * (1 / (depth + 1)), ibest, jbest, alpha, beta)
       return (game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0))), ibest, jbest, alpha, beta)
     }
