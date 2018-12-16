@@ -139,18 +139,19 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
 
-  override def gameEnded(): Boolean = {
-    if (!checkWin()) {
-      for {
-        i <- 0 until m
-        j <- 0 until n
-        if board(i)(j) == 0
-      } {
-        return false
-      }
-    }
+  override def gameEnded(depth: Int): Boolean = {
+    if(depth < minWinDepth) false
+    else if (freePosition == 0) true
+    else checkWin()
+//      for {
+//        i <- 0 until m
+//        j <- 0 until n
+//        if board(i)(j) == 0
+//      } {
+//        return false
+//      }
+//    } else true
 
-    true
   }
 
   def display(): Unit = {

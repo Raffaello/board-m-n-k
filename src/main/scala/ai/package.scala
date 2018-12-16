@@ -43,7 +43,7 @@ package object ai {
       best
     }
 
-    if (game.gameEnded()) {
+    if (game.gameEnded(game.minWinDepth)) {
       return game.score()
     }
 
@@ -58,7 +58,7 @@ package object ai {
     */
   def negamax(game: BoardMNK, color: Byte): Int = {
     require(color == 1 || color == -1)
-    if (game.gameEnded()) {
+    if (game.gameEnded(game.minWinDepth)) {
       return color * game.score()
     }
 
@@ -88,7 +88,7 @@ package object ai {
   def negamaxNextMove(game: BoardMNK, color: Byte): (Int, Short, Short) = {
     require(color == 1 || color == -1)
 
-    if (game.gameEnded()) {
+    if (game.gameEnded(game.minWinDepth)) {
       return (color * game.score(), -1, -1)
     }
 
@@ -118,7 +118,7 @@ package object ai {
 
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     Stats.totalCalls += 1
-    if (game.gameEnded()) {
+    if (game.gameEnded(depth)) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
       return game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
@@ -177,7 +177,7 @@ package object ai {
       return transposition.get
     }
 
-    if (game.gameEnded()) {
+    if (game.gameEnded(depth)) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
       val score = game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
@@ -242,7 +242,7 @@ package object ai {
     var ibest: Short = -1
     var jbest: Short = -1
 
-    if (game.gameEnded()) {
+    if (game.gameEnded(depth)) {
       //      return (game.score() * (1 / (depth + 1)), ibest, jbest, alpha, beta)
       return (game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0))), ibest, jbest, alpha, beta)
     }

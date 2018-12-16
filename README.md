@@ -27,6 +27,28 @@ combined with a less depth solution to gain a higher score, it reduces the searc
 
 ## Transposition Table
 
+### improved hashing function
+
+### improved game checks
+
+#### endgame
+
+can be ended only when at least 2k-1 moves are done,
+so avoid check if depth is lower than 2k-1 and just return false.
+
+- keep a counter of empty cells, each time and modifying accordingly when do/undo a move
+  check directly if the counter is equal zero to determine end game.
+
+#### Board status look up
+
+considering delta changes in the board,
+keeping the previous check board value (no winners)
+and check only around the move done instead of all the board.
+
+#### Board representation
+
+from 2D array to ??? (1D? easier for hashing?)
+
 
 ## Principal Variation
 

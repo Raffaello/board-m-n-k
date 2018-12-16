@@ -11,6 +11,8 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   require(k <= m || k <= n)
   require(numPlayers >= 2)
 
+  val minWinDepth: Int = (2 * k) - 1
+
   def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = position
     require(row < m && col < n)
@@ -20,6 +22,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
       false
     } else {
       board(row)(col) = player
+      freePosition -= 1
       true
     }
   }
@@ -29,9 +32,16 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     */
   def playMove(row: Short, col: Short, player: Byte): Boolean = playMove((row, col), player)
 
-  def undoMove(position: Position): Unit = board(position._1)(position._2) = 0
+  /**
+    * TODO: should check if it is not already zero otherwise
+    *       freePositions should not be incremented
+    */
+  def undoMove(position: Position): Unit = {
+    board(position._1)(position._2) = 0
+    freePosition += 1
+  }
 
   override def score(): Int = ???
 
-  override def gameEnded(): Boolean = ???
+  override def gameEnded(depth: Int): Boolean = ???
 }

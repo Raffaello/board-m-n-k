@@ -45,6 +45,6 @@ class PackageSpec extends FlatSpec with Matchers {
     game.board(1)(2) = 2
 //    negamax(game, -1) should be (-1) // desing cannot return -1 from the first step.
     minimax(game, false) should be (-1)
-    alphaBeta(game, maximizingPlayer = false) should be < 0.0
+    alphaBeta(game, depth=6, maximizingPlayer = false) should be < 0.0
   }
 }

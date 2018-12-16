@@ -6,8 +6,8 @@ trait MiniMax extends AiBoard {
 
   private def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
 
-  protected def mainBlock(player: Byte)(eval: Status[Int] => Int): Int = {
-    if (gameEnded()) {
+  protected def mainBlock(player: Byte, depth: Int)(eval: Status[Int] => Int): Int = {
+    if (gameEnded(depth)) {
       score()
     } else {
       var value = Int.MinValue
@@ -25,19 +25,19 @@ trait MiniMax extends AiBoard {
   /**
     * Only for 2 players at the moment
     */
-  def solve(maximizing: Boolean): Int = {
+  def solve(maximizing: Boolean, depth: Int): Int = {
     val cmp: (Int, Int) => Int = if (maximizing) Math.max _ else Math.min _
 
-    mainBlock(player(maximizing)) { status =>
-      val value = solve(!maximizing)
+    mainBlock(player(maximizing), depth) { status =>
+      val value = solve(!maximizing, depth + 1)
       cmp(status._1, value)
     }
   }
 
-  def nextMove(maximizing: Boolean): Status[Int] = {
+  def nextMove(maximizing: Boolean, depth: Int): Status[Int] = {
     var pBest: Position = (-1, -1)
-    val score = mainBlock(player(maximizing)) { status =>
-      val newValue = -solve(!maximizing)
+    val score = mainBlock(player(maximizing), depth) { status =>
+      val newValue = -solve(!maximizing, depth + 1)
       var value = status._1
       if (maximizing) {
         if (value > newValue) {
