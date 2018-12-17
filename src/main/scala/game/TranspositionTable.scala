@@ -23,11 +23,21 @@ trait TranspositionTable /*extends BoardMN*/ {
     transpositions.get(hash())
   }
 */
+//  require(m <= )
 
+//  def hash2(b: Board) = {
+//    val h = Bits
+//    for {
+//      i <- b.indices
+//      j <- b(0).indices
+//    } {
+//      h += i*j*p
+//    }
+//  }
   /**
     * @deprecated
     */
-  def hash(b: Board) = b.map(_.mkString("")).mkString("")
+  def hash(b: Board) = b.map(_.mkString).mkString
 
   /**
     * @deprecated
