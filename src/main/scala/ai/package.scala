@@ -4,15 +4,17 @@ import scala.collection.immutable.NumericRange
 
 package object ai {
 
+  type AB = (Int, Int)
+  type ABScore = (AB, Int)
+  type ABStatus = (AB, Status)
+
   object Stats {
-    //    protected var _totalCalls: Int = 0
-
-    //    def totalCalls = _totalCalls
-
-    //    def totalCalls_=(v: Int): Unit = _totalCalls = v
     var totalCalls: Int = 0
   }
 
+  /**
+    * @deprecated
+    */
   def minimax(game: BoardTicTacToe, isMaximizingPlayer: Boolean): Int = {
     def minMaxLoop(maximizing: Boolean): Int = {
       var best: Int = 0
@@ -53,9 +55,6 @@ package object ai {
 
   /**
     * @deprecated
-    * @param game
-    * @param color
-    * @return
     */
   def negamax(game: BoardMNK, color: Byte): Int = {
     require(color == 1 || color == -1)
@@ -82,9 +81,6 @@ package object ai {
 
   /**
     * @deprecated
-    * @param game
-    * @param color
-    * @return
     */
   def negamaxNextMove(game: BoardMNK, color: Byte): (Int, Short, Short) = {
     require(color == 1 || color == -1)

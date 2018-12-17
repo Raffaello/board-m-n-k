@@ -3,7 +3,7 @@ package game
 /**
   * Speed-up optimization on TicTacToe specific case.
   */
-final class BoardTicTacToe extends BoardMNK(3, 3, 3) {
+class BoardTicTacToe extends BoardMNK(3, 3, 3) {
 
   override protected def scoreRow(row: Short): Int = {
     if (board(row)(0) == board(row)(1) && board(row)(0) == board(row)(2)) {

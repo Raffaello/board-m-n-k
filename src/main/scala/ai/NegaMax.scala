@@ -26,7 +26,7 @@ trait NegaMax extends AiBoard {
     }
   }
 
-  def solve(color: Byte, depth: Int): Int = {
+  def solve(color: Byte = 1, depth: Int = 0): Int = {
     require(color == 1 || color == -1)
 
     mainBlock(color, depth) { status =>

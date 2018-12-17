@@ -92,7 +92,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     def cmp(i: Short, j: Short, col: Short, h: Byte): Int = {
       if (j == k) h
       else if (h != board(i + j)(col)) 0
-      else cmp(i, (j+1).toShort, col, h)
+      else cmp(i, (j + 1).toShort, col, h)
     }
 
     for (i <- NumericRange.inclusive[Short](0, mkDiff, 1)) {
@@ -140,18 +140,9 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
 
   override def gameEnded(depth: Int): Boolean = {
-    if(depth < minWinDepth) false
+    if (depth < minWinDepth) false
     else if (freePosition == 0) true
     else checkWin()
-//      for {
-//        i <- 0 until m
-//        j <- 0 until n
-//        if board(i)(j) == 0
-//      } {
-//        return false
-//      }
-//    } else true
-
   }
 
   def display(): Unit = {

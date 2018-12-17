@@ -4,6 +4,29 @@ import scala.collection.mutable
 
 trait TranspositionTable /*extends BoardMN*/ {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
+//  val transpositions: mutable.Map[Int, Transposition] = mutable.Map.empty
+
+
+//  var zobristKey:Int = 0
+
+//  def init(b: BoardMN): ZobristTable = Array.fill[Int](b.m, b.n, 2)(Random.nextInt())
+
+
+  /**
+    * To call for each play move and undo move
+    */
+//  def hash(zobristTable: ZobristTable, p: Position, player: Byte): Int = {
+//    zobristKey ^= zobristTable(p._1)(p._2)(player)
+//    zobristKey
+//  }
+//
+//  def add(z: ZobristTable, pos: Position, p: Byte, t: Transposition): Unit = {
+//    transpositions.update(hash(z, pos , p), t)
+//  }
+//
+//  def get(z: ZobristTable, pos: Position, p: Byte, t: Transposition): Option[Transposition] = {
+//    transpositions.get(hash(z, pos, p))
+//  }
 /*
   def hash() = board.map(_.mkString("")).mkString("")
 
@@ -23,21 +46,11 @@ trait TranspositionTable /*extends BoardMN*/ {
     transpositions.get(hash())
   }
 */
-//  require(m <= )
 
-//  def hash2(b: Board) = {
-//    val h = Bits
-//    for {
-//      i <- b.indices
-//      j <- b(0).indices
-//    } {
-//      h += i*j*p
-//    }
-//  }
   /**
     * @deprecated
     */
-  def hash(b: Board) = b.map(_.mkString).mkString
+  def hash(b: Board) = b.flatten.mkString
 
   /**
     * @deprecated

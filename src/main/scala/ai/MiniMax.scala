@@ -27,7 +27,7 @@ trait MiniMax extends AiBoard {
     * or just consider player 2 as all of the opponents.
     * Only for 2 players at the moment
     */
-  def solve(maximizing: Boolean, depth: Int): Int = {
+  def solve(maximizing: Boolean = true, depth: Int = 0): Int = {
     val cmp: (Int, Int) => Int = if (maximizing) Math.max _ else Math.min _
 
     mainBlock(player(maximizing), depth) { status =>
@@ -42,12 +42,12 @@ trait MiniMax extends AiBoard {
       val newValue = -solve(!maximizing, depth + 1)
       var value = status._1
       if (maximizing) {
-        if (value > newValue) {
+        if (value < newValue) {
           value = newValue
           pBest = status._2
         }
       } else {
-        if (value < newValue) {
+        if (value > newValue) {
           value = newValue
           pBest = status._2
         }

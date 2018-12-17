@@ -5,20 +5,19 @@ import game.BoardTicTacToe
 
 class PackageSpec extends FlatSpec with Matchers {
 
-
-  "Tic Tac Toe game with minimax" should "be generate all states and win" in {
+  "Tic Tac Toe game with minimax" should "solve the game" in {
     val game = new BoardTicTacToe()
-    minimax(game, true) should be(0)
+    minimax(game, true) shouldEqual 0
   }
 
   "Tic Tac Toe negamax" should "solve the game" in {
     val game = new BoardTicTacToe()
-    negamax(game, 1) should be(0)
+    negamax(game, 1) shouldEqual 0
   }
 
   "Tic Tac Toe alphaBeta" should "solve the game" in {
     val game = new BoardTicTacToe()
-    alphaBeta(game, maximizingPlayer = true) should be(0.0)
+    alphaBeta(game, maximizingPlayer = true) shouldEqual 0.0
   }
 
   "Player 1 Tic Tac Toe" should "win" in {
@@ -30,7 +29,7 @@ class PackageSpec extends FlatSpec with Matchers {
     game.board(2)(1) = 2
     game.board(2)(2) = 2
     negamax(game, 1) should be (1)
-    minimax(game, true) should be (1)
+    minimax(game, true) shouldEqual 1
     alphaBeta(game, maximizingPlayer = true) should be > 0.0
   }
 
