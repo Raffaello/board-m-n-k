@@ -5,11 +5,12 @@ import scala.collection.immutable.NumericRange
 package object ai {
 
   object Stats {
-    protected var _totalCalls: Int = 0
+    //    protected var _totalCalls: Int = 0
 
-    def totalCalls = _totalCalls
+    //    def totalCalls = _totalCalls
 
-    def totalCalls_=(v: Int): Unit = _totalCalls = v
+    //    def totalCalls_=(v: Int): Unit = _totalCalls = v
+    var totalCalls: Int = 0
   }
 
   def minimax(game: BoardTicTacToe, isMaximizingPlayer: Boolean): Int = {
@@ -171,9 +172,9 @@ package object ai {
 
     val transposition = statuses.get(game.board)
 
-    if(transposition.isDefined) {
-//      val score = alphaBeta(game, depth, alpha, beta, maximizingPlayer)
-//      if (score != transposition.get.score) throw new IllegalStateException(s"score: $score --- transpostion: ${transposition}  -- $maximizingPlayer")
+    if (transposition.isDefined) {
+      //      val score = alphaBeta(game, depth, alpha, beta, maximizingPlayer)
+      //      if (score != transposition.get.score) throw new IllegalStateException(s"score: $score --- transpostion: ${transposition}  -- $maximizingPlayer")
       return transposition.get
     }
 

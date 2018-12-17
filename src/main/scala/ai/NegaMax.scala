@@ -8,7 +8,7 @@ import game.{Status, Position}
   */
 trait NegaMax extends AiBoard {
 
-  private def mainBlock(color: Byte, depth: Int)(eval: Status[Int] => Int): Int = {
+  private def mainBlock(color: Byte, depth: Int)(eval: Status => Int): Int = {
     if (gameEnded(depth)) {
       score() * color
     } else {
@@ -35,7 +35,7 @@ trait NegaMax extends AiBoard {
     }
   }
 
-  def nextMove(color: Byte, depth: Int): Status[Int] = {
+  def nextMove(color: Byte, depth: Int): Status = {
     require(color == 1 || color == -1)
 
     var pBest: Position = (-1, -1)
