@@ -14,9 +14,22 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   val mkDiff: Short = (m - k).toShort
   val k1: Short = (k - 1).toShort
 
-  protected def scoreRows(): Int = NumericRange[Short](0, m, 1).map(scoreRow).sum
+  protected def scoreRows(): Int = {
+    for (i <- NumericRange[Short](0, m, 1)) {
+      val s = scoreRow(i)
+      if (s > 0) return s
+    }
+    0
+  }
 
-  protected def scoreCols(): Int = (0 until n).foldLeft(0)((a, i) => a + scoreCol(i.toShort))
+  protected def scoreCols(): Int = {
+    for (j <- NumericRange[Short](0, n, 1)) {
+      val s = scoreCol(j)
+      if (s > 0) return s
+    }
+
+    0
+  }
 
   override def score(): Int = {
     def evaluate(score: Int): Option[Int] = {
@@ -61,7 +74,13 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     0
   }
 
-  protected def scoreDiagsTL(): Int = NumericRange.inclusive[Short](0, (n - k).toShort, 1).map(scoreDiagTL).sum
+  protected def scoreDiagsTL(): Int = {
+    for (i <- NumericRange.inclusive[Short](0, nkDiff, 1)) {
+      val s = scoreDiagTL(i)
+      if (s > 0) return s
+    }
+    0
+  }
 
   protected def scoreDiagBR(col: Short): Int = {
     @tailrec
@@ -85,17 +104,23 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     0
   }
 
-  protected def scoreDiagsBR(): Int = NumericRange.inclusive[Short](0, nkDiff, 1).map(scoreDiagBR).sum
+  protected def scoreDiagsBR(): Int = {
+    for (j <- NumericRange.inclusive[Short](0, nkDiff, 1)) {
+      val s = scoreDiagBR(j)
+      if (s > 0) return s
+    }
+    0
+  }
 
   protected def scoreCol(col: Short): Int = {
     @tailrec
-    def cmp(i: Short, j: Short, col: Short, h: Byte): Int = {
+    def cmp(i: Int, j: Int, col: Short, h: Byte): Int = {
       if (j == k) h
       else if (h != board(i + j)(col)) 0
-      else cmp(i, (j + 1).toShort, col, h)
+      else cmp(i, j + 1, col, h)
     }
 
-    for (i <- NumericRange.inclusive[Short](0, mkDiff, 1)) {
+    for (i <- NumericRange.inclusive(0, mkDiff, 1)) {
       val h = board(i)(col)
       if (cmp(i, 1, col, h) > 0) {
         return h
@@ -106,12 +131,17 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   }
 
   protected def scoreRow(row: Short): Int = {
-    for {
-      i <- NumericRange.inclusive[Short](0, nkDiff, 1)
-      x = board(row).slice(i, i + k)
-    } {
-      val h = x.headOption.getOrElse(return 0)
-      if (x.tail.forall(h > 0 && _ == h)) return h
+    def innerLoop(i: Int, h: Byte): Int = {
+      for (j <- i + 1 until i + k) {
+        if (board(row)(j) != h) return 0
+      }
+
+      h
+    }
+
+    for (i <- NumericRange.inclusive(0, nkDiff, 1)) {
+      val h = board(row)(i)
+      if (h > 0 && innerLoop(i, h) > 0) return h
     }
 
     0
@@ -141,7 +171,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   override def gameEnded(depth: Int): Boolean = {
     if (depth < minWinDepth) false
-    else if (freePosition == 0) true
+    else if (freePositions == 0) true
     else checkWin()
   }
 

@@ -7,21 +7,22 @@ package game
   * @param numPlayers 0 is not used, 1 or 2 is the player using the cell
   */
 class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends BoardMN(m, n) {
-  require(k > 2)
-  require(k <= m || k <= n)
-  require(numPlayers >= 2)
+//  require(k > 2)
+//  require(k <= m || k <= n)
+//  require(numPlayers >= 2)
 
   val minWinDepth: Int = (2 * k) - 1
+
   def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = position
-    require(row < m && col < n)
-    require(player <= numPlayers && player > 0)
+//    require(row < m && col < n)
+//    require(player <= numPlayers && player > 0)
 
-    if (board(row)(col) > 0) {
-      false
-    } else {
+    if (board(row)(col) > 0) false
+    else {
       board(row)(col) = player
-      freePosition -= 1
+      freePositions -= 1
+      lastMove = position
       true
     }
   }
@@ -37,7 +38,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     */
   def undoMove(position: Position): Unit = {
     board(position._1)(position._2) = 0
-    freePosition += 1
+    freePositions += 1
   }
 
   override def score(): Int = ???
