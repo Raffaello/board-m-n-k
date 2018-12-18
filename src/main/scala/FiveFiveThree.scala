@@ -1,10 +1,21 @@
-import ai._
-import game.BoardTicTacToe
+import ai.{alphaBetaNextMove, negamaxNextMove}
+import game.BoardMNK
 
-object TitTacToe extends App {
+object FiveFiveThree extends App {
   val humanPlayer: Byte = 1
   val computerPlayer: Byte = 2
   val joshuaPlayer: Byte = 1 // :)
+  // TODO TEST this case: cut-off also states were lead to no one wins already
+  // when checking game ended/score ? find a strategy to penalize further exploration
+  // in the non winning direction. ???????
+  // use flag to force exploring or cuts when dead end game detected and avoid checking,
+  // just return 0 and depth value would be lower so higher score
+  // also change instead of score * (1/depth) in a way that can be modified
+  // score + (Math.signum(score) * (1/(depth + 1)))
+  // No use Transposition table.
+  val m: Short = 5
+  val n: Short = 5
+  val k: Short = 3
 
   do {
     println(
@@ -19,7 +30,9 @@ object TitTacToe extends App {
 
     val numPlayers = scala.io.StdIn.readInt()
     if (numPlayers == -1) System.exit(0)
-    val game = new BoardTicTacToe()
+    val game = new BoardMNK(m ,n, k)
+//    val game = new BoardMNK(m ,n, k) with NegaMax { val game = this }
+
     if (numPlayers > 0) {
       println("Do you want to start? [y, yes]")
       val playerStart = scala.io.StdIn.readBoolean()
@@ -43,6 +56,7 @@ object TitTacToe extends App {
       }
 
       game.display()
+      var winner = ""
       game.score() match {
         case 0 => println("STALEMATE!")
         case 1 => println("Player 1 (Human) wins")
@@ -68,11 +82,11 @@ object TitTacToe extends App {
           player = computerPlayer
         }
 
-//        val (score, i, j) = negamaxNextMove(game, color)
         val (score, i, j, a2 , b2) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
         a = a2
         b = b2
         depth +=1
+        println (s"depth = $depth")
 
         game.playMove(i, j, player)
         joshuaPlay = !joshuaPlay

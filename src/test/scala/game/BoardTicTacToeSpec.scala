@@ -10,7 +10,7 @@ class BoardTicTacToeSpec extends WordSpec with Matchers {
     "in progress" in {
       val game = new BoardTicTacToe()
 
-      game.ended() should be(false)
+      game.gameEnded(0) should be(false)
     }
 
     for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {
@@ -26,7 +26,7 @@ class BoardTicTacToeSpec extends WordSpec with Matchers {
           for (i <- 0 until 3) {
             val game = new BoardTicTacToe()
             game.board.update(i, Array.fill(3)(p))
-            game.ended() should be(true)
+            game.gameEnded(game.minWinDepth) should be(true)
             game.score() should be(score)
           }
         }
@@ -35,10 +35,10 @@ class BoardTicTacToeSpec extends WordSpec with Matchers {
           for (j <- 0 until 3) {
             val game = new BoardTicTacToe()
             for (i <- 0 until 3) {
-              game.board(j)(i) = p
+              game.board(i)(j) = p
             }
 
-            game.ended() should be(true)
+            game.gameEnded(game.minWinDepth) should be(true)
             game.score() should be(score)
           }
         }
@@ -49,7 +49,7 @@ class BoardTicTacToeSpec extends WordSpec with Matchers {
             game.board(i)(i) = p
           }
 
-          game.ended() should be(true)
+          game.gameEnded(game.minWinDepth) should be(true)
           game.score() should be(score)
         }
 
@@ -59,7 +59,7 @@ class BoardTicTacToeSpec extends WordSpec with Matchers {
             game.board(2 - i)(i) = p
           }
 
-          game.ended() should be(true)
+          game.gameEnded(game.minWinDepth) should be(true)
           game.score() should be(score)
         }
       }
