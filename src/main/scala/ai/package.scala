@@ -21,6 +21,7 @@ package object ai {
       var cmp: (Int, Int) => Int = null
       var player: Byte = 0
 
+      Stats.totalCalls += 1
       if (maximizing) {
         best = Int.MinValue
         cmp = Math.max _
@@ -62,6 +63,7 @@ package object ai {
       return color * game.score()
     }
 
+    Stats.totalCalls += 1
     var value = Int.MinValue
     var player = color
     if (player == -1) player = 2
@@ -114,7 +116,6 @@ package object ai {
   }
 
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
-    Stats.totalCalls += 1
     if (game.gameEnded(depth)) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
@@ -122,6 +123,7 @@ package object ai {
 
     }
 
+    Stats.totalCalls += 1
     if (maximizingPlayer) {
       var best = Double.MinValue
       var a = alpha
@@ -164,7 +166,6 @@ package object ai {
   }
 
   def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
-    Stats.totalCalls += 1
 
     val transposition = statuses.get(game.board)
 
@@ -189,6 +190,7 @@ package object ai {
       return t
     }
 
+    Stats.totalCalls += 1
     if (maximizingPlayer) {
       var best = Double.MinValue
       var a = alpha

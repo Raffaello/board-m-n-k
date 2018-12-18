@@ -30,8 +30,7 @@ trait NegaMax extends AiBoard {
     require(color == 1 || color == -1)
 
     mainBlock(color, depth) { status =>
-      val newValue = -solve((-color).toByte, depth + 1)
-      Math.max(status._1, newValue)
+      Math.max(status._1, -solve((-color).toByte, depth + 1))
     }
   }
 

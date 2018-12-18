@@ -1,3 +1,5 @@
+package benchmarks
+
 import game.BoardMNK
 
 object MNKSolver extends App {

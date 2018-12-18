@@ -1,3 +1,5 @@
+package benchmarks
+
 import game.{BoardMNK, TranspositionTable}
 
 object MNKSolverWithMem extends App {
@@ -27,5 +29,5 @@ object MNKSolverWithMem extends App {
     }
   })
 
-//  println(states.transpositions.mkString("\n"))
+//  println(board.transpositions.mkString("\n"))
 }

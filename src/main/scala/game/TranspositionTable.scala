@@ -4,13 +4,10 @@ import scala.collection.mutable
 
 trait TranspositionTable /*extends BoardMN*/ {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
-//  val transpositions: mutable.Map[Int, Transposition] = mutable.Map.empty
-
 
 //  var zobristKey:Int = 0
 
 //  def init(b: BoardMN): ZobristTable = Array.fill[Int](b.m, b.n, 2)(Random.nextInt())
-
 
   /**
     * To call for each play move and undo move

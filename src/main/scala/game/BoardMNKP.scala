@@ -12,7 +12,6 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   require(numPlayers >= 2)
 
   val minWinDepth: Int = (2 * k) - 1
-
   def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = position
     require(row < m && col < n)
