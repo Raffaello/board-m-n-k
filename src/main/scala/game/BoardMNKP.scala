@@ -37,6 +37,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     *       freePositions should not be incremented
     */
   def undoMove(position: Position): Unit = {
+//    assert(board(position._1)(position._2) > 0)
     board(position._1)(position._2) = 0
     freePositions += 1
   }

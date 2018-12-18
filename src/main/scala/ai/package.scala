@@ -18,7 +18,7 @@ package object ai {
   /**
     * @deprecated
     */
-  def minimax(game: BoardTicTacToe, isMaximizingPlayer: Boolean): Int = {
+  def minimax(game: BoardMNK, isMaximizingPlayer: Boolean): Int = {
     def minMaxLoop(maximizing: Boolean): Int = {
       var best: Int = 0
       var cmp: (Int, Int) => Int = null

@@ -19,6 +19,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
       val s = scoreRow(i)
       if (s > 0) return s
     }
+
     0
   }
 
@@ -50,19 +51,17 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def scoreDiagTL(col: Short): Int = {
     @tailrec
-    def cmpTail(h: Byte, i: Short, start: Int): Int = {
-      if (start == k) {
-        board(i)(col)
-      } else {
-        if (h != board(i + start)(col + start)) {
-          0
-        } else cmpTail(h, i, start + 1)
+    def cmpTail(h: Byte, i: Int, start: Int): Int = {
+      if (start == k) board(i)(col)
+      else {
+        if (h != board(i + start)(col + start)) 0
+        else cmpTail(h, i, start + 1)
       }
     }
 
     if (n - col >= k) {
       for {
-        i <- NumericRange.inclusive[Short](0, mkDiff, 1)
+        i <- NumericRange.inclusive(0, mkDiff, 1)
         if board(i)(col) > 0
       } {
         val h = board(i)(col)
@@ -79,21 +78,20 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
       val s = scoreDiagTL(i)
       if (s > 0) return s
     }
+
     0
   }
 
   protected def scoreDiagBR(col: Short): Int = {
     @tailrec
-    def cmpTail(h: Byte, i: Short, start: Int, stop: Int): Int = {
-      if (start == stop) {
-        board(i)(col)
-      } else {
-        if (h != board(i - start)(col + start)) 0 else cmpTail(h, i, start + 1, stop)
-      }
+    def cmpTail(h: Byte, i: Int, start: Int, stop: Int): Int = {
+      if (start == stop) board(i)(col)
+      else if (h != board(i - start)(col + start)) 0
+      else cmpTail(h, i, start + 1, stop)
     }
 
     for {
-      row <- NumericRange[Short](k1, m, 1)
+      row <- NumericRange(k1, m, 1)
       if board(row)(col) > 0
     } {
       val h = board(row)(col)
@@ -109,6 +107,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
       val s = scoreDiagBR(j)
       if (s > 0) return s
     }
+
     0
   }
 
@@ -122,9 +121,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
     for (i <- NumericRange.inclusive(0, mkDiff, 1)) {
       val h = board(i)(col)
-      if (cmp(i, 1, col, h) > 0) {
-        return h
-      }
+      if (cmp(i, 1, col, h) > 0) return h
     }
 
     0
