@@ -12,7 +12,7 @@ trait NegaMax extends AiBoard {
     if (gameEnded(depth)) {
       score() * color
     } else {
-
+      Stats.totalCalls += 1
       var value = Int.MinValue
       val player: Byte = if (color == -1) 2 else 1
 

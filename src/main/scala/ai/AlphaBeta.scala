@@ -11,6 +11,7 @@ trait AlphaBeta extends AiBoard {
       val s = score()
       Math.round((s + (Math.signum(s) * (1.0 / (depth + 1.0)))) * 1000).toInt
     } else {
+      Stats.totalCalls += 1
       var best = if(maximizing) Int.MinValue else Int.MaxValue
       var a = alpha
       var b = beta

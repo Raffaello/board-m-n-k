@@ -10,6 +10,7 @@ trait MiniMax extends AiBoard {
     if (gameEnded(depth)) {
       score()
     } else {
+      Stats.totalCalls += 1
       var value = if (player == 1) Int.MinValue else Int.MaxValue
 
       consumeMoves() { p =>
