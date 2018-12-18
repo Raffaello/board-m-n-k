@@ -21,7 +21,7 @@ return just 1, 0, -1.
 
 ### depth optimization score function
 
-combined with a less depth solution to gain a higher score, it reduces the search space even more.
+combined with a less depth solution to gain a higher score, it reduces the search space even more when pruning.
 
 `score + (Signum(score) * (1.0 / (depth + 1.0) ))`
 
@@ -41,10 +41,16 @@ Here some techniques designed/reviewed to speed-up the game-dynamics
 ### endgame
 
 - [X] can be ended only when at least 2k-1 moves are done,
-so avoid check if depth is lower than 2k-1 and just return false or do not check at all.
+so avoid to check if depth is lower than 2k-1 and just return false or do not check at all.
 
 - [X] keep a counter of empty cells, each time and modifying accordingly when do/undo a move
   check directly if the counter is equal zero to determine end game.
+
+### Board status look up
+
+- [ ] considering delta changes in the board,
+keeping the previous check board value (no winners)
+and check only around the move done instead of all the board.
 
 ### moves generations
 
@@ -59,12 +65,6 @@ so avoid check if depth is lower than 2k-1 and just return false or do not check
 - [ ] Order for moves could be by max symbols for row,cols,diag.
   So it should end up quickly and start pruning more.
   It is important to be very fast in the ordering and pruning enough.
-   
-### Board status look up
-
-- [ ] considering delta changes in the board,
-keeping the previous check board value (no winners)
-and check only around the move done instead of all the board.
 
 ### Board representation
 

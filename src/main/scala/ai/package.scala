@@ -11,7 +11,7 @@ package object ai {
 
   object Stats {
     var totalCalls: Int = 0
-    var chacheHits: Int = 0
+    var cacheHits: Int = 0
   }
 
   /**
@@ -229,7 +229,7 @@ package object ai {
     val transposition = statuses.get(game.board)
 
     if (transposition.isDefined) {
-      Stats.chacheHits += 1
+      Stats.cacheHits += 1
       return transposition.get
     }
 
@@ -238,8 +238,6 @@ package object ai {
       val t = Transposition(
         score,
         depth,
-        //        Math.max(alpha, score),
-        //        Math.min(beta, score),
         score,
         score,
         maximizingPlayer

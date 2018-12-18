@@ -122,13 +122,13 @@ object TicTacToeSolvers extends App {
     val board = new BoardTicTacToe with TranspositionTableOld
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
-    Stats.chacheHits = 0
+    Stats.cacheHits = 0
     val transposition = ai.alphaBetaWithMem(board, board)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${ai.Stats.totalCalls}")
     println(s"Total cache: ${board.transpositions.size}")
-    println(s"Total cache Hit: ${ai.Stats.chacheHits}")
+    println(s"Total cache Hit: ${ai.Stats.cacheHits}")
     println({
       s"score value = $transposition => "
     } + {
