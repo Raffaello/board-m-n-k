@@ -9,7 +9,7 @@ private[ai] trait AiBoard extends BoardMN {
   //refactor later
   object Stats {
     var totalCalls: Int = 0
-    var chacheHits: Int = 0
+    var cacheHits: Int = 0
   }
 
   protected def generateMoves(): IndexedSeq[Position] = {

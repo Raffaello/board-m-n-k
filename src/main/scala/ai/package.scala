@@ -3,7 +3,8 @@ import game._
 import scala.collection.immutable.NumericRange
 
 package object ai {
-  case class Transposition(score: Double, depth: Int, alpha: Double, beta: Double, isMaximizing: Boolean)
+  case class Transposition(score: Int, depth: Int, alpha: Int, beta: Int, isMaximizing: Boolean)
+  case class TranspositionOld(score: Double, depth: Int, alpha: Double, beta: Double, isMaximizing: Boolean)
 
   type AB = (Int, Int)
   type ABScore = (AB, Int)
@@ -224,7 +225,7 @@ package object ai {
     (best, ibest, jbest, a, b)
   }
 
-  def alphaBetaWithMemOld(statuses: TranspositionTableOld, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
+  def alphaBetaWithMemOld(statuses: TranspositionTableOld, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): TranspositionOld = {
 
     val transposition = statuses.get(game.board)
 
@@ -235,7 +236,7 @@ package object ai {
 
     if (game.gameEnded(depth)) {
       val score = game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
-      val t = Transposition(
+      val t = TranspositionOld(
         score,
         depth,
         score,
@@ -266,7 +267,7 @@ package object ai {
         }
       }
 
-      val t = Transposition(best, depth, a, beta, maximizingPlayer)
+      val t = TranspositionOld(best, depth, a, beta, maximizingPlayer)
       statuses.add(game.board, t)
       t
     } else {
@@ -287,13 +288,13 @@ package object ai {
         }
       }
 
-      val t = Transposition(best, depth, alpha, b, maximizingPlayer)
+      val t = TranspositionOld(best, depth, alpha, b, maximizingPlayer)
       statuses.add(game.board, t)
       t
     }
   }
 
-  def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
+  def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
 
     val transposition = statuses.get()
 
@@ -303,7 +304,7 @@ package object ai {
     }
 
     if (game.gameEnded(depth)) {
-      val score = game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
+      val score = (Math.round(game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))) * 1000).toInt
       val t = Transposition(
         score,
         depth,
@@ -318,7 +319,7 @@ package object ai {
 
     Stats.totalCalls += 1
     if (maximizingPlayer) {
-      var best = Double.MinValue
+      var best = Int.MinValue
       var a = alpha
       for {
         i <- NumericRange[Short](0, game.m, 1)
@@ -339,7 +340,7 @@ package object ai {
       statuses.add(t)
       t
     } else {
-      var best = Double.MaxValue
+      var best = Int.MaxValue
       var b = beta
       for {
         i <- NumericRange[Short](0, game.m, 1)

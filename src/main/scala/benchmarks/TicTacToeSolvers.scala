@@ -31,7 +31,7 @@ object TicTacToeSolvers extends App {
     println("\nMiniMax trait: ")
     val board = new BoardTicTacToe with MiniMax
     val start = System.currentTimeMillis()
-    Stats.totalCalls = 0
+//    Stats.totalCalls = 0
     val score = board.solve()
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
@@ -46,7 +46,7 @@ object TicTacToeSolvers extends App {
     println("\nMiniMax trait RAW: ")
     val board = new BoardTicTacToe with MiniMax
     val start = System.currentTimeMillis()
-    Stats.totalCalls = 0
+//    Stats.totalCalls = 0
     val score = board.solveRaw()
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
@@ -76,7 +76,7 @@ object TicTacToeSolvers extends App {
     println("\nNegaMax trait: ")
     val board = new BoardTicTacToe with NegaMax
     val start = System.currentTimeMillis()
-    Stats.totalCalls = 0
+//    Stats.totalCalls = 0
     val score = board.solve()
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
@@ -106,7 +106,7 @@ object TicTacToeSolvers extends App {
     println("\nAlphaBeta trait: ")
     val board = new BoardTicTacToe with AlphaBeta
     val start = System.currentTimeMillis()
-    Stats.totalCalls = 0
+//    Stats.totalCalls = 0
     val score = board.solve()
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
@@ -148,6 +148,25 @@ object TicTacToeSolvers extends App {
     println(s"Total calls: ${ai.Stats.totalCalls}")
     println(s"Total cache: ${board.transpositions.size}")
     println(s"Total cache Hit: ${ai.Stats.cacheHits}")
+    println({
+      s"score value = $transposition => "
+    } + {
+      gameScore(transposition.score)
+    })
+  }
+
+  {
+    println("\nAlpha Beta With TranspositionTable Trait:")
+    val board = new BoardTicTacToe with AlphaBetaTransposition
+    val start = System.currentTimeMillis()
+//    Stats.totalCalls = 0
+//    Stats.cacheHits = 0
+    val transposition = board.solve()
+    val end = System.currentTimeMillis()
+    println(s"total time: ${end - start}")
+    println(s"Total calls: ${board.Stats.totalCalls}")
+    println(s"Total cache: ${board.transpositions.size}")
+    println(s"Total cache Hit: ${board.Stats.cacheHits}")
     println({
       s"score value = $transposition => "
     } + {
