@@ -1,4 +1,6 @@
-package game
+package ai
+
+import game.Board
 
 class ZobristHash {
   type ZobristTable = Array[Array[Array[Int]]]

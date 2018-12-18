@@ -1,7 +1,7 @@
 package ai
 
 import org.scalatest.{FlatSpec, Matchers}
-import game.{BoardTicTacToe, TranspositionTable}
+import game.BoardTicTacToe
 
 class PackageSpec extends FlatSpec with Matchers {
 
@@ -24,7 +24,7 @@ class PackageSpec extends FlatSpec with Matchers {
 
   "Player 1 Tic Tac Toe" should "win" in {
     val game = new BoardTicTacToe()
-    val status = new TranspositionTable {}
+    val status = new TranspositionTableOld {}
     game.board(0)(0) = 1
     game.board(0)(1) = 1
     game.board(1)(0) = 2

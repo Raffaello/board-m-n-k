@@ -1,7 +1,7 @@
 package benchmarks
 
-import ai.{AlphaBeta, MiniMax, NegaMax, Stats}
-import game.{BoardTicTacToe, TranspositionTable}
+import ai._
+import game.BoardTicTacToe
 
 object TicTacToeSolvers extends App {
 
@@ -119,7 +119,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nAlpha Beta With Transposition:")
-    val board = new BoardTicTacToe with TranspositionTable
+    val board = new BoardTicTacToe with TranspositionTableOld
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.chacheHits = 0

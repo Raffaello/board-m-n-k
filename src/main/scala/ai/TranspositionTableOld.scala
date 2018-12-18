@@ -1,8 +1,10 @@
-package game
+package ai
+
+import game.Board
 
 import scala.collection.mutable
 
-trait TranspositionTable /*extends BoardMN*/ {
+trait TranspositionTableOld /*extends BoardMN*/ {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 
 //  var zobristKey:Int = 0
