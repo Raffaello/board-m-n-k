@@ -43,6 +43,21 @@ object TicTacToeSolvers extends App {
     })
   }
   {
+    println("\nMiniMax trait RAW: ")
+    val board = new BoardTicTacToe with MiniMax
+    val start = System.currentTimeMillis()
+    Stats.totalCalls = 0
+    val score = board.solveRaw()
+    val end = System.currentTimeMillis()
+    println(s"total time: ${end - start}")
+    println(s"Total calls: ${board.Stats.totalCalls}")
+    println({
+      s"score value = $score => "
+    } + {
+      gameScore(score)
+    })
+  }
+  {
     println("\nNegaMax: ")
     val board = new BoardTicTacToe
     val start = System.currentTimeMillis()
