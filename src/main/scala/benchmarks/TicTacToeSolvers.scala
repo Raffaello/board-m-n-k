@@ -118,8 +118,27 @@ object TicTacToeSolvers extends App {
     })
   }
   {
-    println("\nAlpha Beta With Transposition:")
+    println("\nAlpha Beta With TranspositionTableOld:")
     val board = new BoardTicTacToe with TranspositionTableOld
+    val start = System.currentTimeMillis()
+    Stats.totalCalls = 0
+    Stats.cacheHits = 0
+    val transposition = ai.alphaBetaWithMemOld(board, board)
+    val end = System.currentTimeMillis()
+    println(s"total time: ${end - start}")
+    println(s"Total calls: ${ai.Stats.totalCalls}")
+    println(s"Total cache: ${board.transpositions.size}")
+    println(s"Total cache Hit: ${ai.Stats.cacheHits}")
+    println({
+      s"score value = $transposition => "
+    } + {
+      gameScore(transposition.score)
+    })
+  }
+
+  {
+    println("\nAlpha Beta With TranspositionTable:")
+    val board = new BoardTicTacToe with TranspositionTable
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0

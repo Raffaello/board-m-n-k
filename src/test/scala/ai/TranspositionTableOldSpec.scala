@@ -46,7 +46,7 @@ class TranspositionTableOldSpec extends FlatSpec with Matchers {
   "Transposition table" should "be used" in {
     val game = new BoardTicTacToe()
     val trans = new TranspositionTableOldStub {}
-    val t = ai.alphaBetaWithMem(trans, game)
+    val t = ai.alphaBetaWithMemOld(trans, game)
 
     t.score shouldEqual 0.0
     trans.markerGet("121000000") shouldEqual 1

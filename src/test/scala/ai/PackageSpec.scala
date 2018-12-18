@@ -34,7 +34,7 @@ class PackageSpec extends FlatSpec with Matchers {
     negamax(game, 1) should be(1)
     minimax(game, true) shouldEqual 1
     alphaBeta(game, maximizingPlayer = true) should be >= 1.0
-    alphaBetaWithMem(status, game).score should be >= 1.0
+    alphaBetaWithMemOld(status, game).score should be >= 1.0
   }
 
   "Player 2 Tic Tac Toe" should "win" in {

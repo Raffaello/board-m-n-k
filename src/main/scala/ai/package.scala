@@ -224,7 +224,7 @@ package object ai {
     (best, ibest, jbest, a, b)
   }
 
-  def alphaBetaWithMem(statuses: TranspositionTableOld, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
+  def alphaBetaWithMemOld(statuses: TranspositionTableOld, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
 
     val transposition = statuses.get(game.board)
 
@@ -257,7 +257,7 @@ package object ai {
         if game.board(i)(j) == 0
       } {
         game.playMove(i, j, 1)
-        val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
+        val t = alphaBetaWithMemOld(statuses, game, depth + 1, a, beta, false)
         best = Math.max(best, t.score)
         a = Math.max(a, best)
         game.undoMove(i, j)
@@ -278,7 +278,7 @@ package object ai {
         if game.board(i)(j) == 0
       } {
         game.playMove(i, j, 2)
-        val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
+        val t = alphaBetaWithMemOld(statuses, game, depth + 1, alpha, b, true)
         best = Math.min(best, t.score)
         b = Math.max(b, best)
         game.undoMove(i, j)
@@ -289,6 +289,75 @@ package object ai {
 
       val t = Transposition(best, depth, alpha, b, maximizingPlayer)
       statuses.add(game.board, t)
+      t
+    }
+  }
+
+  def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
+
+    val transposition = statuses.get()
+
+    if (transposition.isDefined) {
+      Stats.cacheHits += 1
+      return transposition.get
+    }
+
+    if (game.gameEnded(depth)) {
+      val score = game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
+      val t = Transposition(
+        score,
+        depth,
+        score,
+        score,
+        maximizingPlayer
+      )
+
+      statuses.add(t)
+      return t
+    }
+
+    Stats.totalCalls += 1
+    if (maximizingPlayer) {
+      var best = Double.MinValue
+      var a = alpha
+      for {
+        i <- NumericRange[Short](0, game.m, 1)
+        j <- NumericRange[Short](0, game.n, 1)
+        if game.board(i)(j) == 0
+      } {
+        game.playMove(i, j, 1)
+        val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
+        best = Math.max(best, t.score)
+        a = Math.max(a, best)
+        game.undoMove(i, j)
+        if (a >= beta) {
+          return t
+        }
+      }
+
+      val t = Transposition(best, depth, a, beta, maximizingPlayer)
+      statuses.add(t)
+      t
+    } else {
+      var best = Double.MaxValue
+      var b = beta
+      for {
+        i <- NumericRange[Short](0, game.m, 1)
+        j <- NumericRange[Short](0, game.n, 1)
+        if game.board(i)(j) == 0
+      } {
+        game.playMove(i, j, 2)
+        val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
+        best = Math.min(best, t.score)
+        b = Math.max(b, best)
+        game.undoMove(i, j)
+        if (alpha >= b) {
+          return t
+        }
+      }
+
+      val t = Transposition(best, depth, alpha, b, maximizingPlayer)
+      statuses.add(t)
       t
     }
   }
