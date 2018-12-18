@@ -10,6 +10,7 @@ package object ai {
 
   object Stats {
     var totalCalls: Int = 0
+    var chacheHits: Int = 0
   }
 
   /**
@@ -172,6 +173,7 @@ package object ai {
     if (transposition.isDefined) {
       //      val score = alphaBeta(game, depth, alpha, beta, maximizingPlayer)
       //      if (score != transposition.get.score) throw new IllegalStateException(s"score: $score --- transpostion: ${transposition}  -- $maximizingPlayer")
+      Stats.chacheHits += 1
       return transposition.get
     }
 
