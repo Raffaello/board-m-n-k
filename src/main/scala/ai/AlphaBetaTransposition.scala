@@ -14,12 +14,12 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
 
     if (gameEnded(depth)) {
       val s = score()
-      Math.round((s + (Math.signum(s) * (1.0 / (depth + 1.0)))) * 1000).toInt
+      val s2 = Math.round((s + (Math.signum(s) * (1.0 / (depth + 1.0)))) * 1000).toInt
       val t = Transposition(
-        s,
+        s2,
         depth,
-        s,
-        s,
+        s2,
+        s2,
         maximizing
       )
 

@@ -304,7 +304,8 @@ package object ai {
     }
 
     if (game.gameEnded(depth)) {
-      val score = (Math.round(game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))) * 1000).toInt
+      val s = game.score()
+      val score = (Math.round(s + (Math.signum(s) * (1.0 / (depth + 1.0)))) * 1000).toInt
       val t = Transposition(
         score,
         depth,
