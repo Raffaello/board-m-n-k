@@ -126,6 +126,34 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   }
 
   protected def scoreCol(col: Short): Int = {
+    val (i, j) = lastMove
+
+    @tailrec
+    def foldDown(acc: Int, i: Int, stop: Int): Int = {
+      if (i == stop) acc
+      else if (board(i)(j) == lastPlayer) foldDown(acc + 1, i + 1, stop)
+      else foldDown(acc, i + 1, stop)
+    }
+
+    @tailrec
+    def foldUp(acc: Int, i: Int, stop: Int): Int = {
+      if (i < stop) acc
+      else if (board(i)(j) == lastPlayer) foldUp(acc + 1, i - 1, stop)
+      else foldUp(acc + 1, i - 1, stop)
+    }
+
+    if (LookUps.cols(j)(LookUps.lastPlayerIdx) >= k) {
+
+      val countD = foldDown(0, i + 1, Math.min(m, i + k))
+      val countU = foldUp(0, i - 1, Math.max(0, i - k))
+
+      if (countD + countU >= k1) return lastPlayer
+    }
+
+    0
+  }
+
+  protected def scoreColOld(col: Short): Int = {
     @tailrec
     def cmp(i: Int, j: Int, col: Short, h: Byte): Int = {
       if (j == k) h
