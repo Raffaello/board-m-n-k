@@ -14,6 +14,9 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   val mkDiff: Short = (m - k).toShort
   val k1: Short = (k - 1).toShort
 
+  protected val mkDiffIncIndices = NumericRange.inclusive(0, mkDiff, 1)
+  protected val nkDiffIncIndices = NumericRange.inclusive[Short](0, nkDiff, 1)
+
   protected def scoreRows(): Int = {
     for (i <- mIndices) {
       val s = scoreRow(i)
@@ -40,7 +43,10 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     } else 0
   }
 
-  /*override*/ def score_(): Int = {
+  /**
+    * @deprecated
+    */
+  def scoreOld(): Int = {
     def evaluate(score: Int): Option[Int] = {
       score match {
         case 2 => Some(-1)
@@ -69,7 +75,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
     if (n - col >= k) {
       for {
-        i <- NumericRange.inclusive(0, mkDiff, 1)
+        i <- mkDiffIncIndices
         if board(i)(col) > 0
       } {
         val h = board(i)(col)
@@ -82,7 +88,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   }
 
   protected def scoreDiagsTL(): Int = {
-    for (i <- NumericRange.inclusive[Short](0, nkDiff, 1)) {
+    for (i <- nkDiffIncIndices) {
       val s = scoreDiagTL(i)
       if (s > 0) return s
     }
@@ -111,7 +117,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   }
 
   protected def scoreDiagsBR(): Int = {
-    for (j <- NumericRange.inclusive[Short](0, nkDiff, 1)) {
+    for (j <- nkDiffIncIndices) {
       val s = scoreDiagBR(j)
       if (s > 0) return s
     }
@@ -127,7 +133,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
       else cmp(i, j + 1, col, h)
     }
 
-    for (i <- NumericRange.inclusive(0, mkDiff, 1)) {
+    for (i <- mkDiffIncIndices) {
       val h = board(i)(col)
       if (cmp(i, 1, col, h) > 0) return h
     }
@@ -141,27 +147,31 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     @tailrec
     def foldRight(acc: Int, j: Int, stop: Int): Int = {
       if (j == stop) acc
-      else if(board(i)(j) == lastPlayer) foldRight(acc + 1, j + 1, stop)
+      else if (board(i)(j) == lastPlayer) foldRight(acc + 1, j + 1, stop)
       else foldRight(acc, j + 1, stop)
     }
+
     @tailrec
     def foldLeft(acc: Int, j: Int, stop: Int): Int = {
       if (j < stop) acc
-      else if(board(i)(j) == lastPlayer) foldLeft(acc + 1, j - 1, stop)
+      else if (board(i)(j) == lastPlayer) foldLeft(acc + 1, j - 1, stop)
       else foldLeft(acc, j - 1, stop)
     }
 
     if (LookUps.rows(i)(LookUps.lastPlayerIdx) >= k) {
       // possible win
-      val countR = foldRight(0, j+1, Math.min(n, j+k))
-      val countL = foldLeft(0, j-1, Math.max(0, j-k))
+      val countR = foldRight(0, j + 1, Math.min(n, j + k))
+      val countL = foldLeft(0, j - 1, Math.max(0, j - k))
 
-      if(countR+countL >=k1) return lastPlayer
+      if (countR + countL >= k1) return lastPlayer
     }
 
     0
   }
 
+  /**
+    * @deprecated
+    */
   protected def scoreRowOld(row: Short): Int = {
     def innerLoop(i: Int, h: Byte): Int = {
       for (j <- i + 1 until i + k) {
@@ -204,12 +214,6 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     LookUps.won
   }
 
-  //  override def gameEnded(depth: Int): Boolean = {
-  //    if (depth < minWinDepth) false
-  //    else if (freePositions == 0) true
-  //    else checkWin()
-  //  }
-
   def display(): Unit = {
     def value(p: Byte): Char = {
       p match {
@@ -219,10 +223,11 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
       }
     }
 
-    for (i <- 0 until m) {
+    for (i <- mIndices) {
       for (j <- 0 until n - 1) {
         print(s" ${value(board(i)(j))} |")
       }
+
       println(s" ${value(board(i)(n - 1))}")
     }
 
