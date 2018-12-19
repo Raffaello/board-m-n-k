@@ -39,10 +39,8 @@ package object ai {
       for {
         i <- NumericRange[Short](0, game.m, 1)
         j <- NumericRange[Short](0, game.n, 1)
-//        if game.move((i,j)) == 0
         if game.playMove((i, j), player)
       } {
-//        game.playMove((i, j), player)
         best = cmp(best, minimax(game, !maximizing))
         game.undoMove(i, j)
       }
@@ -73,9 +71,8 @@ package object ai {
     for {
       i <- NumericRange[Short](0, game.m, 1)
       j <- NumericRange[Short](0, game.n, 1)
-      if  game.playMove(i, j, player)
+      if  game.playMove((i, j), player)
     } {
-//      game.playMove(is, js, player)
       value = Math.max(value, -negamax(game, (-color).toByte))
       game.undoMove(i, j)
     }
@@ -101,7 +98,7 @@ package object ai {
     for {
       i <- NumericRange[Short](0, game.m, 1)
       j <- NumericRange[Short](0, game.n, 1)
-      if game.playMove(i, j, player)
+      if game.playMove((i, j), player)
     } {
       val newValue = -negamax(game, (-color).toByte)
       if (value < newValue) {
@@ -130,9 +127,8 @@ package object ai {
       for {
         i <- NumericRange[Short](0, game.m, 1)
         j <- NumericRange[Short](0, game.n, 1)
-        if game.playMove(i, j, 1)
+        if game.playMove((i, j), 1)
       } {
-//        game.playMove(i, j, 1)
         best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
         a = Math.max(a, best)
         game.undoMove(i, j)
@@ -148,9 +144,8 @@ package object ai {
       for {
         i <- NumericRange[Short](0, game.m, 1)
         j <- NumericRange[Short](0, game.n, 1)
-        if game.playMove(i, j, 2)
+        if game.playMove((i, j), 2)
       } {
-//        game.playMove(is, js, 2)
         best = Math.min(best, alphaBeta(game, depth + 1, alpha, b, true))
         b = Math.min(b, best)
         game.undoMove(i, j)
@@ -188,9 +183,8 @@ package object ai {
     for {
       i <- NumericRange[Short](0, game.m, 1)
       j <- NumericRange[Short](0, game.n, 1)
-      if game.playMove(i, j, player)
+      if game.playMove((i, j), player)
     } {
-//      game.playMove(is, js, player)
       val newBest = alphaBeta(game, depth + 1, a, b, !maximizingPlayer)
 
       if (maximizingPlayer) {
@@ -252,9 +246,8 @@ package object ai {
       for {
         i <- NumericRange[Short](0, game.m, 1)
         j <- NumericRange[Short](0, game.n, 1)
-        if game.playMove(i, j, 1)
+        if game.playMove((i, j), 1)
       } {
-//        game.playMove(i, j, 1)
         val t = alphaBetaWithMemOld(statuses, game, depth + 1, a, beta, false)
         best = Math.max(best, t.score)
         a = Math.max(a, best)
@@ -273,9 +266,8 @@ package object ai {
       for {
         i <- NumericRange[Short](0, game.m, 1)
         j <- NumericRange[Short](0, game.n, 1)
-        if game.playMove(i, j, 2)
+        if game.playMove((i, j), 2)
       } {
-//        game.playMove(i, j, 2)
         val t = alphaBetaWithMemOld(statuses, game, depth + 1, alpha, b, true)
         best = Math.min(best, t.score)
         b = Math.max(b, best)
@@ -322,9 +314,8 @@ package object ai {
       for {
         i <- NumericRange[Short](0, game.m, 1)
         j <- NumericRange[Short](0, game.n, 1)
-        if game.playMove(i, j, 1)
+        if game.playMove((i, j), 1)
       } {
-//        game.playMove(i, j, 1)
         val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
         best = Math.max(best, t.score)
         a = Math.max(a, best)
@@ -343,9 +334,8 @@ package object ai {
       for {
         i <- NumericRange[Short](0, game.m, 1)
         j <- NumericRange[Short](0, game.n, 1)
-        if game.playMove(i, j, 2)
+        if game.playMove((i, j), 2)
       } {
-//        game.playMove(i, j, 2)
         val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
         best = Math.min(best, t.score)
         b = Math.max(b, best)
