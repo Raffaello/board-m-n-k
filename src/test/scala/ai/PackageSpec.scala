@@ -25,12 +25,12 @@ class PackageSpec extends FlatSpec with Matchers {
   "Player 1 Tic Tac Toe" should "win" in {
     val game = new BoardTicTacToe()
     val status = new TranspositionTableOld {}
-    game.board(0)(0) = 1
-    game.board(0)(1) = 1
-    game.board(1)(0) = 2
-    game.board(1)(1) = 1
-    game.board(2)(1) = 2
-    game.board(2)(2) = 2
+    game.playMove((0, 0), 1)
+    game.playMove((0, 1), 1)
+    game.playMove((1, 0), 2)
+    game.playMove((1, 1), 1)
+    game.playMove((2, 1), 2)
+    game.playMove((2, 2), 2)
     negamax(game, 1) should be(1)
     minimax(game, true) shouldEqual 1
     alphaBeta(game, maximizingPlayer = true) should be >= 1.0
@@ -39,13 +39,13 @@ class PackageSpec extends FlatSpec with Matchers {
 
   "Player 2 Tic Tac Toe" should "win" in {
     val game = new BoardTicTacToe()
-    game.board(0)(0) = 1
-    game.board(0)(1) = 1
-    game.board(1)(0) = 1
-    game.board(1)(1) = 1
-    game.board(2)(1) = 2
-    game.board(2)(2) = 2
-    game.board(1)(2) = 2
+    game.playMove((0, 0), 1)
+    game.playMove((0, 1), 1)
+    game.playMove((1, 0), 1)
+    game.playMove((1, 1), 1)
+    game.playMove((2, 1), 2)
+    game.playMove((2, 2), 2)
+    game.playMove((1, 2), 2)
     //    negamax(game, -1) should be (-1) // desing cannot return -1 from the first step.
     minimax(game, false) should be(-1)
     alphaBeta(game, depth = 6, maximizingPlayer = false) should be < 0.0

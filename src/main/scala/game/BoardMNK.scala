@@ -33,6 +33,14 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   }
 
   override def score(): Int = {
+    if (LookUps.won) lastPlayer match {
+      case 2 => -1
+      case 1 => 1
+      case _ => ???
+    } else 0
+  }
+
+  /*override*/ def score_(): Int = {
     def evaluate(score: Int): Option[Int] = {
       score match {
         case 2 => Some(-1)
@@ -128,6 +136,33 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   }
 
   protected def scoreRow(row: Short): Int = {
+    val (i, j) = lastMove
+
+    @tailrec
+    def foldRight(acc: Int, j: Int, stop: Int): Int = {
+      if (j == stop) acc
+      else if(board(i)(j) == lastPlayer) foldRight(acc + 1, j + 1, stop)
+      else foldRight(acc, j + 1, stop)
+    }
+    @tailrec
+    def foldLeft(acc: Int, j: Int, stop: Int): Int = {
+      if (j < stop) acc
+      else if(board(i)(j) == lastPlayer) foldLeft(acc + 1, j - 1, stop)
+      else foldLeft(acc, j - 1, stop)
+    }
+
+    if (LookUps.rows(i)(LookUps.lastPlayerIdx) >= k) {
+      // possible win
+      val countR = foldRight(0, j+1, Math.min(n, j+k))
+      val countL = foldLeft(0, j-1, Math.max(0, j-k))
+
+      if(countR+countL >=k1) return lastPlayer
+    }
+
+    0
+  }
+
+  protected def scoreRowOld(row: Short): Int = {
     def innerLoop(i: Int, h: Byte): Int = {
       for (j <- i + 1 until i + k) {
         if (board(row)(j) != h) return 0
@@ -164,13 +199,16 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def checkWinDiagonals(): Boolean = scoreDiagsTL() > 0 || scoreDiagsBR() > 0
 
-  protected def checkWin(): Boolean = checkWinRows() || checkWinCols() || checkWinDiagonals()
-
-  override def gameEnded(depth: Int): Boolean = {
-    if (depth < minWinDepth) false
-    else if (freePositions == 0) true
-    else checkWin()
+  override protected def checkWin(): Boolean = {
+    LookUps.won = checkWinRows() || checkWinCols() || checkWinDiagonals()
+    LookUps.won
   }
+
+  //  override def gameEnded(depth: Int): Boolean = {
+  //    if (depth < minWinDepth) false
+  //    else if (freePositions == 0) true
+  //    else checkWin()
+  //  }
 
   def display(): Unit = {
     def value(p: Byte): Char = {
