@@ -16,6 +16,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected val mkDiffIncIndices = NumericRange.inclusive(0, mkDiff, 1)
   protected val nkDiffIncIndices = NumericRange.inclusive[Short](0, nkDiff, 1)
+  protected val k1mIndices = NumericRange(k1, m, 1)
 
   protected def scoreRows(): Int = {
     for (i <- mIndices) {
@@ -105,7 +106,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     }
 
     for {
-      row <- NumericRange(k1, m, 1)
+      row <- k1mIndices
       if board(row)(col) > 0
     } {
       val h = board(row)(col)
@@ -153,6 +154,9 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     0
   }
 
+  /**
+    * @deprecated
+    */
   protected def scoreColOld(col: Short): Int = {
     @tailrec
     def cmp(i: Int, j: Int, col: Short, h: Byte): Int = {
