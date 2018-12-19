@@ -15,7 +15,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   val k1: Short = (k - 1).toShort
 
   protected def scoreRows(): Int = {
-    for (i <- NumericRange[Short](0, m, 1)) {
+    for (i <- mIndices) {
       val s = scoreRow(i)
       if (s > 0) return s
     }
@@ -24,7 +24,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
   }
 
   protected def scoreCols(): Int = {
-    for (j <- NumericRange[Short](0, n, 1)) {
+    for (j <- nIndices) {
       val s = scoreCol(j)
       if (s > 0) return s
     }
@@ -181,7 +181,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def checkWinRows(): Boolean = {
     for {
-      i <- NumericRange[Short](0, m, 1)
+      i <- mIndices
       if scoreRow(i) > 0
     } return true
 
@@ -190,7 +190,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def checkWinCols(): Boolean = {
     for {
-      j <- NumericRange[Short](0, n, 1)
+      j <- nIndices
       if scoreCol(j) > 0
     } return true
 

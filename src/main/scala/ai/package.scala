@@ -37,8 +37,8 @@ package object ai {
       }
 
       for {
-        i <- NumericRange[Short](0, game.m, 1)
-        j <- NumericRange[Short](0, game.n, 1)
+        i <- game.mIndices
+        j <- game.nIndices
         if game.playMove((i, j), player)
       } {
         best = cmp(best, minimax(game, !maximizing))
@@ -69,8 +69,8 @@ package object ai {
     var player = color
     if (player == -1) player = 2
     for {
-      i <- NumericRange[Short](0, game.m, 1)
-      j <- NumericRange[Short](0, game.n, 1)
+      i <- game.mIndices
+      j <- game.nIndices
       if  game.playMove((i, j), player)
     } {
       value = Math.max(value, -negamax(game, (-color).toByte))
@@ -96,8 +96,8 @@ package object ai {
     var player = color
     if (player == -1) player = 2
     for {
-      i <- NumericRange[Short](0, game.m, 1)
-      j <- NumericRange[Short](0, game.n, 1)
+      i <- game.mIndices
+      j <- game.nIndices
       if game.playMove((i, j), player)
     } {
       val newValue = -negamax(game, (-color).toByte)
@@ -125,8 +125,8 @@ package object ai {
       var best = Double.MinValue
       var a = alpha
       for {
-        i <- NumericRange[Short](0, game.m, 1)
-        j <- NumericRange[Short](0, game.n, 1)
+        i <- game.mIndices
+        j <- game.nIndices
         if game.playMove((i, j), 1)
       } {
         best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
@@ -142,8 +142,8 @@ package object ai {
       var best = Double.MaxValue
       var b = beta
       for {
-        i <- NumericRange[Short](0, game.m, 1)
-        j <- NumericRange[Short](0, game.n, 1)
+        i <- game.mIndices
+        j <- game.nIndices
         if game.playMove((i, j), 2)
       } {
         best = Math.min(best, alphaBeta(game, depth + 1, alpha, b, true))
@@ -181,10 +181,11 @@ package object ai {
       player = 2
     }
     for {
-      i <- NumericRange[Short](0, game.m, 1)
-      j <- NumericRange[Short](0, game.n, 1)
+      i <- game.mIndices
+      j <- game.nIndices
       if game.playMove((i, j), player)
     } {
+//      game.playMove(is, js, player)
       val newBest = alphaBeta(game, depth + 1, a, b, !maximizingPlayer)
 
       if (maximizingPlayer) {
@@ -244,8 +245,8 @@ package object ai {
       var best = Double.MinValue
       var a = alpha
       for {
-        i <- NumericRange[Short](0, game.m, 1)
-        j <- NumericRange[Short](0, game.n, 1)
+        i <- game.mIndices
+        j <- game.nIndices
         if game.playMove((i, j), 1)
       } {
         val t = alphaBetaWithMemOld(statuses, game, depth + 1, a, beta, false)
@@ -264,8 +265,8 @@ package object ai {
       var best = Double.MaxValue
       var b = beta
       for {
-        i <- NumericRange[Short](0, game.m, 1)
-        j <- NumericRange[Short](0, game.n, 1)
+        i <- game.mIndices
+        j <- game.nIndices
         if game.playMove((i, j), 2)
       } {
         val t = alphaBetaWithMemOld(statuses, game, depth + 1, alpha, b, true)
@@ -312,8 +313,8 @@ package object ai {
       var best = Int.MinValue
       var a = alpha
       for {
-        i <- NumericRange[Short](0, game.m, 1)
-        j <- NumericRange[Short](0, game.n, 1)
+        i <- game.mIndices
+        j <- game.nIndices
         if game.playMove((i, j), 1)
       } {
         val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
@@ -332,8 +333,8 @@ package object ai {
       var best = Int.MaxValue
       var b = beta
       for {
-        i <- NumericRange[Short](0, game.m, 1)
-        j <- NumericRange[Short](0, game.n, 1)
+        i <- game.mIndices
+        j <- game.nIndices
         if game.playMove((i, j), 2)
       } {
         val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)

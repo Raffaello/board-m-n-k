@@ -14,8 +14,8 @@ private[ai] trait AiBoard extends BoardMN {
 
   protected def generateMoves(): IndexedSeq[Position] = {
     for {
-      i <- NumericRange[Short](0, m, 1)
-      j <- NumericRange[Short](0, n, 1)
+      i <- mIndices
+      j <- nIndices
       if board(i)(j) == 0
     } yield (i,j)
   }
