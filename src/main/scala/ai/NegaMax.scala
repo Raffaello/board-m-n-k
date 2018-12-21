@@ -19,7 +19,7 @@ trait NegaMax extends AiBoard {
       consumeMoves() { p =>
         playMove(p, player)
         value = eval((value, p))
-        undoMove(p)
+        undoMove(p, player)
       }
 
       value

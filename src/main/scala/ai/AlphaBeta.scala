@@ -23,7 +23,7 @@ trait AlphaBeta extends AiBoard {
         best = s._2._1
         a = s._1._1
         b = s._1._2
-        undoMove(p)
+        undoMove(p, player)
 
         if (a >= b) {
           return best

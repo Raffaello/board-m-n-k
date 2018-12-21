@@ -19,10 +19,12 @@ class MiniMaxSpec extends WordSpec with Matchers {
   "BoardMNK 3x3x3 with minimax" should {
     val game = new BoardMNK(3, 3, 3) with MiniMax
     "solve the game" in {
+      val game = new BoardMNK(3, 3, 3) with MiniMax
       game.solve() shouldEqual 0
     }
 
     "have first move" in {
+      val game = new BoardMNK(3, 3, 3) with MiniMax
       game.nextMove(true, 0) shouldEqual(0, (0, 0))
     }
   }

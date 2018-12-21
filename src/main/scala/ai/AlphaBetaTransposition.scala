@@ -38,7 +38,7 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
         best = s.score
         a = s.alpha
         b = s.beta
-        undoMove(p)
+        undoMove(p, player)
 
         if (a >= b) {
           return s

@@ -176,8 +176,8 @@ object MNKSolvers extends App {
       println("\nAlpha Beta With TranspositionTable Trait:")
       val board = new BoardMNK(m, n, k) with AlphaBetaTransposition
       val start = System.currentTimeMillis()
-      //    Stats.totalCalls = 0
-      //    Stats.cacheHits = 0
+      Stats.totalCalls = 0
+      Stats.cacheHits = 0
       val transposition = board.solve()
       val end = System.currentTimeMillis()
       println(s"total time: ${end - start}")

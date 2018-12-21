@@ -23,7 +23,7 @@ abstract class BoardMN(val m: Short, val n: Short) {
 
   def playMove(position: Position, player: Byte): Boolean
 
-  def undoMove(position: Position): Unit
+  def undoMove(position: Position, player: Byte): Unit
 
   def score(): Int
 

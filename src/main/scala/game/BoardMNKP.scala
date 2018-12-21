@@ -21,18 +21,24 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     var lastPlayerIdx: Int = 0
     var won: Option[Boolean] = Some(false)
 
-    def inc(pos: Position, player: Int): Unit = {
-      lastPlayerIdx = player
-      rows(pos._1)(player) += 1
-      cols(pos._2)(player) += 1
+    def inc(pos: Position, playerIdx: Int): Unit = {
+      lastPlayerIdx = playerIdx
+      rows(pos._1)(playerIdx) += 1
+      assert(rows(pos._1)(playerIdx) <= m)
+      cols(pos._2)(playerIdx) += 1
+      assert(cols(pos._2)(playerIdx) <= n,  s"${cols(pos._2)(playerIdx)} -- $playerIdx, $pos -- ${board.flatten.mkString}")
       // TODO DIAGS1 and DIAG2
     }
 
-    def dec(pos: Position): Unit = {
+    def dec(pos: Position, playerIdx: Int): Unit = {
 //      assert(rows(p._1) > 0)
 //      assert(cols(p._2) > 0)
-      rows(pos._1)(lastPlayerIdx) -= 1
-      cols(pos._2)(lastPlayerIdx) -= 1
+//      assert(playerIdx == lastPlayerIdx)
+      lastPlayerIdx = playerIdx
+      rows(pos._1)(playerIdx) -= 1
+      assert(rows(pos._1)(playerIdx) >= 0)
+      cols(pos._2)(playerIdx) -= 1
+      assert(cols(pos._2)(playerIdx) >= 0, s"${cols(pos._2)(playerIdx)} -- $playerIdx, $pos")
     }
   }
 
@@ -50,7 +56,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
       freePositions -= 1
       lastMove = position
       lastPlayer = player
-      LookUps.inc(position, player -1)
+      LookUps.inc(position, player - 1)
       true
     }
   }
@@ -64,12 +70,13 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     * TODO: should check if it is not already zero otherwise
     *       freePositions should not be incremented
     */
-  def undoMove(position: Position): Unit = {
-//    assert(board(position._1)(position._2) > 0)
+  def undoMove(position: Position, player: Byte): Unit = {
+    assert(board(position._1)(position._2) > 0)
     board(position._1)(position._2) = 0
     freePositions += 1
-    LookUps.dec(position)
+    LookUps.dec(position, player - 1)
     LookUps.won = None
+    lastPlayer = player
   }
 
   override def score(): Int = ???

@@ -42,7 +42,7 @@ package object ai {
         if game.playMove((i, j), player)
       } {
         best = cmp(best, minimax(game, !maximizing))
-        game.undoMove(i, j)
+        game.undoMove((i, j), player)
       }
 
       best
@@ -74,7 +74,7 @@ package object ai {
       if  game.playMove((i, j), player)
     } {
       value = Math.max(value, -negamax(game, (-color).toByte))
-      game.undoMove(i, j)
+      game.undoMove((i, j), player)
     }
 
     value
@@ -106,7 +106,7 @@ package object ai {
         ibest = i
         jbest = j
       }
-      game.undoMove(i, j)
+      game.undoMove((i, j), player)
     }
 
     (value, ibest, jbest)
@@ -131,7 +131,7 @@ package object ai {
       } {
         best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
         a = Math.max(a, best)
-        game.undoMove(i, j)
+        game.undoMove((i, j), 1)
         if (a >= beta) {
           return best
         }
@@ -148,7 +148,7 @@ package object ai {
       } {
         best = Math.min(best, alphaBeta(game, depth + 1, alpha, b, true))
         b = Math.min(b, best)
-        game.undoMove(i, j)
+        game.undoMove((i, j), 2)
         if (alpha >= b) {
           return best
         }
@@ -205,7 +205,7 @@ package object ai {
         b = Math.min(b, best)
       }
 
-      game.undoMove(i, j)
+      game.undoMove((i, j), player)
       if (a >= beta) {
         return (best, ibest, jbest, a, b)
       }
@@ -252,7 +252,7 @@ package object ai {
         val t = alphaBetaWithMemOld(statuses, game, depth + 1, a, beta, false)
         best = Math.max(best, t.score)
         a = Math.max(a, best)
-        game.undoMove(i, j)
+        game.undoMove((i, j), 1)
         if (a >= beta) {
           return t
         }
@@ -272,7 +272,7 @@ package object ai {
         val t = alphaBetaWithMemOld(statuses, game, depth + 1, alpha, b, true)
         best = Math.min(best, t.score)
         b = Math.max(b, best)
-        game.undoMove(i, j)
+        game.undoMove((i, j), 2)
         if (alpha >= b) {
           return t
         }
@@ -320,7 +320,7 @@ package object ai {
         val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
         best = Math.max(best, t.score)
         a = Math.max(a, best)
-        game.undoMove(i, j)
+        game.undoMove((i, j), 1)
         if (a >= beta) {
           return t
         }
@@ -340,7 +340,7 @@ package object ai {
         val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
         best = Math.min(best, t.score)
         b = Math.max(b, best)
-        game.undoMove(i, j)
+        game.undoMove((i, j), 2)
         if (alpha >= b) {
           return t
         }
