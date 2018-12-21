@@ -42,6 +42,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     val (row, col) = position
 //    require(row < m && col < n)
 //    require(player <= numPlayers && player > 0)
+
     LookUps.won = None
     if (board(row)(col) > 0) false
     else {
@@ -81,7 +82,6 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
       false
     }
     else if (freePositions == 0) {
-      LookUps.won = None
       true
     }
     else checkWin()
