@@ -30,11 +30,11 @@ combined with a less depth solution to gain a higher score, it reduces the searc
 
 `score + (Signum(score) * (1.0 / (depth + 1.0) ))`
 
-Probably doesn't improve.
+Probably doesn't improve. [Double check from AlphaBeta and above for improvements, benchmark]
 
 ## Transposition Table
 
-basic hash function flattening the board ot string value statuses.
+basic hash function flattening the board of string value statuses.
 
 ### improved hashing function
 

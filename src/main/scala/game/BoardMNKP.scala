@@ -19,7 +19,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     val diag1: Array[Array[Int]] = Array.ofDim[Int](mnMin, numPlayers)
     val diag2: Array[Array[Int]] = Array.ofDim[Int](mnMin, numPlayers)
     var lastPlayerIdx: Int = 0
-    var won: Boolean = false
+    var won: Option[Boolean] = Some(false)
 
     def inc(pos: Position, player: Int): Unit = {
       lastPlayerIdx = player
@@ -36,13 +36,13 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     }
   }
 
-  val minWinDepth: Int = (2 * k) - 1
+  val minWinDepth: Int = (2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
 
   def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = position
 //    require(row < m && col < n)
 //    require(player <= numPlayers && player > 0)
-
+    LookUps.won = None
     if (board(row)(col) > 0) false
     else {
       board(row)(col) = player
@@ -68,6 +68,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     board(position._1)(position._2) = 0
     freePositions += 1
     LookUps.dec(position)
+    LookUps.won = None
   }
 
   override def score(): Int = ???
@@ -75,8 +76,14 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   protected def checkWin(): Boolean = ???
 
   override def gameEnded(depth: Int): Boolean = {
-    if (depth < minWinDepth) false
-    else if (freePositions == 0) true
+    if (depth < minWinDepth){
+      LookUps.won = Some(false)
+      false
+    }
+    else if (freePositions == 0) {
+      LookUps.won = None
+      true
+    }
     else checkWin()
   }
 }

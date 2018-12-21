@@ -6,11 +6,11 @@ object MNKSolver extends App {
 
   println("Insert the board size:")
   print("m = ")
-  val m:Short = 5 //scala.io.StdIn.readShort()
+  val m:Short = 3 //scala.io.StdIn.readShort()
   print("n = ")
   val n:Short = 3 //scala.io.StdIn.readShort()
   print("k = ")
-  val k:Short = 5 //scala.io.StdIn.readShort()
+  val k:Short = 3 //scala.io.StdIn.readShort()
 
   val board = new BoardMNK(m, n, k)
   val time = System.currentTimeMillis()
@@ -26,4 +26,5 @@ object MNKSolver extends App {
       case _ => "P2 WIN"
     }
   })
+  assert(score == 0.0)
 }

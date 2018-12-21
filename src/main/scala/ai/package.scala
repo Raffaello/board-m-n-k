@@ -116,7 +116,7 @@ package object ai {
     if (game.gameEnded(depth)) {
       //      return game.score()
       //      return game.score() * (1.0/(depth + 1))
-      return game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
+      return game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
 
     }
 
