@@ -34,7 +34,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
 //      assert(rows(p._1) > 0)
 //      assert(cols(p._2) > 0)
 //      assert(playerIdx == lastPlayerIdx)
-      lastPlayerIdx = playerIdx
+//      lastPlayerIdx = playerIdx
       rows(pos._1)(playerIdx) -= 1
       assert(rows(pos._1)(playerIdx) >= 0)
       cols(pos._2)(playerIdx) -= 1
