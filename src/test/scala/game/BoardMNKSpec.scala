@@ -185,7 +185,10 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.playMove((2, 2), 1)
 
       game.gameEnded(8) shouldEqual true
-      game.score() should be >= 1
+      game.score() shouldEqual 1
+      game.LookUps.won shouldEqual Some(true)
+      game.LookUps.lastPlayerIdx shouldEqual 0
+
       game.LookUps.rows(0) shouldEqual Array(2, 1)
       game.LookUps.rows(1) shouldEqual Array(1, 2)
       game.LookUps.rows(2) shouldEqual Array(1, 1)

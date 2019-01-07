@@ -10,14 +10,6 @@ import scala.collection.immutable.NumericRange
   */
 class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
-  val nkDiff: Short = (n - k).toShort
-  val mkDiff: Short = (m - k).toShort
-  val k1: Short = (k - 1).toShort
-
-  protected val mkDiffIncIndices = NumericRange.inclusive(0, mkDiff, 1)
-  protected val nkDiffIncIndices = NumericRange.inclusive[Short](0, nkDiff, 1)
-  protected val k1mIndices = NumericRange(k1, m, 1)
-
   protected def scoreRowsOld(): Int = {
     for (i <- mIndices) {
       val s = scoreRowOld(i)
@@ -221,13 +213,70 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     } else 0
   }
 
+
   /**
     * @TODO checkWinDiagoanls /w lookup
     * @return
     */
   override protected def checkWin(): Boolean = {
-    LookUps.won = Some(scoreRow() > 0 || scoreCol() > 0 || checkWinDiagonals())
+    LookUps.won = Some(scoreRow() > 0 || scoreCol() > 0 || scoreDiagSE() > 0 || scoreDiagNE() > 0)
     LookUps.won.get
+  }
+
+  protected def scoreDiagSE(): Int = {
+    val (i, j) = lastMove
+    val bMin = Math.min(n - j, m - i)
+    lazy val stopU = Math.min(k, bMin)
+    lazy val stopD = Math.min(i, j) + 1
+
+    @tailrec
+    def foldDownRight(acc: Int, offset: Int): Int = {
+      if (offset == stopU) acc
+      else if (board(i + offset)(j + offset) == lastPlayer) foldDownRight(acc + 1, offset + 1)
+      else acc
+    }
+
+    @tailrec
+    def foldUpLeft(acc: Int, offset: Int): Int = {
+      if (offset == stopD) acc
+      else if (board(i - offset)(j - offset) == lastPlayer) foldUpLeft(acc + 1, offset + 1)
+      else acc
+    }
+
+    if (Math.min(i, j) + bMin >= k1) {
+      val countD = foldDownRight(0, 1)
+      val countU = foldUpLeft(0, 1)
+      if (countD + countU >= k1) return lastPlayer
+    }
+
+    0
+  }
+
+  protected def scoreDiagNE(): Int = {
+    val (i, j) = lastMove
+    val stopU = Math.min(k, Math.min(n - j, m - i))
+    val stopD = Math.max(1, Math.min(i, j) - k1)
+
+    @tailrec
+    def foldUpRight(acc: Int, offset: Int): Int = {
+      if (offset == stopU) acc
+      else if (board(i - offset)(j + offset) == lastPlayer) foldUpRight(acc + 1, offset + 1)
+      else acc
+    }
+
+    @tailrec
+    def foldDownLeft(acc: Int, offset: Int): Int = {
+      if (offset == stopD) acc
+      else if (board(i + offset)(j - offset) == lastPlayer) foldDownLeft(acc + 1, offset + 1)
+      else acc
+    }
+
+//    if (m - i >= k && n - j >= k) {
+    val countD = foldUpRight(0, 1)
+    val countU = foldDownLeft(0, 1)
+
+    if (countD + countU >= k1) lastPlayer
+    else 0
   }
 
   protected def scoreCol(): Int = {
@@ -237,14 +286,16 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     def foldDown(acc: Int, i: Int, stop: Int): Int = {
       if (i == stop) acc
       else if (board(i)(j) == lastPlayer) foldDown(acc + 1, i + 1, stop)
-      else foldDown(acc, i + 1, stop)
+      //      else foldDown(acc, i + 1, stop)
+      else acc
     }
 
     @tailrec
     def foldUp(acc: Int, i: Int, stop: Int): Int = {
       if (i < stop) acc
       else if (board(i)(j) == lastPlayer) foldUp(acc + 1, i - 1, stop)
-      else foldUp(acc, i - 1, stop)
+      //      else foldUp(acc, i - 1, stop)
+      else acc
     }
 
     if (LookUps.cols(j)(LookUps.lastPlayerIdx) >= k) {
@@ -265,14 +316,16 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     def foldRight(acc: Int, j: Int, stop: Int): Int = {
       if (j == stop) acc
       else if (board(i)(j) == lastPlayer) foldRight(acc + 1, j + 1, stop)
-      else foldRight(acc, j + 1, stop)
+      //      else foldRight(acc, j + 1, stop)
+      else acc
     }
 
     @tailrec
     def foldLeft(acc: Int, j: Int, stop: Int): Int = {
       if (j < stop) acc
       else if (board(i)(j) == lastPlayer) foldLeft(acc + 1, j - 1, stop)
-      else foldLeft(acc, j - 1, stop)
+      //      else foldLeft(acc, j - 1, stop)
+      else acc
     }
 
     if (LookUps.rows(i)(LookUps.lastPlayerIdx) >= k) {

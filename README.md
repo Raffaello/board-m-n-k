@@ -55,7 +55,7 @@ so avoid to check if depth is lower than 2k-1 and just return false or do not ch
 
 ### Board status look up
 
-- [ ] considering delta changes in the board,
+- [X] considering delta changes in the board,
 keeping the previous check board value (no winners)
 and check only around the move done instead of all the board.
 
