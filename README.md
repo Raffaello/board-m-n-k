@@ -69,13 +69,19 @@ and check only around the move done instead of all the board.
 - [ ] So check if player can win in this turn and than do that move only. all others can be pruned directly.
 - [ ] if the next turn the opponent can win, generate only that move and all other can pruned directly.  
 
-- [ ] Order for moves could be by max symbols for row,cols,diag.
+- [ ] Order for moves could be by max symbols for row, cols, diags in case of tie, otherwise sort descending.
   So it should end up quickly and start pruning more.
   It is important to be very fast in the ordering and pruning enough.
 
 ### Board representation
 
 from 2D array to ??? (1D? easier for hashing?)
+
+- [ ] replace with 1D array and compute the moves as `i*n+j` for the exact index position
+
+- [ ] simplify the checking of end game simpli looking around the value and moving trought the array.
+- [ ] simplify to have ashing.
+- [ ] consider to use a bit board for each player to represent the game.
 
 ## Principal Variation
 
