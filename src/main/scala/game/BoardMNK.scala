@@ -254,26 +254,22 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
   protected def scoreDiagNE(): Int = {
     val (i, j) = lastMove
-    val stopU = Math.min(k, Math.min(n - j, m - i))
-    val stopD = Math.max(1, Math.min(i, j) - k1)
 
     @tailrec
-    def foldUpRight(acc: Int, offset: Int): Int = {
-      if (offset == stopU) acc
-      else if (board(i - offset)(j + offset) == lastPlayer) foldUpRight(acc + 1, offset + 1)
-      else acc
+    def foldUpRight(acc: Int, i: Int, j: Int, depth: Int): Int = {
+      if (depth == 0 || i < 0 || j>=n || board(i)(j) != lastPlayer) acc
+      else foldUpRight(acc + 1, i - 1, j + 1, depth - 1)
     }
 
     @tailrec
-    def foldDownLeft(acc: Int, offset: Int): Int = {
-      if (offset == stopD) acc
-      else if (board(i + offset)(j - offset) == lastPlayer) foldDownLeft(acc + 1, offset + 1)
-      else acc
+    def foldDownLeft(acc: Int, i: Int, j: Int, depth: Int): Int = {
+      if (depth == 0 || i >=m || j < 0 || board(i)(j) != lastPlayer) acc
+      else foldDownLeft(acc + 1, i + 1, j - 1, depth - 1)
     }
 
 //    if (m - i >= k && n - j >= k) {
-    val countD = foldUpRight(0, 1)
-    val countU = foldDownLeft(0, 1)
+    val countD = foldUpRight(0, i - 1, j + 1, k1)
+    val countU = foldDownLeft(0, i + 1, j - 1, k1)
 
     if (countD + countU >= k1) lastPlayer
     else 0
