@@ -1,0 +1,92 @@
+\documentclass[]{report}
+
+\usepackage[
+	backend = biber,
+	style=numeric,
+	autocite=plain,
+	sorting=none,
+	natbib=true
+	]{biblatex}
+	
+\addbibresource{tic-tac-toe-benchmark.bib}
+
+
+% Title Page
+\title{Tic-Tac-Toe Benchmarks}
+\author{Raffaello Bertini}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+	In this report are compared and evaluated all the different implementations of the Minimax algorithm and its variants.
+\end{abstract}
+
+\chapter{Intro}
+
+The implementation of the different algorithms \autocite{MIT} has been done with a mixture of imperative, object oriented and functional programming to benchmark also these different code styles.\\
+
+All the algorithms, \textit{Minimax} \autocite{wiki-minimax}, \textit{Negamax} \autocite{wiki-negamax} and \textit{Alpha Beta} \autocite{wiki-alphabeta} with \textit{Transposition Table} \autocite{wiki-transtable}, are implemented in a naive approach, imperative, and then refined to use \textit{traits} and a more functional approach.\\
+
+\paragraph{Minimax}
+has been implemented as:
+\begin{itemize}
+	\item Raw: imperative.
+	\item Trait raw: using  OOD.
+	\item Trait: OOD combined with functional elements. 
+\end{itemize}
+
+\paragraph{Negamax} has been implemented as:
+\begin{itemize}
+	\item Raw
+	\item Trait
+\end{itemize}
+
+\paragraph{Alpha Beta} has been implemented as:
+\begin{itemize}
+	\item Raw
+	\item Trait
+	\item Raw with transposition table (TT)
+\end{itemize}
+
+\paragraph{Transposition Table} has been implemented as:
+\begin{itemize}
+	\item simple Hash Table
+	\item Trait
+\end{itemize}
+
+Alpha Beta and Transposition Table are combined to spot differences in the implementation performances.
+
+\chapter{Results}
+
+In this chapter are displayed all the results computed with a Intel I7 CPU.
+
+\section{Tic Tac Toe}
+In this section are reported the specific result with the \textit{tic-tac-toe} optimized board game rules.
+
+\begin{table}[]
+	\begin{tabular}{|l|lllll}
+		\hline
+		\multicolumn{1}{|c|}{\textbf{Algorithm}}                                           & \multicolumn{1}{c|}{\textbf{Time}} & \multicolumn{1}{c|}{\textbf{Total Calls}} & \multicolumn{1}{c|}{\textbf{cache}} & \multicolumn{1}{c|}{\textbf{cache hits}} & \multicolumn{1}{c|}{\textbf{score}} \\ \hline
+		\multicolumn{1}{|c|}{Minimax}                                                      &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Minimax \\ Trait Raw\end{tabular}} &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Minimax\\ Raw\end{tabular}}        &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		Negamax                                                                            &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		\begin{tabular}[c]{@{}l@{}}Negamax\\ Trait\end{tabular}                            &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		Alpha Beta                                                                         &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ Trait\end{tabular}                         &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TTOld\end{tabular}                    &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TT\end{tabular}                       &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TT Trait\end{tabular}                 &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+	\end{tabular}
+	\caption{My caption}
+	\label{my-label}
+\end{table}
+
+\section{Board 3x3x3}
+In this section are reported the specific results with the \textit{board 3x3x3} that are derived from a general \textit{board MxNxK} game rules.
+
+
+\printbibliography
+
+\end{document}          
