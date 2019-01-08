@@ -5,7 +5,7 @@ import game.Board
 import scala.collection.mutable
 
 trait TranspositionTableOld /*extends BoardMN*/ {
-  val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
+  val transpositions: mutable.Map[String, TranspositionOld] = mutable.Map.empty
 
 //  var zobristKey:Int = 0
 
@@ -54,14 +54,14 @@ trait TranspositionTableOld /*extends BoardMN*/ {
   /**
     * @deprecated
     */
-  def add(b: Board, t: Transposition): Unit = {
+  def add(b: Board, t: TranspositionOld): Unit = {
     transpositions.update(hash(b), t)
   }
 
   /**
     * @deprecated
     */
-  def get(b: Board): Option[Transposition] = {
+  def get(b: Board): Option[TranspositionOld] = {
     transpositions.get(hash(b))
   }
 }

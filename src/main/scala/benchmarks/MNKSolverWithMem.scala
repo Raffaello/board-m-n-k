@@ -16,7 +16,7 @@ object MNKSolverWithMem extends App {
   val board = new BoardMNK(m, n, k) with TranspositionTableOld
 //  val states = new TranspositionTable {}
   val time = System.currentTimeMillis()
-  val score = ai.alphaBetaWithMem(board, board)
+  val score = ai.alphaBetaWithMemOld(board, board)
   println(s"total time: ${System.currentTimeMillis() - time}")
   println(s"Total calls: ${ai.Stats.totalCalls}")
   println(s"Total cache: ${board.transpositions.size}")
@@ -29,6 +29,6 @@ object MNKSolverWithMem extends App {
       case _ => "P2 WIN"
     }
   })
-
+  assert(score.score == 0.0)
 //  println(board.transpositions.mkString("\n"))
 }

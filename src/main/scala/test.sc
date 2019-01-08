@@ -5,11 +5,18 @@ val p = 1
 val n = 3
 val j = 1
 val m = 3
+
+
 //Array.fill(k)(p)
 val aaa = Array.ofDim[Int](3,3, 2)
 val aaaa = Array.fill[Int](3,3,2)(Random.nextInt())
 aaaa.flatten.flatten.length
-//
+
+val z = Array.ofDim[Int](3,3)
+val pos = (0, 0)
+
+z(pos)
+
 Array.fill(n)(0)
   .updated(0, Array.fill(k)(p))
 

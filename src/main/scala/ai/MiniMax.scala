@@ -23,7 +23,7 @@ trait MiniMax extends AiBoard {
         consumeMoves() { p =>
           playMove(p, 1)
           value = Math.max(value, solve(!maximizing, depth + 1))
-          undoMove(p)
+          undoMove(p, 1)
         }
 
         value
@@ -33,7 +33,7 @@ trait MiniMax extends AiBoard {
         consumeMoves() { p =>
           playMove(p, 2)
           value = Math.min(value, solve(!maximizing, depth + 1))
-          undoMove(p)
+          undoMove(p, 2)
         }
 
         value
@@ -51,7 +51,7 @@ trait MiniMax extends AiBoard {
       consumeMoves() { p =>
         playMove(p, player)
         value = eval((value, p))
-        undoMove(p)
+        undoMove(p, player)
       }
 
       value
@@ -76,7 +76,7 @@ trait MiniMax extends AiBoard {
   def nextMove(maximizing: Boolean, depth: Int): Status = {
     var pBest: Position = (-1, -1)
     val score = mainBlock(player(maximizing), depth) { status =>
-      val newValue = -solve(!maximizing, depth + 1)
+      val newValue = solve(!maximizing, depth + 1)
       var value = status._1
       if (maximizing) {
         if (value < newValue) {

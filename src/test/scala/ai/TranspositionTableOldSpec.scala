@@ -12,7 +12,7 @@ class TranspositionTableOldSpec extends FlatSpec with Matchers {
     val markerAdd: mutable.Map[String, Int] = mutable.Map.empty
     val markerGet: mutable.Map[String, Int] = mutable.Map.empty
 
-    override def add(board: Board, t: Transposition): Unit = {
+    override def add(board: Board, t: TranspositionOld): Unit = {
       val h = hash(board)
 
       if(transpositions.isDefinedAt(h)) {
@@ -29,7 +29,7 @@ class TranspositionTableOldSpec extends FlatSpec with Matchers {
       super.add(board, t)
     }
 
-    override def get(board: Board): Option[Transposition] = {
+    override def get(board: Board): Option[TranspositionOld] = {
       val t = super.get(board)
       val h = hash(board)
       if (t.isDefined) {
@@ -46,7 +46,7 @@ class TranspositionTableOldSpec extends FlatSpec with Matchers {
   "Transposition table" should "be used" in {
     val game = new BoardTicTacToe()
     val trans = new TranspositionTableOldStub {}
-    val t = ai.alphaBetaWithMem(trans, game)
+    val t = ai.alphaBetaWithMemOld(trans, game)
 
     t.score shouldEqual 0.0
     trans.markerGet("121000000") shouldEqual 1

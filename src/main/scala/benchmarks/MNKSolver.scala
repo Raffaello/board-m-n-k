@@ -26,4 +26,5 @@ object MNKSolver extends App {
       case _ => "P2 WIN"
     }
   })
+  assert(score == 0.0)
 }

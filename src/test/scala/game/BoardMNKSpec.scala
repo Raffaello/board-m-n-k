@@ -6,13 +6,208 @@ import scala.collection.immutable.NumericRange
 
 class BoardMNKSpec extends WordSpec with Matchers {
 
+  "3x3x3 board" must {
+    "P1 win" in {
+      val game = new BoardMNK(3, 3, 3)
+      game.playMove((0, 0), 1)
+      game.playMove((1, 1), 2)
+      game.playMove((0, 1), 1)
+      game.playMove((1, 0), 2)
+      game.playMove((0, 2), 1)
+
+      game.gameEnded(4) shouldEqual true
+      game.score() shouldEqual 1
+      game.LookUps.won shouldEqual Some(true)
+      game.LookUps.lastPlayerIdx shouldEqual 0
+
+      game.LookUps.rows(0)(0) shouldEqual 3
+      game.LookUps.rows(1)(0) shouldEqual 0
+      game.LookUps.rows(2)(0) shouldEqual 0
+
+      game.LookUps.rows(0)(1) shouldEqual 0
+      game.LookUps.rows(1)(1) shouldEqual 2
+      game.LookUps.rows(2)(1) shouldEqual 0
+
+      game.LookUps.cols(0)(0) shouldEqual 1
+      game.LookUps.cols(1)(0) shouldEqual 1
+      game.LookUps.cols(2)(0) shouldEqual 1
+
+      game.LookUps.cols(0)(1) shouldEqual 1
+      game.LookUps.cols(1)(1) shouldEqual 1
+      game.LookUps.cols(2)(1) shouldEqual 0
+    }
+
+    "P2 win" in {
+      val game = new BoardMNK(3, 3, 3)
+      game.playMove((0, 0), 1)
+      game.playMove((1, 1), 2)
+      game.playMove((2, 0), 1)
+      game.playMove((1, 0), 2)
+      game.playMove((0, 2), 1)
+      game.playMove((1, 2), 2)
+
+      game.gameEnded(5) shouldEqual true
+      game.score() shouldEqual -1
+      game.LookUps.won shouldEqual Some(true)
+      game.LookUps.lastPlayerIdx shouldEqual 1
+
+      game.LookUps.rows(0)(0) shouldEqual 2
+      game.LookUps.rows(1)(0) shouldEqual 0
+      game.LookUps.rows(2)(0) shouldEqual 1
+
+      game.LookUps.rows(0)(1) shouldEqual 0
+      game.LookUps.rows(1)(1) shouldEqual 3
+      game.LookUps.rows(2)(1) shouldEqual 0
+
+      game.LookUps.cols(0)(0) shouldEqual 2
+      game.LookUps.cols(1)(0) shouldEqual 0
+      game.LookUps.cols(2)(0) shouldEqual 1
+
+      game.LookUps.cols(0)(1) shouldEqual 1
+      game.LookUps.cols(1)(1) shouldEqual 1
+      game.LookUps.cols(2)(1) shouldEqual 1
+    }
+
+    "STALE" in {
+      val game = new BoardMNK(3, 3, 3)
+      game.playMove((0, 0), 1)
+      game.playMove((0, 1), 2)
+      game.playMove((0, 2), 1)
+      game.playMove((1, 1), 2)
+      game.playMove((1, 0), 1)
+      game.playMove((2, 2), 2)
+      game.playMove((1, 2), 1)
+      game.playMove((2, 0), 2)
+      game.playMove((2, 1), 1)
+
+      game.gameEnded(8) shouldEqual true
+      game.score() shouldEqual 0
+      game.LookUps.won shouldEqual Some(false)
+      game.LookUps.lastPlayerIdx shouldEqual 0
+
+      game.LookUps.rows(0)(0) shouldEqual 2
+      game.LookUps.rows(1)(0) shouldEqual 2
+      game.LookUps.rows(2)(0) shouldEqual 1
+
+      game.LookUps.rows(0)(1) shouldEqual 1
+      game.LookUps.rows(1)(1) shouldEqual 1
+      game.LookUps.rows(2)(1) shouldEqual 2
+
+      game.LookUps.cols(0)(0) shouldEqual 2
+      game.LookUps.cols(1)(0) shouldEqual 1
+      game.LookUps.cols(2)(0) shouldEqual 2
+
+      game.LookUps.cols(0)(1) shouldEqual 1
+      game.LookUps.cols(1)(1) shouldEqual 2
+      game.LookUps.cols(2)(1) shouldEqual 1
+    }
+
+    "P1 win diagonalTL" in {
+      val game = new BoardMNK(3, 3, 3)
+      game.playMove((0, 0), 1)
+      game.playMove((0, 1), 2)
+      game.playMove((1, 1), 1)
+      game.playMove((1, 0), 2)
+      game.playMove((2, 2), 1)
+
+      game.gameEnded(4) shouldEqual true
+      game.score() shouldEqual 1
+      game.LookUps.won shouldEqual Some(true)
+      game.LookUps.lastPlayerIdx shouldEqual 0
+
+      game.LookUps.rows(0)(0) shouldEqual 1
+      game.LookUps.rows(1)(0) shouldEqual 1
+      game.LookUps.rows(2)(0) shouldEqual 1
+
+      game.LookUps.rows(0)(1) shouldEqual 1
+      game.LookUps.rows(1)(1) shouldEqual 1
+      game.LookUps.rows(2)(1) shouldEqual 0
+
+      game.LookUps.cols(0)(0) shouldEqual 1
+      game.LookUps.cols(1)(0) shouldEqual 1
+      game.LookUps.cols(2)(0) shouldEqual 1
+
+      game.LookUps.cols(0)(1) shouldEqual 1
+      game.LookUps.cols(1)(1) shouldEqual 1
+      game.LookUps.cols(2)(1) shouldEqual 0
+
+      // diag is when rows(x)(y) == cols(x)(y) && > 0
+    }
+
+    "P1 win diagonalBR" in {
+      val game = new BoardMNK(3, 3, 3)
+      game.playMove((2, 0), 1)
+      game.playMove((0, 1), 2)
+      game.playMove((1, 1), 1)
+      game.playMove((1, 0), 2)
+      game.playMove((0, 2), 1)
+
+      game.gameEnded(4) shouldEqual true
+      game.score() shouldEqual 1
+      game.LookUps.won shouldEqual Some(true)
+      game.LookUps.lastPlayerIdx shouldEqual 0
+
+      game.LookUps.rows(0)(0) shouldEqual 1
+      game.LookUps.rows(1)(0) shouldEqual 1
+      game.LookUps.rows(2)(0) shouldEqual 1
+
+      game.LookUps.rows(0)(1) shouldEqual 1
+      game.LookUps.rows(1)(1) shouldEqual 1
+      game.LookUps.rows(2)(1) shouldEqual 0
+
+      game.LookUps.cols(0)(0) shouldEqual 1
+      game.LookUps.cols(1)(0) shouldEqual 1
+      game.LookUps.cols(2)(0) shouldEqual 1
+
+      game.LookUps.cols(0)(1) shouldEqual 1
+      game.LookUps.cols(1)(1) shouldEqual 1
+      game.LookUps.cols(2)(1) shouldEqual 0
+
+      // diag is when rows(x)(y) == cols(x)(y) && > 0
+    }
+
+  }
+
+  "4x3x3 board" must {
+    "game status 121 221 201 001" in {
+      val game = new BoardMNK(4, 3, 3)
+      game.playMove((0, 0), 1)
+      game.playMove((0, 1), 2)
+      game.playMove((0, 2), 1)
+
+      game.playMove((1, 0), 2)
+      game.playMove((1, 2), 1)
+      game.playMove((1, 1), 2)
+
+      game.playMove((3, 2), 1)
+
+      game.playMove((2, 0), 2)
+      game.playMove((2, 2), 1)
+
+      game.gameEnded(8) shouldEqual true
+      game.score() shouldEqual 1
+      game.LookUps.won shouldEqual Some(true)
+      game.LookUps.lastPlayerIdx shouldEqual 0
+
+      game.LookUps.rows(0) shouldEqual Array(2, 1)
+      game.LookUps.rows(1) shouldEqual Array(1, 2)
+      game.LookUps.rows(2) shouldEqual Array(1, 1)
+      game.LookUps.rows(3) shouldEqual Array(1, 0)
+
+      game.LookUps.cols(0) shouldEqual Array(1, 2)
+      game.LookUps.cols(1) shouldEqual Array(0, 2)
+      game.LookUps.cols(2) shouldEqual Array(4, 0)
+
+    }
+  }
+
   for {
     m <- NumericRange.inclusive[Short](3, 5, 1)
     n <- NumericRange.inclusive[Short](3, 5, 1)
     k <- NumericRange.inclusive[Short](3, 5, 1)
     if k <= Math.min(m, n)
   } {
-    s"${m}X${n}X$k Game" should {
+    s"${m}X${n}X$k Game" must {
       "in progress" in {
         val game = new BoardMNK(m, n, k)
 
@@ -20,55 +215,70 @@ class BoardMNKSpec extends WordSpec with Matchers {
       }
 
       for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {
-        "won by player " + p.toString must {
+        "won by player " + p.toString should {
           var score = 0
           if (p == 1) {
             score = 1
           } else {
             score = -1
           }
-          "by rows player" in {
-
+          "by rows and" should {
             for (i <- 0 until m) {
-              for (j <- 0 to n - k) {
-                val game = new BoardMNK(m, n, k)
-                game.board.update(i, Array.tabulate(n)(x => if (x >= j && x < k + j) p else 0))
-                game.gameEnded(game.minWinDepth) should be(true)
-                game.score() should be(score)
+              s"row $i and " should {
+                for (j <- 0 to n - k) {
+
+                  s"col $j" in {
+                    val game = new BoardMNK(m, n, k)
+                    for (x <- j until k + j) game.playMove((i.toShort, x.toShort), p)
+                    game.gameEnded(game.minWinDepth) should be(true)
+                    game.score() should be(score)
+                  }
+
+                  s"col $j reverse" in {
+                    val game = new BoardMNK(m, n, k)
+                    for (x <- k - 1 + j to j by -1) game.playMove((i.toShort, x.toShort), p)
+                    game.gameEnded(game.minWinDepth) should be(true)
+                    game.score() should be(score)
+                  }
+                }
               }
             }
           }
 
-          "by cols" in {
+          "by cols" should {
             for (j <- 0 until n) {
-              for (i <- 0 to m - k) {
-                val game = new BoardMNK(m, n, k)
-                for (kk <- 0 until k) {
-                  game.board(i + kk)(j) = p
-                }
 
-                game.gameEnded(game.minWinDepth) should be(true)
-                game.score() should be(score)
+              s"col $j and" should {
+                for (i <- 0 to m - k) {
+
+                  s"row $i" in {
+                    val game = new BoardMNK(m, n, k)
+                    for (kk <- 0 until k) game.playMove(((i + kk).toShort, j.toShort), p)
+                    game.gameEnded(game.minWinDepth) should be(true)
+                    game.score() should be(score)
+                  }
+
+                  s"row $i reverse" in {
+                    val game = new BoardMNK(m, n, k)
+                    for (kk <- k - 1 to 0 by -1) game.playMove(((i + kk).toShort, j.toShort), p)
+                    game.gameEnded(game.minWinDepth) should be(true)
+                    game.score() should be(score)
+                  }
+                }
               }
             }
           }
 
           "by Diagonals Top Left -> Bottom Right" in {
             val game = new BoardMNK(m, n, k)
-            for (i <- 0 until k) {
-              game.board(i)(i) = p
-            }
-
+            for (i <- 0 until k) game.playMove((i.toShort, i.toShort), p)
             game.gameEnded(game.minWinDepth) should be(true)
             game.score() should be(score)
           }
 
           "by diagonals Bottom Left -> Top Right" in {
             val game = new BoardMNK(m, n, k)
-            for (i <- 0 until k) {
-              game.board(k-1 - i)(i) = p
-            }
-
+            for (i <- 0 until k) game.playMove(((k - 1 - i).toShort, i.toShort), p)
             game.gameEnded(game.minWinDepth) should be(true)
             game.score() should be(score)
           }

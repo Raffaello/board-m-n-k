@@ -45,12 +45,12 @@ object FiveFiveThree extends App {
             println("Make your move: ")
             val move = scala.io.StdIn.readByte()
             val (i, j) = (move / 3, move % 3)
-            valid = game.playMove(i.toShort, j.toShort, humanPlayer)
+            valid = game.playMove((i.toShort, j.toShort), humanPlayer)
           }
         }
         else {
           val (score, i, j) = negamaxNextMove(game, -1)
-          game.playMove(i, j, computerPlayer)
+          game.playMove((i, j), computerPlayer)
         }
         playerTurn = !playerTurn
       }
@@ -88,7 +88,7 @@ object FiveFiveThree extends App {
         depth +=1
         println (s"depth = $depth")
 
-        game.playMove(i, j, player)
+        game.playMove((i, j), player)
         joshuaPlay = !joshuaPlay
       }
 
