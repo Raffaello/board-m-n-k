@@ -18,7 +18,7 @@ object MNKSolvers extends App {
     k <- NumericRange[Short](3, 5, 1)
     n <- NumericRange[Short](3, 5, 1)
     m <- NumericRange[Short](3, 5, 1)
-    if k >= n || k >= m
+    if k <= n || k <= m
   } {
     println(s"m = $m --- n = $n --- k = $k")
 
