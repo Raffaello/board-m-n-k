@@ -5,4 +5,5 @@
 *.xml
 *.gz
 *.bcf
-
+*.md5
+*.auxlock

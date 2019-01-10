@@ -10,6 +10,10 @@
 	
 \addbibresource{tic-tac-toe-benchmark.bib}
 
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
+% \usepgfplotslibrary{external} 
+% \tikzexternalize 
 
 % Title Page
 \title{Tic-Tac-Toe Benchmarks}
@@ -67,25 +71,45 @@ In this section are reported the specific result with the \textit{tic-tac-toe} o
 \begin{table}[]
 	\begin{tabular}{|l|lllll}
 		\hline
-		\multicolumn{1}{|c|}{\textbf{Algorithm}}                                           & \multicolumn{1}{c|}{\textbf{Time}} & \multicolumn{1}{c|}{\textbf{Total Calls}} & \multicolumn{1}{c|}{\textbf{cache}} & \multicolumn{1}{c|}{\textbf{cache hits}} & \multicolumn{1}{c|}{\textbf{score}} \\ \hline
-		\multicolumn{1}{|c|}{Minimax}                                                      &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
-		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Minimax \\ Trait Raw\end{tabular}} &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
-		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Minimax\\ Raw\end{tabular}}        &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
-		Negamax                                                                            &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
-		\begin{tabular}[c]{@{}l@{}}Negamax\\ Trait\end{tabular}                            &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
-		Alpha Beta                                                                         &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
-		\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ Trait\end{tabular}                         &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
-		\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TTOld\end{tabular}                    &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
-		\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TT\end{tabular}                       &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
-		\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TT Trait\end{tabular}                 &                                    &                                           &                                     &                                          &                                     \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\textbf{Algorithm}}                                                 & \multicolumn{1}{c|}{\textbf{Time (ms)}} & \multicolumn{1}{c|}{\textbf{Total Calls}} & \multicolumn{1}{c|}{\textbf{cache}} & \multicolumn{1}{c|}{\textbf{cache hits}} \\ \hline
+		\multicolumn{1}{|c|}{Minimax Raw}                                                        & \multicolumn{1}{c}{650}                 & \multicolumn{1}{c}{294778}                & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Minimax \\ Trait\end{tabular}}           & \multicolumn{1}{c}{655}                 & \multicolumn{1}{c}{294778}                & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Minimax\\ Trait Raw\end{tabular}}        & \multicolumn{1}{c}{808}                 & \multicolumn{1}{c}{294778}	               & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Negamax\end{tabular}}                    & \multicolumn{1}{c}{308}                 & \multicolumn{1}{c}{294778}                & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Negamax\\ Trait\end{tabular}}            & \multicolumn{1}{c}{596}                 & \multicolumn{1}{c}{294778}                & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\end{tabular}}                 & \multicolumn{1}{c}{75}                  & \multicolumn{1}{c}{12413}                 & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ Trait\end{tabular}}         & \multicolumn{1}{c}{91}                  & \multicolumn{1}{c}{12413}                 & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TTOld\end{tabular}}    & \multicolumn{1}{c}{260}                 & \multicolumn{1}{c}{4520}                  & \multicolumn{1}{c}{5478}            & \multicolumn{1}{c}{10690}                \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TT\end{tabular}}       & \multicolumn{1}{c}{211}                 & \multicolumn{1}{c}{4520}                  & \multicolumn{1}{c}{5478}            & \multicolumn{1}{c}{10690}                \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TT Trait\end{tabular}} & \multicolumn{1}{c}{137}                 & \multicolumn{1}{c}{4187}                  & \multicolumn{1}{c}{1308}            & \multicolumn{1}{c}{3851}                 \\ \cline{1-1}
 	\end{tabular}
-	\caption{My caption}
+	\caption{Tic Tac Toe Solver Results}
 	\label{my-label}
 \end{table}
 
+\begin{tikzpicture}
+	\begin{axis}[
+	%	x tick label style={/pgf/number format/1000 sep=},
+		%title={Tic-tac-toe Total Calls},
+	%	xlabel={Algo},
+	%	ylabel={Calls},
+%		ybar interval = 0.7,
+	%	enlargelimits=1,
+		xtick=data,
+		symbolic x coords={Minimax Raw, Minimax Trait Raw}
+	]
+		\addplot[ybar, fill=red]
+			coordinates {
+				(Minimax Raw,294778)
+				(Minimax Trait Raw,294778)
+			};
+
+	\end{axis}
+\end{tikzpicture}
+
 \section{Board 3x3x3}
 In this section are reported the specific results with the \textit{board 3x3x3} that are derived from a general \textit{board MxNxK} game rules.
-
+%
 
 \printbibliography
 
