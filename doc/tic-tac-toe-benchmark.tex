@@ -89,21 +89,18 @@ In this section are reported the specific result with the \textit{tic-tac-toe} o
 
 \begin{tikzpicture}
 	\begin{axis}[
-	%	x tick label style={/pgf/number format/1000 sep=},
-		%title={Tic-tac-toe Total Calls},
-	%	xlabel={Algo},
-	%	ylabel={Calls},
-%		ybar interval = 0.7,
-	%	enlargelimits=1,
+		x tick label style={/pgf/number format/1000 sep=},
+		ylabel={Total Calls},
+		ybar,
 		xtick=data,
-		symbolic x coords={Minimax Raw, Minimax Trait Raw}
 	]
-		\addplot[ybar, fill=red]
-			coordinates {
-				(Minimax Raw,294778)
-				(Minimax Trait Raw,294778)
-			};
+		\addplot coordinates {(0, 294778)};
+		\addplot coordinates {(0, 294778)};
+		\addplot coordinates {(0, 12413)};
+		\addplot coordinates {(0, 4520)};
+		\addplot coordinates {(0, 4187)};
 
+		\legend{Minimax, Negamax, AlphaBeta,AlphaBetaTT, AlphaBetaTTT}
 	\end{axis}
 \end{tikzpicture}
 
