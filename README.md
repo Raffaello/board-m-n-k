@@ -87,6 +87,8 @@ from 2D array to ??? (1D? easier for hashing?)
 
 ## Monte Carlo Tree Search
 
+## AlphaZero
+
 ## Results
 
 ## references
