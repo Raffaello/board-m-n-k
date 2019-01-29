@@ -106,7 +106,42 @@ In this section are reported the specific result with the \textit{tic-tac-toe} o
 
 \section{Board 3x3x3}
 In this section are reported the specific results with the \textit{board 3x3x3} that are derived from a general \textit{board MxNxK} game rules.
-%
+
+\begin{table}[]
+	\begin{tabular}{|l|lllll}
+		\hline
+		\multicolumn{1}{|c|}{\textbf{Algorithm}}                                                 & \multicolumn{1}{c|}{\textbf{Time (ms)}} & \multicolumn{1}{c|}{\textbf{Total Calls}} & \multicolumn{1}{c|}{\textbf{cache}} & \multicolumn{1}{c|}{\textbf{cache hits}} \\ \hline
+		\multicolumn{1}{|c|}{Minimax Raw}                                                        & \multicolumn{1}{c}{259}                 & \multicolumn{1}{c}{294778}                & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Minimax \\ Trait\end{tabular}}           & \multicolumn{1}{c}{366}                 & \multicolumn{1}{c}{294778}                & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Minimax\\ Trait Raw\end{tabular}}        & \multicolumn{1}{c}{350}                 & \multicolumn{1}{c}{294778}	               & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Negamax\end{tabular}}                    & \multicolumn{1}{c}{161}                 & \multicolumn{1}{c}{294778}                & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Negamax\\ Trait\end{tabular}}            & \multicolumn{1}{c}{316}                 & \multicolumn{1}{c}{294778}                & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\end{tabular}}                 & \multicolumn{1}{c}{46}                  & \multicolumn{1}{c}{12413}                 & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ Trait\end{tabular}}         & \multicolumn{1}{c}{68}                  & \multicolumn{1}{c}{12413}                 & \multicolumn{1}{c}{N/A}             & \multicolumn{1}{c}{N/A}                  \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TTOld\end{tabular}}    & \multicolumn{1}{c}{134}                 & \multicolumn{1}{c}{4520}                  & \multicolumn{1}{c}{5478}            & \multicolumn{1}{c}{10690}                \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TT\end{tabular}}       & \multicolumn{1}{c}{82}                 & \multicolumn{1}{c}{4520}                  & \multicolumn{1}{c}{5478}            & \multicolumn{1}{c}{10690}                \\ \cline{1-1}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}l@{}}Alpha Beta\\ with TT Trait\end{tabular}} & \multicolumn{1}{c}{42}                 & \multicolumn{1}{c}{4187}                  & \multicolumn{1}{c}{1308}            & \multicolumn{1}{c}{3851}                 \\ \cline{1-1}
+	\end{tabular}
+	\caption{Tic Tac Toe Solver Results}
+	\label{my-label}
+\end{table}
+
+\begin{tikzpicture}
+\begin{axis}[
+x tick label style={/pgf/number format/1000 sep=},
+ylabel={Total Calls},
+ybar,
+xtick=data,
+]
+\addplot coordinates {(0, 294778)};
+\addplot coordinates {(0, 294778)};
+\addplot coordinates {(0, 12413)};
+\addplot coordinates {(0, 4520)};
+\addplot coordinates {(0, 4187)};
+
+\legend{Minimax, Negamax, AlphaBeta,AlphaBetaTT, AlphaBetaTTT}
+\end{axis}
+\end{tikzpicture}
 
 \printbibliography
 
