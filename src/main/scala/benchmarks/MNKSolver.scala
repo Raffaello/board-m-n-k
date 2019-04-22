@@ -6,11 +6,11 @@ object MNKSolver extends App {
 
   println("Insert the board size:")
   print("m = ")
-  val m:Short = 3 //scala.io.StdIn.readShort()
+  val m:Short = scala.io.StdIn.readShort()
   print("n = ")
-  val n:Short = 3 //scala.io.StdIn.readShort()
+  val n:Short = scala.io.StdIn.readShort()
   print("k = ")
-  val k:Short = 3 //scala.io.StdIn.readShort()
+  val k:Short = scala.io.StdIn.readShort()
 
   val board = new BoardMNK(m, n, k)
   val time = System.currentTimeMillis()
