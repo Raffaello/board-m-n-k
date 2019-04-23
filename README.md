@@ -14,6 +14,20 @@ It includes an easter egg.
 
 ## Generalized M,N,K game
 
+## Connect 4
+
+- [ ] define the basic rules and write tests 
+
+## Connect 5
+
+- [ ] generalize 4-in-a-row to 5
+
+## Connect K
+
+- [ ] proportionally defining the board size
+- [ ] accepting also N,M for the board size 
+- [ ] generalize in connect N
+
 ## Minimax
 
 ## Negamax
