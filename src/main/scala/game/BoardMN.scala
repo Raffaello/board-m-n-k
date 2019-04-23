@@ -5,12 +5,15 @@ import scala.collection.immutable.NumericRange
 abstract class BoardMN(val m: Short, val n: Short) {
   //  require(m > 2 && n > 2)
 
+  // refactor in a trait board ?
   val mnMin: Short = Math.min(m, n).toShort
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
+  // refactor in trait board ?
   protected val board: Board = Array.ofDim[Byte](m, n)
 
+  //
   protected var freePositions: Int = m * n
   protected var lastMove: Position = (0, 0)
 
