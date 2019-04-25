@@ -99,6 +99,10 @@ from 2D array to ??? (1D? easier for hashing?)
 
 ## Principal Variation
 
+## MTD-f
+
+## Best_Node_Search
+
 ## Monte Carlo Tree Search
 
 ## AlphaZero
