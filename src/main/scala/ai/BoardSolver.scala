@@ -104,7 +104,6 @@ object BoardSolver extends App {
   val c = choices(choice)
   println(s"you choose: ${c._1}")
 
-
   println(s"Board size ${m}x${n}x$k")
   val startTime = System.currentTimeMillis()
   val r = c._2.result()
@@ -114,5 +113,4 @@ object BoardSolver extends App {
   println(s"Total Time: ${endTime - startTime}ms")
   println(s"Total calls: ${s.totalCalls}")
   println(s"Total cache: ${s.cacheHits}")
-
 }

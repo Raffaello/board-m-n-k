@@ -1,14 +1,12 @@
 package ai
 
-import game.{BoardMN, Position}
+import game.{BoardMN, Position, Status}
 
-private[ai] trait AiBoard extends BoardMN {
-
-  //refactor later
-  object Stats {
-    var totalCalls: Int = 0
-    var cacheHits: Int = 0
-  }
+private[ai] trait AiBoard extends BoardMN with AiStats {
+  type AB = (Int, Int) // Alpha, Beta values
+  //  type ABScore = (AB, Int) // Alpha, Beta values plus score
+  //  type ABStatus = (AB, Status) // Alpha, Beta values plus Status
+  type ABStatus = (AB, Status) // Alpha, Beta values plus Status: Score, Position
 
   protected def generateMoves(): IndexedSeq[Position] = {
     for {
