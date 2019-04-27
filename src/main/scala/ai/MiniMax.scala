@@ -3,7 +3,7 @@ package ai
 import game.{Position, Status}
 
 trait MiniMax extends AiBoard {
-  private def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
+  protected def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
 
   protected def mainBlock(player: Byte, depth: Int)(eval: Status => Int): Int = {
     if (gameEnded(depth)) {

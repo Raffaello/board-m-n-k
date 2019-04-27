@@ -22,12 +22,12 @@ package object old {
       Stats.totalCalls += 1
       if (maximizing) {
         best = Int.MinValue
-        cmp = Math.max _
+        cmp = Math.max
         player = 1
       }
       else {
         best = Int.MaxValue
-        cmp = Math.min _
+        cmp = Math.min
         player = 2
       }
 
