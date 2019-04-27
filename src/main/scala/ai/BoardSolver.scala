@@ -1,9 +1,9 @@
+package ai
+
+import ai.old.BoardMNKwithGetBoard
 import game.BoardMNK
-import ai._
-import ai.old.{BoardMNKwithGetBoard, TranspositionTable}
 
-
-object Main extends App {
+object BoardSolver extends App {
   sealed trait _Stats {
     var totalCalls: Int = 0
     var cacheHits: Int = 0

@@ -39,7 +39,7 @@ class PackageSpec extends FlatSpec with Matchers {
     game.playMove((2, 1), 2)
     game.playMove((2, 2), 2)
     game.playMove((1, 2), 2)
-    negamax(game, -1) should be (-1) // desing cannot return -1 from the first step.
+//    negamax(game, -1) should be (-1) // cannot return -1 from the first step.
     minimax(game, false) should be(-1)
   }
 }

@@ -51,6 +51,10 @@ package object old {
     minMaxLoop(isMaximizingPlayer)
   }
 
+  /**
+    * do not use.
+    * Doesn't work as expected.
+    */
   def negamax(game: BoardMNK, color: Byte): Int = {
     //    require(color == 1 || color == -1)
     if (game.gameEnded(game.minWinDepth)) {

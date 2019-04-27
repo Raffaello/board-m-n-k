@@ -2,9 +2,7 @@ package ai
 
 import game.{BoardMN, Position}
 
-import scala.collection.immutable.NumericRange
-
-/*private[ai]*/ trait AiBoard extends BoardMN {
+private[ai] trait AiBoard extends BoardMN {
 
   //refactor later
   object Stats {
