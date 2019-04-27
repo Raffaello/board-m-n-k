@@ -133,4 +133,7 @@ from 2D array to ??? (1D? easier for hashing?)
 - [Negamax](https://en.wikipedia.org/wiki/Negamax)
 - [Alpha–beta pruning](https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning)
 - [Zobrist Hashing](https://en.wikipedia.org/wiki/Zobrist_hashing)
-
+- [MCTS Part I](https://www.cs.swarthmore.edu/~bryce/cs63/s16/slides/2-15_MCTS.pdf)
+- [MCTS Part II](https://www.cs.swarthmore.edu/~bryce/cs63/s16/slides/2-17_extending_mcts.pdf)
+- [MCTS Part III](http://ccg.doc.gold.ac.uk/ccg_old/teaching/ludic_computing/ludic16.pdf)
+- [MCTS Intro] (https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/)
