@@ -1,10 +1,8 @@
 package ai
 
-import game.{BoardMN, Position}
+import game.{BoardMNKP, Position}
 
-import scala.collection.immutable.NumericRange
-
-/*private[ai]*/ trait AiBoard extends BoardMN {
+/*private[ai]*/ trait AiBoard extends BoardMNKP {
 
   //refactor later
   object Stats {
@@ -16,7 +14,7 @@ import scala.collection.immutable.NumericRange
     for {
       i <- mIndices
       j <- nIndices
-      if board(i)(j) == 0
+      if board((i, j)) == 0
     } yield (i,j)
   }
 

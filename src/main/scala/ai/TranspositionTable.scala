@@ -1,13 +1,13 @@
 package ai
 
-import game.BoardMN
+import game.withBoard2D
 
 import scala.collection.mutable
 
-trait TranspositionTable extends BoardMN {
+trait TranspositionTable extends withBoard2D {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 
-  def hash() = board.flatten.mkString
+  def hash() = _board.flatten.mkString
 
   def add(t: Transposition): Unit = {
     transpositions.update(hash(), t)

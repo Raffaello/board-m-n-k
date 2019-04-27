@@ -1,6 +1,6 @@
 package ai
 
-import game.Board
+import game.Board2D
 
 import scala.collection.mutable
 
@@ -49,19 +49,19 @@ trait TranspositionTableOld /*extends BoardMN*/ {
   /**
     * @deprecated
     */
-  def hash(b: Board) = b.flatten.mkString
+  def hash(b: Board2D) = b.flatten.mkString
 
   /**
     * @deprecated
     */
-  def add(b: Board, t: TranspositionOld): Unit = {
+  def add(b: Board2D, t: TranspositionOld): Unit = {
     transpositions.update(hash(b), t)
   }
 
   /**
     * @deprecated
     */
-  def get(b: Board): Option[TranspositionOld] = {
+  def get(b: Board2D): Option[TranspositionOld] = {
     transpositions.get(hash(b))
   }
 }

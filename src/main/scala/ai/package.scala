@@ -219,7 +219,7 @@ package object ai {
     */
   def alphaBetaWithMemOld(statuses: TranspositionTableOld, game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): TranspositionOld = {
 
-    val transposition = statuses.get(game.getBoard())
+    val transposition = statuses.get(game.getBoard2D())
 
     if (transposition.isDefined) {
       Stats.cacheHits += 1
@@ -236,7 +236,7 @@ package object ai {
         maximizingPlayer
       )
 
-      statuses.add(game.getBoard(), t)
+      statuses.add(game.getBoard2D(), t)
       return t
     }
 
@@ -259,7 +259,7 @@ package object ai {
       }
 
       val t = TranspositionOld(best, depth, a, beta, maximizingPlayer)
-      statuses.add(game.getBoard(), t)
+      statuses.add(game.getBoard2D(), t)
       t
     } else {
       var best = Double.MaxValue
@@ -279,7 +279,7 @@ package object ai {
       }
 
       val t = TranspositionOld(best, depth, alpha, b, maximizingPlayer)
-      statuses.add(game.getBoard(), t)
+      statuses.add(game.getBoard2D(), t)
       t
     }
   }

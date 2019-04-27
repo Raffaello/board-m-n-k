@@ -1,6 +1,6 @@
 package ai
 
-import game.Board
+import game.Board2D
 
 class ZobristHash {
   type ZobristTable = Array[Array[Array[Int]]]
@@ -9,5 +9,5 @@ class ZobristHash {
   val table:ZobristTable  = ???
   def init() = ???
 
-  def hash(board: Board) = ???
+  def hash(board: Board2D) = ???
 }

@@ -35,7 +35,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
       rows(pos._1)(playerIdx) += 1
       assert(rows(pos._1)(playerIdx) <= n)
       cols(pos._2)(playerIdx) += 1
-      assert(cols(pos._2)(playerIdx) <= m, s"${cols(pos._2)(playerIdx)} -- $playerIdx, $pos -- ${board.flatten.mkString}")
+      assert(cols(pos._2)(playerIdx) <= m, s"${cols(pos._2)(playerIdx)} -- $playerIdx, $pos -- ${_board.flatten.mkString}")
       // TODO DIAGS1 and DIAG2
 
     }
