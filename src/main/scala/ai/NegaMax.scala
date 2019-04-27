@@ -7,8 +7,7 @@ import game.{Status, Position}
   * @see MiniMax
   */
 trait NegaMax extends AiBoard {
-
-  private def mainBlock(color: Byte, depth: Int)(eval: Status => Int): Int = {
+  protected def mainBlock(color: Byte, depth: Int)(eval: Status => Int): Int = {
     if (gameEnded(depth)) {
       score() * color
     } else {
@@ -27,16 +26,12 @@ trait NegaMax extends AiBoard {
   }
 
   def solve(color: Byte = 1, depth: Int = 0): Int = {
-//    require(color == 1 || color == -1)
-
     mainBlock(color, depth) { status =>
       Math.max(status._1, -solve((-color).toByte, depth + 1))
     }
   }
 
   def nextMove(color: Byte, depth: Int): Status = {
-//    require(color == 1 || color == -1)
-
     var pBest: Position = (-1, -1)
     val score = mainBlock(color, depth) { status =>
       val newValue = -solve((-color).toByte, depth + 1)

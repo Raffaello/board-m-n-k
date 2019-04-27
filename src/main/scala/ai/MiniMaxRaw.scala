@@ -1,33 +1,21 @@
 package ai
 
 trait MiniMaxRaw extends MiniMax {
-
   override def solve(maximizing: Boolean = true, depth: Int = 0): Int = {
     if (gameEnded(depth)) {
       score()
     } else {
       Stats.totalCalls += 1
-      if (maximizing) {
-        var value = Int.MinValue
+      val cmp: (Int, Int) => Int = if(maximizing) Math.max else Math.min
+      var value: Int = if(maximizing) Int.MinValue else Int.MaxValue
 
-        consumeMoves() { p =>
-          playMove(p, 1)
-          value = Math.max(value, solve(!maximizing, depth + 1))
-          undoMove(p, 1)
-        }
-
-        value
-      } else {
-        var value = Int.MaxValue
-
-        consumeMoves() { p =>
-          playMove(p, 2)
-          value = Math.min(value, solve(!maximizing, depth + 1))
-          undoMove(p, 2)
-        }
-
-        value
+      consumeMoves() { p =>
+        playMove(p, 1)
+        value = cmp(value, solve(!maximizing, depth + 1))
+        undoMove(p, 1)
       }
+
+      value
     }
   }
 }

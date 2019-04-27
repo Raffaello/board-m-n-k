@@ -12,7 +12,7 @@ class TranspositionTableSpec extends FlatSpec with Matchers {
     val markerAdd: mutable.Map[String, Int] = mutable.Map.empty
     val markerGet: mutable.Map[String, Int] = mutable.Map.empty
 
-    override def add(board: Board, t: TranspositionOld): Unit = {
+    override def add(board: Board, t: Transposition): Unit = {
       val h = hash(board)
 
       if(transpositions.isDefinedAt(h)) {
@@ -29,7 +29,7 @@ class TranspositionTableSpec extends FlatSpec with Matchers {
       super.add(board, t)
     }
 
-    override def get(board: Board): Option[TranspositionOld] = {
+    override def get(board: Board): Option[Transposition] = {
       val t = super.get(board)
       val h = hash(board)
       if (t.isDefined) {

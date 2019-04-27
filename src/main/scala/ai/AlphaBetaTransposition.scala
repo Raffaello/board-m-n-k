@@ -52,7 +52,7 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
   }
 
   def solve(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Transposition = {
-    val cmp: (Int, Int) => Int = if (maximizing) Math.max _ else Math.min _
+    val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
     var a1 = alpha
     var b1 = beta
     mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, _)) =>

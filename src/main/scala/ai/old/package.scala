@@ -6,9 +6,7 @@ import game.{Board, BoardMNK}
   * Used for benchmarks.
   */
 package object old {
-
-  case class TranspositionOld(score: Double, depth: Int, alpha: Double, beta: Double, isMaximizing: Boolean)
-
+  case class Transposition(score: Double, depth: Int, alpha: Double, beta: Double, isMaximizing: Boolean)
   trait withGetBoard extends BoardMNK {
     def getBoard(): Board = board
   }
@@ -24,12 +22,12 @@ package object old {
       Stats.totalCalls += 1
       if (maximizing) {
         best = Int.MinValue
-        cmp = Math.max _
+        cmp = Math.max
         player = 1
       }
       else {
         best = Int.MaxValue
-        cmp = Math.min _
+        cmp = Math.min
         player = 2
       }
 
@@ -116,7 +114,7 @@ package object old {
                         alpha: Double = Double.MinValue,
                         beta: Double = Double.MaxValue,
                         maximizingPlayer: Boolean = true
-                      ): TranspositionOld = {
+                      ): Transposition = {
     val transposition = statuses.get(game.getBoard())
 
     if (transposition.isDefined) {
@@ -124,7 +122,7 @@ package object old {
       transposition.get
     } else if (game.gameEnded(depth)) {
       val score = game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
-      val t = TranspositionOld(
+      val t = Transposition(
         score,
         depth,
         score,
@@ -153,7 +151,7 @@ package object old {
           }
         }
 
-        val t = TranspositionOld(best, depth, a, beta, maximizingPlayer)
+        val t = Transposition(best, depth, a, beta, maximizingPlayer)
         statuses.add(game.getBoard(), t)
         t
       } else {
@@ -173,7 +171,7 @@ package object old {
           }
         }
 
-        val t = TranspositionOld(best, depth, alpha, b, maximizingPlayer)
+        val t = Transposition(best, depth, alpha, b, maximizingPlayer)
         statuses.add(game.getBoard(), t)
         t
       }

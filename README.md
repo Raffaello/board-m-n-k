@@ -7,12 +7,14 @@
 
 Special case is (3,3,3) that is tic-tac-toe
 
-
 ## Tic-tac-toe
 
 It includes an easter egg.
 
 ## Generalized M,N,K game
+
+- [x] 2 players
+- [ ] p players (MNKP)
 
 ## Connect 4
 
@@ -30,9 +32,15 @@ It includes an easter egg.
 
 ## Minimax
 
+- [x] done
+
 ## Negamax
 
+- [x] done
+
 ## Alpha-Beta
+
+- [x] done
 
 ### Basic score function
 
@@ -52,7 +60,12 @@ basic hash function flattening the board of string value statuses.
 
 ### improved hashing function
 
+- [ ] ??? 
+
 ### Zobrist Hashing
+
+- [ ] implement
+- [ ] bitmap?
 
 ## improved game dynamics
 
@@ -93,8 +106,8 @@ from 2D array to ??? (1D? easier for hashing?)
 
 - [ ] replace with 1D array and compute the moves as `i*n+j` for the exact index position
 
-- [ ] simplify the checking of end game simpli looking around the value and moving trought the array.
-- [ ] simplify to have ashing.
+- [ ] simplify the checking of end game looking around the value and moving trough the array.
+- [ ] simplify hashing.
 - [ ] consider to use a bit board for each player to represent the game.
 
 ## Principal Variation

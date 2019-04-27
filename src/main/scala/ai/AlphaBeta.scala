@@ -3,9 +3,6 @@ package ai
 import game.Position
 
 trait AlphaBeta extends AiBoard {
-
-//  private def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
-
   protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus => ABStatus): Int = {
     if (gameEnded(depth)) {
       val s = score()
@@ -35,7 +32,7 @@ trait AlphaBeta extends AiBoard {
   }
 
   def solve(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Int = {
-    val cmp: (Int, Int) => Int = if (maximizing) Math.max _ else Math.min _
+    val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
     var a1 = alpha
     var b1 = beta
     mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, p)) =>
