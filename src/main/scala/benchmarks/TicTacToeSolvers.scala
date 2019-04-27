@@ -1,6 +1,7 @@
 package benchmarks
 
 import ai._
+import ai.old.{TranspositionTable, withGetBoard}
 import game.BoardTicTacToe
 
 object TicTacToeSolvers extends App {
@@ -17,7 +18,7 @@ object TicTacToeSolvers extends App {
     val board = new BoardTicTacToe
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
-    val score = ai.minimax(board, true)
+    val score = ai.old.minimax(board, true)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${ai.Stats.totalCalls}")
@@ -44,10 +45,10 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nMiniMax trait RAW: ")
-    val board = new BoardTicTacToe with MiniMax
+    val board = new BoardTicTacToe with MiniMaxRaw
     val start = System.currentTimeMillis()
 //    Stats.totalCalls = 0
-    val score = board.solveRaw()
+    val score = board.solve()
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${board.Stats.totalCalls}")
@@ -62,7 +63,7 @@ object TicTacToeSolvers extends App {
     val board = new BoardTicTacToe
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
-    val score = ai.negamax(board, 1)
+    val score = ai.old.negamax(board, 1)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${ai.Stats.totalCalls}")
@@ -119,11 +120,11 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nAlpha Beta With TranspositionTableOld:")
-    val board = new BoardTicTacToe with TranspositionTableOld
+    val board = new BoardTicTacToe with TranspositionTable with withGetBoard
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0
-    val transposition = ai.alphaBetaWithMemOld(board, board)
+    val transposition = ai.old.alphaBetaWithMem(board, board)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${ai.Stats.totalCalls}")
@@ -138,7 +139,7 @@ object TicTacToeSolvers extends App {
 
   {
     println("\nAlpha Beta With TranspositionTable:")
-    val board = new BoardTicTacToe with TranspositionTable
+    val board = new BoardTicTacToe with ai.TranspositionTable
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0

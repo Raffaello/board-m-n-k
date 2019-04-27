@@ -1,7 +1,6 @@
 package benchmarks
 
-import ai.TranspositionTableOld
-import game.BoardMNK
+import ai.old.BoardMNKwithGetBoard
 
 object MNKSolverWithMem extends App {
 
@@ -13,10 +12,10 @@ object MNKSolverWithMem extends App {
   print("k = ")
   val k:Short = 3//scala.io.StdIn.readShort()
 
-  val board = new BoardMNK(m, n, k) with TranspositionTableOld
+  val board = new BoardMNKwithGetBoard(m, n, k) with ai.old.TranspositionTable
 //  val states = new TranspositionTable {}
   val time = System.currentTimeMillis()
-  val score = ai.alphaBetaWithMemOld(board, board)
+  val score = ai.old.alphaBetaWithMem(board, board)
   println(s"total time: ${System.currentTimeMillis() - time}")
   println(s"Total calls: ${ai.Stats.totalCalls}")
   println(s"Total cache: ${board.transpositions.size}")

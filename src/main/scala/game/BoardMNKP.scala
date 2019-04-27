@@ -17,8 +17,8 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   val nkDiff: Short = (n - k).toShort
   val mkDiff: Short = (m - k).toShort
 
-  protected val mkDiffIncIndices = NumericRange.inclusive(0, mkDiff, 1)
-  protected val nkDiffIncIndices = NumericRange.inclusive[Short](0, nkDiff, 1)
+  protected val mkDiffIncIndices: NumericRange.Inclusive[Int] = NumericRange.inclusive(0, mkDiff, 1)
+  protected val nkDiffIncIndices: NumericRange.Inclusive[Short] = NumericRange.inclusive[Short](0, nkDiff, 1)
   protected val k1mIndices = NumericRange(k1, m, 1)
 
   protected var lastPlayer: Byte = 0
@@ -63,11 +63,6 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
       true
     }
   }
-
-  /**
-    * @deprecated
-    */
-  def playMove(row: Short, col: Short, player: Byte): Boolean = playMove((row, col), player)
 
   /**
     * TODO: should check if it is not already zero otherwise

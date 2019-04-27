@@ -1,13 +1,13 @@
-package ai
+package ai.old
 
 import game.{Board, BoardTicTacToe}
 import org.scalatest.{FlatSpec, Matchers}
 
 import scala.collection.mutable
 
-class TranspositionTableOldSpec extends FlatSpec with Matchers {
+class TranspositionTableSpec extends FlatSpec with Matchers {
 
-  sealed trait TranspositionTableOldStub extends TranspositionTableOld {
+  sealed trait TranspositionTableStub extends TranspositionTable {
 
     val markerAdd: mutable.Map[String, Int] = mutable.Map.empty
     val markerGet: mutable.Map[String, Int] = mutable.Map.empty
@@ -44,9 +44,9 @@ class TranspositionTableOldSpec extends FlatSpec with Matchers {
   }
 
   "Transposition table" should "be used" in {
-    val game = new BoardTicTacToe()
-    val trans = new TranspositionTableOldStub {}
-    val t = ai.alphaBetaWithMemOld(trans, game)
+    val game = new BoardTicTacToe() with withGetBoard
+    val trans = new TranspositionTableStub {}
+    val t = ai.old.alphaBetaWithMem(trans, game)
 
     t.score shouldEqual 0.0
     trans.markerGet("121000000") shouldEqual 1
