@@ -1,4 +1,5 @@
-import ai.{alphaBetaNextMove, negamaxNextMove}
+import ai.alphaBetaNextMove
+import ai.old.negamaxNextMove
 import game.BoardMNK
 
 object FiveFiveThree extends App {
@@ -49,14 +50,13 @@ object FiveFiveThree extends App {
           }
         }
         else {
-          val (score, i, j) = negamaxNextMove(game, -1)
+          val (_, i, j) = negamaxNextMove(game, -1)
           game.playMove((i, j), computerPlayer)
         }
         playerTurn = !playerTurn
       }
 
       game.display()
-      var winner = ""
       game.score() match {
         case 0 => println("STALEMATE!")
         case 1 => println("Player 1 (Human) wins")
@@ -82,7 +82,7 @@ object FiveFiveThree extends App {
           player = computerPlayer
         }
 
-        val (score, i, j, a2 , b2) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
+        val (_, i, j, a2 , b2) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
         a = a2
         b = b2
         depth +=1

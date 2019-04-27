@@ -55,7 +55,7 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
     val cmp: (Int, Int) => Int = if (maximizing) Math.max _ else Math.min _
     var a1 = alpha
     var b1 = beta
-    mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, p)) =>
+    mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, _)) =>
       val value = solve(!maximizing, depth + 1, a, b)
       val best = cmp(v, value.score)
       if(maximizing) a1 = Math.max(a, best)

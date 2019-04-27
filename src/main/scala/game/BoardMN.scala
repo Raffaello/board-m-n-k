@@ -14,12 +14,7 @@ abstract class BoardMN(val m: Short, val n: Short) {
   protected var freePositions: Int = m * n
   protected var lastMove: Position = (0, 0)
 
-  /**
-    * @deprecated
-    */
-  def getBoard(): Board = board
-
-  def move(position: Position) = board(position._1)(position._2)
+  def move(position: Position): Byte = board(position._1)(position._2)
 
   def playMove(position: Position, player: Byte): Boolean
 

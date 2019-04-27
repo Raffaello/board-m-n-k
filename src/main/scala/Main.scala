@@ -1,40 +1,38 @@
 import game.BoardMNK
 import ai._
+import ai.old.{BoardMNKwithGetBoard, TranspositionTable}
 
 
 object Main extends App {
-
   sealed trait _Stats {
     var totalCalls: Int = 0
     var cacheHits: Int = 0
   }
 
-  sealed abstract class SolverBoard(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) {
+  sealed trait SolverBoardTrait {
     def result(): Any
-
     def stats(): _Stats
   }
 
-  sealed abstract class SolverBoardRaw(m: Short, n: Short, k: Short) extends SolverBoard(m, n, k) {
+  sealed trait StatsWrapper {
     def stats(): _Stats = new _Stats {
       totalCalls = ai.Stats.totalCalls
       cacheHits = ai.Stats.cacheHits
     }
   }
 
-  sealed abstract class SolverBoardAiTrait(m: Short, n: Short, k: Short) extends SolverBoard(m, n, k) with AiBoard {
-    def stats() = new _Stats {
-      totalCalls = Stats.totalCalls
-      cacheHits = Stats.cacheHits
-    }
-  }
+  sealed abstract class SolverBoard(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with SolverBoardTrait {}
+  sealed abstract class SolverBoardOld(m: Short, n: Short, k: Short) extends BoardMNKwithGetBoard(m, n, k) with SolverBoardTrait {}
+  sealed abstract class SolverBoardRaw(m: Short, n: Short, k: Short) extends SolverBoard(m, n, k) with StatsWrapper {}
+  sealed abstract class SolverBoardOldRaw(m: Short, n: Short, k: Short) extends SolverBoardOld(m, n, k) with StatsWrapper {}
+  sealed abstract class SolverBoardAiTrait(m: Short, n: Short, k: Short) extends SolverBoard(m, n, k) with AiBoard with StatsWrapper {}
 
   sealed class MiniMaxRaw(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) {
-    def result() = ai.minimax(this, true)
+    def result() = ai.old.minimax(this, true)
   }
 
-  sealed class MiniMaxTraitRaw(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with MiniMax {
-    def result() = this.solveRaw()
+  sealed class MiniMaxTraitRaw(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with ai.MiniMaxRaw {
+    def result() = this.solve()
   }
 
   sealed class MiniMaxTrait(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with MiniMax {
@@ -42,7 +40,7 @@ object Main extends App {
   }
 
   sealed class NegaMaxRaw(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) {
-    def result() = ai.negamax(this, 1)
+    def result() = ai.old.negamax(this, 1)
   }
 
   sealed class NegaMaxTrait(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with NegaMax {
@@ -53,11 +51,11 @@ object Main extends App {
     def result() = ai.alphaBeta(this)
   }
 
-  sealed class AlphaBetaTTOld(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) with TranspositionTableOld {
-    def result() = ai.alphaBetaWithMemOld(this, this)
+  sealed class AlphaBetaTTOld(m: Short, n: Short, k: Short) extends SolverBoardOldRaw(m, n, k) with ai.old.TranspositionTable {
+    def result() = ai.old.alphaBetaWithMem(this, this)
   }
 
-  sealed class AlphaBetaTT(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) with TranspositionTable {
+  sealed class AlphaBetaTT(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) with ai.TranspositionTable {
     def result() = ai.alphaBetaWithMem(this, this)
   }
 
@@ -65,7 +63,7 @@ object Main extends App {
     def result() = this.solve()
   }
 
-  sealed class AlphaBetaTraitTTOld(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with TranspositionTableOld {
+  sealed class AlphaBetaTraitTTOld(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with ai.old.TranspositionTable {
     def result() = this.solve()
   }
 
@@ -84,7 +82,7 @@ object Main extends App {
   assert(k <= Math.min(m, n))
 
   // label, function name, is Trait?
-  val choices = IndexedSeq[(String, SolverBoard)](
+  val choices = IndexedSeq[(String, SolverBoardTrait)](
     ("MiniMax Raw", new MiniMaxRaw(m, n, k)),
     ("MiniMax Trait Raw", new MiniMaxTraitRaw(m, n, k)),
     ("MiniMax Trait", new MiniMaxTrait(m, n, k)),
