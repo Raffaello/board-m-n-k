@@ -13,34 +13,34 @@ It includes an easter egg.
 
 ## Generalized M,N,K game
 
-- [x] 2 players
-- [ ] p players (MNKP)
+-  [x] 2 players
+-  [ ] p players (MNKP)
 
 ## Connect 4
 
-- [ ] define the basic rules and write tests 
+-  [ ] define the basic rules and write tests 
 
 ## Connect 5
 
-- [ ] generalize 4-in-a-row to 5
+-  [ ] generalize 4-in-a-row to 5
 
 ## Connect K
 
-- [ ] proportionally defining the board size
-- [ ] accepting also N,M for the board size 
-- [ ] generalize in connect N
+-  [ ] proportionally defining the board size
+-  [ ] accepting also N,M for the board size 
+-  [ ] generalize in connect N
 
 ## Minimax
 
-- [x] done
+-  [x] done
 
 ## Negamax
 
-- [x] done
+-  [x] done
 
 ## Alpha-Beta
 
-- [x] done
+-  [x] done
 
 ### Basic score function
 
@@ -60,12 +60,12 @@ basic hash function flattening the board of string value statuses.
 
 ### improved hashing function
 
-- [ ] ??? 
+-  [ ] ??? 
 
 ### Zobrist Hashing
 
-- [ ] implement
-- [ ] bitmap?
+-  [ ] implement
+-  [ ] bitmap?
 
 ## improved game dynamics
 
@@ -74,29 +74,29 @@ Here some techniques designed/reviewed to speed-up the game-dynamics
 
 ### endgame
 
-- [X] can be ended only when at least 2k-1 moves are done,
+-  [X] can be ended only when at least 2k-1 moves are done,
 so avoid to check if depth is lower than 2k-1 and just return false or do not check at all.
 
-- [X] keep a counter of empty cells, each time and modifying accordingly when do/undo a move
+-  [X] keep a counter of empty cells, each time and modifying accordingly when do/undo a move
   check directly if the counter is equal zero to determine end game.
 
 ### Board status look up
 
-- [X] considering delta changes in the board,
+-  [X] considering delta changes in the board,
 keeping the previous check board value (no winners)
 and check only around the move done instead of all the board.
 
 ### moves generations
 
-- [ ] detect quickly if next move would be a winner, 
+-  [ ] detect quickly if next move would be a winner, 
   so put it as first one in moves generation
   Possible with counters for rows,cols and diags when reach K-1 value,
   the first move is the one that make the score in the generations.
   
-- [ ] So check if player can win in this turn and than do that move only. all others can be pruned directly.
-- [ ] if the next turn the opponent can win, generate only that move and all other can pruned directly.  
+-  [ ] So check if player can win in this turn and than do that move only. all others can be pruned directly.
+-  [ ] if the next turn the opponent can win, generate only that move and all other can pruned directly.  
 
-- [ ] Order for moves could be by max symbols for row, cols, diags in case of tie, otherwise sort descending.
+-  [ ] Order for moves could be by max symbols for row, cols, diags in case of tie, otherwise sort descending.
   So it should end up quickly and start pruning more.
   It is important to be very fast in the ordering and pruning enough.
 
@@ -104,11 +104,11 @@ and check only around the move done instead of all the board.
 
 from 2D array to ??? (1D? easier for hashing?)
 
-- [ ] replace with 1D array and compute the moves as `i*n+j` for the exact index position
+-  [ ] replace with 1D array and compute the moves as `i*n+j` for the exact index position
 
-- [ ] simplify the checking of end game looking around the value and moving trough the array.
-- [ ] simplify hashing.
-- [ ] consider to use a bit board for each player to represent the game.
+-  [ ] simplify the checking of end game looking around the value and moving trough the array.
+-  [ ] simplify hashing.
+-  [ ] consider to use a bit board for each player to represent the game.
 
 ## Principal Variation
 
@@ -118,9 +118,9 @@ from 2D array to ??? (1D? easier for hashing?)
 
 ## Monte Carlo Tree Search
 
-- [ ] basic implementation
-- [ ] multi threading
-- [ ] advanced???
+-  [ ] basic implementation
+-  [ ] multi threading
+-  [ ] advanced???
 
 ## AlphaZero
 
@@ -128,9 +128,9 @@ from 2D array to ??? (1D? easier for hashing?)
 
 ## references
 
-- [MIT Search: Games, Minimax and Alpha-Beta](https://www.youtube.com/watch?v=STjW3eH0Cik)
-- [Minimax](https://en.wikipedia.org/wiki/Minimax)
-- [Negamax](https://en.wikipedia.org/wiki/Negamax)
-- [Alpha–beta pruning](https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning)
-- [Zobrist Hashing](https://en.wikipedia.org/wiki/Zobrist_hashing)
+-  [MIT Search: Games, Minimax and Alpha-Beta](https://www.youtube.com/watch?v=STjW3eH0Cik)
+-  [Minimax](https://en.wikipedia.org/wiki/Minimax)
+-  [Negamax](https://en.wikipedia.org/wiki/Negamax)
+-  [Alpha–beta pruning](https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning)
+-  [Zobrist Hashing](https://en.wikipedia.org/wiki/Zobrist_hashing)
 
