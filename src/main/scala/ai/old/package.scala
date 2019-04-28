@@ -43,7 +43,7 @@ package object old {
       best
     }
 
-    if (game.gameEnded(game.minWinDepth)) {
+    if (game.gameEnded()) {
       game.score()
     } else {
       minMaxLoop(isMaximizingPlayer)
@@ -56,7 +56,7 @@ package object old {
     */
   def negamax(game: BoardMNK, color: Byte): Int = {
     //    require(color == 1 || color == -1)
-    if (game.gameEnded(game.minWinDepth)) {
+    if (game.gameEnded()) {
       color * game.score()
     } else {
 
@@ -80,7 +80,7 @@ package object old {
   def negamaxNextMove(game: BoardMNK, color: Byte): (Int, Short, Short) = {
     //    require(color == 1 || color == -1)
 
-    if (game.gameEnded(game.minWinDepth)) {
+    if (game.gameEnded()) {
       (color * game.score(), -1, -1)
     } else {
 

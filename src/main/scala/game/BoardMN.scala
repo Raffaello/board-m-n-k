@@ -13,6 +13,7 @@ abstract class BoardMN(val m: Short, val n: Short) {
 
   protected var freePositions: Int = m * n
   protected var lastMove: Position = (0, 0)
+  protected var depth: Int = 0
 
   def move(position: Position): Byte = board(position._1)(position._2)
 
@@ -23,4 +24,6 @@ abstract class BoardMN(val m: Short, val n: Short) {
   def score(): Int
 
   def gameEnded(depth: Int): Boolean
+
+  def gameEnded(): Boolean = gameEnded(depth)
 }

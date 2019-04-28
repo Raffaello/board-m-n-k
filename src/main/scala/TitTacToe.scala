@@ -25,7 +25,7 @@ object TitTacToe extends App {
       println("Do you want to start? [y, yes]")
       val playerStart = scala.io.StdIn.readBoolean()
       var playerTurn = playerStart
-      while (!game.gameEnded(game.minWinDepth)) {
+      while (!game.gameEnded()) {
         game.display()
         if (playerTurn) {
           var valid = false

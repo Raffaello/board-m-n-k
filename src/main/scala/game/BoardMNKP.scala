@@ -21,7 +21,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   protected val nkDiffIncIndices: NumericRange.Inclusive[Short] = NumericRange.inclusive[Short](0, nkDiff, 1)
   protected val k1mIndices = NumericRange(k1, m, 1)
 
-  protected var lastPlayer: Byte = 0
+  /*protected*/ var lastPlayer: Byte = 0
 
 
   object LookUps {
@@ -57,6 +57,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     else {
       board(row)(col) = player
       freePositions -= 1
+      depth += 1
       lastMove = position
       lastPlayer = player
       LookUps.inc(position, player - 1)
@@ -72,6 +73,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
     assert(board(position._1)(position._2) > 0)
     board(position._1)(position._2) = 0
     freePositions += 1
+    depth -= 1
     LookUps.dec(position, player - 1)
     LookUps.won = None
     lastPlayer = player
