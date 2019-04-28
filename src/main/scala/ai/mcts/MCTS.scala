@@ -1,8 +1,28 @@
 package ai.mcts
 
-import game.BoardMNK
+import ai.AiBoard
+import game.{BoardMNK, BoardTicTacToe}
 
 object MCTS {
+
+  def solve(game: BoardTicTacToe) = {
+
+    val root = new Node()
+    val rootState = new BoardState(game.m, game.n)
+    //rootState.clone(game)
+//    rootState.board = game.board
+    rootState.player = 2 // it is not player 1, so should be player 2 (because 1st move is for p1)
+    root.state = rootState
+    root.parent = null
+
+//    val selectedNode = selection(root)
+//    val expandedNode = expansion(selectedNode)
+//    val simulatedNode = simulation(expandedNode, expandedNode)
+
+//    MCTS.simulation(root, 1)
+    findNextMove(game, 1, root)
+  }
+
   def selection(root: Node): Node = {
     var node = root
     while (node.children.nonEmpty) {
@@ -13,6 +33,7 @@ object MCTS {
   }
 
   def expansion(node: Node) = {
+    assert(node.children.isEmpty)
     val states = node.state.allPossibleStates()
     states.foreach(s => {
       val newNode = new Node()
@@ -23,24 +44,32 @@ object MCTS {
     })
   }
 
-  def simulation(node: Node, player: Byte): Byte = {
-    val tempNode = new Node()
-    val tempState = tempNode.state
-    val tempBoard = tempState.board
-    var boardStatus = tempBoard.lastPlayer == player
-    if (boardStatus) {
-      tempNode.parent.state.score = Double.MinValue
-      player // opponent?
-    } else {
-      // here play the game like minimax...
-      while (!tempState.board.gameEnded()) {
-        tempState.player = tempState.opponent()
-        boardStatus = tempState.randomMove() && !tempBoard.gameEnded()
-      }
+  def simulation(node: Node, player: Byte): Node = {
 
-      tempState.board.lastPlayer
+    val tempNode = new Node()
+//    tempNode.parent = node
+    tempNode.parent = node.parent
+    tempNode.children = node.children
+//    tempNode.state
+    tempNode.state = new BoardState(node.state.m, node.state.n)
+    val tempState = tempNode.state
+    tempState.clone(node.state)
+
+    var boardStatus = tempState.player == player
+    if (!boardStatus) {
+      tempNode.parent.state.stateScore = Double.MinValue
+//      tempState.player // opponent?
+    } else {
+      // here play the game...
+      while (!tempState.gameEnded() && boardStatus) {
+        boardStatus = tempState.randomMove()
+        tempState.player = tempState.opponent()
+      }
     }
 
+    node.state.stateScore = tempState.score()
+
+    tempNode
   }
 
   def backpropagation(node: Node, player: Short) = {
@@ -48,30 +77,40 @@ object MCTS {
     while (tempNode != null) {
       tempNode.state.visitCount += 1
       if (tempNode.state.player == player) {
-        tempNode.state.score += tempNode.state.board.score()
+        tempNode.state.stateScore += node.state.stateScore
+        assert(!tempNode.state.stateScore.isInfinity)
       }
 
       tempNode = tempNode.parent
     }
   }
 
-  def findNxetMove(game: BoardMNK, player: Byte) = {
+  def findNextMove(game: BoardTicTacToe, player: Byte, root: Node) = {
     val opponent: Byte = (3 - player).toByte
-    val root = new Node()
-    root.state.board = game
-    root.state.player = opponent
-    val process=true
-    while(end) {
+    var process=true
+    var bestNode:Node = root
+    while(process) {
       val tempNode = selection(root)
-      if(!tempNode.state.board.gameEnded()) {
+      assert(tempNode.children.isEmpty)
+      if(!tempNode.state.gameEnded()) {
         expansion(tempNode)
+
+
+        val exploringNode = tempNode.randomChild()
+
+        val simulatedNode = simulation(exploringNode, player)
+        println(
+          s"Simulation = score: ${simulatedNode.state.stateScore} --- visited = ${simulatedNode.state.visitCount} "
+          + s"--- selNode: ${tempNode} --- expMode: ${exploringNode} --- gameEnded: ${exploringNode.state.gameEnded()} "
+          + s"-- depth: ${exploringNode.state.depth}"
+        )
+        backpropagation(exploringNode, player)
+      } else {
+        bestNode = tempNode
+        process=false
       }
-
-      val exploringNode = tempNode.randomChild()
-
-      simulation(exploringNode, player)
-      backpropagation(exploringNode, player)
     }
-
+    bestNode.state.display()
+//    bestNode.state.
   }
 }

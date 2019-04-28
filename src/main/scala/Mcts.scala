@@ -1,17 +1,10 @@
-import ai.mcts.{MCTS, Node, State}
+import ai.mcts.MCTS
 import game.BoardTicTacToe
 
 object Mcts extends App {
+  sealed class AiTicTacToe extends BoardTicTacToe with ai.AiBoard
 
-  val game = new BoardTicTacToe()
-  val root = new Node()
-  val rootState = new State()
-  rootState.board = game
-  rootState.player = 0 // it is not player 1, so should be player 2 (because 1st move is for p1)
+  val game = new AiTicTacToe()
+  MCTS.solve(game)
 
-  root.state = rootState
-  root.parent = null
-
-  MCTS.simulation(root, 1)
-  
 }

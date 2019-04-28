@@ -9,11 +9,11 @@ abstract class BoardMN(val m: Short, val n: Short) {
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
-  protected val board: Board = Array.ofDim[Byte](m, n)
+  /*protected*/ val board: Board = Array.ofDim[Byte](m, n)
 
-  protected var freePositions: Int = m * n
+  /*protected*/ var freePositions: Int = m * n
   protected var lastMove: Position = (0, 0)
-  protected var depth: Int = 0
+  /*protected*/ var depth: Int = 0
 
   def move(position: Position): Byte = board(position._1)(position._2)
 
