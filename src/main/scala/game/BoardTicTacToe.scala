@@ -37,12 +37,12 @@ class BoardTicTacToe extends BoardMNK(3, 3, 3) {
 
   override protected def checkWin(): Boolean = {
     if (scoreDiagsTL() > 0 || scoreDiagsBR() > 0) return true
-    
+
     for(i <- mIndices) {
       if(scoreRow(i.toShort) > 0 || scoreCol(i) > 0)
         return true
     }
 
     false
-  }
+  } 
 }
