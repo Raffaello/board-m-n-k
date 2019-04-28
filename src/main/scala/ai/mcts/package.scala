@@ -42,14 +42,19 @@ package object mcts {
     var score: Double = Double.MinValue
 
     def allPossibleStates(): List[State] = {
+      // TODO
       Nil
     }
 
     def randomMove(): Boolean = {
+      // TODO
       false
     }
 
-    def randomPlay(): Boolean = false
+    def randomPlay(): Boolean = {
+      // TODO
+      false
+    }
 
     // assuming player 1 or 2
     def opponent(): Byte = (3 - player).toByte
