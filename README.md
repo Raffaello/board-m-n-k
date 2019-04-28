@@ -120,7 +120,7 @@ from 2D array to ??? (1D? easier for hashing?)
 
 - [ ] basic implementation
 - [ ] multi threading
-- [ ] advanced???
+- [ ] RAVE
 
 ## AlphaZero
 
@@ -138,3 +138,4 @@ from 2D array to ??? (1D? easier for hashing?)
 - [MCTS Part III](http://ccg.doc.gold.ac.uk/ccg_old/teaching/ludic_computing/ludic16.pdf)
 - [MCTS Intro](https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/)
 - [MCTS](https://www.baeldung.com/java-monte-carlo-tree-search)
+- [Wiki MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search)
