@@ -2,6 +2,20 @@ package game
 
 class BoardTicTacToe extends BoardMNK(3, 3, 3) {
 
+  def score(player: Byte): Score = {
+    var score =scoreDiagsTL()
+    score += scoreDiagsBR()
+    for(i <- mIndices) {
+      score += scoreRow(i.toShort) + scoreCol(i)
+    }
+
+    if(player == score) 1
+    else if(score>0) -1
+    else 0
+
+
+  }
+
   protected def scoreRow(row: Short): Int = {
     if (board(row)(0) == board(row)(1) && board(row)(0) == board(row)(2)) {
       board(row)(0)
@@ -33,6 +47,13 @@ class BoardTicTacToe extends BoardMNK(3, 3, 3) {
       0
     }
 
+  }
+
+
+  override def gameEnded(): Boolean = {
+    freePositions == 0 ||
+    checkWin() ||
+    !board.flatten.contains(0)
   }
 
   override protected def checkWin(): Boolean = {

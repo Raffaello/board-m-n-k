@@ -11,7 +11,7 @@ object MCTS {
     val rootState = new BoardState(game.m, game.n)
     //rootState.clone(game)
 //    rootState.board = game.board
-    rootState.player = 2 // it is not player 1, so should be player 2 (because 1st move is for p1)
+    rootState.player = 1 // it is not player 1, so should be player 2 (because 1st move is for p1)
     root.state = rootState
     root.parent = null
 
@@ -20,7 +20,7 @@ object MCTS {
 //    val simulatedNode = simulation(expandedNode, expandedNode)
 
 //    MCTS.simulation(root, 1)
-    findNextMove(game, 1, root)
+    findNextMove(game, root)
   }
 
   def selection(root: Node): Node = {
@@ -57,7 +57,7 @@ object MCTS {
 
     var boardStatus = tempState.player == player
     if (!boardStatus) {
-      tempNode.parent.state.stateScore = Double.MinValue
+//      tempNode.parent.state.stateScore = Double.MinValue
 //      tempState.player // opponent?
     } else {
       // here play the game...
@@ -67,7 +67,9 @@ object MCTS {
       }
     }
 
-    node.state.stateScore = tempState.score()
+//    val stateScore = (tempState.score()+1.0) / 2.0
+//    node.state.stateScore += stateScore
+    node.state.stateScore += tempState.score()
 
     tempNode
   }
@@ -85,8 +87,9 @@ object MCTS {
     }
   }
 
-  def findNextMove(game: BoardTicTacToe, player: Byte, root: Node) = {
-    val opponent: Byte = (3 - player).toByte
+  def findNextMove(game: BoardTicTacToe, root: Node) = {
+    val player = root.state.player
+//    val opponent: Byte = root.state.opponent()
     var process=true
     var bestNode:Node = root
     while(process) {
@@ -110,6 +113,13 @@ object MCTS {
         process=false
       }
     }
+    println("Simulated game: ")
+    bestNode.state.display()
+    while(bestNode.parent != root) {
+      bestNode = bestNode.parent
+    }
+
+    println("next move:")
     bestNode.state.display()
 //    bestNode.state.
   }

@@ -43,10 +43,10 @@ package object mcts {
 //    override  var board: Board = _
     var player: Byte = _
     var visitCount: Int = 0
-    var wins: Int = 0
-    var loss: Int = 0
-    var drawn: Int = 0
-    var stateScore: Double = Double.MinValue
+//    var wins: Int = 0
+//    var loss: Int = 0
+//    var drawn: Int = 0
+    var stateScore: Double = 0.0
 
 
      def clone(state: BoardState) = {
@@ -61,11 +61,10 @@ package object mcts {
 
        this.depth = state.depth
        this.player = state.player
-       this.drawn = state.drawn
        this.visitCount = state.visitCount
-       this.wins = state.wins
-       this.loss = state.loss
-       this.drawn = state.drawn
+//       this.wins = state.wins
+//       this.loss = state.loss
+//       this.drawn = state.drawn
        this.stateScore = state.stateScore
      }
      /**
