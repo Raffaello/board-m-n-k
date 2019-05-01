@@ -1,7 +1,8 @@
 package ai.mcts
 
-import ai.AiBoard
-import game.{BoardMNK, BoardTicTacToe}
+import game.BoardTicTacToe
+
+import scala.annotation.tailrec
 
 object MCTS {
 
@@ -9,29 +10,27 @@ object MCTS {
 
     val root = new Node()
     val rootState = new BoardState(game.m, game.n)
-    //rootState.clone(game)
-//    rootState.board = game.board
-    rootState.player = 1 // it is not player 1, so should be player 2 (because 1st move is for p1)
+    rootState.player = 1
     root.state = rootState
     root.parent = null
 
-//    val selectedNode = selection(root)
-//    val expandedNode = expansion(selectedNode)
-//    val simulatedNode = simulation(expandedNode, expandedNode)
-
-//    MCTS.simulation(root, 1)
     findNextMove(game, root)
   }
 
   def selection(root: Node): Node = {
-    var node = root
-    while (node.children.nonEmpty) {
-      node = UCT.findBestNode(node)
+    @tailrec
+    def descending(node: Node): Node = {
+      if (node.children.isEmpty) node
+      else descending(UCT.findBestNode(node))
     }
 
-    node
+    descending(root)
   }
 
+  /**
+    * TODO expand only the one needed
+    * @param node
+    */
   def expansion(node: Node) = {
     assert(node.children.isEmpty)
     val states = node.state.allPossibleStates()
@@ -45,82 +44,86 @@ object MCTS {
   }
 
   def simulation(node: Node, player: Byte): Node = {
-
     val tempNode = new Node()
-//    tempNode.parent = node
+    // TODO create a clone method
     tempNode.parent = node.parent
     tempNode.children = node.children
-//    tempNode.state
     tempNode.state = new BoardState(node.state.m, node.state.n)
     val tempState = tempNode.state
     tempState.clone(node.state)
 
-    var boardStatus = tempState.player == player
-    if (!boardStatus) {
-//      tempNode.parent.state.stateScore = Double.MinValue
-//      tempState.player // opponent?
-    } else {
+//    var boardStatus = tempState.player == player
+//    if (!boardStatus) {
+      // TODO ???
+      //      tempNode.parent.state.stateScore = Double.MinValue
+      //      tempState.player // opponent?
+//    } else {
+    if (tempState.player == player) {
       // here play the game...
-      while (!tempState.gameEnded() && boardStatus) {
-        boardStatus = tempState.randomMove()
+      // TODO: inefficient using gameEnded... review it
+      // TODO: add number of max time / iterations
+      while (!tempState.gameEnded() && tempState.randomMove()) {
         tempState.player = tempState.opponent()
       }
     }
 
-//    val stateScore = (tempState.score()+1.0) / 2.0
-//    node.state.stateScore += stateScore
     node.state.stateScore += tempState.score()
-
-    tempNode
+    tempNode // ???
   }
 
-  def backpropagation(node: Node, player: Short) = {
+  def backpropagation(node: Node, player: Short): Unit = {
     var tempNode = node
     while (tempNode != null) {
       tempNode.state.visitCount += 1
       if (tempNode.state.player == player) {
         tempNode.state.stateScore += node.state.stateScore
-        assert(!tempNode.state.stateScore.isInfinity)
       }
 
       tempNode = tempNode.parent
     }
   }
 
-  def findNextMove(game: BoardTicTacToe, root: Node) = {
+  def findNextMove(game: BoardTicTacToe, root: Node): Unit = {
     val player = root.state.player
-//    val opponent: Byte = root.state.opponent()
-    var process=true
-    var bestNode:Node = root
-    while(process) {
+    var process = true
+    var bestNode: Node = root
+    // TODO refactor Stats
+    var totalCalls = 0
+    while (process) {
       val tempNode = selection(root)
       assert(tempNode.children.isEmpty)
-      if(!tempNode.state.gameEnded()) {
+      // TODO use max time/iterations too
+      // TODO review gameEnded method
+      if (!tempNode.state.gameEnded()) {
+
         expansion(tempNode)
-
-
         val exploringNode = tempNode.randomChild()
-
         val simulatedNode = simulation(exploringNode, player)
+
         println(
           s"Simulation = score: ${simulatedNode.state.stateScore} --- visited = ${simulatedNode.state.visitCount} "
-          + s"--- selNode: ${tempNode} --- expMode: ${exploringNode} --- gameEnded: ${exploringNode.state.gameEnded()} "
-          + s"-- depth: ${exploringNode.state.depth}"
+            + s"--- selNode: ${tempNode.state.board.flatten.mkString} --- expMode: ${exploringNode.state.board.flatten.mkString} --- gameEnded: ${exploringNode.state.gameEnded()} "
+            + s"-- depth: ${exploringNode.state.depth}"
         )
+
         backpropagation(exploringNode, player)
+        totalCalls += 1
       } else {
         bestNode = tempNode
-        process=false
+        process = false
       }
     }
+
     println("Simulated game: ")
     bestNode.state.display()
-    while(bestNode.parent != root) {
+    // TODO refactor in node to get root
+    while (bestNode.parent != root) {
       bestNode = bestNode.parent
     }
 
     println("next move:")
     bestNode.state.display()
-//    bestNode.state.
+
+    println(s"Total Calls: $totalCalls")
   }
 }
