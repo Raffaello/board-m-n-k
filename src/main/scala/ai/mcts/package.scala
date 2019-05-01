@@ -14,7 +14,6 @@ package object mcts {
         case 0 => Double.MaxValue
         case _ => w / n.toDouble + c * Math.sqrt(Math.log(N) / n.toDouble)
       }
-      //      println(s"UCS = ${res}")
       assert(N != 0)
       assert(!res.isNaN)
       assert(!res.isInfinity)
@@ -22,13 +21,14 @@ package object mcts {
     }
 
     def findBestNode(node: Node): Node = {
-      // TODO: UCT can be cached in the node and invalidated in backpropagation.
+      // TODO: UCT can be cached in the node and invalidated/updated in backpropagation.
       node.children.maxBy(c => UCT(c.state.stateScore, c.state.visitCount, node.state.visitCount))
     }
   }
 
   class Node {
     var state: BoardState = _
+    // TODO refactor with Option
     var parent: Node = null
     // TODO use a fixed array/list if possible.
     var children: ArrayBuffer[Node] = new ArrayBuffer[Node]()
@@ -50,7 +50,6 @@ package object mcts {
     var player: Byte = _
     var visitCount: Int = 0
     var stateScore: Double = 0.0
-
 
     def clone(state: BoardState) = {
       for {
