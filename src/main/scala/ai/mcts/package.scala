@@ -51,6 +51,10 @@ package object mcts {
     var visitCount: Int = 0
     var stateScore: Double = 0.0
 
+    /**
+      * todo case class .copy ???
+      * @param state
+      */
     def clone(state: BoardState) = {
       for {
         i <- mIndices
