@@ -1,6 +1,7 @@
 package ai
 
 trait MiniMaxRaw extends MiniMax {
+
   override def solve(maximizing: Boolean = true, depth: Int = 0): Int = {
     if (gameEnded(depth)) {
       score()
@@ -8,11 +9,12 @@ trait MiniMaxRaw extends MiniMax {
       Stats.totalCalls += 1
       val cmp: (Int, Int) => Int = if(maximizing) Math.max else Math.min
       var value: Int = if(maximizing) Int.MinValue else Int.MaxValue
-
+      val pl = player(maximizing)
       consumeMoves() { p =>
-        playMove(p, 1)
+
+        playMove(p, pl)
         value = cmp(value, solve(!maximizing, depth + 1))
-        undoMove(p, 1)
+        undoMove(p, pl)
       }
 
       value

@@ -83,6 +83,14 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
 
   protected def checkWin(): Boolean = ???
 
+  /**
+    * TODO: not sure is well designed here,
+    * every call is calling gameEnded to check, and if depth is not enough
+    * would re-set everytime the lookups won Some(false).
+    * It is used just for the score function mainly
+    *
+    * TODO: reconsider the Lookups.won Option[Boolean] for is usage case.
+    */
   override def gameEnded(depth: Int): Boolean = {
     if (depth < minWinDepth) {
       LookUps.won = Some(false)
