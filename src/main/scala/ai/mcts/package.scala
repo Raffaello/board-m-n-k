@@ -71,7 +71,7 @@ package object mcts {
     }
 
     /**
-      * TODO: REFACTOR
+      * TODO: REFACTOR not part of board state
       */
     def allPossibleStates(): List[BoardState] = {
       val states: ListBuffer[BoardState] = new ListBuffer[BoardState]()
@@ -88,6 +88,9 @@ package object mcts {
       states.toList
     }
 
+    /**
+      * TODO refactor, not part of board state
+      */
     def randomMove(): Boolean = {
       val moves = generateMoves()
       if (moves.nonEmpty) {
