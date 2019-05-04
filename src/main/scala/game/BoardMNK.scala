@@ -4,11 +4,12 @@ import scala.annotation.tailrec
 import scala.collection.immutable.NumericRange
 
 /**
+  * TODO: potentially split in BoardNMK and BoardMNKLookUp (traits)
   * @param m number of rows
   * @param n number of cols
   * @param k number of same move of a player "in a row" (or col or diagonal)
   */
-class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
+class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) {
   override def score(): Int = {
     if (LookUps.won.getOrElse(checkWin())) lastPlayer match {
       case 2 => -1
@@ -23,10 +24,14 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     * @return
     */
   override protected def checkWin(): Boolean = {
-    LookUps.won = Some(scoreRow() > 0 || scoreCol() > 0 || scoreDiagSE() > 0 || scoreDiagNE() > 0)
+    if (LookUps.won.isEmpty) LookUps.won = Some(scoreRow() > 0 || scoreCol() > 0 || scoreDiagSE() > 0 || scoreDiagNE() > 0)
     LookUps.won.get
   }
 
+  /**
+    * South-East direction checking: bottom-right to top-left
+    * @return
+    */
   protected def scoreDiagSE(): Int = {
     val (i, j) = lastMove
     val bMin = Math.min(n - j, m - i)
@@ -36,14 +41,14 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     @tailrec
     def foldDownRight(acc: Int, offset: Int): Int = {
       if (offset == stopU) acc
-      else if (board(i + offset)(j + offset) == lastPlayer) foldDownRight(acc + 1, offset + 1)
+      else if (_board(i + offset)(j + offset) == lastPlayer) foldDownRight(acc + 1, offset + 1)
       else acc
     }
 
     @tailrec
     def foldUpLeft(acc: Int, offset: Int): Int = {
       if (offset == stopD) acc
-      else if (board(i - offset)(j - offset) == lastPlayer) foldUpLeft(acc + 1, offset + 1)
+      else if (_board(i - offset)(j - offset) == lastPlayer) foldUpLeft(acc + 1, offset + 1)
       else acc
     }
 
@@ -56,18 +61,22 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     0
   }
 
+  /**
+    * North-East direction checking: bottom-left to top-right
+    * @return
+    */
   protected def scoreDiagNE(): Int = {
     val (i, j) = lastMove
 
     @tailrec
     def foldUpRight(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth == 0 || i < 0 || j>=n || board(i)(j) != lastPlayer) acc
+      if (depth == 0 || i < 0 || j>=n || _board(i)(j) != lastPlayer) acc
       else foldUpRight(acc + 1, i - 1, j + 1, depth - 1)
     }
 
     @tailrec
     def foldDownLeft(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth == 0 || i >=m || j < 0 || board(i)(j) != lastPlayer) acc
+      if (depth == 0 || i >=m || j < 0 || _board(i)(j) != lastPlayer) acc
       else foldDownLeft(acc + 1, i + 1, j - 1, depth - 1)
     }
 
@@ -85,16 +94,14 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     @tailrec
     def foldDown(acc: Int, i: Int, stop: Int): Int = {
       if (i == stop) acc
-      else if (board(i)(j) == lastPlayer) foldDown(acc + 1, i + 1, stop)
-      //      else foldDown(acc, i + 1, stop)
+      else if (_board(i)(j) == lastPlayer) foldDown(acc + 1, i + 1, stop)
       else acc
     }
 
     @tailrec
     def foldUp(acc: Int, i: Int, stop: Int): Int = {
       if (i < stop) acc
-      else if (board(i)(j) == lastPlayer) foldUp(acc + 1, i - 1, stop)
-      //      else foldUp(acc, i - 1, stop)
+      else if (_board(i)(j) == lastPlayer) foldUp(acc + 1, i - 1, stop)
       else acc
     }
 
@@ -115,16 +122,14 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
     @tailrec
     def foldRight(acc: Int, j: Int, stop: Int): Int = {
       if (j == stop) acc
-      else if (board(i)(j) == lastPlayer) foldRight(acc + 1, j + 1, stop)
-      //      else foldRight(acc, j + 1, stop)
+      else if (_board(i)(j) == lastPlayer) foldRight(acc + 1, j + 1, stop)
       else acc
     }
 
     @tailrec
     def foldLeft(acc: Int, j: Int, stop: Int): Int = {
       if (j < stop) acc
-      else if (board(i)(j) == lastPlayer) foldLeft(acc + 1, j - 1, stop)
-      //      else foldLeft(acc, j - 1, stop)
+      else if (_board(i)(j) == lastPlayer) foldLeft(acc + 1, j - 1, stop)
       else acc
     }
 
@@ -150,10 +155,10 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) {
 
     for (i <- mIndices) {
       for (j <- 0 until n - 1) {
-        print(s" ${value(board(i)(j))} |")
+        print(s" ${value(_board(i)(j))} |")
       }
 
-      println(s" ${value(board(i)(n - 1))}")
+      println(s" ${value(_board(i)(n - 1))}")
     }
 
     println()

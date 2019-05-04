@@ -5,6 +5,12 @@ package object ai {
     var totalCalls: Int = 0
     var cacheHits: Int = 0
   }
+  type AB = (Int, Int) // Alpha, Beta values
+  //  type ABScore = (AB, Int) // Alpha, Beta values plus score
+  //  type ABStatus = (AB, Status) // Alpha, Beta values plus Status
+  type ABStatus = (AB, Status) // Alpha, Beta values plus Status: Score, Position
+
+
 
   case class Transposition(score: Int, depth: Int, alpha: Int, beta: Int, isMaximizing: Boolean)
 

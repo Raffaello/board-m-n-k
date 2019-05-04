@@ -9,13 +9,23 @@ abstract class BoardMN(val m: Short, val n: Short) {
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
-  /*protected*/ val board: Board = Array.ofDim[Byte](m, n)
+  protected def generateMoves(): IndexedSeq[Position] = {
+    for {
+      i <- mIndices
+      j <- nIndices
+      if _board(i)(j) == 0
+    } yield (i,j)
+  }
 
-  /*protected*/ var freePositions: Int = m * n
+  protected def consumeMoves()(f: Position => Unit): Unit = generateMoves().foreach(f)
+
+  protected val _board: Board = Array.ofDim[Byte](m, n)
+//  def board(): Board = _board
+
+  protected var freePositions: Int = m * n
   protected var lastMove: Position = (0, 0)
-  /*protected*/ var depth: Int = 0
 
-  def move(position: Position): Byte = board(position._1)(position._2)
+  def move(position: Position): Byte = _board(position._1)(position._2)
 
   def playMove(position: Position, player: Byte): Boolean
 
@@ -23,7 +33,5 @@ abstract class BoardMN(val m: Short, val n: Short) {
 
   def score(): Int
 
-  def gameEnded(depth: Int): Boolean
-
-  def gameEnded(): Boolean = gameEnded(depth)
+  def gameEnded(): Boolean
 }

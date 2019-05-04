@@ -7,8 +7,9 @@ import game.{Board, BoardMNK}
   */
 package object old {
   case class Transposition(score: Double, depth: Int, alpha: Double, beta: Double, isMaximizing: Boolean)
+
   trait withGetBoard extends BoardMNK {
-    def getBoard(): Board = board
+    def getBoard(): Board = _board
   }
 
   class BoardMNKwithGetBoard(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with withGetBoard

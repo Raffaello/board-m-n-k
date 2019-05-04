@@ -1,12 +1,10 @@
-package ai.mcts
-
-import game.BoardTicTacToe
+package ai.mcts.old
 
 import scala.annotation.tailrec
 
 object MCTS {
 
-  def solve(game: BoardTicTacToe) = {
+  def solve(game: BoardTicTacToeMcts) = {
 
     val root = new Node()
     val rootState = new BoardState(game.m, game.n)
@@ -83,7 +81,7 @@ object MCTS {
     }
   }
 
-  def findNextMove(game: BoardTicTacToe, root: Node): Unit = {
+  def findNextMove(game: BoardTicTacToeMcts, root: Node): Unit = {
     val player = root.state.player
     var process = true
     var bestNode: Node = root
@@ -102,7 +100,7 @@ object MCTS {
 
         println(
           s"Simulation = score: ${simulatedNode.state.stateScore} --- visited = ${simulatedNode.state.visitCount} "
-            + s"--- selNode: ${tempNode.state.board.flatten.mkString} --- expMode: ${exploringNode.state.board.flatten.mkString} --- gameEnded: ${exploringNode.state.gameEnded()} "
+            + s"--- selNode: ${tempNode.state.getBoard().flatten.mkString} --- expMode: ${exploringNode.state.getBoard().flatten.mkString} --- gameEnded: ${exploringNode.state.gameEnded()} "
             + s"-- depth: ${exploringNode.state.depth}"
         )
 
