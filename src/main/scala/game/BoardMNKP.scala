@@ -72,7 +72,9 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
     else checkWin()
   }
 
-  def opponent(player: Byte): Byte = (numPlayers - player).toByte
+  def opponent(player: Byte): Byte = (numPlayers - player + 1).toByte
+
+  def nextPlayer(): Byte = ???
 
   override def display(): Unit = ???
 }

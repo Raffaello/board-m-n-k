@@ -52,6 +52,7 @@ package object old {
       this.player = state.player
       this.visitCount = state.visitCount
       this.stateScore = state.stateScore
+      this.lastPlayer = state.lastPlayer
     }
 
     /**
