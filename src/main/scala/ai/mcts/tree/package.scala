@@ -1,6 +1,7 @@
 package ai.mcts
 
 import scala.annotation.tailrec
+import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 package object tree {
@@ -15,7 +16,7 @@ package object tree {
   /**
     * TODO refactor with a type class
     */
-  final case class Node(state: State, parent: Option[Node], children: IndexedSeq[Node]) {
+  final case class Node(state: State, parent: Option[Node], children: ListBuffer[Node]) {
     def randomChild(): Node = {
       if (children.isEmpty) this
       else children(Random.nextInt(children.length))
@@ -30,6 +31,17 @@ package object tree {
     def descending(): Node = {
       if (children.isEmpty) this
       else bestChildren().descending()
+    }
+
+    @tailrec
+    def backPropagate(player: Byte, deltaScore: Double): Node = {
+      state.visitCount += 1
+      if (state.player == player) state.score += deltaScore
+
+      parent match {
+        case None => this
+        case Some(x) => x.backPropagate(player, deltaScore)
+      }
     }
   }
 }

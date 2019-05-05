@@ -13,21 +13,19 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   //  require(k <= m || k <= n)
   //  require(numPlayers >= 2)
 
-  val k1: Short = (k - 1).toShort
-  val nkDiff: Short = (n - k).toShort
-  val mkDiff: Short = (m - k).toShort
+  protected val k1: Short = (k - 1).toShort
+  protected val nkDiff: Short = (n - k).toShort
+  protected val mkDiff: Short = (m - k).toShort
 
   protected val mkDiffIncIndices: NumericRange.Inclusive[Int] = NumericRange.inclusive(0, mkDiff, 1)
   protected val nkDiffIncIndices: NumericRange.Inclusive[Short] = NumericRange.inclusive[Short](0, nkDiff, 1)
   protected val k1mIndices = NumericRange(k1, m, 1)
 
   protected var lastPlayer: Byte = 0
-
+  protected val minWinDepth: Int = (2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
   protected var _depth: Int = 0
 
   def depth: Int = _depth
-
-  val minWinDepth: Int = (2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
 
   def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = position

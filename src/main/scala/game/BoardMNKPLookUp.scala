@@ -4,6 +4,8 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, val p: Byte) extends BoardMN
 
   /**
     * TODO, refactor with a trait? (no parameter allowed yet)
+    * TODO also shuold be protected? test will be different
+    * TODO review....
     */
   object LookUps {
     val rows: Array[Array[Int]] = Array.ofDim[Int](m, numPlayers)

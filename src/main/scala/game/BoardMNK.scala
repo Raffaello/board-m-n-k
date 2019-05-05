@@ -5,19 +5,30 @@ import scala.collection.immutable.NumericRange
 
 /**
   * TODO: potentially split in BoardNMK and BoardMNKLookUp (traits)
+  *
   * @param m number of rows
   * @param n number of cols
   * @param k number of same move of a player "in a row" (or col or diagonal)
   */
 class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) {
-  override def score(): Int = {
-    if (LookUps.won.getOrElse(checkWin())) lastPlayer match {
+  protected def score2players(player: Byte): Int = {
+    player match {
       case 2 => -1
       case 1 => 1
       case _ => ???
-    } else 0
+    }
   }
 
+  /**
+    * TODO better generalization: score()(player: Byte => soore: Int) ???
+    * implicit score2players here
+    * in the P>2 ??? no implicit but required a function?
+    * @return
+    */
+  override def score(): Int = {
+    if (checkWin()) score2players(lastPlayer)
+    else 0
+  }
 
   /**
     * @TODO checkWinDiagoanls /w lookup
@@ -30,6 +41,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
   /**
     * South-East direction checking: bottom-right to top-left
+    *
     * @return
     */
   protected def scoreDiagSE(): Int = {
@@ -63,6 +75,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
   /**
     * North-East direction checking: bottom-left to top-right
+    *
     * @return
     */
   protected def scoreDiagNE(): Int = {
@@ -70,17 +83,17 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
     @tailrec
     def foldUpRight(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth == 0 || i < 0 || j>=n || _board(i)(j) != lastPlayer) acc
+      if (depth == 0 || i < 0 || j >= n || _board(i)(j) != lastPlayer) acc
       else foldUpRight(acc + 1, i - 1, j + 1, depth - 1)
     }
 
     @tailrec
     def foldDownLeft(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth == 0 || i >=m || j < 0 || _board(i)(j) != lastPlayer) acc
+      if (depth == 0 || i >= m || j < 0 || _board(i)(j) != lastPlayer) acc
       else foldDownLeft(acc + 1, i + 1, j - 1, depth - 1)
     }
 
-//    if (m - i >= k && n - j >= k) {
+    //    if (m - i >= k && n - j >= k) {
     val countD = foldUpRight(0, i - 1, j + 1, k1)
     val countU = foldDownLeft(0, i + 1, j - 1, k1)
 

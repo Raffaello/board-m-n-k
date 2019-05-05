@@ -207,6 +207,10 @@ class BoardMNKSpec extends WordSpec with Matchers {
     k <- NumericRange.inclusive[Short](3, 5, 1)
     if k <= Math.min(m, n)
   } {
+    // TODO: this value is because the board allows to make 1 player plays twice in a row... :/
+    // TODO: to avoid this should be forced to have a board to go in turns with players after each move.
+    val forcedGameEndCheckedValue = k*2
+
     s"${m}X${n}X$k Game" must {
       "in progress" in {
         val game = new BoardMNK(m, n, k)
@@ -230,14 +234,14 @@ class BoardMNKSpec extends WordSpec with Matchers {
                   s"col $j" in {
                     val game = new BoardMNK(m, n, k)
                     for (x <- j until k + j) game.playMove((i.toShort, x.toShort), p)
-                    game.gameEnded(game.minWinDepth) should be(true)
+                    game.gameEnded(forcedGameEndCheckedValue) should be(true)
                     game.score() should be(score)
                   }
 
                   s"col $j reverse" in {
                     val game = new BoardMNK(m, n, k)
                     for (x <- k - 1 + j to j by -1) game.playMove((i.toShort, x.toShort), p)
-                    game.gameEnded(game.minWinDepth) should be(true)
+                    game.gameEnded(forcedGameEndCheckedValue) should be(true)
                     game.score() should be(score)
                   }
                 }
@@ -254,14 +258,14 @@ class BoardMNKSpec extends WordSpec with Matchers {
                   s"row $i" in {
                     val game = new BoardMNK(m, n, k)
                     for (kk <- 0 until k) game.playMove(((i + kk).toShort, j.toShort), p)
-                    game.gameEnded(game.minWinDepth) should be(true)
+                    game.gameEnded(forcedGameEndCheckedValue) should be(true)
                     game.score() should be(score)
                   }
 
                   s"row $i reverse" in {
                     val game = new BoardMNK(m, n, k)
                     for (kk <- k - 1 to 0 by -1) game.playMove(((i + kk).toShort, j.toShort), p)
-                    game.gameEnded(game.minWinDepth) should be(true)
+                    game.gameEnded(forcedGameEndCheckedValue) should be(true)
                     game.score() should be(score)
                   }
                 }
@@ -272,14 +276,14 @@ class BoardMNKSpec extends WordSpec with Matchers {
           "by Diagonals Top Left -> Bottom Right" in {
             val game = new BoardMNK(m, n, k)
             for (i <- 0 until k) game.playMove((i.toShort, i.toShort), p)
-            game.gameEnded(game.minWinDepth) should be(true)
+            game.gameEnded(forcedGameEndCheckedValue) should be(true)
             game.score() should be(score)
           }
 
           "by diagonals Bottom Left -> Top Right" in {
             val game = new BoardMNK(m, n, k)
             for (i <- 0 until k) game.playMove(((k - 1 - i).toShort, i.toShort), p)
-            game.gameEnded(game.minWinDepth) should be(true)
+            game.gameEnded(forcedGameEndCheckedValue) should be(true)
             game.score() should be(score)
           }
         }

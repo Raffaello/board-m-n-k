@@ -5,7 +5,7 @@ import scala.collection.immutable.NumericRange
 abstract class BoardMN(val m: Short, val n: Short) {
   //  require(m > 2 && n > 2)
 
-  val mnMin: Short = Math.min(m, n).toShort
+//  val mnMin: Short = Math.min(m, n).toShort
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
@@ -25,7 +25,7 @@ abstract class BoardMN(val m: Short, val n: Short) {
   protected var freePositions: Int = m * n
   protected var lastMove: Position = (0, 0)
 
-  def move(position: Position): Byte = _board(position._1)(position._2)
+//  def move(position: Position): Byte = _board(position._1)(position._2)
 
   def playMove(position: Position, player: Byte): Boolean
 
