@@ -6,11 +6,17 @@ import scala.util.Random
 
 package object tree {
 
+  // TODO this class is the most important one
+  // TODO design a proper type and "clone" "copy" efficient method
+
+  // TODO Instead of Children consider to use a PriorityQueue for have ready the BestNode for UCT. ???
+  // TODO Children is used for descending in selection phase.
+
   /**
     * TODO the parent must be null to free memory. ???
     */
   case class Tree(root: Node) {
-
+        // NOT USED. ???
   }
 
   /**

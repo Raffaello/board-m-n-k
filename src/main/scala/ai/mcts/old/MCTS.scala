@@ -50,12 +50,6 @@ object MCTS {
     val tempState = tempNode.state
     tempState.clone(node.state)
 
-//    var boardStatus = tempState.player == player
-//    if (!boardStatus) {
-      // TODO ???
-      //      tempNode.parent.state.stateScore = Double.MinValue
-      //      tempState.player // opponent?
-//    } else {
     if (tempState.player == player) {
       // here play the game...
       // TODO: inefficient using gameEnded... review it

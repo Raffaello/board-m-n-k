@@ -11,7 +11,7 @@ package object mcts {
   // TODO review var visitConunt, score
   // TODO could just be enough BoardMNKP ?
   // TODO (probably) have AiBoard or BoardMNKP is not memory efficient...
-  // TODO with AiBoard still need the Board type clone ... NOT OK.
+  // TODO with AiBoard still need the Board type clone ... NOT OK. !!!!!!!!!
   sealed case class State(board: AiBoard, player: Byte, var visitCount: Int, var score: Double) /*extends AiBoardState(board, player)*/ {
     def allPossibleStates(): IndexedSeq[State] = {
       val opponent = board.opponent(player)
@@ -20,7 +20,6 @@ package object mcts {
       for (i <- allStates.indices) {
         val pos = allStates(i)
         val newState = copy(player = opponent)
-//        newState.board(x)(y) = opponent
         newState.board.playMove(pos, opponent)
         states(i) = newState
       }
@@ -52,10 +51,14 @@ package object mcts {
     node.randomChild()
   }
 
+  /**
+    * @TODO REDESIGN THIS METHOD !!!!!!
+    */
   def simulation(node: Node, player: Byte): Double = {
     if(node.state.player == player) {
       val tempNode = node.copy()
       val tempState = tempNode.state.copy()
+      // TODO HERE IS MISSING TO CLONE THE BOARD....
       val tempBoard = tempState.board
 
       var opponent = tempBoard.opponent(player)
@@ -71,9 +74,7 @@ package object mcts {
   }
 
   def backpropagation(node: Node, player: Byte, gameScore: Double) = {
-    //assert(node.state.score == score) // TODO: why? It should not be the same always...
     node.backPropagate(player, gameScore)
-    // assert(node.backpropagate == root)
   }
 
   def findNextMoveTest(game: AiBoard, root: Node): Unit = {
@@ -118,8 +119,7 @@ package object mcts {
   }
 
   def solveTest(game: AiBoard) = {
-
-    val root = new Node(State(game, 1, 0, Double.MinValue), None, new ListBuffer[Node])
+    val root = Node(State(game, 1, 0, Double.MinValue), None, new ListBuffer[Node])
     findNextMoveTest(game, root)
   }
 }
