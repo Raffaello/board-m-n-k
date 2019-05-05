@@ -34,4 +34,6 @@ abstract class BoardMN(val m: Short, val n: Short) {
   def score(): Int
 
   def gameEnded(): Boolean
+
+  def display(): Unit
 }

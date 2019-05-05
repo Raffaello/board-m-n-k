@@ -73,4 +73,6 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   }
 
   def opponent(player: Byte): Byte = (numPlayers - player).toByte
+
+  override def display(): Unit = ???
 }

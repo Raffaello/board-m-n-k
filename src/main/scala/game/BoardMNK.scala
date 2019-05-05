@@ -157,7 +157,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     0
   }
 
-  def display(): Unit = {
+  override def display(): Unit = {
     def value(p: Byte): Char = {
       p match {
         case 0 => '_'

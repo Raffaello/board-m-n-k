@@ -34,6 +34,14 @@ package object tree {
     }
 
     @tailrec
+    def ascending(): Node = {
+      parent match {
+        case None => this
+        case Some(x) => x.ascending()
+      }
+    }
+
+    @tailrec
     def backPropagate(player: Byte, deltaScore: Double): Node = {
       state.visitCount += 1
       if (state.player == player) state.score += deltaScore
