@@ -1,37 +1,13 @@
-import ai.mcts.{MctsBoard, State}
-import ai.old.withGetBoard
-import game._
+var o: Option[Int] = Some(1)
 
-val g = new BoardTicTacToe() with MctsBoard with withGetBoard
-val player: Byte = 2
-val state = State(g, player)
+var o2 = o
 
-val states = state.allPossibleStates()
+o2 = Some(2)
 
-states.toList
-val h = states.head
-val perm = states.permutations.foreach(println)
+o.toString
+o2.toString
 
-println (states == states.head)
-println()
-for (i<- states.indices) {
-  val s1 = states(i)
-  for (j <- states.indices) {
-    val s2 = states(j)
-    if (i < j) {
-      println(s1 == s2)
 
-      if (s1 == s2) {
-        println (s"s1 board: ${s1.board} --- ${s2.board}")
-      }
-    }
-  }
-}
-
-states.foreach(println)
-
-//import scala.util.Random
-//import scala.util.hashing.MurmurHash3
 //val k = 3
 //val p = 1
 //val n = 3
@@ -44,7 +20,14 @@ states.foreach(println)
 //val aaaa = Array.fill[Int](3,3,2)(Random.nextInt())
 //aaaa.flatten.flatten.length
 //
-//val z = Array.ofDim[Int](3,3)
+//val z = Array.ofDival seq = Seq(1,2,3,4)
+//val iseq = IndexedSeq(1,2,3)
+//val a = Array(1,2,3)
+//
+//
+//
+////import scala.util.Random
+////import scala.util.hashing.MurmurHash3m[Int](3,3)
 //val pos = (0, 0)
 //
 //z(pos)

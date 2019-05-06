@@ -4,6 +4,7 @@ import ai.AiBoard
 import game.Position
 
 trait MctsBoard extends AiBoard with Cloneable {
+
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()
 
   def randomMove(player: Byte): Boolean = {

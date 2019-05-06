@@ -1,19 +1,27 @@
 package ai.mcts
 
-// TODO review var visitConunt, score
-// TODO could just be enough BoardMNKP ?
-// TODO (probably) have AiBoard or BoardMNKP is not memory efficient...
-// TODO with AiBoard still need the Board type clone ... NOT OK. !!!!!!!!!
-sealed case class State(board: MctsBoard, player: Byte, var visitCount: Int, var score: Double) /*extends AiBoardState(board, player)*/ {
+/**
+  * TODO (probably) have MctsBoard is not memory efficient...
+  */
+sealed case class State(board: MctsBoard, player: Byte, private var _visitCount: Int, private var _score: Double) {
+
+  def incVisitCount(): Unit = _visitCount += 1
+
+  def visitCount(): Int = _visitCount
+
+  def score(): Double = _score
+
+  def addScore(deltaScore: Double): Unit = _score += deltaScore
+
   def allPossibleStates(): IndexedSeq[State] = {
-    val opponent = board.opponent(player)
+    val opp = opponent()
     val allStates = board.allPossibleMoves()
     val states = Array.ofDim[State](allStates.length)
     for (i <- allStates.indices) {
       val pos = allStates(i)
-      val newBoard: MctsBoard = board .clone()
-      val newState = copy(board = newBoard, player = opponent)
-      newState.board.playMove(pos, opponent)
+      val newBoard: MctsBoard = board.clone()
+      val newState = copy(board = newBoard, player = opp)
+      newState.board.playMove(pos, opp)
       states(i) = newState
     }
 
@@ -25,6 +33,4 @@ sealed case class State(board: MctsBoard, player: Byte, var visitCount: Int, var
 
 object State {
   def apply(board: MctsBoard, player: Byte): State = new State(board, player, 0, 0.0)
-
-  //  def apply()
 }

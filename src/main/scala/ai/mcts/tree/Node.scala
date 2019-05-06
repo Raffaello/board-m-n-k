@@ -9,7 +9,7 @@ final case class Node(state: State, parent: Option[Node], children: Children) {
 
   def addChild(child: Node): Unit = children.append(child)
 
-  def addChild(state: State): Unit = addChild(Node(state, Some(this), new Children))
+  def addChild(state: State): Unit = addChild(Node(state, Some(this), new Children()))
 
   def addChildren(states: IndexedSeq[State]): Unit = states.foreach(addChild)
 
@@ -26,7 +26,7 @@ final case class Node(state: State, parent: Option[Node], children: Children) {
   // TODO: consider a priorityQueue as a cache.
   def bestChildren(): Node = {
     // TODO: UCT can be cached in the node and invalidated/updated in backpropagation.
-    if (children.nonEmpty) children.maxBy(c => UCT(c.state.score, c.state.visitCount, state.visitCount))
+    if (children.nonEmpty) children.maxBy(c => UCT(c.state.score, c.state.visitCount(), state.visitCount()))
     else this
   }
 
@@ -46,8 +46,8 @@ final case class Node(state: State, parent: Option[Node], children: Children) {
 
   @tailrec
   def backPropagate(player: Byte, deltaScore: Double): Node = {
-    state.visitCount += 1
-    if (state.player == player) state.score += deltaScore
+    state.incVisitCount()
+    if (state.player == player) state.addScore(deltaScore)
 
     parent match {
       case None => this

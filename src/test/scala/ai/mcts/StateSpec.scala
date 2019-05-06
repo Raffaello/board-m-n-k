@@ -12,7 +12,7 @@ class StateSpec extends WordSpec with Matchers {
   }
 
   "TicTacToe Mcts State" should {
-    "be initialiazed" in {
+    "be initialized" in {
       val state = initState()
       state.visitCount shouldBe 0
       state.score shouldBe 0.0
@@ -39,10 +39,10 @@ class StateSpec extends WordSpec with Matchers {
         states.foreach(s => s.player shouldBe state.opponent())
       }
 
+      // TODO: Refactor Using Lens Pattern (LENS library with CATS...)
       "should be deep cloned" in {
         val state = initState()
         val states = state.allPossibleStates()
-
 
         for {
           i <- states.indices
@@ -64,9 +64,32 @@ class StateSpec extends WordSpec with Matchers {
 
           b1.depth() shouldBe 1
           b2.depth() shouldBe 1
+
+          val l1 = b1.LookUps
+          val l2 = b2.LookUps
+
+          l1 ne l2 shouldBe true
+
+          l1.rows ne l2.rows shouldBe true
+          l1.lastPlayerIdx should === (l2.lastPlayerIdx)
+          l1.cols ne l2.cols shouldBe true
+          l1.won should === (l2.won)
         }
       }
+    }
 
+    "change its own status" should {
+      "increment visitCount" in {
+        val state = initState()
+        state.incVisitCount()
+        state.visitCount() shouldBe 1
+      }
+
+      "add deltaScore" in {
+        val state = initState()
+        state.addScore(1.0)
+        state.score() shouldBe 1.0
+      }
     }
   }
 }
