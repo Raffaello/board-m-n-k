@@ -4,6 +4,9 @@ import game.Board
 
 import scala.collection.mutable
 
+/**
+  * @deprecated
+  */
 trait TranspositionTable {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 

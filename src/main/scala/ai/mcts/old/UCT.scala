@@ -1,5 +1,8 @@
 package ai.mcts.old
 
+/**
+  * @deprecated
+  */
 object UCT {
   final val c: Double = Math.sqrt(2.0)
 

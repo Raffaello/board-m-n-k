@@ -6,6 +6,9 @@ import game.BoardTicTacToe
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
+/**
+  * @deprecated
+  */
 package object old {
 
   class BoardTicTacToeMcts extends BoardTicTacToe with withGetBoard

@@ -2,6 +2,9 @@ package ai.mcts.old
 
 import scala.annotation.tailrec
 
+/**
+  * @deprecated
+  */
 object MCTS {
 
   def solve(game: BoardTicTacToeMcts) = {

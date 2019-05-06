@@ -3,6 +3,7 @@ package ai
 import game.{Board, BoardMNK}
 
 /**
+  * @deprecated
   * Used for benchmarks.
   */
 package object old {

@@ -3,11 +3,11 @@ package ai
 import game.{BoardMNKPLookUp, Position}
 
 
-private[ai] trait AiBoardState {
-//  def clone(): B = {
-//
-//  }
-}
+//private[ai] trait AiBoardState {
+////  def clone(): B = {
+////
+////  }
+//}
 
 /**
   * TODO refactor and/or remove AiBoard Trait. ???
