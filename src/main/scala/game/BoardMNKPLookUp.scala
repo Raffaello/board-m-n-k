@@ -1,6 +1,6 @@
 package game
 
-class BoardMNKPLookUp(m: Short, n: Short, k: Short, val p: Byte) extends BoardMNKP(m,n,k,p) {
+class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m,n,k,p) {
 
   /**
     * TODO, refactor with a trait? (no parameter allowed yet)

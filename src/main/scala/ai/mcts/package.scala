@@ -1,13 +1,12 @@
 package ai
 
-import ai.mcts.tree.Node
-import game.BoardTicTacToe
+import ai.mcts.tree.{Node, Tree}
 
 import scala.collection.mutable.ListBuffer
 
 package object mcts {
-  // TODO remove this one below
-  class AiTicTacToe extends BoardTicTacToe with AiBoard
+
+  trait MctsBoard extends AiBoard
 
   final private val uctParameter: Double = Math.sqrt(2.0)
 
@@ -42,13 +41,7 @@ package object mcts {
 
   def expansion(node: Node): Node = {
     assert(node.children.isEmpty)
-    val states = node.state.allPossibleStates()
-    states.foreach { s =>
-//      val newNode = node.copy(parent = Some(node), state = s, children = new ListBuffer[Node])
-      val newNode = Node(s, Some(node), new ListBuffer[Node])
-      node.children.append(newNode)
-    }
-
+    node.expandChildren()
     node.randomChild()
   }
 
@@ -56,12 +49,12 @@ package object mcts {
     * @TODO REDESIGN THIS METHOD !!!!!!
     */
   def simulation(node: Node, player: Byte): Double = {
-    if(node.state.player == player) {
+    if (node.state.player == player) {
       val tempNode = node.copy()
       val tempState = tempNode.state.copy()
       // TODO HERE IS MISSING TO CLONE THE BOARD....
       val tempBoard = tempState.board
-//      tempState.board = tempState.board.cloneBoard()
+      //      tempState.board = tempState.board.cloneBoard()
 
       var opponent = tempBoard.opponent(player)
       var iter = 0
@@ -83,7 +76,7 @@ package object mcts {
     val player = root.state.player
     var process = true
     var bestNode: Node = root
-//    // TODO refactor Stats
+    //    // TODO refactor Stats
     var totalCalls = 0
     while (process) {
       val selNode = selection(root)
@@ -121,7 +114,10 @@ package object mcts {
   }
 
   def solveTest(game: AiBoard) = {
-    val root = Node(State(game, 1, 0, Double.MinValue), None, new ListBuffer[Node])
+    val player: Byte = 1
+    val tree = Tree(game, player)
+    val root = tree.root
+    //    val root = Node(State(game, player, 0, Double.MinValue), None, new ListBuffer[Node])
     findNextMoveTest(game, root)
   }
 }
