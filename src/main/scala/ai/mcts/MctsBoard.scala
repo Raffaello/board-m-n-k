@@ -27,8 +27,8 @@ trait MctsBoard extends AiBoard with Cloneable {
     clone.LookUps.lastPlayerIdx = LookUps.lastPlayerIdx
     clone.LookUps.rows = LookUps.rows.map(_.clone())
     clone.LookUps.won = LookUps.won
-    assert(LookUps ne clone.LookUps)
-    assert(LookUps.rows ne clone.LookUps.rows)
+//    assert(LookUps ne clone.LookUps)
+//    assert(LookUps.rows ne clone.LookUps.rows)
     clone
   }
 }

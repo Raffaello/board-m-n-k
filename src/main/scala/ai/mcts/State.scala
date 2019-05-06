@@ -11,17 +11,20 @@ sealed case class State(board: MctsBoard, player: Byte, var visitCount: Int, var
     val states = Array.ofDim[State](allStates.length)
     for (i <- allStates.indices) {
       val pos = allStates(i)
-      val newBoard: MctsBoard = board//.clone()
-      val newState = copy(board=newBoard, player = opponent)
+      val newBoard: MctsBoard = board .clone()
+      val newState = copy(board = newBoard, player = opponent)
       newState.board.playMove(pos, opponent)
       states(i) = newState
     }
 
     states.toIndexedSeq
   }
+
+  def opponent(): Byte = board.opponent(player)
 }
 
 object State {
   def apply(board: MctsBoard, player: Byte): State = new State(board, player, 0, 0.0)
-//  def apply()
+
+  //  def apply()
 }
