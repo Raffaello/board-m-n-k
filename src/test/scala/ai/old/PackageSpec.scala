@@ -16,6 +16,11 @@ class PackageSpec extends FlatSpec with Matchers {
     negamaxNextMove(game, 1) shouldEqual(0, 0, 0)
   }
 
+  "Tic Tac Toe Alpha-Beta with Memory" should "solve the game" in {
+    val game = new BoardTicTacToe() with TranspositionTable with withGetBoard
+    alphaBetaWithMem(game, game) shouldEqual Transposition(0.0, 0, 0.0, Double.MaxValue, true)
+  }
+
   "Player 1 Tic Tac Toe" should "win" in {
     val game = new BoardTicTacToe() with withGetBoard
     val status = new TranspositionTable {}
@@ -39,7 +44,7 @@ class PackageSpec extends FlatSpec with Matchers {
     game.playMove((2, 1), 2)
     game.playMove((2, 2), 2)
     game.playMove((1, 2), 2)
-//    negamax(game, -1) should be (-1) // cannot return -1 from the first step.
+    //    negamax(game, -1) should be (-1) // cannot return -1 from the first step.
     minimax(game, false) should be(-1)
   }
 }

@@ -13,6 +13,9 @@ package object old {
     def getBoard(): Board = _board
   }
 
+  /**
+    * @deprecated
+    */
   class BoardMNKwithGetBoard(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with withGetBoard
 
   def minimax(game: BoardMNK, isMaximizingPlayer: Boolean): Int = {
