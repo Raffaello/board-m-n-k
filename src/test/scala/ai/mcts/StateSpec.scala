@@ -40,6 +40,7 @@ class StateSpec extends WordSpec with Matchers {
       }
 
       // TODO: Refactor Using Lens Pattern (LENS library with CATS...)
+      // TODO: this one required to refactor LookUp nested Object
       "should be deep cloned" in {
         val state = initState()
         val states = state.allPossibleStates()

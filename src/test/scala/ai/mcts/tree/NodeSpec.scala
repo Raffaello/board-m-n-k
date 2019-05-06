@@ -25,7 +25,7 @@ class NodeSpec extends WordSpec with Matchers {
     }
 
     "bestChildren" in {
-      node.bestChildren() should be(node)
+      node.bestChild() should be(node)
     }
 
     "descending" in {
@@ -66,9 +66,32 @@ class NodeSpec extends WordSpec with Matchers {
         }
 
         "best Children should not be child0" in {
-          val bestChild = node.bestChildren()
+          val bestChild = node.bestChild()
           bestChild ne child0 shouldBe true
-          val bestChild2 = node.bestChildren()
+          val bestChild2 = node.bestChild()
+        }
+
+        "random child should not be parent" in {
+          val randChild = node.randomChild()
+          randChild ne node shouldBe true
+          randChild.parent should === (Some(node))
+          randChild.children should be ('empty)
+        }
+
+        "descending should result" in {
+          val bestChild = node.bestChild()
+          val descNode = node.descending()
+
+          bestChild eq descNode shouldBe true
+          descNode.children should be ('empty)
+        }
+
+        "best Child ascending should result" in {
+          val bestChild = node.bestChild()
+          val ascNode = bestChild.ascending()
+
+          ascNode eq node shouldBe true
+          ascNode.parent should === (None)
         }
       }
     }

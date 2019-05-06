@@ -26,7 +26,7 @@ class TreeSpec extends WordSpec with Matchers {
     }
 
     "bestChildren" in {
-      root.bestChildren() should be(root)
+      root.bestChild() should be(root)
     }
 
     "descending" in {
