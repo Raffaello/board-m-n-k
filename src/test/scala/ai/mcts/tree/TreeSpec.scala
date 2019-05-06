@@ -4,10 +4,15 @@ import ai.mcts.MctsBoard
 import game.BoardTicTacToe
 import org.scalatest.{Matchers, WordSpec}
 
-class PackageSpec extends WordSpec with Matchers {
+/**
+  * Basically a clone of NodeSpec, but with a starting point of Tree structure
+  * That should be the only one used outside the ai.mcts.tree package
+  * NodeSpec should be not accessible outside mcts pacakge
+  */
+class TreeSpec extends WordSpec with Matchers {
   def emptyTree(): Tree = {
     val game = new BoardTicTacToe() with MctsBoard
-    val player: Byte = 1
+    val player: Byte = 2 // starting with 2, next will be 1.
     Tree(game, player)
   }
 
@@ -20,7 +25,7 @@ class PackageSpec extends WordSpec with Matchers {
       root.randomChild() should be(root)
     }
 
-    "bestCgildren" in {
+    "bestChildren" in {
       root.bestChildren() should be(root)
     }
 
@@ -36,8 +41,8 @@ class PackageSpec extends WordSpec with Matchers {
       "be initialized properly" in {
         tree.root.children should have length 0
         tree.root.state.visitCount shouldBe 0
-        tree.root.state.player shouldBe 1
-        tree.root.state.score shouldBe Double.MinValue
+        tree.root.state.player shouldBe 2
+        tree.root.state.score shouldBe 0.0
         tree.root.parent shouldBe None
       }
 
@@ -59,6 +64,7 @@ class PackageSpec extends WordSpec with Matchers {
         child0.backPropagate(1, 0.5)
 
         tree.root.state.visitCount should be(1) // ???
+        child0.state.visitCount should be(1)
       }
 
       "updating to first child as a new root" should {

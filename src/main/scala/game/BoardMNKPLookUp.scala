@@ -1,33 +1,36 @@
 package game
 
-class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m,n,k,p) {
+class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m, n, k, p) {
 
   /**
     * TODO, refactor with a trait? (no parameter allowed yet)
     * TODO also shuold be protected? test will be different
     * TODO review....
+    *
+    * TODO all arrays must be cloned so at the moment using var :/
     */
   object LookUps {
-    val rows: Array[Array[Int]] = Array.ofDim[Int](m, numPlayers)
-    val cols: Array[Array[Int]] = Array.ofDim[Int](n, numPlayers)
+
+    var rows: Array[Array[Byte]] = Array.ofDim[Byte](m, numPlayers)
+    var cols: Array[Array[Byte]] = Array.ofDim[Byte](n, numPlayers)
     var lastPlayerIdx: Int = 0
     // TODO: refactor won with ended (?)
     var won: Option[Boolean] = Some(false)
 
     def inc(pos: Position, playerIdx: Int): Unit = {
       lastPlayerIdx = playerIdx
-      rows(pos._1)(playerIdx) += 1
+      rows(pos._1)(playerIdx) = (1 + rows(pos._1)(playerIdx)).toByte
       assert(rows(pos._1)(playerIdx) <= n)
-      cols(pos._2)(playerIdx) += 1
+      cols(pos._2)(playerIdx) = (1 + cols(pos._2)(playerIdx)).toByte
       assert(cols(pos._2)(playerIdx) <= m, s"${cols(pos._2)(playerIdx)} -- $playerIdx, $pos -- ${_board.flatten.mkString}")
       // TODO DIAGS1 and DIAG2
 
     }
 
     def dec(pos: Position, playerIdx: Int): Unit = {
-      rows(pos._1)(playerIdx) -= 1
+      rows(pos._1)(playerIdx) = (rows(pos._1)(playerIdx) - 1).toByte
       assert(rows(pos._1)(playerIdx) >= 0)
-      cols(pos._2)(playerIdx) -= 1
+      cols(pos._2)(playerIdx) = (cols(pos._2)(playerIdx) - 1).toByte
       assert(cols(pos._2)(playerIdx) >= 0, s"${cols(pos._2)(playerIdx)} -- $playerIdx, $pos")
     }
   }
@@ -35,7 +38,7 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
   override def playMove(position: Position, player: Byte): Boolean = {
     LookUps.won = None
     val res = super.playMove(position, player)
-    if(res) {
+    if (res) {
       LookUps.inc(position, player - 1)
     }
     res

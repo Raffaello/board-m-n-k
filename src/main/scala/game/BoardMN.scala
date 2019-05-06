@@ -9,7 +9,9 @@ abstract class BoardMN(val m: Short, val n: Short) {
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
-  protected val _board: Board = Array.ofDim[Byte](m, n)
+  // TODO: is a var because cannot clone the ojbect/reassing for MCTS
+  // TODO: unless mcts.State would be extenging the board instaed of including it....
+  protected var _board: Board = Array.ofDim[Byte](m, n)
   //  def board(): IndexedSeq[IndexedSeq[Byte]] = _board.map(_.toIndexedSeq).toIndexedSeq
 
   protected var freePositions: Int = m * n

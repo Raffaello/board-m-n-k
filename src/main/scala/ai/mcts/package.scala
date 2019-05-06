@@ -1,46 +1,60 @@
 package ai
 
 import ai.mcts.tree.{Node, Tree}
-
-import scala.collection.mutable.ListBuffer
+import game.Position
 
 package object mcts {
 
-  trait MctsBoard extends AiBoard
+  trait MctsBoard extends AiBoard with Cloneable {
+    def allPossibleMoves(): IndexedSeq[Position] = generateMoves()
 
-  final private val uctParameter: Double = Math.sqrt(2.0)
+    def randomMove(player: Byte): Boolean = {
+      val moves = generateMoves()
+      if (moves.nonEmpty) {
+        moves.lift(scala.util.Random.nextInt(moves.size)) match {
+          case Some(pos) => playMove(pos, player)
+          case None => false
+        }
+      } else false
+    }
 
-  // TODO review var visitConunt, score
-  // TODO could just be enough BoardMNKP ?
-  // TODO (probably) have AiBoard or BoardMNKP is not memory efficient...
-  // TODO with AiBoard still need the Board type clone ... NOT OK. !!!!!!!!!
-  sealed case class State(board: AiBoard, player: Byte, var visitCount: Int, var score: Double) /*extends AiBoardState(board, player)*/ {
-    def allPossibleStates(): IndexedSeq[State] = {
-      val opponent = board.opponent(player)
-      val allStates = board.allPossibleMoves()
-      val states = Array.ofDim[State](allStates.length)
-      for (i <- allStates.indices) {
-        val pos = allStates(i)
-        val newState = copy(player = opponent)
-        newState.board.playMove(pos, opponent)
-        states(i) = newState
-      }
+    override def clone(): MctsBoard = {
+      val clone = super.clone().asInstanceOf[MctsBoard]
+      clone._board = this._board.map(_.clone())
+      assert(clone ne this)
+      assert(clone._board ne _board)
 
-      states.toIndexedSeq
+      // TODO create a "clone/copy"  method instead.
+      clone.LookUps.cols = LookUps.cols.map(_.clone())
+      clone.LookUps.lastPlayerIdx = LookUps.lastPlayerIdx
+      clone.LookUps.rows = LookUps.rows.map(_.clone())
+      clone.LookUps.won = LookUps.won
+      assert(LookUps ne clone.LookUps)
+      assert(LookUps.rows ne clone.LookUps.rows)
+      clone
     }
   }
 
-  def UCT(w: Double, n: Int, N: Int): Double = {
-    n match {
+  final private val uctParameter: Double = Math.sqrt(2.0)
+
+  /**
+    * if visited is non zero => parentVisited > 0.
+    * @param score score
+    * @param visited visited
+    * @param parentVisited parent visited
+    * @return
+    */
+  def UCT(score: Double, visited: Int, parentVisited: Int): Double = {
+    visited match {
       case 0 => Double.MaxValue
-      case _ => w / n.toDouble + uctParameter * Math.sqrt(Math.log(N) / n.toDouble)
+      case _ => score / visited.toDouble + uctParameter * Math.sqrt(Math.log(parentVisited) / visited.toDouble)
     }
   }
 
   def selection(node: Node): Node = node.descending()
 
   def expansion(node: Node): Node = {
-    assert(node.children.isEmpty)
+//    assert(node.children.isEmpty)
     node.expandChildren()
     node.randomChild()
   }
@@ -113,11 +127,10 @@ package object mcts {
     println(s"Total Calls: $totalCalls")
   }
 
-  def solveTest(game: AiBoard) = {
+  def solveTest(game: MctsBoard) = {
     val player: Byte = 1
     val tree = Tree(game, player)
     val root = tree.root
-    //    val root = Node(State(game, player, 0, Double.MinValue), None, new ListBuffer[Node])
     findNextMoveTest(game, root)
   }
 }

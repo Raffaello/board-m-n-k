@@ -40,6 +40,7 @@ package object old {
 
     /**
       * todo case class .copy ???
+      * TODO: Lookups is not cloned.
       * @param state
       */
     def clone(state: BoardState) = {
