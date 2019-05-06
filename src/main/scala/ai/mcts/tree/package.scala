@@ -21,6 +21,9 @@ package object tree {
 
   /**
     * TODO refactor with a type class
+    * TODO use a children: Option[ListBuffer[Node]]
+    *
+    * TODO not required to be a case class.. could be just a class at the moment
     */
   final case class Node(state: State, parent: Option[Node], children: ListBuffer[Node]) {
     def randomChild(): Node = {

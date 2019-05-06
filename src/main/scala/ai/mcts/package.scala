@@ -1,7 +1,7 @@
 package ai
 
 import ai.mcts.tree.Node
-import game.{Board, BoardTicTacToe}
+import game.BoardTicTacToe
 
 import scala.collection.mutable.ListBuffer
 
@@ -44,10 +44,8 @@ package object mcts {
     assert(node.children.isEmpty)
     val states = node.state.allPossibleStates()
     states.foreach { s =>
-      // TODO case class are doing deep cloning is not working as expected in a Tree structure
-      // TODO redo itz.
-      val newNode = node.copy(parent = Some(node), state = s, children = new ListBuffer[Node])
-//      val newNode = new Node(s, Some(node), new ListBuffer[Node])
+//      val newNode = node.copy(parent = Some(node), state = s, children = new ListBuffer[Node])
+      val newNode = Node(s, Some(node), new ListBuffer[Node])
       node.children.append(newNode)
     }
 
