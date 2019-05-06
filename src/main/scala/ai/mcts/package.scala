@@ -97,7 +97,7 @@ package object mcts {
         println(
           s"Simulation = score: $gameScore "
             + s"--- gameEnded: ${exploringNode.state.board.gameEnded()} "
-            + s"-- depth: ${exploringNode.state.board.depth}"
+            + s"-- depth: ${exploringNode.state.board.depth()}"
         )
 
         val tempRoot = backPropagation(exploringNode, player, gameScore)

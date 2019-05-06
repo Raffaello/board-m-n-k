@@ -95,7 +95,7 @@ object MCTS {
         println(
           s"Simulation = score: ${simulatedNode.state.stateScore} --- visited = ${simulatedNode.state.visitCount} "
             + s"--- selNode: ${tempNode.state.getBoard().flatten.mkString} --- expMode: ${exploringNode.state.getBoard().flatten.mkString} --- gameEnded: ${exploringNode.state.gameEnded()} "
-            + s"-- depth: ${exploringNode.state.depth}"
+            + s"-- depth: ${exploringNode.state.depth()}"
         )
 
         backpropagation(exploringNode, player)
