@@ -1,11 +1,14 @@
 package ai
 
 import ai.mcts.tree.Node
-import game.Board
+import game.{Board, BoardTicTacToe}
 
 import scala.collection.mutable.ListBuffer
 
 package object mcts {
+  // TODO remove this one below
+  class AiTicTacToe extends BoardTicTacToe with AiBoard
+
   final private val uctParameter: Double = Math.sqrt(2.0)
 
   // TODO review var visitConunt, score
@@ -60,6 +63,7 @@ package object mcts {
       val tempState = tempNode.state.copy()
       // TODO HERE IS MISSING TO CLONE THE BOARD....
       val tempBoard = tempState.board
+//      tempState.board = tempState.board.cloneBoard()
 
       var opponent = tempBoard.opponent(player)
       var iter = 0
@@ -73,7 +77,7 @@ package object mcts {
     } else (node.state.board.score() + 1.0) / 2.0
   }
 
-  def backpropagation(node: Node, player: Byte, gameScore: Double) = {
+  def backPropagation(node: Node, player: Byte, gameScore: Double): Node = {
     node.backPropagate(player, gameScore)
   }
 
@@ -98,7 +102,7 @@ package object mcts {
             + s"-- depth: ${exploringNode.state.board.depth}"
         )
 
-        val tempRoot = backpropagation(exploringNode, player, gameScore)
+        val tempRoot = backPropagation(exploringNode, player, gameScore)
         assert(tempRoot == root)
         totalCalls += 1
       } else {

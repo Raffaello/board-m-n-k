@@ -1,7 +1,6 @@
 package game
 
 import scala.annotation.tailrec
-import scala.collection.immutable.NumericRange
 
 /**
   * TODO: potentially split in BoardNMK and BoardMNKLookUp (traits)
@@ -11,11 +10,11 @@ import scala.collection.immutable.NumericRange
   * @param k number of same move of a player "in a row" (or col or diagonal)
   */
 class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) {
-  protected def score2players(player: Byte): Int = {
+  final protected def score2players(player: Byte): Int = {
     player match {
       case 2 => -1
       case 1 => 1
-      case _ => ???
+      case _ => ???  // could be zero, but should never reach here.
     }
   }
 
@@ -163,6 +162,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
         case 0 => '_'
         case 1 => 'X'
         case 2 => 'O'
+        case _ => ???
       }
     }
 

@@ -1,9 +1,8 @@
 
-import game.BoardTicTacToe
-import ai.AiBoard
+import ai.mcts.AiTicTacToe
 
 object Mcts extends App {
-   class AiTicTacToe extends BoardTicTacToe with AiBoard
+
 
   val game = new AiTicTacToe()
   val t1 = System.currentTimeMillis()

@@ -37,11 +37,11 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, val p: Byte) extends BoardMN
     val res = super.playMove(position, player)
     if(res) {
       LookUps.inc(position, player - 1)
-      true
-    } else false
+    }
+    res
   }
 
-  override def undoMove(position: Position, player: Byte): Unit = {
+  override def undoMove(position: Position, player: Byte): Boolean = {
     LookUps.dec(position, player - 1)
     LookUps.won = None
     super.undoMove(position, player)

@@ -1,21 +1,10 @@
 package game
 
+/**
+  * TODO: can be deleted. It is used for testing and benchmarking.
+  * @deprecated
+  */
 class BoardTicTacToe extends BoardMNK(3, 3, 3) {
-
-  def score(player: Byte): Score = {
-    var score =scoreDiagsTL()
-    score += scoreDiagsBR()
-    for(i <- mIndices) {
-      score += scoreRow(i.toShort) + scoreCol(i)
-    }
-
-    if(player == score) 1
-    else if(score>0) -1
-    else 0
-
-
-  }
-
   protected def scoreRow(row: Short): Int = {
     if (_board(row)(0) == _board(row)(1) && _board(row)(0) == _board(row)(2)) {
       _board(row)(0)
@@ -46,21 +35,21 @@ class BoardTicTacToe extends BoardMNK(3, 3, 3) {
     } else {
       0
     }
-
   }
 
-
+  // TODO: can be removed
   override def gameEnded(): Boolean = {
     freePositions == 0 ||
-    checkWin() ||
-    !_board.flatten.contains(0)
+      checkWin() ||
+      !_board.flatten.contains(0)
   }
 
+  // TODO: can be removed
   override protected def checkWin(): Boolean = {
     if (scoreDiagsTL() > 0 || scoreDiagsBR() > 0) return true
 
-    for(i <- mIndices) {
-      if(scoreRow(i.toShort) > 0 || scoreCol(i) > 0)
+    for (i <- mIndices) {
+      if (scoreRow(i.toShort) > 0 || scoreCol(i) > 0)
         return true
     }
 
