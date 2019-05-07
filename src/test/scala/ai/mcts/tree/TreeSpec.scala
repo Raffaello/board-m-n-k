@@ -63,7 +63,7 @@ class TreeSpec extends WordSpec with Matchers {
       "back propagate first children" in {
         child0.backPropagate(1, 0.5)
 
-        tree.root.state.visitCount should be(1) // ???
+        tree.root.state.visitCount should be(1)
         child0.state.visitCount should be(1)
       }
 

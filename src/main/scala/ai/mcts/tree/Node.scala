@@ -21,12 +21,12 @@ final case class Node(state: State, parent: Option[Node], children: Children) {
   }
 
   // TODO: improve this method after the first expansion, there are a lot of Double.Max UCT children and
-  // TODO: one of those should be chosen randomly... In this case i think is sequential always:
+  // TODO: one of those should be chosen randomly... In this case is sequential always:
   // TODO: it would be always the first.
-  // TODO: consider a priorityQueue as a cache.
+  // TODO: consider a priorityQueue as a cache too (benchmark).
   def bestChild(): Node = {
     // TODO: UCT can be cached in the node and invalidated/updated in backpropagation.
-    if (children.nonEmpty) children.maxBy(c => UCT(c.state.score, c.state.visitCount(), state.visitCount()))
+    if (children.nonEmpty) children.maxBy(c => UCT(c.state.score(), c.state.visitCount(), state.visitCount()))
     else this
   }
 

@@ -6,13 +6,12 @@ package object mcts {
   final private val uctParameter: Double = Math.sqrt(2.0)
 
   /**
-    * if visited is non zero => parentVisited > 0.
-    * @param score score
-    * @param visited visited
-    * @param parentVisited parent visited
-    * @return
+    * if visited is non zero then parentVisited is non zero
     */
   def UCT(score: Double, visited: Int, parentVisited: Int): Double = {
+    require(visited >= 0)
+    require(parentVisited > 0)
+
     visited match {
       case 0 => Double.MaxValue
       case _ => score / visited.toDouble + uctParameter * Math.sqrt(Math.log(parentVisited) / visited.toDouble)
@@ -22,7 +21,6 @@ package object mcts {
   def selection(node: Node): Node = node.descending()
 
   def expansion(node: Node): Node = {
-    assert(node.children.isEmpty)
     node.expandChildren()
     node.randomChild()
   }
@@ -34,9 +32,8 @@ package object mcts {
     if (node.state.player == player) {
       val tempNode = node.copy()
       val tempState = tempNode.state.copy()
-      // TODO HERE IS MISSING TO CLONE THE BOARD....
-      val tempBoard = tempState.board
-      //      tempState.board = tempState.board.cloneBoard()
+      // TODO LookUps nested object issue. (???)
+      val tempBoard = tempState.board.clone()
 
       var opponent = tempBoard.opponent(player)
       var iter = 0
@@ -50,11 +47,12 @@ package object mcts {
     } else (node.state.board.score() + 1.0) / 2.0
   }
 
-  def backPropagation(node: Node, player: Byte, gameScore: Double): Node = {
-    node.backPropagate(player, gameScore)
-  }
+  def backPropagation(node: Node, player: Byte, gameScore: Double): Node = node.backPropagate(player, gameScore)
 
-  def findNextMoveTest(game: AiBoard, root: Node): Unit = {
+  /**
+    * TODO REDO IT
+    */
+  def findNextMoveTest(game: MctsBoard, root: Node): Unit = {
     val player = root.state.player
     var process = true
     var bestNode: Node = root
@@ -93,8 +91,13 @@ package object mcts {
     assert(bestRoot == root)
 
     println(s"Total Calls: $totalCalls")
+
+    //TODO UPDATE the tree root with best Node
   }
 
+  /**
+    * TODO REDO IT
+    */
   def solveTest(game: MctsBoard) = {
     val player: Byte = 1
     val tree = Tree(game, player)
