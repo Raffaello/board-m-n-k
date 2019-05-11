@@ -110,14 +110,14 @@ object MCTS {
     }
 
     println("Simulated game: ")
-    bestNode.state.display()
+    bestNode.state.stdoutPrintln()
     // TODO refactor in node to get root
     while (bestNode.parent != root) {
       bestNode = bestNode.parent
     }
 
     println("next move:")
-    bestNode.state.display()
+    bestNode.state.stdoutPrintln()
 
     println(s"Total Calls: $totalCalls")
   }

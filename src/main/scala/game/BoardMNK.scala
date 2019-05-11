@@ -14,7 +14,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     player match {
       case 2 => -1
       case 1 => 1
-      case _ => ???  // could be zero, but should never reach here.
+      case _ => ??? // could be zero, but should never reach here.
     }
   }
 
@@ -22,6 +22,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     * TODO better generalization: score()(player: Byte => soore: Int) ???
     * implicit score2players here
     * in the P>2 ??? no implicit but required a function?
+    *
     * @return
     */
   override def score(): Int = {
@@ -156,7 +157,10 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     0
   }
 
-  override def display(): Unit = {
+  // TODO refactor to display
+  override def display(): String = {
+    val str: StringBuilder = new StringBuilder()
+
     def value(p: Byte): Char = {
       p match {
         case 0 => '_'
@@ -168,12 +172,14 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
     for (i <- mIndices) {
       for (j <- 0 until n - 1) {
-        print(s" ${value(_board(i)(j))} |")
+        str ++= s" ${value(_board(i)(j))} |"
       }
 
-      println(s" ${value(_board(i)(n - 1))}")
+      str ++= s" ${value(_board(i)(n - 1))}" + sys.props("line.separator")
     }
 
-    println()
+    str ++= sys.props("line.separator")
+    str.toString()
   }
+
 }

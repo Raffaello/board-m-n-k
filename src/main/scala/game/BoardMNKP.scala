@@ -75,5 +75,5 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
 
   def nextPlayer(): Byte = ???
 
-  override def display(): Unit = ???
+  override def display(): String = ???
 }

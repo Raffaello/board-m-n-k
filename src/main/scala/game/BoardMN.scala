@@ -37,5 +37,7 @@ abstract class BoardMN(val m: Short, val n: Short) {
 
   def gameEnded(): Boolean
 
-  def display(): Unit
+  def display(): String
+
+  def stdoutPrintln(): Unit = println(display())
 }
