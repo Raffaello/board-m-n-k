@@ -25,12 +25,17 @@ class TreeSpec extends WordSpec with Matchers {
       root.randomChild() should be(root)
     }
 
-    "bestChildren" in {
+    "bestChild" in {
       root.bestChild() should be(root)
     }
 
     "descending" in {
       root.descending() should be(root)
+    }
+
+    // TODO remove the method. profilig if it improve performances.
+    "parentAscending" in {
+      root.parentAscending() shouldBe root.bestChild()
     }
   }
 
@@ -68,10 +73,33 @@ class TreeSpec extends WordSpec with Matchers {
       }
 
       "updating to first child as a new root" should {
-        val newTree = Tree.update(child0)
+        val newTree: Tree = Tree.update(child0)
         emptyRootTests(newTree.root)
-        "new root not equal old root" in {
-          newTree.root should not be tree.root
+        "new root " should {
+          "not equal old root" in {
+            newTree.root should not be tree.root
+          }
+
+          "parent None" in {
+            newTree.root.parent shouldBe None
+          }
+
+          "clone from child0" in {
+            newTree.root ne child0 shouldBe true
+          }
+        }
+
+        "expanding further" in {
+          val newTree2 = Tree.update(child0)
+          newTree2.root.expandChildren()
+          newTree2.root.bestChild().expandChildren()
+          val node = newTree2.root.descending()
+
+          node.ascending() eq newTree2.root shouldBe true
+          newTree2.root.bestChild().bestChild() eq node shouldBe true
+
+          newTree2.root.bestChild().parent shouldBe Some(newTree2.root)
+          newTree2.root.bestChild().bestChild().parent.get.parent shouldBe Some(newTree2.root)
         }
       }
     }

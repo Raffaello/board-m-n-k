@@ -101,5 +101,21 @@ class NodeSpec extends WordSpec with Matchers {
         }
       }
     }
+
+    "2 layers nodes" should {
+      "be valid" in {
+        val root = emptyNode()
+        root.state.incVisitCount()
+        root.expandChildren()
+        val child1 = root.bestChild()
+        child1.state.incVisitCount()
+        child1.expandChildren()
+        val child2 = child1.bestChild()
+        child2.state.incVisitCount()
+        val child = root.descending()
+        child.parent.get.parent.get shouldBe root
+//        child2 eq child shouldBe true
+      }
+    }
   }
 }

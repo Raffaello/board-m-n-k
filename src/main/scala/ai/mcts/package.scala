@@ -12,6 +12,7 @@ package object mcts {
   final private val maxIter: Int = 10
 
   protected def remapScore(score: Score): Double = (score + 1.0) / 2.0
+
   protected def remapScore(board: MctsBoard): Double = remapScore(board.score())
 
   /**
@@ -54,16 +55,11 @@ package object mcts {
 
   def backPropagation(node: Node, player: Byte, gameScore: Double): Node = node.backPropagate(player, gameScore)
 
-  def findNextMove(tree: Tree): Tree = {
-    val newRoot = findNextMove(tree.root)
-
-    Tree(newRoot)
-  }
-
   def playNextMove(tree: Tree): Tree = {
-    val newTree = Tree.update(findNextMove(tree.root))
+    val newRoot = findNextMove(tree.root)
+    val newTree = Tree.update(newRoot)
     // todo if not true?
-    logger.error(s"lastMove = ${newTree.root.state.board.lastMove()}")
+    logger.info(s"lastMove = ${newTree.root.state.board.lastMove()} -- player = ${newTree.root.state.player}")
     newTree
   }
 
@@ -82,10 +78,10 @@ package object mcts {
         val exploringNode = expansion(selNode)
         val gameScore = simulation(exploringNode, player)
         logger.debug(
-            s"Simulation = score: $gameScore "
-              + s"--- gameEnded: ${exploringNode.state.board.gameEnded()} "
-              + s"-- depth: ${exploringNode.state.board.depth()}"
-          )
+          s"Simulation = score: $gameScore "
+            + s"--- gameEnded: ${exploringNode.state.board.gameEnded()} "
+            + s"-- depth: ${exploringNode.state.board.depth()}"
+        )
 
         val tempRoot = backPropagation(exploringNode, player, gameScore)
         assert(tempRoot == root)
@@ -97,18 +93,15 @@ package object mcts {
     }
 
     val bestRoot = bestNode.parentAscending()
-//    assert(bestRoot.parent.get == root)
-
+//    assert(root.bestChild() eq bestNode.parentAscending())
     // TODO display flag instead?
-    logger.whenDebugEnabled {
-      logger.info(
-        s"""Simulated game:
-           |${bestNode.state.board.display()}
-           |next move:
-           |${bestRoot.state.board.display()}
-           |Total Calls: ${game.Stats.totalCalls}
+    logger.debug(
+      s"""Simulated game:
+         |${bestNode.state.board.display()}
+         |next move:
+         |${bestRoot.state.board.display()}
+         |Total Calls: ${game.Stats.totalCalls}
          """.stripMargin)
-    }
 
     bestRoot
   }
@@ -119,7 +112,8 @@ package object mcts {
   def solveTest(game: MctsBoard) = {
     val player: Byte = 2
     val tree = Tree(game, player)
-    val newTree = findNextMove(tree)
+    val newRoot = findNextMove(tree.root)
+    val newTree = Tree(newRoot)
 
     assert(tree ne newTree)
     assert(newTree.root.state.board.depth() == 1)

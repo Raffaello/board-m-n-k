@@ -40,16 +40,55 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     }
   }
 
-  "MCTS TicTacToe" should "FindNextMove" in {
+  "MCTS TicTacToe" should "have valid children" in {
     val game = new BoardTicTacToe with MctsBoard
     val tree = Tree(game, 2)
-    val newTree = findNextMove(tree)
+    tree.root.expandChildren()
+    tree.root.state.incVisitCount()
+    for (child <- tree.root.children) {
+      child.state.incVisitCount()
+      child.expandChildren()
+    }
+    for (child <- tree.root.children) {
+      child.parent shouldBe Some(tree.root)
+      for (child2 <- child.children) {
+        child2.parent.get.parent shouldBe Some(tree.root)
+      }
+    }
 
-    newTree.root.state.board.depth() shouldBe 1
-    newTree.root.children.length should be > 0
-    newTree.root.state.player shouldBe 1
-    newTree.root.parent shouldBe None
+    tree.root.bestChild().parent shouldBe Some(tree.root)
+    tree.root.bestChild().bestChild().parent.get.parent shouldBe Some(tree.root)
+  }
+
+  it should "return the sub-tree" in {
+    val game = new BoardTicTacToe with MctsBoard
+    val tree = Tree(game, 2)
+    val bestChild = findNextMove(tree.root)
+
+    bestChild.parent shouldBe Some(tree.root)
+    tree.root.bestChild() shouldBe bestChild
+
+    val subTree = Tree.update(bestChild)
+    subTree.root.parent shouldBe None
+//    subTree.root.bestChild().parent shouldBe Some(subTree.root)
+
+  }
+
+  it should "FindNextMove" in {
+    val game = new BoardTicTacToe with MctsBoard
+    val tree = Tree(game, 2)
+    val newRoot = findNextMove(tree.root)
+
+    newRoot.state.board.depth() shouldBe 1
+    newRoot.children.length should be > 0
+    newRoot.state.player shouldBe 1
+    newRoot.parent shouldBe Some(tree.root)
     game.depth() shouldBe 0
+    newRoot.bestChild().parent shouldBe Some(tree.root.bestChild())
+
+    val subTree = Tree.update(newRoot)
+//    subTree.root.bestChild().parent shouldBe Some(subTree.root)
+    subTree.root.parent shouldBe None
   }
 
   it should "playNextMove" in {
@@ -58,45 +97,53 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     val newTree = playNextMove(tree)
 
     newTree.root.state.board.depth() shouldBe 1
-    newTree.root.children.length should be > 0
+//    newTree.root.children.length should be > 0
+    newTree.root.children.length shouldBe 0
     newTree.root.state.player shouldBe 1
     newTree.root.parent shouldBe None
     game.depth() shouldBe 0 // cloned
+//    newTree.root.bestChild().parent shouldBe Some(newTree.root)
   }
 
+  it should "playNextMove twice" in {
+    val game = new BoardTicTacToe with MctsBoard
+    val tree = Tree(game, 2)
+    val newTree = playNextMove(tree)
+    val newTree2 = playNextMove(newTree)
+
+    newTree.root.state.board.depth() shouldBe 1
+    newTree.root.state.player shouldBe 1
+    newTree.root.parent shouldBe None
+
+    newTree2.root.state.board.depth() shouldBe 2
+    newTree2.root.children.length shouldBe  0
+    newTree2.root.state.player shouldBe 2
+    newTree2.root.parent shouldBe None
+
+    newTree.root.state.board.lastMove() should not be newTree2.root.state.board.lastMove()
+  }
+
+  // TODO fix it, the MCTS UCT seems unbalanced
   it should "Draw" in {
     val game = new BoardTicTacToe with MctsBoard
     var player: Byte = 2
     var tree = Tree(game, player)
+    var tree2 = Tree(game, 1)
     var iter = 0
 
-    tree = playNextMove(tree)
+    while (!tree.root.state.board.gameEnded() && iter < 9) {
+      tree = playNextMove(tree)
+      game.playMove(tree.root.state.board.lastMove(), player)
+      iter += 1
+      player = tree.root.state.board.opponent(player)
+      tree.root.state.player shouldBe player
+      tree.root.state.board.depth() shouldBe iter
 
-    tree.root.state.board.depth() shouldBe 1
-    tree.root.children.length should be > 0
-    tree.root.state.player shouldBe 1
-    tree.root.parent shouldBe None
-//    game.depth() shouldBe 1
+      tree
+    }
 
-
-    tree = playNextMove(tree)
-    tree.root.state.board.depth() shouldBe 2
-    tree.root.state.player shouldBe 2
-    tree.root.parent shouldBe None
-//    game.depth() shouldBe 2
-
-//    while (!tree.root.state.board.gameEnded() && iter < 9) {
-//      tree = playNextMove(game, tree)
-//
-//      iter += 1
-//      player = (3 - player).toByte
-//      tree.root.state.player shouldBe player
-//      tree.root.state.board.depth() shouldBe iter
-//    }
-
-//    tree.root.state.board.gameEnded() shouldBe true
-//    tree.root.state.board.score() shouldBe 0.0
-//    iter should be < 9
-
+    tree.root.state.board.gameEnded() shouldBe true
+    tree.root.state.board.score() shouldBe 0
+    iter should be < 9
   }
 }
