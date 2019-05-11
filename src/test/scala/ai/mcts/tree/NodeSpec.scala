@@ -65,10 +65,9 @@ class NodeSpec extends WordSpec with Matchers {
           child0.state.visitCount shouldBe 1
         }
 
-        "best Children should not be child0" in {
+        "best Child should not be child0" in {
           val bestChild = node.bestChild()
           bestChild ne child0 shouldBe true
-          val bestChild2 = node.bestChild()
         }
 
         "random child should not be parent" in {
@@ -92,6 +91,13 @@ class NodeSpec extends WordSpec with Matchers {
 
           ascNode eq node shouldBe true
           ascNode.parent should === (None)
+        }
+
+        "best Child parentAscending should result" in {
+          val bestChild = node.bestChild()
+          val bestNewRoot = bestChild.parentAscending()
+          bestNewRoot.parent shouldBe Some(node)
+          bestNewRoot.parent.get eq node
         }
       }
     }
