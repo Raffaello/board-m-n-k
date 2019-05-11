@@ -5,15 +5,15 @@ package ai.mcts
   */
 sealed case class State(board: MctsBoard, player: Byte, private var _visitCount: Int, private var _score: Double) {
 
-  def incVisitCount(): Unit = _visitCount += 1
+  private[mcts] def incVisitCount(): Unit = _visitCount += 1
 
   def visitCount(): Int = _visitCount
 
   def score(): Double = _score
 
-  def addScore(deltaScore: Double): Unit = _score += deltaScore
+  private[mcts] def addScore(deltaScore: Double): Unit = _score += deltaScore
 
-  def allPossibleStates(): IndexedSeq[State] = {
+  private[mcts] def allPossibleStates(): IndexedSeq[State] = {
     val opp = opponent()
     val allStates = board.allPossibleMoves()
     val states = Array.ofDim[State](allStates.length)

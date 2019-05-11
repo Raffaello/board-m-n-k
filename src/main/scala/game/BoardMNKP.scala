@@ -34,7 +34,7 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
       _board(row)(col) = player
       freePositions -= 1
       _depth += 1
-      lastMove = position
+      _lastMove = position
       lastPlayer = player
       true
     }

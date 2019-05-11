@@ -6,9 +6,14 @@ final class Tree(val root: Node)
 
 object Tree {
   def apply(game: MctsBoard, player: Byte): Tree = {
-    val state = State(game, player)
+    val state = State(game.clone(), player)
     val root = Node(state, None, new Children())
     new Tree(root)
+  }
+
+  def apply(root: Node): Tree = {
+    val newRoot = if (root.parent.nonEmpty) root.copy(parent = None) else root
+    new Tree(newRoot)
   }
 
   // this could potentially override copy method too

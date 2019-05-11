@@ -1,4 +1,4 @@
-<configuration debug="true">
+<configuration debug="false">
 
     <appender name="mcts" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
@@ -8,7 +8,7 @@
         </encoder>
     </appender>
 
-    <root level="debug">
+    <root level="error">
         <appender-ref ref="mcts" />
     </root>
 </configuration>

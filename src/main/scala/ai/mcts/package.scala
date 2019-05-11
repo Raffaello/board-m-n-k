@@ -9,6 +9,10 @@ package object mcts {
 
   // TODO import from config
   final private val uctParameter: Double = Math.sqrt(2.0)
+  final private val maxIter: Int = 10
+
+  protected def remapScore(score: Score): Double = (score + 1.0) / 2.0
+  protected def remapScore(board: MctsBoard): Double = remapScore(board.score())
 
   /**
     * if visited is non zero then parentVisited is non zero
@@ -38,9 +42,7 @@ package object mcts {
       val tempBoard = tempState.board.clone()
 
       var opponent = tempBoard.opponent(player)
-      // TODO load from config
       var iter = 0
-      val maxIter = 10
       while (!tempBoard.gameEnded() && tempBoard.playRandomMove(opponent) && iter < maxIter) {
         opponent = tempBoard.opponent(opponent)
         iter += 1
@@ -50,21 +52,26 @@ package object mcts {
     } else remapScore(node.state.board)
   }
 
-  protected def remapScore(score: Score): Double = (score + 1.0) / 2.0
-  protected def remapScore(board: MctsBoard): Double = remapScore(board.score())
-
   def backPropagation(node: Node, player: Byte, gameScore: Double): Node = node.backPropagate(player, gameScore)
 
-  def findNextMove(game: MctsBoard, tree: Tree): Tree = {
-    val newRoot = findNextMove(game, tree.root)
+  def findNextMove(tree: Tree): Tree = {
+    val newRoot = findNextMove(tree.root)
 
-    Tree.update(newRoot)
+    Tree(newRoot)
   }
 
-  def findNextMove(game: MctsBoard, root: Node): Node = {
+  def playNextMove(tree: Tree): Tree = {
+    val newTree = Tree.update(findNextMove(tree.root))
+    // todo if not true?
+    logger.error(s"lastMove = ${newTree.root.state.board.lastMove()}")
+    newTree
+  }
+
+  def findNextMove(root: Node): Node = {
     val player = root.state.player
     var process = true
     var bestNode: Node = root
+    val game = root.state.board
     game.Stats.totalCalls = 0
     while (process) {
       val selNode = selection(root)
@@ -90,7 +97,7 @@ package object mcts {
     }
 
     val bestRoot = bestNode.parentAscending()
-    assert(bestRoot.parent.get == root)
+//    assert(bestRoot.parent.get == root)
 
     // TODO display flag instead?
     logger.whenDebugEnabled {
@@ -112,7 +119,7 @@ package object mcts {
   def solveTest(game: MctsBoard) = {
     val player: Byte = 2
     val tree = Tree(game, player)
-    val newTree = findNextMove(game, tree)
+    val newTree = findNextMove(tree)
 
     assert(tree ne newTree)
     assert(newTree.root.state.board.depth() == 1)

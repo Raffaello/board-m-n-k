@@ -45,7 +45,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     * @return
     */
   protected def scoreDiagSE(): Int = {
-    val (i, j) = lastMove
+    val (i, j) = _lastMove
     val bMin = Math.min(n - j, m - i)
     lazy val stopU = Math.min(k, bMin)
     lazy val stopD = Math.min(i, j) + 1
@@ -79,7 +79,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     * @return
     */
   protected def scoreDiagNE(): Int = {
-    val (i, j) = lastMove
+    val (i, j) = _lastMove
 
     @tailrec
     def foldUpRight(acc: Int, i: Int, j: Int, depth: Int): Int = {
@@ -102,7 +102,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
   }
 
   protected def scoreCol(): Int = {
-    val (i, j) = lastMove
+    val (i, j) = _lastMove
 
     @tailrec
     def foldDown(acc: Int, i: Int, stop: Int): Int = {
@@ -130,7 +130,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
   }
 
   protected def scoreRow(): Int = {
-    val (i, j) = lastMove
+    val (i, j) = _lastMove
 
     @tailrec
     def foldRight(acc: Int, j: Int, stop: Int): Int = {

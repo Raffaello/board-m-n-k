@@ -15,7 +15,8 @@ abstract class BoardMN(val m: Short, val n: Short) {
   //  def board(): IndexedSeq[IndexedSeq[Byte]] = _board.map(_.toIndexedSeq).toIndexedSeq
 
   protected var freePositions: Int = m * n
-  protected var lastMove: Position = (0, 0)
+  protected var _lastMove: Position = (0, 0)
+  def lastMove(): Position = _lastMove
 
   final protected def generateMoves(): IndexedSeq[Position] = {
     for {
