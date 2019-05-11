@@ -44,6 +44,18 @@ final case class Node(state: State, parent: Option[Node], children: Children) {
     }
   }
 
+  def parentAscending(): Node = {
+    @tailrec
+    def loop(node: Node, last: Node): Node = {
+        node.parent match {
+          case Some(x) => loop(x, node)
+          case None => last
+        }
+    }
+
+    loop(this, this)
+  }
+
   @tailrec
   def backPropagate(player: Byte, deltaScore: Double): Node = {
     state.incVisitCount()

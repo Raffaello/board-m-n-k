@@ -41,7 +41,7 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   }
 
   def undoMove(position: Position, player: Byte): Boolean = {
-    //    assert(_board(position._1)(position._2) > 0)
+    assert(_board(position._1)(position._2) > 0)
     if (_board(position._1)(position._2) > 0) {
       _board(position._1)(position._2) = 0
       freePositions += 1

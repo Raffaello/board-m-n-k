@@ -37,9 +37,11 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     }
   }
 
+//  "MCTS" should
+
   "MCTS TicTacToe" should "Draw" in {
     val game = new BoardTicTacToe
     var player = 1
-
+    // TODO
   }
 }

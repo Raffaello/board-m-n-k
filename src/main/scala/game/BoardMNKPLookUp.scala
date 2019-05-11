@@ -9,7 +9,7 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
     *
     * TODO all arrays must be cloned so at the moment using var :/
     */
-  object LookUps {
+  class CLookUps extends Cloneable {
 
     var rows: Array[Array[Byte]] = Array.ofDim[Byte](m, numPlayers)
     var cols: Array[Array[Byte]] = Array.ofDim[Byte](n, numPlayers)
@@ -33,7 +33,17 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
       cols(pos._2)(playerIdx) = (cols(pos._2)(playerIdx) - 1).toByte
       assert(cols(pos._2)(playerIdx) >= 0, s"${cols(pos._2)(playerIdx)} -- $playerIdx, $pos")
     }
+
+    override def clone(): CLookUps = {
+      val clone = super.clone().asInstanceOf[CLookUps]
+      clone.rows = this.rows.map(_.clone())
+      clone.cols = this.cols.map(_.clone())
+      clone
+    }
   }
+
+  protected var _LookUps = new CLookUps
+  def LookUps(): CLookUps = _LookUps
 
   override def playMove(position: Position, player: Byte): Boolean = {
     LookUps.won = None

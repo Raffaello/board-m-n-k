@@ -38,7 +38,7 @@ package object mcts {
       var opponent = tempBoard.opponent(player)
       var iter = 0
       val maxIter = 100
-      while (!tempBoard.gameEnded() && tempBoard.randomMove(opponent) && iter < maxIter) {
+      while (!tempBoard.gameEnded() && tempBoard.playRandomMove(opponent) && iter < maxIter) {
         opponent = tempBoard.opponent(opponent)
         iter += 1
       }
@@ -52,7 +52,8 @@ package object mcts {
   /**
     * TODO REDO IT
     */
-  def findNextMoveTest(game: MctsBoard, root: Node): Unit = {
+  def findNextMoveTest(game: MctsBoard, root: Node): Node = {
+//    val root = game.root().root
     val player = root.state.player
     var process = true
     var bestNode: Node = root
@@ -85,21 +86,21 @@ package object mcts {
     println("Simulated game: ")
     bestNode.state.board.display()
 
-    val bestRoot = bestNode.ascending()
+    val bestRoot = bestNode.parentAscending()
     println("next move:")
     bestRoot.state.board.display()
-    assert(bestRoot == root)
+    assert(bestRoot.parent.get == root)
 
     println(s"Total Calls: $totalCalls")
-
     //TODO UPDATE the tree root with best Node
+    bestRoot
   }
 
   /**
     * TODO REDO IT
     */
   def solveTest(game: MctsBoard) = {
-    val player: Byte = 1
+    val player: Byte = 2
     val tree = Tree(game, player)
     val root = tree.root
     findNextMoveTest(game, root)
