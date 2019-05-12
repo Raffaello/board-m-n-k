@@ -11,9 +11,16 @@ package object mcts {
   final private val uctParameter: Double = Math.sqrt(2.0)
   final private val maxIter: Int = 10
 
-  protected def remapScore(score: Score): Double = (score + 1.0) / 2.0
+  protected def remapScore(score: Score, player: Byte): Double = {
+    score match {
+      case -1 => if (player == 2) 1.0 else 0.0
+      case 1 => if (player == 1) 1.0 else 0.0
+      case 0 => 0.5
+      case _ => ???
+    }
+  }
 
-  protected def remapScore(board: MctsBoard): Double = remapScore(board.score())
+  protected def remapScore(board: MctsBoard, player: Byte): Double = remapScore(board.score(), player)
 
   /**
     * if visited is non zero then parentVisited is non zero
@@ -49,11 +56,14 @@ package object mcts {
         iter += 1
       }
 
-      remapScore(tempBoard)
-    } else remapScore(node.state.board)
+      remapScore(tempBoard, player)
+    } else  0.0
   }
 
-  def backPropagation(node: Node, player: Byte, gameScore: Double): Node = node.backPropagate(player, gameScore)
+  def backPropagation(node: Node, player: Byte, gameScore: Double): Node = {
+    node.state.zeroScore()
+    node.backPropagate(player, gameScore)
+  }
 
   def playNextMove(tree: Tree): Tree = {
     val newRoot = findNextMove(tree.root)
@@ -64,7 +74,7 @@ package object mcts {
   }
 
   def findNextMove(root: Node): Node = {
-    val player = root.state.player
+    val player: Byte = root.state.opponent()
     var process = true
     var bestNode: Node = root
     val game = root.state.board
@@ -77,11 +87,12 @@ package object mcts {
       if (!selNode.state.board.gameEnded()) {
         val exploringNode = expansion(selNode)
         val gameScore = simulation(exploringNode, player)
-        logger.debug(
-          s"Simulation = score: $gameScore "
-            + s"--- gameEnded: ${exploringNode.state.board.gameEnded()} "
-            + s"-- depth: ${exploringNode.state.board.depth()}"
-        )
+                logger.debug(
+                  s"Sim = score: $gameScore  --- ep: ${exploringNode.state.player} --- p: $player"
+                    + s"--- gameEnded: ${exploringNode.state.board.gameEnded()} "
+                    + s"--- depth: ${exploringNode.state.board.depth()}"
+                    + s"--- board: ${exploringNode.state.board.boardStatus()}"
+                )
 
         val tempRoot = backPropagation(exploringNode, player, gameScore)
         assert(tempRoot == root)
@@ -93,7 +104,7 @@ package object mcts {
     }
 
     val bestRoot = bestNode.parentAscending()
-//    assert(root.bestChild() eq bestNode.parentAscending())
+    //    assert(root.bestChild() eq bestNode.parentAscending())
     // TODO display flag instead?
     logger.debug(
       s"""Simulated game:

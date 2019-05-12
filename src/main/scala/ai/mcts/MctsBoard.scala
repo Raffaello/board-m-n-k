@@ -7,20 +7,21 @@ import game.Position
   * todo convert to abstract class? need parameters....
   */
 trait MctsBoard extends AiBoard with Cloneable {
-
-  private[mcts] def cmp(board: MctsBoard): Boolean = {
-    require(m == board.m)
-    require(n == board.n)
-    require(numPlayers == board.numPlayers)
-
-    for {
-      i <- mIndices
-      j <-nIndices
-      if board._board(i)(j) != _board(i)(j)
-    } return false
-
-    true
-  }
+  // TODO remove, just for debug
+  def boardStatus(): String = _board.flatten.mkString
+//  private[mcts] def cmp(board: MctsBoard): Boolean = {
+//    require(m == board.m)
+//    require(n == board.n)
+//    require(numPlayers == board.numPlayers)
+//
+//    for {
+//      i <- mIndices
+//      j <-nIndices
+//      if board._board(i)(j) != _board(i)(j)
+//    } return false
+//
+//    true
+//  }
 
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()
 

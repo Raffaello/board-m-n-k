@@ -51,9 +51,15 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
     } else false
   }
 
+  // lastplayer win? 1
+  // lastplayer lost? -1
+  // else 0
   override def score(): Int = ???
 
+  // check if board has k in a row of lastplayer then return true otherwise false
+  // create a general method to check player p if won.
   protected def checkWin(): Boolean = ???
+
 
   override def gameEnded(): Boolean = gameEnded(_depth)
 

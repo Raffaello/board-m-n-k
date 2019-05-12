@@ -46,17 +46,17 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
   def LookUps(): CLookUps = _LookUps
 
   override def playMove(position: Position, player: Byte): Boolean = {
-    LookUps.won = None
+    LookUps().won = None
     val res = super.playMove(position, player)
     if (res) {
-      LookUps.inc(position, player - 1)
+      LookUps().inc(position, player - 1)
     }
     res
   }
 
   override def undoMove(position: Position, player: Byte): Boolean = {
-    LookUps.dec(position, player - 1)
-    LookUps.won = None
+    LookUps().dec(position, player - 1)
+    LookUps().won = None
     super.undoMove(position, player)
   }
 
@@ -66,7 +66,7 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
     */
   override def gameEnded(depth: Int): Boolean = {
     if (depth < minWinDepth) {
-      LookUps.won = Some(false)
+      LookUps().won = Some(false)
       false
     }
     else if (freePositions == 0) true

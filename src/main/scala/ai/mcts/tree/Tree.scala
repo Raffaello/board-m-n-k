@@ -16,7 +16,7 @@ object Tree {
     new Tree(newRoot)
   }
 
-  // TODO REMOVE
+  // TODO REMOVE/RENAME to `from`
   def update(newRoot: Node): Tree = {
     // TODO potentially need to clear memory of all nodes not descending from this newRoot
     // TODO to claim that memory is required to DFS and clear all nodes skiping to DFS in newRoot.

@@ -73,13 +73,13 @@ class MctsBoardSpec extends FlatSpec with Matchers {
     game.getBoard() ne gameClone.getBoard() shouldBe true
     game.getBoard() shouldBe gameClone.getBoard()
     game.allPossibleMoves() shouldBe gameClone.allPossibleMoves()
-    game.LookUps ne gameClone.LookUps shouldBe true
+    game.LookUps() ne gameClone.LookUps() shouldBe true
 
-    game.LookUps.cols ne gameClone.LookUps.cols
-    game.LookUps.cols(0) ne gameClone.LookUps.cols(0)
-    game.LookUps.cols shouldBe gameClone.LookUps.cols
-    game.LookUps.rows ne gameClone.LookUps.rows
-    game.LookUps.rows shouldBe gameClone.LookUps.rows
+    game.LookUps().cols ne gameClone.LookUps().cols
+    game.LookUps().cols(0) ne gameClone.LookUps().cols(0)
+    game.LookUps().cols shouldBe gameClone.LookUps().cols
+    game.LookUps().rows ne gameClone.LookUps().rows
+    game.LookUps().rows shouldBe gameClone.LookUps().rows
 
     game.playRandomMove(2)
 
@@ -89,11 +89,11 @@ class MctsBoardSpec extends FlatSpec with Matchers {
     game.getBoard() should not be gameClone.getBoard()
     game.allPossibleMoves() should not be gameClone.allPossibleMoves()
 
-    game.LookUps ne gameClone.LookUps
+    game.LookUps() ne gameClone.LookUps()
 
-    game.LookUps.cols ne gameClone.LookUps.cols
-    game.LookUps.cols should not be gameClone.LookUps.cols
-    game.LookUps.rows ne gameClone.LookUps.rows
-    game.LookUps.rows should not be gameClone.LookUps.rows
+    game.LookUps().cols ne gameClone.LookUps().cols
+    game.LookUps().cols should not be gameClone.LookUps().cols
+    game.LookUps().rows ne gameClone.LookUps().rows
+    game.LookUps().rows should not be gameClone.LookUps().rows
   }
 }

@@ -70,8 +70,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
     val subTree = Tree.update(bestChild)
     subTree.root.parent shouldBe None
-//    subTree.root.bestChild().parent shouldBe Some(subTree.root)
-
+    subTree.root.bestChild().parent shouldBe None
   }
 
   it should "FindNextMove" in {
@@ -109,18 +108,34 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     val game = new BoardTicTacToe with MctsBoard
     val tree = Tree(game, 2)
     val newTree = playNextMove(tree)
-    val newTree2 = playNextMove(newTree)
 
     newTree.root.state.board.depth() shouldBe 1
     newTree.root.state.player shouldBe 1
     newTree.root.parent shouldBe None
+//    newTree.root.state.score() shouldBe 0.0
 
+    val newTree2 = playNextMove(newTree)
     newTree2.root.state.board.depth() shouldBe 2
     newTree2.root.children.length shouldBe  0
     newTree2.root.state.player shouldBe 2
     newTree2.root.parent shouldBe None
-
+//    newTree2.root.state.score() shouldBe 0.0
     newTree.root.state.board.lastMove() should not be newTree2.root.state.board.lastMove()
+  }
+
+  // TODO It seems an error in the player to be propagate back... like call once more opponent...
+  // TODO from the tree seems correct, but displayed with p1 'X', instead of 'O' p2 ??? debug
+  it should "draw p1" in {
+    val game = new BoardTicTacToe with MctsBoard
+    game.playMove((0,0), 1)
+    game.playMove((0,1), 2)
+    game.playMove((1,1), 1)
+
+    val tree = Tree(game,1)
+    val subTree = playNextMove(tree)
+
+    subTree.root.state.board.lastMove() shouldBe (2,2)
+    subTree.root.state.board.gameEnded() shouldBe false
   }
 
   // TODO fix it, the MCTS UCT seems unbalanced
@@ -128,7 +143,6 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     val game = new BoardTicTacToe with MctsBoard
     var player: Byte = 2
     var tree = Tree(game, player)
-    var tree2 = Tree(game, 1)
     var iter = 0
 
     while (!tree.root.state.board.gameEnded() && iter < 9) {
@@ -144,6 +158,6 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
     tree.root.state.board.gameEnded() shouldBe true
     tree.root.state.board.score() shouldBe 0
-    iter should be < 9
+    iter shouldBe 9
   }
 }
