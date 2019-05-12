@@ -206,11 +206,15 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     subTree.lastPlayer() shouldBe 2
   }
 
-  it should "draw p1" in {
+  it must "draw in this game (1,2),(1,0)" in {
     val game = new BoardTicTacToe with MctsBoard
     game.playMove((0, 0), 1)
     game.playMove((1, 1), 2)
     game.playMove((2, 2), 1)
+    game.playMove((0, 1), 2)
+    game.playMove((2, 1), 1)
+    game.playMove((2, 0), 2)
+    game.playMove((0, 2), 1)
 
     var st = Tree(game, 1)
     while (!st.root.state.board.gameEnded()) {
@@ -219,6 +223,27 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     }
 
     st.root.state.board.score() shouldBe 0
+
+  }
+
+  it should "draw p1" in {
+    val game = new BoardTicTacToe with MctsBoard
+    game.playMove((0, 0), 1)
+    game.playMove((1, 1), 2)
+    game.playMove((2, 2), 1)
+    game.playMove((0, 1), 2)
+    game.playMove((2, 1), 1)
+
+    var st = Tree(game, 1)
+    while (!st.root.state.board.gameEnded()) {
+      val st2 = playNextMove(st)
+      game.playMove(st2.lastMove(), st2.lastPlayer())
+      st2.lastPlayer() shouldBe st.root.state.opponent()
+      st = st2
+    }
+
+    st.root.state.board.score() shouldBe 0
+
   }
 
   ignore should "Draw (always?)" in {
