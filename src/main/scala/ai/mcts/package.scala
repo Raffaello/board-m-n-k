@@ -57,11 +57,11 @@ package object mcts {
       }
 
       remapScore(tempBoard, player)
-    } else  0.0
+    } else 0.0
   }
 
   def backPropagation(node: Node, player: Byte, gameScore: Double): Node = {
-    node.state.zeroScore()
+//    node.state.zeroScore()
     node.backPropagate(player, gameScore)
   }
 
@@ -81,33 +81,41 @@ package object mcts {
     game.Stats.totalCalls = 0
     while (process) {
       val selNode = selection(root)
+      logger.debug(s"selNode.state = ${selNode.state} --- board: ${selNode.state.board.boardStatus()}")
       assert(selNode.children.isEmpty)
       // TODO use max time/iterations too
       // TODO review gameEnded method
       if (!selNode.state.board.gameEnded()) {
         val exploringNode = expansion(selNode)
         val gameScore = simulation(exploringNode, player)
-                logger.debug(
-                  s"Sim = score: $gameScore  --- ep: ${exploringNode.state.player} --- p: $player"
-                    + s"--- gameEnded: ${exploringNode.state.board.gameEnded()} "
-                    + s"--- depth: ${exploringNode.state.board.depth()}"
-                    + s"--- board: ${exploringNode.state.board.boardStatus()}"
-                )
-
         val tempRoot = backPropagation(exploringNode, player, gameScore)
         assert(tempRoot == root)
         game.Stats.totalCalls += 1
+
+        logger.debug(
+          s"Sim = score: $gameScore --- ep: ${exploringNode.state.player} --- p: $player"
+            + s"--- gameEnded: ${exploringNode.state.board.gameEnded()} "
+            + s"--- depth: ${exploringNode.state.board.depth()}"
+            + s"--- board: ${exploringNode.state.board.boardStatus()}"
+        )
+
+        logger.debug(s"es: ${exploringNode.state.toString()} --- rs: ${tempRoot.state.toString}")
+
       } else {
         bestNode = selNode
+//        bestNode = root.mostVisited()
         process = false
       }
     }
 
-    val bestRoot = bestNode.parentAscending()
-    //    assert(root.bestChild() eq bestNode.parentAscending())
-    // TODO display flag instead?
+    val bestRoot = root.mostVisited()
     logger.debug(
-      s"""Simulated game:
+      s"""
+         | bns: ${bestNode.state} --- br: ${bestRoot.state}
+       """.stripMargin)
+
+    logger.debug(
+      s"""Simulated game ${bestNode.state.board.boardStatus()}:
          |${bestNode.state.board.display()}
          |next move:
          |${bestRoot.state.board.display()}

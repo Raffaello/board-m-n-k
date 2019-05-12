@@ -123,19 +123,28 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     newTree.root.state.board.lastMove() should not be newTree2.root.state.board.lastMove()
   }
 
-  // TODO It seems an error in the player to be propagate back... like call once more opponent...
-  // TODO from the tree seems correct, but displayed with p1 'X', instead of 'O' p2 ??? debug
+  // TODO seems not exploring all the paths like move 1,2 and move 2,1 seems not doing it (other orders)
   it should "draw p1" in {
     val game = new BoardTicTacToe with MctsBoard
-    game.playMove((0,0), 1)
+    game.playMove((2,2), 1)
     game.playMove((0,1), 2)
     game.playMove((1,1), 1)
+
 
     val tree = Tree(game,1)
     val subTree = playNextMove(tree)
 
-    subTree.root.state.board.lastMove() shouldBe (2,2)
+    subTree.root.state.board.lastMove() shouldBe (0,0)
     subTree.root.state.board.gameEnded() shouldBe false
+    subTree.lastPlayer() shouldBe 2
+    game.playMove(subTree.lastMove(), subTree.lastPlayer())
+    var st = subTree
+    while(!st.root.state.board.gameEnded()) {
+      st = playNextMove(st)
+      game.playMove(st.lastMove(), st.lastPlayer())
+    }
+
+    st.root.state.board.score() shouldBe 0
   }
 
   // TODO fix it, the MCTS UCT seems unbalanced

@@ -24,6 +24,11 @@ final class Node(val state: State, private[mcts] var parent: Option[Node], val c
     else children(Random.nextInt(children.length))
   }
 
+  def mostVisited(): Node = {
+    if(children.nonEmpty) children.maxBy(c => c.state.visitCount())
+    else this
+  }
+
   // TODO: improve this method after the first expansion, there are a lot of Double.Max UCT children and
   // TODO: one of those should be chosen randomly... In this case is sequential always:
   // TODO: it would be always the first.
