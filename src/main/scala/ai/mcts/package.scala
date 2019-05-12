@@ -4,6 +4,8 @@ import ai.mcts.tree.{Node, Tree}
 import com.typesafe.scalalogging.Logger
 import game.Score
 
+import scala.annotation.tailrec
+
 package object mcts {
   private[mcts] val logger = Logger("mcts")
 
@@ -43,17 +45,16 @@ package object mcts {
   }
 
   def simulation(node: Node): Double = {
+    @tailrec
+    def gameLoop(board: MctsBoard, player: Byte): MctsBoard = {
+      if (!board.gameEnded() && board.playRandomMove(player)) gameLoop(board, board.opponent(player))
+      else board
+    }
+
     if (node.nonTerminalLeaf()) {
-      val tempNode = node.copy()
-      val tempState = tempNode.state.copy()
-      val tempBoard = tempState.board.clone()
-
-      var opponent = tempState.opponent()
-      while (!tempBoard.gameEnded() && tempBoard.playRandomMove(opponent)) {
-        opponent = tempBoard.opponent(opponent)
-      }
-
-      remapScore(tempBoard, node.state.player)
+      val tempNode = node.deepCopy()
+      val loopBoard = gameLoop(tempNode.state.board, tempNode.state.opponent())
+      remapScore(loopBoard, node.state.player)
     } else remapScore(node.state.board, node.state.player)
   }
 
@@ -64,22 +65,26 @@ package object mcts {
     else {
       val newRoot = findNextMove(tree.root)
       val newTree = Tree.from(newRoot)
-      logger.info(s"lastMove = ${newTree.root.state.board.lastMove()} -- player = ${newTree.root.state.player}")
+      logger.info(s"lastMove = ${newTree.root.state.board.lastMove} -- player = ${newTree.root.state.player}")
       Some(newTree)
     }
   }
 
+  // TODO fix game.Stats object.... remove singleton.
+  //    game.Stats.totalCalls = 0
   def findNextMove(root: Node): Node = {
-    // TODO fix game.Stats object.... remove singleton.
-    //    game.Stats.totalCalls = 0
-    var iter = 0
-    while (iter < maxIter) {
-      val selNode = selection(root)
-      val expNode = expansion(selNode)
-      val gameScore = simulation(expNode)
-      backPropagation(expNode, gameScore)
-      iter += 1
+    @tailrec
+    def loop(iter: Int = 0): Int = {
+      if (iter < maxIter) {
+        val selNode = selection(root)
+        val expNode = expansion(selNode)
+        val gameScore = simulation(expNode)
+        backPropagation(expNode, gameScore)
+        loop(iter + 1)
+      } else iter
     }
+
+    val iter = loop()
 
     val bestRoot = root.mostVisited()
     val bestNode = bestRoot.mostVisitedDescending()

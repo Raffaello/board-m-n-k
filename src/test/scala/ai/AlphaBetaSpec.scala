@@ -1,12 +1,12 @@
 package ai
 
-import game.{BoardMNK, BoardTicTacToe}
+import game.{BoardTicTacToe, BoardTicTacToe2}
 import org.scalatest.{Matchers, WordSpec}
 
 class AlphaBetaSpec extends WordSpec with Matchers {
 
-  "Tic Tac Toe Alpha Beta" should {
-    val game = new BoardTicTacToe() with AlphaBeta
+  "TicTacToe2 Alpha Beta" should {
+    val game = new BoardTicTacToe2() with AlphaBeta
     "solve the game" in {
       game.solve() shouldEqual 0
     }
@@ -16,8 +16,8 @@ class AlphaBetaSpec extends WordSpec with Matchers {
     }
   }
 
-  "BoardMNK 3x3x3 Alpha Beta" should {
-    val game = new BoardMNK(3, 3, 3) with AlphaBeta
+  "BoardTicTacToe Alpha Beta" should {
+    val game = new BoardTicTacToe with AlphaBeta
     "solve the game" in {
       game.solve() shouldEqual 0
     }

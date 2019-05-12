@@ -1,12 +1,12 @@
 package ai
 
-import game.{BoardMNK, BoardTicTacToe}
+import game.{BoardTicTacToe, BoardTicTacToe2}
 import org.scalatest.{Matchers, WordSpec}
 
 class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
 
-  "Tic Tac Toe Alpha Beta with Transposition" should {
-    val game = new BoardTicTacToe() with AlphaBetaTransposition
+  "TicTacToe2 Alpha Beta with Transposition" should {
+    val game = new BoardTicTacToe2() with AlphaBetaTransposition
     "solve the game" in {
       val t = game.solve()
       t.score shouldEqual 0
@@ -23,8 +23,8 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
     }
   }
 
-  "BoardMNK 3x3x3 Alpha Beta with Transposition" should {
-    val game = new BoardMNK(3, 3, 3) with AlphaBetaTransposition
+  "BoardTicTacToe Alpha Beta with Transposition" should {
+    val game = new BoardTicTacToe with AlphaBetaTransposition
     "solve the game" in {
       val t = game.solve()
       t.score shouldEqual 0

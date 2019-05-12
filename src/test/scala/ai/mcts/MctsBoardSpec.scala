@@ -69,31 +69,31 @@ class MctsBoardSpec extends FlatSpec with Matchers {
     val gameClone = game.clone().asInstanceOf[MctsBoardStub]
 
     game ne gameClone shouldBe true
-    game.depth() shouldBe gameClone.depth()
+    game.depth shouldBe gameClone.depth
     game.getBoard() ne gameClone.getBoard() shouldBe true
     game.getBoard() shouldBe gameClone.getBoard()
     game.allPossibleMoves() shouldBe gameClone.allPossibleMoves()
-    game.LookUps() ne gameClone.LookUps() shouldBe true
+    game.lookUps ne gameClone.lookUps shouldBe true
 
-    game.LookUps().cols ne gameClone.LookUps().cols
-    game.LookUps().cols(0) ne gameClone.LookUps().cols(0)
-    game.LookUps().cols shouldBe gameClone.LookUps().cols
-    game.LookUps().rows ne gameClone.LookUps().rows
-    game.LookUps().rows shouldBe gameClone.LookUps().rows
+    game.lookUps.cols ne gameClone.lookUps.cols
+    game.lookUps.cols(0) ne gameClone.lookUps.cols(0)
+    game.lookUps.cols shouldBe gameClone.lookUps.cols
+    game.lookUps.rows ne gameClone.lookUps.rows
+    game.lookUps.rows shouldBe gameClone.lookUps.rows
 
     game.playRandomMove(2)
 
     game ne gameClone shouldBe true
-    game.depth() shouldBe gameClone.depth() + 1
+    game.depth shouldBe gameClone.depth + 1
     game.getBoard() ne gameClone.getBoard() shouldBe true
     game.getBoard() should not be gameClone.getBoard()
     game.allPossibleMoves() should not be gameClone.allPossibleMoves()
 
-    game.LookUps() ne gameClone.LookUps()
+    game.lookUps ne gameClone.lookUps
 
-    game.LookUps().cols ne gameClone.LookUps().cols
-    game.LookUps().cols should not be gameClone.LookUps().cols
-    game.LookUps().rows ne gameClone.LookUps().rows
-    game.LookUps().rows should not be gameClone.LookUps().rows
+    game.lookUps.cols ne gameClone.lookUps.cols
+    game.lookUps.cols should not be gameClone.lookUps.cols
+    game.lookUps.rows ne gameClone.lookUps.rows
+    game.lookUps.rows should not be gameClone.lookUps.rows
   }
 }

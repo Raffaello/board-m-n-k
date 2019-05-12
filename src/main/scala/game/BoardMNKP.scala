@@ -25,9 +25,9 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   protected val minWinDepth: Int = (2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
   protected var _depth: Int = 0
 
-  def depth(): Int = _depth
+  def depth: Int = _depth
 
-  def lastPlayer(): Byte = this._lastPlayer
+  def lastPlayer: Byte = this._lastPlayer
 
   def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = position
@@ -43,9 +43,12 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   }
 
   def undoMove(position: Position, player: Byte): Boolean = {
-    assert(_board(position._1)(position._2) > 0)
-    if (_board(position._1)(position._2) > 0) {
-      _board(position._1)(position._2) = 0
+    val (i, j) = position
+
+    assert(_board(i)(j) > 0)
+    if (_board(i)(j) > 0) {
+
+      _board(i)(j) = 0
       freePositions += 1
       _depth -= 1
       _lastPlayer = player

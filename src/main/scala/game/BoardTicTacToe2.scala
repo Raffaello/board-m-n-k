@@ -1,10 +1,9 @@
 package game
 
 /**
-  * TODO: can be deleted. It is used for testing and benchmarking.
-  * @deprecated
+  * Used for testing and benchmarking.
   */
-class BoardTicTacToe extends BoardMNK(3, 3, 3) {
+class BoardTicTacToe2 extends BoardTicTacToe {
   protected def scoreRow(row: Short): Int = {
     if (_board(row)(0) == _board(row)(1) && _board(row)(0) == _board(row)(2)) {
       _board(row)(0)
@@ -49,12 +48,12 @@ class BoardTicTacToe extends BoardMNK(3, 3, 3) {
   override protected def checkWin(): Boolean = {
     if (scoreDiagsTL() > 0 || scoreDiagsBR() > 0) true
     else {
-//      mIndices.exists(i => scoreRow(i) > 0 || scoreCol(i) > 0)
+      //      mIndices.exists(i => scoreRow(i) > 0 || scoreCol(i) > 0)
       for {
         i <- mIndices
         if scoreRow(i) > 0 || scoreCol(i) > 0
       } {
-            return true
+        return true
       }
 
       false

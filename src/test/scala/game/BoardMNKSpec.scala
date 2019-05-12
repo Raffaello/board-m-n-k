@@ -6,7 +6,7 @@ import scala.collection.immutable.NumericRange
 
 class BoardMNKSpec extends WordSpec with Matchers {
 
-  "3x3x3 board" must {
+  "3x3x3 board (BoardTicTacToe)" must {
     "P1 win" in {
       val game = new BoardMNK(3, 3, 3)
       game.playMove((0, 0), 1)
@@ -17,28 +17,28 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(4) shouldEqual true
       game.score() shouldEqual 1
-      game.LookUps().won shouldEqual Some(true)
-      game.LookUps().lastPlayerIdx shouldEqual 0
+      game.lookUps.ended shouldEqual Some(true)
+      game.lookUps.lastPlayerIdx shouldEqual 0
 
-      game.LookUps().rows(0)(0) shouldEqual 3
-      game.LookUps().rows(1)(0) shouldEqual 0
-      game.LookUps().rows(2)(0) shouldEqual 0
+      game.lookUps.rows(0)(0) shouldEqual 3
+      game.lookUps.rows(1)(0) shouldEqual 0
+      game.lookUps.rows(2)(0) shouldEqual 0
 
-      game.LookUps().rows(0)(1) shouldEqual 0
-      game.LookUps().rows(1)(1) shouldEqual 2
-      game.LookUps().rows(2)(1) shouldEqual 0
+      game.lookUps.rows(0)(1) shouldEqual 0
+      game.lookUps.rows(1)(1) shouldEqual 2
+      game.lookUps.rows(2)(1) shouldEqual 0
 
-      game.LookUps().cols(0)(0) shouldEqual 1
-      game.LookUps().cols(1)(0) shouldEqual 1
-      game.LookUps().cols(2)(0) shouldEqual 1
+      game.lookUps.cols(0)(0) shouldEqual 1
+      game.lookUps.cols(1)(0) shouldEqual 1
+      game.lookUps.cols(2)(0) shouldEqual 1
 
-      game.LookUps().cols(0)(1) shouldEqual 1
-      game.LookUps().cols(1)(1) shouldEqual 1
-      game.LookUps().cols(2)(1) shouldEqual 0
+      game.lookUps.cols(0)(1) shouldEqual 1
+      game.lookUps.cols(1)(1) shouldEqual 1
+      game.lookUps.cols(2)(1) shouldEqual 0
     }
 
     "P2 win" in {
-      val game = new BoardMNK(3, 3, 3)
+      val game = new BoardTicTacToe
       game.playMove((0, 0), 1)
       game.playMove((1, 1), 2)
       game.playMove((2, 0), 1)
@@ -48,28 +48,28 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(5) shouldEqual true
       game.score() shouldEqual -1
-      game.LookUps().won shouldEqual Some(true)
-      game.LookUps().lastPlayerIdx shouldEqual 1
+      game.lookUps.ended shouldEqual Some(true)
+      game.lookUps.lastPlayerIdx shouldEqual 1
 
-      game.LookUps().rows(0)(0) shouldEqual 2
-      game.LookUps().rows(1)(0) shouldEqual 0
-      game.LookUps().rows(2)(0) shouldEqual 1
+      game.lookUps.rows(0)(0) shouldEqual 2
+      game.lookUps.rows(1)(0) shouldEqual 0
+      game.lookUps.rows(2)(0) shouldEqual 1
 
-      game.LookUps().rows(0)(1) shouldEqual 0
-      game.LookUps().rows(1)(1) shouldEqual 3
-      game.LookUps().rows(2)(1) shouldEqual 0
+      game.lookUps.rows(0)(1) shouldEqual 0
+      game.lookUps.rows(1)(1) shouldEqual 3
+      game.lookUps.rows(2)(1) shouldEqual 0
 
-      game.LookUps().cols(0)(0) shouldEqual 2
-      game.LookUps().cols(1)(0) shouldEqual 0
-      game.LookUps().cols(2)(0) shouldEqual 1
+      game.lookUps.cols(0)(0) shouldEqual 2
+      game.lookUps.cols(1)(0) shouldEqual 0
+      game.lookUps.cols(2)(0) shouldEqual 1
 
-      game.LookUps().cols(0)(1) shouldEqual 1
-      game.LookUps().cols(1)(1) shouldEqual 1
-      game.LookUps().cols(2)(1) shouldEqual 1
+      game.lookUps.cols(0)(1) shouldEqual 1
+      game.lookUps.cols(1)(1) shouldEqual 1
+      game.lookUps.cols(2)(1) shouldEqual 1
     }
 
     "STALE" in {
-      val game = new BoardMNK(3, 3, 3)
+      val game = new BoardTicTacToe
       game.playMove((0, 0), 1)
       game.playMove((0, 1), 2)
       game.playMove((0, 2), 1)
@@ -82,28 +82,28 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(8) shouldEqual true
       game.score() shouldEqual 0
-      game.LookUps().won shouldEqual Some(false)
-      game.LookUps().lastPlayerIdx shouldEqual 0
+      game.lookUps.ended shouldEqual Some(false)
+      game.lookUps.lastPlayerIdx shouldEqual 0
 
-      game.LookUps().rows(0)(0) shouldEqual 2
-      game.LookUps().rows(1)(0) shouldEqual 2
-      game.LookUps().rows(2)(0) shouldEqual 1
+      game.lookUps.rows(0)(0) shouldEqual 2
+      game.lookUps.rows(1)(0) shouldEqual 2
+      game.lookUps.rows(2)(0) shouldEqual 1
 
-      game.LookUps().rows(0)(1) shouldEqual 1
-      game.LookUps().rows(1)(1) shouldEqual 1
-      game.LookUps().rows(2)(1) shouldEqual 2
+      game.lookUps.rows(0)(1) shouldEqual 1
+      game.lookUps.rows(1)(1) shouldEqual 1
+      game.lookUps.rows(2)(1) shouldEqual 2
 
-      game.LookUps().cols(0)(0) shouldEqual 2
-      game.LookUps().cols(1)(0) shouldEqual 1
-      game.LookUps().cols(2)(0) shouldEqual 2
+      game.lookUps.cols(0)(0) shouldEqual 2
+      game.lookUps.cols(1)(0) shouldEqual 1
+      game.lookUps.cols(2)(0) shouldEqual 2
 
-      game.LookUps().cols(0)(1) shouldEqual 1
-      game.LookUps().cols(1)(1) shouldEqual 2
-      game.LookUps().cols(2)(1) shouldEqual 1
+      game.lookUps.cols(0)(1) shouldEqual 1
+      game.lookUps.cols(1)(1) shouldEqual 2
+      game.lookUps.cols(2)(1) shouldEqual 1
     }
 
     "P1 win diagonalTL" in {
-      val game = new BoardMNK(3, 3, 3)
+      val game = new BoardTicTacToe
       game.playMove((0, 0), 1)
       game.playMove((0, 1), 2)
       game.playMove((1, 1), 1)
@@ -112,30 +112,30 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(4) shouldEqual true
       game.score() shouldEqual 1
-      game.LookUps().won shouldEqual Some(true)
-      game.LookUps().lastPlayerIdx shouldEqual 0
+      game.lookUps.ended shouldEqual Some(true)
+      game.lookUps.lastPlayerIdx shouldEqual 0
 
-      game.LookUps().rows(0)(0) shouldEqual 1
-      game.LookUps().rows(1)(0) shouldEqual 1
-      game.LookUps().rows(2)(0) shouldEqual 1
+      game.lookUps.rows(0)(0) shouldEqual 1
+      game.lookUps.rows(1)(0) shouldEqual 1
+      game.lookUps.rows(2)(0) shouldEqual 1
 
-      game.LookUps().rows(0)(1) shouldEqual 1
-      game.LookUps().rows(1)(1) shouldEqual 1
-      game.LookUps().rows(2)(1) shouldEqual 0
+      game.lookUps.rows(0)(1) shouldEqual 1
+      game.lookUps.rows(1)(1) shouldEqual 1
+      game.lookUps.rows(2)(1) shouldEqual 0
 
-      game.LookUps().cols(0)(0) shouldEqual 1
-      game.LookUps().cols(1)(0) shouldEqual 1
-      game.LookUps().cols(2)(0) shouldEqual 1
+      game.lookUps.cols(0)(0) shouldEqual 1
+      game.lookUps.cols(1)(0) shouldEqual 1
+      game.lookUps.cols(2)(0) shouldEqual 1
 
-      game.LookUps().cols(0)(1) shouldEqual 1
-      game.LookUps().cols(1)(1) shouldEqual 1
-      game.LookUps().cols(2)(1) shouldEqual 0
+      game.lookUps.cols(0)(1) shouldEqual 1
+      game.lookUps.cols(1)(1) shouldEqual 1
+      game.lookUps.cols(2)(1) shouldEqual 0
 
       // diag is when rows(x)(y) == cols(x)(y) && > 0
     }
 
     "P1 win diagonalBR" in {
-      val game = new BoardMNK(3, 3, 3)
+      val game = new BoardTicTacToe
       game.playMove((2, 0), 1)
       game.playMove((0, 1), 2)
       game.playMove((1, 1), 1)
@@ -144,24 +144,24 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(4) shouldEqual true
       game.score() shouldEqual 1
-      game.LookUps().won shouldEqual Some(true)
-      game.LookUps().lastPlayerIdx shouldEqual 0
+      game.lookUps.ended shouldEqual Some(true)
+      game.lookUps.lastPlayerIdx shouldEqual 0
 
-      game.LookUps().rows(0)(0) shouldEqual 1
-      game.LookUps().rows(1)(0) shouldEqual 1
-      game.LookUps().rows(2)(0) shouldEqual 1
+      game.lookUps.rows(0)(0) shouldEqual 1
+      game.lookUps.rows(1)(0) shouldEqual 1
+      game.lookUps.rows(2)(0) shouldEqual 1
 
-      game.LookUps().rows(0)(1) shouldEqual 1
-      game.LookUps().rows(1)(1) shouldEqual 1
-      game.LookUps().rows(2)(1) shouldEqual 0
+      game.lookUps.rows(0)(1) shouldEqual 1
+      game.lookUps.rows(1)(1) shouldEqual 1
+      game.lookUps.rows(2)(1) shouldEqual 0
 
-      game.LookUps().cols(0)(0) shouldEqual 1
-      game.LookUps().cols(1)(0) shouldEqual 1
-      game.LookUps().cols(2)(0) shouldEqual 1
+      game.lookUps.cols(0)(0) shouldEqual 1
+      game.lookUps.cols(1)(0) shouldEqual 1
+      game.lookUps.cols(2)(0) shouldEqual 1
 
-      game.LookUps().cols(0)(1) shouldEqual 1
-      game.LookUps().cols(1)(1) shouldEqual 1
-      game.LookUps().cols(2)(1) shouldEqual 0
+      game.lookUps.cols(0)(1) shouldEqual 1
+      game.lookUps.cols(1)(1) shouldEqual 1
+      game.lookUps.cols(2)(1) shouldEqual 0
 
       // diag is when rows(x)(y) == cols(x)(y) && > 0
     }
@@ -186,17 +186,17 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(8) shouldEqual true
       game.score() shouldEqual 1
-      game.LookUps().won shouldEqual Some(true)
-      game.LookUps().lastPlayerIdx shouldEqual 0
+      game.lookUps.ended shouldEqual Some(true)
+      game.lookUps.lastPlayerIdx shouldEqual 0
 
-      game.LookUps().rows(0) shouldEqual Array(2, 1)
-      game.LookUps().rows(1) shouldEqual Array(1, 2)
-      game.LookUps().rows(2) shouldEqual Array(1, 1)
-      game.LookUps().rows(3) shouldEqual Array(1, 0)
+      game.lookUps.rows(0) shouldEqual Array(2, 1)
+      game.lookUps.rows(1) shouldEqual Array(1, 2)
+      game.lookUps.rows(2) shouldEqual Array(1, 1)
+      game.lookUps.rows(3) shouldEqual Array(1, 0)
 
-      game.LookUps().cols(0) shouldEqual Array(1, 2)
-      game.LookUps().cols(1) shouldEqual Array(0, 2)
-      game.LookUps().cols(2) shouldEqual Array(4, 0)
+      game.lookUps.cols(0) shouldEqual Array(1, 2)
+      game.lookUps.cols(1) shouldEqual Array(0, 2)
+      game.lookUps.cols(2) shouldEqual Array(4, 0)
 
     }
   }
@@ -209,7 +209,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
   } {
     // TODO: this value is because the board allows to make 1 player plays twice in a row... :/
     // TODO: to avoid this should be forced to have a board to go in turns with players after each move.
-    val forcedGameEndCheckedValue = k*2
+    val forcedGameEndCheckedValue = k * 2
 
     s"${m}X${n}X$k Game" must {
       "in progress" in {

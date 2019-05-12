@@ -10,6 +10,7 @@ import scala.annotation.tailrec
   * @param k number of same move of a player "in a row" (or col or diagonal)
   */
 class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) {
+
   final protected def score2players(player: Byte): Int = {
     player match {
       case 2 => -1
@@ -30,13 +31,20 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     else 0
   }
 
+  private[this] def checkScore(): Boolean = scoreRow() > 0 || scoreCol() > 0 || scoreDiagSE() > 0 || scoreDiagNE() > 0
+
   /**
     * @TODO checkWinDiagoanls /w lookup
     * @return
     */
   override protected def checkWin(): Boolean = {
-    if (LookUps().won.isEmpty) LookUps().won = Some(scoreRow() > 0 || scoreCol() > 0 || scoreDiagSE() > 0 || scoreDiagNE() > 0)
-    LookUps().won.get
+    lookUps.ended match {
+      case None =>
+        val w = checkScore()
+        lookUps.ended = Some(w)
+        w
+      case Some(x) => x
+    }
   }
 
   /**
@@ -118,15 +126,13 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
       else acc
     }
 
-    if (LookUps().cols(j)(LookUps().lastPlayerIdx) >= k) {
+    if (lookUps.cols(j)(lookUps.lastPlayerIdx) >= k) {
 
       val countD = foldDown(0, i + 1, Math.min(m, i + k))
       val countU = foldUp(0, i - 1, Math.max(0, i - k))
 
-      if (countD + countU >= k1) return _lastPlayer
-    }
-
-    0
+      if (countD + countU >= k1) _lastPlayer else 0
+    } else 0
   }
 
   protected def scoreRow(): Int = {
@@ -146,16 +152,16 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
       else acc
     }
 
-    if (LookUps().rows(i)(LookUps().lastPlayerIdx) >= k) {
+    if (lookUps.rows(i)(lookUps.lastPlayerIdx) >= k) {
       // possible win
       val countR = foldRight(0, j + 1, Math.min(n, j + k))
       val countL = foldLeft(0, j - 1, Math.max(0, j - k))
 
-      if (countR + countL >= k1) return _lastPlayer
-    }
-
-    0
+      if (countR + countL >= k1) _lastPlayer
+      else 0
+    } else 0
   }
+
 
   override def display(): String = {
     val str: StringBuilder = new StringBuilder()

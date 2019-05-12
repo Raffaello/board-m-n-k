@@ -20,6 +20,11 @@ final class Node(val state: State, private[mcts] var parent: Option[Node], val c
     new Node(state, parent, children)
   }
 
+  def deepCopy(state: State = state, parent: Option[Node] = parent, children: Children = children): Node = {
+    val tempState = this.state.copy(board = this.state.board.clone())
+    this.copy(state = tempState)
+  }
+
   def addChild(child: Node): Unit = children.append(child)
 
   def addChild(state: State): Unit = addChild(Node(state, Some(this)))
