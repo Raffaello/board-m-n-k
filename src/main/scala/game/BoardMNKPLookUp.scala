@@ -43,22 +43,13 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
 
       clone
     }
-    def copy(): CLookUps = {
-      val clone = new CLookUps
-      clone.rows = this.rows.map(_.clone())
-      clone.cols = this.cols.map(_.clone())
-      clone.lastPlayerIdx = lastPlayerIdx
-      clone.won = won
-
-      clone
-    }
   }
 
   protected var _LookUps = new CLookUps
+
   def LookUps(): CLookUps = _LookUps
 
   override def playMove(position: Position, player: Byte): Boolean = {
-//    assert(player != lastPlayer)
     LookUps().won = None
     val res = super.playMove(position, player)
     if (res) {

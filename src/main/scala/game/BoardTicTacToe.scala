@@ -39,9 +39,10 @@ class BoardTicTacToe extends BoardMNK(3, 3, 3) {
 
   // TODO: can be removed
   override def gameEnded(): Boolean = {
-    freePositions == 0 ||
+    val res = freePositions == 0 ||
       checkWin() ||
       !_board.flatten.contains(0)
+    res
   }
 
   // TODO: can be removed
