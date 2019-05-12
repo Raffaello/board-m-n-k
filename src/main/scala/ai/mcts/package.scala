@@ -35,9 +35,7 @@ package object mcts {
     }
   }
 
-  def selection(node: Node): Node = {
-    node.descending()
-  }
+  def selection(node: Node): Node = node.descending()
 
   def expansion(node: Node): Node = {
     if (node.nonTerminalLeaf()) node.expandChildren()
@@ -56,25 +54,19 @@ package object mcts {
       }
 
       remapScore(tempBoard, node.state.player)
-    } else {
-      assert(node.children.isEmpty)
-      assert(node.state.board.gameEnded())
-      assert(node.isTerminalLeaf())
-      remapScore(node.state.board, node.state.player)
+    } else remapScore(node.state.board, node.state.player)
+  }
+
+  def backPropagation(node: Node, gameScore: Double): Node = node.backPropagate(node.state.player, gameScore)
+
+  def playNextMove(tree: Tree): Option[Tree] = {
+    if (tree.root.isTerminal()) None
+    else {
+      val newRoot = findNextMove(tree.root)
+      val newTree = Tree.from(newRoot)
+      logger.info(s"lastMove = ${newTree.root.state.board.lastMove()} -- player = ${newTree.root.state.player}")
+      Some(newTree)
     }
-  }
-
-
-  def backPropagation(node: Node, gameScore: Double): Node = {
-    node.backPropagate(node.state.player, gameScore)
-  }
-
-  def playNextMove(tree: Tree): Tree = {
-    val newRoot = findNextMove(tree.root)
-    val newTree = Tree.update(newRoot)
-    // todo if not true?
-    logger.info(s"lastMove = ${newTree.root.state.board.lastMove()} -- player = ${newTree.root.state.player}")
-    newTree
   }
 
   def findNextMove(root: Node): Node = {
@@ -101,18 +93,5 @@ package object mcts {
        """.stripMargin)
 
     bestRoot
-  }
-
-  /**
-    * TODO REDO IT
-    */
-  def solveTest(game: MctsBoard) = {
-    val player: Byte = 2
-    val tree = Tree(game, player)
-    val newRoot = findNextMove(tree.root)
-    val newTree = Tree(newRoot)
-
-    assert(tree ne newTree)
-    assert(newTree.root.state.board.depth() == 1)
   }
 }

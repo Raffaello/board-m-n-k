@@ -70,7 +70,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     bestChild.parent shouldBe Some(tree.root)
     tree.root.mostVisited() shouldBe bestChild
 
-    val subTree = Tree.update(bestChild)
+    val subTree = Tree.from(bestChild)
     subTree.root.parent shouldBe None
     subTree.root.bestChild().parent shouldBe None
   }
@@ -87,7 +87,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     game.depth() shouldBe 0
     newRoot.bestChild().parent shouldBe Some(tree.root.mostVisited())
 
-    val subTree = Tree.update(newRoot)
+    val subTree = Tree.from(newRoot)
     //    subTree.root.bestChild().parent shouldBe Some(subTree.root)
     subTree.root.parent shouldBe None
   }
@@ -95,7 +95,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
   it should "playNextMove" in {
     val game = new BoardTicTacToe with MctsBoard
     val tree = Tree(game, 2)
-    val newTree = playNextMove(tree)
+    val newTree = playNextMove(tree).get
 
     newTree.root.state.board.depth() shouldBe 1
     //    newTree.root.children.length should be > 0
@@ -109,7 +109,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
   it should "playNextMove player 2" in {
     val game = new BoardTicTacToe with MctsBoard
     val tree = Tree(game, 1)
-    val newTree = playNextMove(tree)
+    val newTree = playNextMove(tree).get
 
     newTree.root.state.board.depth() shouldBe 1
     //    newTree.root.children.length should be > 0
@@ -125,7 +125,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     game.playMove((0, 0), 1)
 
     val tree = Tree(game, 1)
-    val newTree = playNextMove(tree)
+    val newTree = playNextMove(tree).get
 
     newTree.root.state.board.depth() shouldBe 2
     //    newTree.root.children.length should be > 0
@@ -141,7 +141,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     game.playMove((0, 0), 1)
     game.playMove((1, 1), 2)
     val tree = Tree(game, 2)
-    val newTree = playNextMove(tree)
+    val newTree = playNextMove(tree).get
 
     newTree.root.state.board.depth() shouldBe 3
     //    newTree.root.children.length should be > 0
@@ -155,14 +155,14 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
   it should "playNextMove twice" in {
     val game = new BoardTicTacToe with MctsBoard
     val tree = Tree(game, 2)
-    val newTree = playNextMove(tree)
+    val newTree = playNextMove(tree).get
 
     newTree.root.state.board.depth() shouldBe 1
     newTree.root.state.player shouldBe 1
     newTree.root.parent shouldBe None
     //    newTree.root.state.score() shouldBe 0.0
 
-    val newTree2 = playNextMove(newTree)
+    val newTree2 = playNextMove(newTree).get
     newTree2.root.state.board.depth() shouldBe 2
     newTree2.root.children.length shouldBe 0
     newTree2.root.state.player shouldBe 2
@@ -171,26 +171,19 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     newTree.root.state.board.lastMove() should not be newTree2.root.state.board.lastMove()
   }
 
-//  it should "explore all the moves" in {
-//    val game = new BoardTicTacToe with MctsBoard
-//    val tree = Tree(game, 2)
-//    findNextMove(tree.root)
-//
-//    def bfsFilter(acc: mutable.Queue[Node])(filter: Node => Boolean): Option[Node] = {
-//      while (acc.nonEmpty) {
-//        val node = acc.dequeue()
-//        if (filter(node)) return Some(node)
-//        else node.children.foreach(acc.enqueue(_))
-//      }
-//
-//      None
-//    }
-//
-//    val queue = mutable.Queue[Node](tree.root)
-//    queue should be('nonEmpty)
-//    val res = bfsFilter(queue)(node => node.state.visitCount() == 0)
-//    res shouldBe None
-//  }
+  it should "Play a game" in {
+    val game = new BoardTicTacToe with MctsBoard
+    val tree = Tree(game, 2)
+    var t: Option[Tree] = Some(tree)
+    var iter = 12
+    do {
+      t = playNextMove(t.get)
+      iter -= 1
+    } while (t.nonEmpty && iter > 0)
+
+    iter should be > 0
+    t shouldBe None
+  }
 
   it should "move to (0,0) in this case" in {
     val game = new BoardTicTacToe with MctsBoard
@@ -198,10 +191,10 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     game.playMove((0, 1), 2)
     game.playMove((1, 1), 1)
     val tree = Tree(game, 1)
-    val subTree = playNextMove(tree)
+    val subTree = playNextMove(tree).get
 
     subTree.root.state.board.lastMove() shouldBe(0, 0)
-    subTree.root.state.board.lastPlayerPlayed() shouldBe 2
+    subTree.root.state.board.lastPlayer() shouldBe 2
     subTree.root.state.board.gameEnded() shouldBe false
     subTree.lastPlayer() shouldBe 2
   }
@@ -218,7 +211,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
     var st = Tree(game, 1)
     while (!st.root.state.board.gameEnded()) {
-      st = playNextMove(st)
+      st = playNextMove(st).get
       game.playMove(st.lastMove(), st.lastPlayer())
     }
 
@@ -236,7 +229,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
     var st = Tree(game, 1)
     while (!st.root.state.board.gameEnded()) {
-      val st2 = playNextMove(st)
+      val st2 = playNextMove(st).get
       game.playMove(st2.lastMove(), st2.lastPlayer())
       st2.lastPlayer() shouldBe st.root.state.opponent()
       st = st2
@@ -253,7 +246,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     var iter = 0
 
     while (!tree.root.state.board.gameEnded() && iter < 9) {
-      tree = playNextMove(tree)
+      tree = playNextMove(tree).get
       game.playMove(tree.root.state.board.lastMove(), player)
       iter += 1
       player = tree.root.state.board.opponent(player)

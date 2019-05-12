@@ -38,6 +38,18 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
       val clone = super.clone().asInstanceOf[CLookUps]
       clone.rows = this.rows.map(_.clone())
       clone.cols = this.cols.map(_.clone())
+      clone.lastPlayerIdx = lastPlayerIdx
+      clone.won = won
+
+      clone
+    }
+    def copy(): CLookUps = {
+      val clone = new CLookUps
+      clone.rows = this.rows.map(_.clone())
+      clone.cols = this.cols.map(_.clone())
+      clone.lastPlayerIdx = lastPlayerIdx
+      clone.won = won
+
       clone
     }
   }

@@ -5,17 +5,16 @@ import scala.collection.immutable.NumericRange
 abstract class BoardMN(val m: Short, val n: Short) {
   //  require(m > 2 && n > 2)
 
-  //  val mnMin: Short = Math.min(m, n).toShort
+  val mnMin: Short = Math.min(m, n).toShort
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
-  // TODO: is a var because cannot clone the ojbect/reassing for MCTS
-  // TODO: unless mcts.State would be extenging the board instaed of including it....
   protected var _board: Board = Array.ofDim[Byte](m, n)
   //  def board(): IndexedSeq[IndexedSeq[Byte]] = _board.map(_.toIndexedSeq).toIndexedSeq
 
   protected var freePositions: Int = m * n
   protected var _lastMove: Position = (0, 0)
+
   def lastMove(): Position = _lastMove
 
   final protected def generateMoves(): IndexedSeq[Position] = {
@@ -27,8 +26,6 @@ abstract class BoardMN(val m: Short, val n: Short) {
   }
 
   protected def consumeMoves()(f: Position => Unit): Unit = generateMoves().foreach(f)
-
-  //  def move(position: Position): Byte = _board(position._1)(position._2)
 
   def playMove(position: Position, player: Byte): Boolean
 

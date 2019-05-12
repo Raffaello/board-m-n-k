@@ -1,9 +1,8 @@
 package ai.mcts.tree
 
-import ai.mcts.{MctsBoard, State, UCT, logger}
+import ai.mcts.{MctsBoard, State, UCT}
 
 import scala.annotation.tailrec
-import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 
@@ -35,7 +34,7 @@ final class Node(val state: State, private[mcts] var parent: Option[Node], val c
   }
 
   private def mostVisitedChild(): Option[Node] = {
-    if(children.isEmpty) None
+    if (children.isEmpty) None
     else Some(children.maxBy(c => c.state.visitCount()))
   }
 

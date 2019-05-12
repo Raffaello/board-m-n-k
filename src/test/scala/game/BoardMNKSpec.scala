@@ -17,24 +17,24 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(4) shouldEqual true
       game.score() shouldEqual 1
-      game.LookUps.won shouldEqual Some(true)
-      game.LookUps.lastPlayerIdx shouldEqual 0
+      game.LookUps().won shouldEqual Some(true)
+      game.LookUps().lastPlayerIdx shouldEqual 0
 
-      game.LookUps.rows(0)(0) shouldEqual 3
-      game.LookUps.rows(1)(0) shouldEqual 0
-      game.LookUps.rows(2)(0) shouldEqual 0
+      game.LookUps().rows(0)(0) shouldEqual 3
+      game.LookUps().rows(1)(0) shouldEqual 0
+      game.LookUps().rows(2)(0) shouldEqual 0
 
-      game.LookUps.rows(0)(1) shouldEqual 0
-      game.LookUps.rows(1)(1) shouldEqual 2
-      game.LookUps.rows(2)(1) shouldEqual 0
+      game.LookUps().rows(0)(1) shouldEqual 0
+      game.LookUps().rows(1)(1) shouldEqual 2
+      game.LookUps().rows(2)(1) shouldEqual 0
 
-      game.LookUps.cols(0)(0) shouldEqual 1
-      game.LookUps.cols(1)(0) shouldEqual 1
-      game.LookUps.cols(2)(0) shouldEqual 1
+      game.LookUps().cols(0)(0) shouldEqual 1
+      game.LookUps().cols(1)(0) shouldEqual 1
+      game.LookUps().cols(2)(0) shouldEqual 1
 
-      game.LookUps.cols(0)(1) shouldEqual 1
-      game.LookUps.cols(1)(1) shouldEqual 1
-      game.LookUps.cols(2)(1) shouldEqual 0
+      game.LookUps().cols(0)(1) shouldEqual 1
+      game.LookUps().cols(1)(1) shouldEqual 1
+      game.LookUps().cols(2)(1) shouldEqual 0
     }
 
     "P2 win" in {
@@ -48,24 +48,24 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(5) shouldEqual true
       game.score() shouldEqual -1
-      game.LookUps.won shouldEqual Some(true)
-      game.LookUps.lastPlayerIdx shouldEqual 1
+      game.LookUps().won shouldEqual Some(true)
+      game.LookUps().lastPlayerIdx shouldEqual 1
 
-      game.LookUps.rows(0)(0) shouldEqual 2
-      game.LookUps.rows(1)(0) shouldEqual 0
-      game.LookUps.rows(2)(0) shouldEqual 1
+      game.LookUps().rows(0)(0) shouldEqual 2
+      game.LookUps().rows(1)(0) shouldEqual 0
+      game.LookUps().rows(2)(0) shouldEqual 1
 
-      game.LookUps.rows(0)(1) shouldEqual 0
-      game.LookUps.rows(1)(1) shouldEqual 3
-      game.LookUps.rows(2)(1) shouldEqual 0
+      game.LookUps().rows(0)(1) shouldEqual 0
+      game.LookUps().rows(1)(1) shouldEqual 3
+      game.LookUps().rows(2)(1) shouldEqual 0
 
-      game.LookUps.cols(0)(0) shouldEqual 2
-      game.LookUps.cols(1)(0) shouldEqual 0
-      game.LookUps.cols(2)(0) shouldEqual 1
+      game.LookUps().cols(0)(0) shouldEqual 2
+      game.LookUps().cols(1)(0) shouldEqual 0
+      game.LookUps().cols(2)(0) shouldEqual 1
 
-      game.LookUps.cols(0)(1) shouldEqual 1
-      game.LookUps.cols(1)(1) shouldEqual 1
-      game.LookUps.cols(2)(1) shouldEqual 1
+      game.LookUps().cols(0)(1) shouldEqual 1
+      game.LookUps().cols(1)(1) shouldEqual 1
+      game.LookUps().cols(2)(1) shouldEqual 1
     }
 
     "STALE" in {
@@ -82,24 +82,24 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(8) shouldEqual true
       game.score() shouldEqual 0
-      game.LookUps.won shouldEqual Some(false)
-      game.LookUps.lastPlayerIdx shouldEqual 0
+      game.LookUps().won shouldEqual Some(false)
+      game.LookUps().lastPlayerIdx shouldEqual 0
 
-      game.LookUps.rows(0)(0) shouldEqual 2
-      game.LookUps.rows(1)(0) shouldEqual 2
-      game.LookUps.rows(2)(0) shouldEqual 1
+      game.LookUps().rows(0)(0) shouldEqual 2
+      game.LookUps().rows(1)(0) shouldEqual 2
+      game.LookUps().rows(2)(0) shouldEqual 1
 
-      game.LookUps.rows(0)(1) shouldEqual 1
-      game.LookUps.rows(1)(1) shouldEqual 1
-      game.LookUps.rows(2)(1) shouldEqual 2
+      game.LookUps().rows(0)(1) shouldEqual 1
+      game.LookUps().rows(1)(1) shouldEqual 1
+      game.LookUps().rows(2)(1) shouldEqual 2
 
-      game.LookUps.cols(0)(0) shouldEqual 2
-      game.LookUps.cols(1)(0) shouldEqual 1
-      game.LookUps.cols(2)(0) shouldEqual 2
+      game.LookUps().cols(0)(0) shouldEqual 2
+      game.LookUps().cols(1)(0) shouldEqual 1
+      game.LookUps().cols(2)(0) shouldEqual 2
 
-      game.LookUps.cols(0)(1) shouldEqual 1
-      game.LookUps.cols(1)(1) shouldEqual 2
-      game.LookUps.cols(2)(1) shouldEqual 1
+      game.LookUps().cols(0)(1) shouldEqual 1
+      game.LookUps().cols(1)(1) shouldEqual 2
+      game.LookUps().cols(2)(1) shouldEqual 1
     }
 
     "P1 win diagonalTL" in {
@@ -112,24 +112,24 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(4) shouldEqual true
       game.score() shouldEqual 1
-      game.LookUps.won shouldEqual Some(true)
-      game.LookUps.lastPlayerIdx shouldEqual 0
+      game.LookUps().won shouldEqual Some(true)
+      game.LookUps().lastPlayerIdx shouldEqual 0
 
-      game.LookUps.rows(0)(0) shouldEqual 1
-      game.LookUps.rows(1)(0) shouldEqual 1
-      game.LookUps.rows(2)(0) shouldEqual 1
+      game.LookUps().rows(0)(0) shouldEqual 1
+      game.LookUps().rows(1)(0) shouldEqual 1
+      game.LookUps().rows(2)(0) shouldEqual 1
 
-      game.LookUps.rows(0)(1) shouldEqual 1
-      game.LookUps.rows(1)(1) shouldEqual 1
-      game.LookUps.rows(2)(1) shouldEqual 0
+      game.LookUps().rows(0)(1) shouldEqual 1
+      game.LookUps().rows(1)(1) shouldEqual 1
+      game.LookUps().rows(2)(1) shouldEqual 0
 
-      game.LookUps.cols(0)(0) shouldEqual 1
-      game.LookUps.cols(1)(0) shouldEqual 1
-      game.LookUps.cols(2)(0) shouldEqual 1
+      game.LookUps().cols(0)(0) shouldEqual 1
+      game.LookUps().cols(1)(0) shouldEqual 1
+      game.LookUps().cols(2)(0) shouldEqual 1
 
-      game.LookUps.cols(0)(1) shouldEqual 1
-      game.LookUps.cols(1)(1) shouldEqual 1
-      game.LookUps.cols(2)(1) shouldEqual 0
+      game.LookUps().cols(0)(1) shouldEqual 1
+      game.LookUps().cols(1)(1) shouldEqual 1
+      game.LookUps().cols(2)(1) shouldEqual 0
 
       // diag is when rows(x)(y) == cols(x)(y) && > 0
     }
@@ -144,24 +144,24 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(4) shouldEqual true
       game.score() shouldEqual 1
-      game.LookUps.won shouldEqual Some(true)
-      game.LookUps.lastPlayerIdx shouldEqual 0
+      game.LookUps().won shouldEqual Some(true)
+      game.LookUps().lastPlayerIdx shouldEqual 0
 
-      game.LookUps.rows(0)(0) shouldEqual 1
-      game.LookUps.rows(1)(0) shouldEqual 1
-      game.LookUps.rows(2)(0) shouldEqual 1
+      game.LookUps().rows(0)(0) shouldEqual 1
+      game.LookUps().rows(1)(0) shouldEqual 1
+      game.LookUps().rows(2)(0) shouldEqual 1
 
-      game.LookUps.rows(0)(1) shouldEqual 1
-      game.LookUps.rows(1)(1) shouldEqual 1
-      game.LookUps.rows(2)(1) shouldEqual 0
+      game.LookUps().rows(0)(1) shouldEqual 1
+      game.LookUps().rows(1)(1) shouldEqual 1
+      game.LookUps().rows(2)(1) shouldEqual 0
 
-      game.LookUps.cols(0)(0) shouldEqual 1
-      game.LookUps.cols(1)(0) shouldEqual 1
-      game.LookUps.cols(2)(0) shouldEqual 1
+      game.LookUps().cols(0)(0) shouldEqual 1
+      game.LookUps().cols(1)(0) shouldEqual 1
+      game.LookUps().cols(2)(0) shouldEqual 1
 
-      game.LookUps.cols(0)(1) shouldEqual 1
-      game.LookUps.cols(1)(1) shouldEqual 1
-      game.LookUps.cols(2)(1) shouldEqual 0
+      game.LookUps().cols(0)(1) shouldEqual 1
+      game.LookUps().cols(1)(1) shouldEqual 1
+      game.LookUps().cols(2)(1) shouldEqual 0
 
       // diag is when rows(x)(y) == cols(x)(y) && > 0
     }
@@ -186,17 +186,17 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(8) shouldEqual true
       game.score() shouldEqual 1
-      game.LookUps.won shouldEqual Some(true)
-      game.LookUps.lastPlayerIdx shouldEqual 0
+      game.LookUps().won shouldEqual Some(true)
+      game.LookUps().lastPlayerIdx shouldEqual 0
 
-      game.LookUps.rows(0) shouldEqual Array(2, 1)
-      game.LookUps.rows(1) shouldEqual Array(1, 2)
-      game.LookUps.rows(2) shouldEqual Array(1, 1)
-      game.LookUps.rows(3) shouldEqual Array(1, 0)
+      game.LookUps().rows(0) shouldEqual Array(2, 1)
+      game.LookUps().rows(1) shouldEqual Array(1, 2)
+      game.LookUps().rows(2) shouldEqual Array(1, 1)
+      game.LookUps().rows(3) shouldEqual Array(1, 0)
 
-      game.LookUps.cols(0) shouldEqual Array(1, 2)
-      game.LookUps.cols(1) shouldEqual Array(0, 2)
-      game.LookUps.cols(2) shouldEqual Array(4, 0)
+      game.LookUps().cols(0) shouldEqual Array(1, 2)
+      game.LookUps().cols(1) shouldEqual Array(0, 2)
+      game.LookUps().cols(2) shouldEqual Array(4, 0)
 
     }
   }

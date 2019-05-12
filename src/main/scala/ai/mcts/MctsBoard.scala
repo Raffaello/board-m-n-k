@@ -9,19 +9,6 @@ import game.Position
 trait MctsBoard extends AiBoard with Cloneable {
   // TODO remove, just for debug
   def boardStatus(): String = _board.flatten.mkString
-//  private[mcts] def cmp(board: MctsBoard): Boolean = {
-//    require(m == board.m)
-//    require(n == board.n)
-//    require(numPlayers == board.numPlayers)
-//
-//    for {
-//      i <- mIndices
-//      j <-nIndices
-//      if board._board(i)(j) != _board(i)(j)
-//    } return false
-//
-//    true
-//  }
 
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()
 
@@ -31,10 +18,8 @@ trait MctsBoard extends AiBoard with Cloneable {
     else None
   }
 
-  def lastPlayerPlayed(): Byte = this.lastPlayer
-
   def playRandomMove(player: Byte): Boolean = {
-    assert(player != lastPlayer)
+    assert(player != _lastPlayer)
     randomMove() match {
       case Some(pos) => playMove(pos, player)
       case None => false
@@ -45,15 +30,9 @@ trait MctsBoard extends AiBoard with Cloneable {
     val clone = super.clone().asInstanceOf[MctsBoard]
     clone._board = this._board.map(_.clone())
     clone._LookUps = clone._LookUps.clone()
+
     assert(clone ne this)
     assert(clone._board ne _board)
-
-    // TODO create a "clone/copy"  method instead.
-    clone._LookUps.cols = _LookUps.cols.map(_.clone())
-    clone._LookUps.lastPlayerIdx = _LookUps.lastPlayerIdx
-    clone._LookUps.rows = _LookUps.rows.map(_.clone())
-    clone._LookUps.won = _LookUps.won
-    // TODO remove these asserts (better design required)
     assert(_LookUps ne clone._LookUps)
     assert(_LookUps.rows ne clone._LookUps.rows)
 

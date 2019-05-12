@@ -73,7 +73,7 @@ class TreeSpec extends WordSpec with Matchers {
       }
 
       "updating to first child as a new root" should {
-        val newTree: Tree = Tree.update(child0)
+        val newTree: Tree = Tree.from(child0)
         emptyRootTests(newTree.root)
         "new root " should {
           "not equal old root" in {
@@ -90,7 +90,7 @@ class TreeSpec extends WordSpec with Matchers {
         }
 
         "expanding further" in {
-          val newTree2 = Tree.update(child0)
+          val newTree2 = Tree.from(child0)
           newTree2.root.expandChildren()
           newTree2.root.bestChild().expandChildren()
           val node = newTree2.root.descending()
