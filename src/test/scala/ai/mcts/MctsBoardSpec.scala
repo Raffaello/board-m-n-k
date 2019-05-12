@@ -59,7 +59,7 @@ class MctsBoardSpec extends FlatSpec with Matchers {
       j <- game.nIndices
     } game.playMove((i, j), 1)
 
-    val randomMove = game.playRandomMove(1)
+    val randomMove = game.playRandomMove(2)
     randomMove shouldBe false
   }
 

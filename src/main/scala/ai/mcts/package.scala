@@ -35,24 +35,17 @@ package object mcts {
     }
   }
 
-  // TODO determine if is terminal state or not expanded
   def selection(node: Node): Node = {
-    //    val selNode = node.descending()
-    //    logger.debug("selection:")
-    val selNode = node.descending()
-    selNode
+    node.descending()
   }
 
   def expansion(node: Node): Node = {
-    if (node.isLeaf()) {
-      node.expandChildren()
-    }
-
+    if (node.nonTerminalLeaf()) node.expandChildren()
     node.randomChild()
   }
 
   def simulation(node: Node): Double = {
-    if (node.isLeaf()) {
+    if (node.nonTerminalLeaf()) {
       val tempNode = node.copy()
       val tempState = tempNode.state.copy()
       val tempBoard = tempState.board.clone()
@@ -85,47 +78,29 @@ package object mcts {
   }
 
   def findNextMove(root: Node): Node = {
-    //    val player: Byte = root.state.opponent()
-    //    var process = true
-    var bestNode: Node = root
-    val game = root.state.board
-    game.Stats.totalCalls = 0
-    while (game.Stats.totalCalls < 10000) {
+    // TODO fix game.Stats object.... remove singleton.
+    //    game.Stats.totalCalls = 0
+    var iter = 0
+    while (iter < maxIter) {
       val selNode = selection(root)
-      //      logger.debug(s"selNode.state = ${selNode.state} --- board: ${selNode.state.board.boardStatus()}")
       val expNode = expansion(selNode)
       val gameScore = simulation(expNode)
       backPropagation(expNode, gameScore)
-      game.Stats.totalCalls += 1
-      bestNode = expNode
-
-      //      logger.debug(
-      //        s"Sim = score: $gameScore --- ep: ${tmpNode.state.player} --- p: $player"
-      //          + s"--- gameEnded: ${tmpNode.state.board.gameEnded()} "
-      //          + s"--- depth: ${tmpNode.state.board.depth()}"
-      //          + s"--- board: ${tmpNode.state.board.boardStatus()}"
-      //      )
-      //
-      //      logger.debug(s"es: ${tmpNode.state.toString()} --- rs: ${tempRoot.state.toString}")
+      iter += 1
     }
 
-
     val bestRoot = root.mostVisited()
-    logger.debug(
-      s"""
-         | bns: ${bestNode.state} --- br: ${bestRoot.state}
-             """.stripMargin)
+    val bestNode = bestRoot.mostVisitedDescending()
 
     logger.debug(
       s"""Simulated game ${bestNode.state.board.boardStatus()}:
          |${bestNode.state.board.display()}
          |next move:
          |${bestRoot.state.board.display()}
-         |Total Calls: ${game.Stats.totalCalls}
-               """.stripMargin)
+         |Total Calls (iter): $iter
+       """.stripMargin)
 
     bestRoot
-
   }
 
   /**
