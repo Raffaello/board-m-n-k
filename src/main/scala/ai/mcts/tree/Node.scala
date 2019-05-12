@@ -1,12 +1,19 @@
 package ai.mcts.tree
 
-import ai.mcts
-import ai.mcts.{MctsBoard, State, UCT}
+import ai.mcts.{MctsBoard, State, UCT, logger}
 
 import scala.annotation.tailrec
+import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
+
 final class Node(val state: State, private[mcts] var parent: Option[Node], val children: Children) {
+
+//  def isLeaf(): Boolean = children.isEmpty
+  def isTerminalLeaf(): Boolean = state.end() && children.isEmpty
+//  def nonTerminalLeaf(): Boolean = children.isEmpty && !state.end()
+  def isLeaf(): Boolean = children.isEmpty && !state.end()
+
   def copy(state: State = state, parent: Option[Node] = parent, children: Children = children): Node = {
     new Node(state, parent, children)
   }
@@ -25,8 +32,43 @@ final class Node(val state: State, private[mcts] var parent: Option[Node], val c
   }
 
   def mostVisited(): Node = {
-    if(children.nonEmpty) children.maxBy(c => c.state.visitCount())
+    if (children.nonEmpty) children.maxBy(c => c.state.visitCount())
     else this
+  }
+
+  @tailrec
+  def mostVisitedChild(): Node = {
+    if (children.nonEmpty) children.maxBy(c => c.state.visitCount()).mostVisitedChild()
+    else this
+  }
+
+  def Uct(): Double = {
+    parent match {
+      case None => Double.MaxValue
+      case Some(p) => UCT(state.score(), state.visitCount(), p.state.visitCount())
+    }
+
+  }
+  private def bestChildScore(): Node = {
+    // debug
+//    val l = new ListBuffer[Double]()
+//
+//    var bc:Node = null
+//    var bu:Double = Double.MinValue
+//    for (c <- children) {
+//      val u = UCT(c.state.score(), c.state.visitCount(), state.visitCount())
+//      logger.debug(s"uct = $u => [W:${c.state.score()}, V:${c.state.visitCount()}, N:${state.visitCount()}]")
+//      l += u
+//      if(u>bu) {
+//        bu = u
+//        bc = c
+//      }
+//    }
+//
+//    logger.debug(s"BC: $bc - uct = $bu")
+//    logger.debug("---")
+//    bc
+    children.maxBy(c => UCT(c.state.score(), c.state.visitCount(), state.visitCount()))
   }
 
   // TODO: improve this method after the first expansion, there are a lot of Double.Max UCT children and
@@ -35,14 +77,14 @@ final class Node(val state: State, private[mcts] var parent: Option[Node], val c
   // TODO: consider a priorityQueue as a cache too (benchmark).
   def bestChild(): Node = {
     // TODO: UCT can be cached in the node and invalidated/updated in backpropagation.
-    if (children.nonEmpty) children.maxBy(c => UCT(c.state.score(), c.state.visitCount(), state.visitCount()))
+    if (children.nonEmpty) bestChildScore()
     else this
   }
 
   @tailrec
   def descending(): Node = {
     if (children.isEmpty) this
-    else bestChild().descending()
+    else bestChildScore().descending()
   }
 
   @tailrec

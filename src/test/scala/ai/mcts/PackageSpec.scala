@@ -1,10 +1,12 @@
 package ai.mcts
 
-import ai.mcts.tree.Tree
+import ai.mcts.tree.{Node, Tree}
 import game.BoardTicTacToe
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
+
+import scala.collection.mutable
 
 class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
 
@@ -123,7 +125,60 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     newTree.root.state.board.lastMove() should not be newTree2.root.state.board.lastMove()
   }
 
+  it should "explore all the moves" in {
+    val game = new BoardTicTacToe with MctsBoard
+    val tree = Tree(game, 2)
+    findNextMove(tree.root)
+    var count = 1
+    def bfsFilter(acc: mutable.Queue[Node])(filter: Node => Boolean): Option[Node] = {
+      while (acc.nonEmpty) {
+        val node = acc.dequeue()
+        count +=1
+        if (filter(node)) return Some(node)
+        else node.children.foreach(acc.enqueue(_))
+      }
+
+      None
+    }
+
+    count = 1
+    bfsFilter(mutable.Queue[Node](tree.root))(_ => false)
+    logger.info(s"$count")
+    val queue = mutable.Queue[Node](tree.root)
+    queue should be ('nonEmpty)
+    count = 1
+    val res = bfsFilter(queue)(node => node.state.visitCount() == 0)
+    logger.info(s"$count")
+
+    res shouldBe None
+    count should be > 0
+  }
+
+//  it should "be smart" in {
+//    val game = new BoardTicTacToe with MctsBoard
+//    game.playMove((2,2), 1)
+//    game.playMove((0,1), 2)
+//    game.playMove((1,1), 1)
+//
+//
+//    val tree = Tree(game,1)
+//    val subTree = playNextMove(tree)
+//
+//    subTree.root.state.board.lastMove() shouldBe (0,0)
+//    subTree.root.state.board.gameEnded() shouldBe false
+//    subTree.lastPlayer() shouldBe 2
+//    game.playMove(subTree.lastMove(), subTree.lastPlayer())
+//    var st = subTree
+//    while(!st.root.state.board.gameEnded()) {
+//      st = playNextMove(st)
+//      game.playMove(st.lastMove(), st.lastPlayer())
+//    }
+//
+//    st.root.state.board.score() shouldBe 0
+//  }
+
   // TODO seems not exploring all the paths like move 1,2 and move 2,1 seems not doing it (other orders)
+  // returned simulated game is not the one of the next move
   it should "draw p1" in {
     val game = new BoardTicTacToe with MctsBoard
     game.playMove((2,2), 1)
@@ -131,7 +186,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     game.playMove((1,1), 1)
 
 
-    val tree = Tree(game,1)
+    val tree = Tree(game, game.lastPlayerPlayed())
     val subTree = playNextMove(tree)
 
     subTree.root.state.board.lastMove() shouldBe (0,0)

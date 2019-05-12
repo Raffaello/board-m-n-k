@@ -9,7 +9,7 @@ package object mcts {
 
   // TODO import from config
   final private val uctParameter: Double = Math.sqrt(2.0)
-  final private val maxIter: Int = 10
+  final private val maxIter: Int = 1000
 
   protected def remapScore(score: Score, player: Byte): Double = {
     score match {
@@ -35,34 +35,45 @@ package object mcts {
     }
   }
 
-  def selection(node: Node): Node = node.descending()
+  // TODO determine if is terminal state or not expanded
+  def selection(node: Node): Node = {
+    //    val selNode = node.descending()
+    //    logger.debug("selection:")
+    val selNode = node.descending()
+    selNode
+  }
 
   def expansion(node: Node): Node = {
-    node.expandChildren()
+    if (node.isLeaf()) {
+      node.expandChildren()
+    }
+
     node.randomChild()
   }
 
-  def simulation(node: Node, player: Byte): Double = {
-    if (node.state.player == player) {
-      // TODO can use Lens for deep copy/clone {for these 3 statements}
+  def simulation(node: Node): Double = {
+    if (node.isLeaf()) {
       val tempNode = node.copy()
       val tempState = tempNode.state.copy()
       val tempBoard = tempState.board.clone()
 
-      var opponent = tempBoard.opponent(player)
-      var iter = 0
-      while (!tempBoard.gameEnded() && tempBoard.playRandomMove(opponent) && iter < maxIter) {
+      var opponent = tempState.opponent()
+      while (!tempBoard.gameEnded() && tempBoard.playRandomMove(opponent)) {
         opponent = tempBoard.opponent(opponent)
-        iter += 1
       }
 
-      remapScore(tempBoard, player)
-    } else 0.0
+      remapScore(tempBoard, node.state.player)
+    } else {
+      assert(node.children.isEmpty)
+      assert(node.state.board.gameEnded())
+      assert(node.isTerminalLeaf())
+      remapScore(node.state.board, node.state.player)
+    }
   }
 
-  def backPropagation(node: Node, player: Byte, gameScore: Double): Node = {
-//    node.state.zeroScore()
-    node.backPropagate(player, gameScore)
+
+  def backPropagation(node: Node, gameScore: Double): Node = {
+    node.backPropagate(node.state.player, gameScore)
   }
 
   def playNextMove(tree: Tree): Tree = {
@@ -74,45 +85,36 @@ package object mcts {
   }
 
   def findNextMove(root: Node): Node = {
-    val player: Byte = root.state.opponent()
-    var process = true
+    //    val player: Byte = root.state.opponent()
+    //    var process = true
     var bestNode: Node = root
     val game = root.state.board
     game.Stats.totalCalls = 0
-    while (process) {
+    while (game.Stats.totalCalls < 10000) {
       val selNode = selection(root)
-      logger.debug(s"selNode.state = ${selNode.state} --- board: ${selNode.state.board.boardStatus()}")
-      assert(selNode.children.isEmpty)
-      // TODO use max time/iterations too
-      // TODO review gameEnded method
-      if (!selNode.state.board.gameEnded()) {
-        val exploringNode = expansion(selNode)
-        val gameScore = simulation(exploringNode, player)
-        val tempRoot = backPropagation(exploringNode, player, gameScore)
-        assert(tempRoot == root)
-        game.Stats.totalCalls += 1
+      //      logger.debug(s"selNode.state = ${selNode.state} --- board: ${selNode.state.board.boardStatus()}")
+      val expNode = expansion(selNode)
+      val gameScore = simulation(expNode)
+      backPropagation(expNode, gameScore)
+      game.Stats.totalCalls += 1
+      bestNode = expNode
 
-        logger.debug(
-          s"Sim = score: $gameScore --- ep: ${exploringNode.state.player} --- p: $player"
-            + s"--- gameEnded: ${exploringNode.state.board.gameEnded()} "
-            + s"--- depth: ${exploringNode.state.board.depth()}"
-            + s"--- board: ${exploringNode.state.board.boardStatus()}"
-        )
-
-        logger.debug(s"es: ${exploringNode.state.toString()} --- rs: ${tempRoot.state.toString}")
-
-      } else {
-        bestNode = selNode
-//        bestNode = root.mostVisited()
-        process = false
-      }
+      //      logger.debug(
+      //        s"Sim = score: $gameScore --- ep: ${tmpNode.state.player} --- p: $player"
+      //          + s"--- gameEnded: ${tmpNode.state.board.gameEnded()} "
+      //          + s"--- depth: ${tmpNode.state.board.depth()}"
+      //          + s"--- board: ${tmpNode.state.board.boardStatus()}"
+      //      )
+      //
+      //      logger.debug(s"es: ${tmpNode.state.toString()} --- rs: ${tempRoot.state.toString}")
     }
+
 
     val bestRoot = root.mostVisited()
     logger.debug(
       s"""
          | bns: ${bestNode.state} --- br: ${bestRoot.state}
-       """.stripMargin)
+             """.stripMargin)
 
     logger.debug(
       s"""Simulated game ${bestNode.state.board.boardStatus()}:
@@ -120,9 +122,10 @@ package object mcts {
          |next move:
          |${bestRoot.state.board.display()}
          |Total Calls: ${game.Stats.totalCalls}
-         """.stripMargin)
+               """.stripMargin)
 
     bestRoot
+
   }
 
   /**

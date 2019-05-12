@@ -46,6 +46,7 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
   def LookUps(): CLookUps = _LookUps
 
   override def playMove(position: Position, player: Byte): Boolean = {
+//    assert(player != lastPlayer)
     LookUps().won = None
     val res = super.playMove(position, player)
     if (res) {

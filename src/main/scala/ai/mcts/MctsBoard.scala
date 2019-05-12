@@ -31,7 +31,10 @@ trait MctsBoard extends AiBoard with Cloneable {
     else None
   }
 
+  def lastPlayerPlayed(): Byte = this.lastPlayer
+
   def playRandomMove(player: Byte): Boolean = {
+    assert(player != lastPlayer)
     randomMove() match {
       case Some(pos) => playMove(pos, player)
       case None => false

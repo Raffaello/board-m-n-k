@@ -9,6 +9,7 @@ final class Tree(val root: Node) {
 }
 
 object Tree {
+  // TODO grap lastplayer played from the board and remove from here
   def apply(game: MctsBoard, player: Byte): Tree = {
     val state = State(game.clone(), player)
     val root = Node(state, None)
