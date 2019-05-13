@@ -199,7 +199,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     subTree.lastPlayer shouldBe 2
   }
 
-  it must "draw in this game (1,2),(1,0)" in {
+  ignore must "draw in this game (1,2),(1,0)" in {
     val game = new BoardTicTacToe2 with MctsBoard
     game.playMove((0, 0), 1)
     game.playMove((1, 1), 2)
@@ -219,7 +219,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
   }
 
-  it should "draw p1" in {
+  ignore should "draw p1" in {
     val game = new BoardTicTacToe2 with MctsBoard
     game.playMove((0, 0), 1)
     game.playMove((1, 1), 2)
