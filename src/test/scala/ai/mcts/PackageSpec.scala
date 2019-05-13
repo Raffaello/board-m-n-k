@@ -1,12 +1,10 @@
 package ai.mcts
 
-import ai.mcts.tree.{Node, Tree}
+import ai.mcts.tree.Tree
 import game.BoardTicTacToe2
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
-
-import scala.collection.mutable
 
 class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
 

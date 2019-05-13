@@ -1,15 +1,40 @@
 lazy val Benchmark = config("bench") extend Test
 lazy val root = (project in file("."))
-    .configs(Benchmark)
-    .settings(
-      inConfig(Benchmark)(Defaults.testSettings): _*
-    )
+  .configs(Benchmark)
+  .settings(
+    inConfig(Benchmark)(Defaults.testSettings): _*
+  )
+
+//val common_scalacOptions = Seq(
+//
+//)
 
 name := "board-m-n-k"
 version := "0.1"
 scalaVersion := "2.12.8"
-scalacOptions += "-Ypartial-unification"
-scalacOptions += "-Xdisable-assertions"
+scalacOptions ++= Seq(
+  "-Ypartial-unification",
+  "-deprecation",
+  "-feature",
+  "-explaintypes",
+  "-unchecked",
+  "-Ywarn-dead-code",
+  "-Ywarn-unused", "_",
+  "-Xlint", "_",
+  //  "-Xdisable-assertions",
+)
+
+
+scalacOptions in Benchmark ++= Seq(
+  //  "-Ypartial-unification",
+  "-optimize",
+  "-opt", "_"
+)
+
+scalacOptions in Test ++= Seq(
+  "-Xdev"
+)
+
 javacOptions += "--illegal-access=warn"
 
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5"
@@ -30,19 +55,19 @@ libraryDependencies += "com.storm-enroute" %% "scalameter" % "0.17" % "bench"
 libraryDependencies += "com.storm-enroute" %% "scalameter-core" % "0.17" % "bench"
 testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework")
 parallelExecution in Benchmark := false
-logBuffered := false
+//logBuffered := false
 fork := true
 outputStrategy := Some(StdoutOutput)
 connectInput := true
 
 // class path "bug"
-val classPath = Seq(
-  ".",
-)
+//val classPath = Seq(
+//  ".",
+//)
 
-packageOptions += Package.ManifestAttributes(
-  "Class-Path" -> classPath.mkString(" ")
-)
+//packageOptions += Package.ManifestAttributes(
+//  "Class-Path" -> classPath.mkString(" ")
+//)
 
 
 // --- end - scalameter
