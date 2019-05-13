@@ -56,12 +56,12 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
     } else false
   }
 
-  // lastplayer win? 1
-  // lastplayer lost? -1
+  // last player win? 1
+  // last player lost? -1
   // else 0
   override def score(): Int = ???
 
-  // check if board has k in a row of lastplayer then return true otherwise false
+  // check if board has k in a row of last player then return true otherwise false
   // create a general method to check player p if won.
   protected def checkWin(): Boolean = ???
 
@@ -71,7 +71,7 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   /**
     * TODO: not sure is well designed here,
     * every call is calling gameEnded to check, and if depth is not enough
-    * would re-set everytime the lookups won Some(false).
+    * would re-set every time the lookups won Some(false).
     * It is used just for the score function mainly
     *
     * TODO: reconsider the Lookups.won Option[Boolean] for is usage case.

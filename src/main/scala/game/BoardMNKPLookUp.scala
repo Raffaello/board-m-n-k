@@ -4,7 +4,7 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
 
   /**
     * TODO, refactor with a trait? (no parameter allowed yet)
-    * TODO also shuold be protected? test will be different
+    * TODO also should be protected? test will be different
     * TODO review....
     *
     * TODO all arrays must be cloned so at the moment using var :/
@@ -25,7 +25,7 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
 
       cols(y)(playerIdx) = (1 + cols(y)(playerIdx)).toByte
       assert(cols(y)(playerIdx) <= m, s"${cols(y)(playerIdx)} -- $playerIdx, $pos -- ${_board.flatten.mkString}")
-      // TODO DIAGS1 and DIAG2
+      // TODO DIAG1 and DIAG2
 
     }
 

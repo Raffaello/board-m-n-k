@@ -12,7 +12,7 @@ class AlphaBetaSpec extends WordSpec with Matchers {
     }
 
     "have first move" in {
-      game.nextMove(true, 0) shouldEqual((0, Int.MaxValue), (0, (0, 0)))
+      game.nextMove() shouldEqual((0, Int.MaxValue), (0, (0, 0)))
     }
   }
 
@@ -23,7 +23,7 @@ class AlphaBetaSpec extends WordSpec with Matchers {
     }
 
     "have first move" in {
-      game.nextMove(true, 0) shouldEqual((0, Int.MaxValue), (0, (0, 0)))
+      game.nextMove() shouldEqual((0, Int.MaxValue), (0, (0, 0)))
     }
   }
 }

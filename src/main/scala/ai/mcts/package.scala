@@ -40,7 +40,7 @@ package object mcts {
   def selection(node: Node): Node = node.descending()
 
   def expansion(node: Node): Node = {
-    if (node.nonTerminalLeaf()) node.expandChildren()
+    if (node.nonTerminalLeaf) node.expandChildren()
     node.randomChild()
   }
 
@@ -51,7 +51,7 @@ package object mcts {
       else board
     }
 
-    if (node.nonTerminalLeaf()) {
+    if (node.nonTerminalLeaf) {
       val tempNode = node.deepCopy()
       val loopBoard = gameLoop(tempNode.state.board, tempNode.state.opponent())
       remapScore(loopBoard, node.state.player)
@@ -61,7 +61,7 @@ package object mcts {
   def backPropagation(node: Node, gameScore: Double): Node = node.backPropagate(node.state.player, gameScore)
 
   def playNextMove(tree: Tree): Option[Tree] = {
-    if (tree.root.isTerminal()) None
+    if (tree.root.isTerminal) None
     else {
       val newRoot = findNextMove(tree.root)
       val newTree = Tree.from(newRoot)

@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 /**
   * Basically a clone of NodeSpec, but with a starting point of Tree structure
   * That should be the only one used outside the ai.mcts.tree package
-  * NodeSpec should be not accessible outside mcts pacakge
+  * NodeSpec should be not accessible outside mcts package
   */
 class TreeSpec extends WordSpec with Matchers {
   def emptyTree(): Tree = {
@@ -33,7 +33,7 @@ class TreeSpec extends WordSpec with Matchers {
       root.descending() should be(root)
     }
 
-    // TODO remove the method. profilig if it improve performances.
+    // TODO remove the method. profiling if it improve performances.
     "parentAscending" in {
       root.parentAscending() shouldBe root.bestChild()
     }

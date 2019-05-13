@@ -20,7 +20,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
   }
 
   /**
-    * TODO better generalization: score()(player: Byte => soore: Int) ???
+    * TODO better generalization: score()(player: Byte => score: Int) ???
     * implicit score2players here
     * in the P>2 ??? no implicit but required a function?
     *
@@ -34,8 +34,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
   private[this] def checkScore(): Boolean = scoreRow() > 0 || scoreCol() > 0 || scoreDiagSE() > 0 || scoreDiagNE() > 0
 
   /**
-    * @TODO checkWinDiagoanls /w lookup
-    * @return
+    * TODO checkWinDiagonals /w lookup
     */
   override protected def checkWin(): Boolean = {
     lookUps.ended match {
@@ -49,8 +48,6 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
   /**
     * South-East direction checking: bottom-right to top-left
-    *
-    * @return
     */
   protected def scoreDiagSE(): Int = {
     val (i, j) = _lastMove
@@ -75,10 +72,9 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     if (Math.min(i, j) + bMin >= k1) {
       val countD = foldDownRight(0, 1)
       val countU = foldUpLeft(0, 1)
-      if (countD + countU >= k1) return _lastPlayer
-    }
-
-    0
+      if (countD + countU >= k1) _lastPlayer
+      else 0
+    } else 0
   }
 
   /**

@@ -28,7 +28,7 @@ object MNKSolvers extends App {
       val board = new BoardMNK(m, n, k)
       val start = System.currentTimeMillis()
       Stats.totalCalls = 0
-      val score = ai.old.minimax(board, true)
+      val score = ai.old.minimax(board, isMaximizingPlayer = true)
       val end = System.currentTimeMillis()
       println(s"total time: ${end - start}")
       println(s"Total calls: ${ai.Stats.totalCalls}")

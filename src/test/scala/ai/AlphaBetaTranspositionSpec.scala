@@ -15,7 +15,7 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
       t.depth shouldEqual 0
     }
     "have first move" in {
-      val t = game.nextMove(true, 0)
+      val t = game.nextMove()
       t.score shouldEqual 0
       t.alpha shouldEqual 0
       t.beta shouldEqual Int.MaxValue
@@ -33,7 +33,7 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
       t.depth shouldEqual 0
     }
     "have first move" in {
-      val t = game.nextMove(true, 0)
+      val t = game.nextMove()
       t.score shouldEqual 0
       t.alpha shouldEqual 0
       t.beta shouldEqual Int.MaxValue

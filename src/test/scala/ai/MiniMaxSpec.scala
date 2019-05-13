@@ -12,12 +12,11 @@ class MiniMaxSpec extends WordSpec with Matchers {
     }
 
     "have first move" in {
-      game.nextMove(true, 0) shouldEqual(0, (0, 0))
+      game.nextMove(maximizing = true, 0) shouldEqual(0, (0, 0))
     }
   }
 
   "BoardTicTacToe with minimax" should {
-    val game = new BoardTicTacToe with MiniMax
     "solve the game" in {
       val game = new BoardTicTacToe with MiniMax
       game.solve() shouldEqual 0
@@ -25,7 +24,7 @@ class MiniMaxSpec extends WordSpec with Matchers {
 
     "have first move" in {
       val game = new BoardTicTacToe with MiniMax
-      game.nextMove(true, 0) shouldEqual(0, (0, 0))
+      game.nextMove(maximizing = true, 0) shouldEqual(0, (0, 0))
     }
   }
 }

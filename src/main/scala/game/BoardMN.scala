@@ -9,7 +9,7 @@ abstract class BoardMN(val m: Short, val n: Short) {
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
-  // TODO remove clonable method and interface
+  // TODO remove cloneable method and interface
   protected var _board: Board = Array.ofDim[Byte](m, n)
   //  def board(): IndexedSeq[IndexedSeq[Byte]] = _board.map(_.toIndexedSeq).toIndexedSeq
 

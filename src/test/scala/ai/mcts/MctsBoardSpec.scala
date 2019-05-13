@@ -6,15 +6,15 @@ import org.scalatest.{FlatSpec, Matchers}
 class MctsBoardSpec extends FlatSpec with Matchers {
 
   // TODO this imply a non-well design traits/classes, re extend from itself
-  // Mcts board already extending from BoardMNKPLookup, here some sort of cycle because of the missing paramter
+  // Mcts board already extending from BoardMNKPLookup, here some sort of cycle because of the missing parameter
   // for the constructor: m,n,k,p that cannot be passed in the trait (yet)
   sealed class MctsBoardStub(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKPLookUp(m, n, k, p) with MctsBoard {
-    def getBoard(): Board = _board
+    def board: Board = _board
   }
 
   def initBoard(m: Short, n: Short, k: Short, p: Byte): MctsBoard = new MctsBoardStub(m, n, k, p)
 
-  "MctsBoard" should "be initied" in {
+  "MctsBoard" should "be initialized" in {
     val game = new MctsBoardStub(3, 3, 3, 2)
     game shouldBe an[MctsBoard]
   }
@@ -70,8 +70,8 @@ class MctsBoardSpec extends FlatSpec with Matchers {
 
     game ne gameClone shouldBe true
     game.depth shouldBe gameClone.depth
-    game.getBoard() ne gameClone.getBoard() shouldBe true
-    game.getBoard() shouldBe gameClone.getBoard()
+    game.board ne gameClone.board shouldBe true
+    game.board shouldBe gameClone.board
     game.allPossibleMoves() shouldBe gameClone.allPossibleMoves()
     game.lookUps ne gameClone.lookUps shouldBe true
 
@@ -85,8 +85,8 @@ class MctsBoardSpec extends FlatSpec with Matchers {
 
     game ne gameClone shouldBe true
     game.depth shouldBe gameClone.depth + 1
-    game.getBoard() ne gameClone.getBoard() shouldBe true
-    game.getBoard() should not be gameClone.getBoard()
+    game.board ne gameClone.board shouldBe true
+    game.board should not be gameClone.board
     game.allPossibleMoves() should not be gameClone.allPossibleMoves()
 
     game.lookUps ne gameClone.lookUps

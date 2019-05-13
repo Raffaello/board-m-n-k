@@ -10,7 +10,7 @@ package object old {
   case class Transposition(score: Double, depth: Int, alpha: Double, beta: Double, isMaximizing: Boolean)
 
   trait withGetBoard extends BoardMNK {
-    def getBoard(): Board = _board
+    def board: Board = _board
   }
 
   /**
@@ -120,7 +120,7 @@ package object old {
                         beta: Double = Double.MaxValue,
                         maximizingPlayer: Boolean = true
                       ): Transposition = {
-    val transposition = statuses.get(game.getBoard())
+    val transposition = statuses.get(game.board)
 
     if (transposition.isDefined) {
       Stats.cacheHits += 1
@@ -135,7 +135,7 @@ package object old {
         maximizingPlayer
       )
 
-      statuses.add(game.getBoard(), t)
+      statuses.add(game.board, t)
       t
     } else {
       Stats.totalCalls += 1
@@ -147,7 +147,7 @@ package object old {
           j <- game.nIndices
           if game.playMove((i, j), 1)
         } {
-          val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
+          val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, maximizingPlayer = false)
           best = Math.max(best, t.score)
           a = Math.max(a, best)
           game.undoMove((i, j), 1)
@@ -157,7 +157,7 @@ package object old {
         }
 
         val t = Transposition(best, depth, a, beta, maximizingPlayer)
-        statuses.add(game.getBoard(), t)
+        statuses.add(game.board, t)
         t
       } else {
         var best = Double.MaxValue
@@ -167,7 +167,7 @@ package object old {
           j <- game.nIndices
           if game.playMove((i, j), 2)
         } {
-          val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
+          val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, maximizingPlayer = true)
           best = Math.min(best, t.score)
           b = Math.max(b, best)
           game.undoMove((i, j), 2)
@@ -177,7 +177,7 @@ package object old {
         }
 
         val t = Transposition(best, depth, alpha, b, maximizingPlayer)
-        statuses.add(game.getBoard(), t)
+        statuses.add(game.board, t)
         t
       }
     }

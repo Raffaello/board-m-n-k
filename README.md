@@ -52,7 +52,7 @@ combined with a less depth solution to gain a higher score, it reduces the searc
 
 `score + (Signum(score) * (1.0 / (depth + 1.0) ))`
 
-Probably doesn't improve. [Double check from AlphaBeta and above for improvements, benchmark]
+Probably does not improve. [Double check from AlphaBeta and above for improvements, benchmark]
 
 ## Transposition Table
 
