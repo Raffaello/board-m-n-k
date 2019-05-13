@@ -5,7 +5,7 @@
 //      inConfig(Benchmark)(Defaults.testSettings): _*
 //    )
 
-name := "tic-tac-toe"
+name := "board-m-n-k"
 version := "0.1"
 scalaVersion := "2.12.8"
 scalacOptions += "-Ypartial-unification"
