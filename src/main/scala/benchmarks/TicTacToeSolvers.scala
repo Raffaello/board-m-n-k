@@ -2,7 +2,7 @@ package benchmarks
 
 import ai._
 import ai.old.{TranspositionTable, withGetBoard}
-import game.BoardTicTacToe
+import game.BoardTicTacToe2
 
 object TicTacToeSolvers extends App {
 
@@ -15,10 +15,10 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nMiniMax: ")
-    val board = new BoardTicTacToe
+    val board = new BoardTicTacToe2
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
-    val score = ai.old.minimax(board, true)
+    val score = ai.old.minimax(board, isMaximizingPlayer = true)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${ai.Stats.totalCalls}")
@@ -30,7 +30,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nMiniMax trait: ")
-    val board = new BoardTicTacToe with MiniMax
+    val board = new BoardTicTacToe2 with MiniMax
     val start = System.currentTimeMillis()
 //    Stats.totalCalls = 0
     val score = board.solve()
@@ -45,7 +45,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nMiniMax trait RAW: ")
-    val board = new BoardTicTacToe with MiniMaxRaw
+    val board = new BoardTicTacToe2 with MiniMaxRaw
     val start = System.currentTimeMillis()
 //    Stats.totalCalls = 0
     val score = board.solve()
@@ -60,7 +60,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nNegaMax: ")
-    val board = new BoardTicTacToe
+    val board = new BoardTicTacToe2
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     val score = ai.old.negamax(board, 1)
@@ -75,7 +75,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nNegaMax trait: ")
-    val board = new BoardTicTacToe with NegaMax
+    val board = new BoardTicTacToe2 with NegaMax
     val start = System.currentTimeMillis()
 //    Stats.totalCalls = 0
     val score = board.solve()
@@ -90,7 +90,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nAlpha Beta")
-    val board = new BoardTicTacToe
+    val board = new BoardTicTacToe2
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     val score = ai.alphaBeta(board)
@@ -105,7 +105,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nAlphaBeta trait: ")
-    val board = new BoardTicTacToe with AlphaBeta
+    val board = new BoardTicTacToe2 with AlphaBeta
     val start = System.currentTimeMillis()
 //    Stats.totalCalls = 0
     val score = board.solve()
@@ -120,7 +120,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nAlpha Beta With TranspositionTableOld:")
-    val board = new BoardTicTacToe with TranspositionTable with withGetBoard
+    val board = new BoardTicTacToe2 with TranspositionTable with withGetBoard
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0
@@ -139,7 +139,7 @@ object TicTacToeSolvers extends App {
 
   {
     println("\nAlpha Beta With TranspositionTable:")
-    val board = new BoardTicTacToe with ai.TranspositionTable
+    val board = new BoardTicTacToe2 with ai.TranspositionTable
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0
@@ -158,7 +158,7 @@ object TicTacToeSolvers extends App {
 
   {
     println("\nAlpha Beta With TranspositionTable Trait:")
-    val board = new BoardTicTacToe with AlphaBetaTransposition
+    val board = new BoardTicTacToe2 with AlphaBetaTransposition
     val start = System.currentTimeMillis()
 //    Stats.totalCalls = 0
 //    Stats.cacheHits = 0

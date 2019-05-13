@@ -1,15 +1,28 @@
 
-import ai.mcts.MctsBoard
-import game.BoardTicTacToe
+import ai.mcts.{MctsBoard, playNextMove}
+import ai.mcts.tree.Tree
+import game.BoardTicTacToe2
+
+import scala.annotation.tailrec
 
 object Mcts extends App {
 
-
-  val game = new BoardTicTacToe with MctsBoard()
+  val game = new BoardTicTacToe2 with MctsBoard
   val t1 = System.currentTimeMillis()
-  ai.mcts.solveTest(game)
+
+  val t = Tree(game, 2)
+
+  @tailrec
+  def loop(t: Option[Tree]): Unit = {
+    t match {
+      case None =>
+      case Some(x) =>
+        x.root.state.board.stdoutPrintln()
+        loop(playNextMove(x))
+    }
+  }
+
+  loop(Some(t))
   val t2 = System.currentTimeMillis()
   println(s" Total Time: ${t2 - t1} ms")
-  // Expected time around 30ms ??? if not need optimization.
-  // Wasting time cloning board states.
 }

@@ -28,47 +28,47 @@ object BoardSolver extends App {
   sealed abstract class SolverBoardAiTrait(m: Short, n: Short, k: Short) extends SolverBoard(m, n, k) with AiBoard with StatsWrapper {}
 
   sealed class MiniMaxRaw(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) {
-    def result() = ai.old.minimax(this, true)
+    def result(): Int = ai.old.minimax(this, isMaximizingPlayer = true)
   }
 
   sealed class MiniMaxTraitRaw(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with ai.MiniMaxRaw {
-    def result() = this.solve()
+    def result(): Int = this.solve()
   }
 
   sealed class MiniMaxTrait(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with MiniMax {
-    def result() = this.solve()
+    def result(): Int = this.solve()
   }
 
   sealed class NegaMaxRaw(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) {
-    def result() = ai.old.negamax(this, 1)
+    def result(): Int = ai.old.negamax(this, 1)
   }
 
   sealed class NegaMaxTrait(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with NegaMax {
-    def result() = this.solve()
+    def result(): Int = this.solve()
   }
 
   sealed class AlphaBetaRaw(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) {
-    def result() = ai.alphaBeta(this)
+    def result(): Double = ai.alphaBeta(this)
   }
 
   sealed class AlphaBetaTTOld(m: Short, n: Short, k: Short) extends SolverBoardOldRaw(m, n, k) with ai.old.TranspositionTable {
-    def result() = ai.old.alphaBetaWithMem(this, this)
+    def result(): old.Transposition = ai.old.alphaBetaWithMem(this, this)
   }
 
   sealed class AlphaBetaTT(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) with ai.TranspositionTable {
-    def result() = ai.alphaBetaWithMem(this, this)
+    def result(): Transposition = ai.alphaBetaWithMem(this, this)
   }
 
   sealed class AlphaBetaTrait(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta {
-    def result() = this.solve()
+    def result(): Int = this.solve()
   }
 
   sealed class AlphaBetaTraitTTOld(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with ai.old.TranspositionTable {
-    def result() = this.solve()
+    def result(): Int = this.solve()
   }
 
   sealed class AlphaBetaTraitTT(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with TranspositionTable {
-    def result() = this.solve()
+    def result(): Int = this.solve()
   }
 
   println("choose board size: ")

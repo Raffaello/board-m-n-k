@@ -5,7 +5,7 @@ lazy val root = (project in file("."))
       inConfig(Benchmark)(Defaults.testSettings): _*
     )
 
-name := "tic-tac-toe"
+name := "board-m-n-k"
 version := "0.1"
 scalaVersion := "2.12.8"
 scalacOptions += "-Ypartial-unification"
@@ -16,6 +16,8 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
 libraryDependencies += "com.typesafe" % "config" % "1.3.2"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
 // ---- scalameter
 // see: https://github.com/scalameter/scalameter-examples/blob/master/basic-with-separate-config/build.sbt

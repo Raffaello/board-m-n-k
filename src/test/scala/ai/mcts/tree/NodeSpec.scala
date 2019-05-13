@@ -1,16 +1,16 @@
 package ai.mcts.tree
 
 import ai.mcts.MctsBoard
-import game.BoardTicTacToe
+import game.BoardTicTacToe2
 import org.scalatest.{Matchers, WordSpec}
 
 /**
-  * @TODO change Node class to be private inside mcts package
+  * TODO change Node class to be private inside mcts package
   */
 class NodeSpec extends WordSpec with Matchers {
 
   def emptyNode(): Node = {
-    val game = new BoardTicTacToe() with MctsBoard
+    val game = new BoardTicTacToe2() with MctsBoard
     val player: Byte = 2 // starting with 2, next will be 1.
     Node(game, player)
   }
@@ -33,7 +33,7 @@ class NodeSpec extends WordSpec with Matchers {
     }
   }
 
-  "TicTacToe Mcts" should {
+  "TicTacToe2 Mcts" should {
     "Empty Node" should {
       val node = emptyNode()
 
@@ -65,10 +65,9 @@ class NodeSpec extends WordSpec with Matchers {
           child0.state.visitCount shouldBe 1
         }
 
-        "best Children should not be child0" in {
+        "best Child should not be child0" in {
           val bestChild = node.bestChild()
           bestChild ne child0 shouldBe true
-          val bestChild2 = node.bestChild()
         }
 
         "random child should not be parent" in {
@@ -93,6 +92,29 @@ class NodeSpec extends WordSpec with Matchers {
           ascNode eq node shouldBe true
           ascNode.parent should === (None)
         }
+
+        "best Child parentAscending should result" in {
+          val bestChild = node.bestChild()
+          val bestNewRoot = bestChild.parentAscending()
+          bestNewRoot.parent shouldBe Some(node)
+          bestNewRoot.parent.get eq node
+        }
+      }
+    }
+
+    "2 layers nodes" should {
+      "be valid" in {
+        val root = emptyNode()
+        root.state.incVisitCount()
+        root.expandChildren()
+        val child1 = root.bestChild()
+        child1.state.incVisitCount()
+        child1.expandChildren()
+        val child2 = child1.bestChild()
+        child2.state.incVisitCount()
+        val child = root.descending()
+        child.parent.get.parent.get shouldBe root
+//        child2 eq child shouldBe true
       }
     }
   }

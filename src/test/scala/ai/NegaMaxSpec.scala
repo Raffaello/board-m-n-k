@@ -1,12 +1,12 @@
 package ai
 
-import game.{BoardMNK, BoardTicTacToe}
+import game.{BoardMNK, BoardTicTacToe, BoardTicTacToe2}
 import org.scalatest.{Matchers, WordSpec}
 
 class NegaMaxSpec extends WordSpec with Matchers {
 
-  "Tic Tac Toe negamax" should {
-    val game = new BoardTicTacToe() with NegaMax
+  "TicTacToe2 negamax" should {
+    val game = new BoardTicTacToe2() with NegaMax
     "solve the game" in {
       game.solve() shouldEqual 0
     }
@@ -16,8 +16,8 @@ class NegaMaxSpec extends WordSpec with Matchers {
     }
   }
 
-  "BoardMNK 3x3x3 negamax" should {
-    val game = new BoardMNK(3, 3, 3) with NegaMax
+  "BoardTicTacToe negamax" should {
+    val game = new BoardTicTacToe with NegaMax
     "solve the game" in {
       game.solve() shouldEqual 0
     }

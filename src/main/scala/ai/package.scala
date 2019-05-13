@@ -1,5 +1,6 @@
 import game._
 
+//noinspection NameBooleanParameters
 package object ai {
   object Stats {
     var totalCalls: Int = 0

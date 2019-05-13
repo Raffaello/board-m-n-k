@@ -39,7 +39,7 @@ object FiveFiveThree extends App {
       val playerStart = scala.io.StdIn.readBoolean()
       var playerTurn = playerStart
       while (!game.gameEnded()) {
-        game.display()
+        game.stdoutPrintln()
         if (playerTurn) {
           var valid = false
           while (!valid) {
@@ -56,7 +56,7 @@ object FiveFiveThree extends App {
         playerTurn = !playerTurn
       }
 
-      game.display()
+      game.stdoutPrintln()
       game.score() match {
         case 0 => println("STALEMATE!")
         case 1 => println("Player 1 (Human) wins")
@@ -68,7 +68,7 @@ object FiveFiveThree extends App {
       // Joshua player
       var joshuaPlay = true //Random.nextBoolean()
       while (!game.gameEnded(depth)) {
-        game.display()
+        game.stdoutPrintln()
         var color: Byte = 0
         var player: Byte = 0
         var a = Double.MinValue
@@ -92,7 +92,7 @@ object FiveFiveThree extends App {
         joshuaPlay = !joshuaPlay
       }
 
-      game.display()
+      game.stdoutPrintln()
       game.score() match {
         case 0 =>
           println("GREETINGS PROFESSOR FALKEN!")

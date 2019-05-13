@@ -21,11 +21,13 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   protected val nkDiffIncIndices: NumericRange.Inclusive[Short] = NumericRange.inclusive[Short](0, nkDiff, 1)
   protected val k1mIndices = NumericRange(k1, m, 1)
 
-  protected var lastPlayer: Byte = 0
+  protected var _lastPlayer: Byte = 0
   protected val minWinDepth: Int = (2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
   protected var _depth: Int = 0
 
-  def depth(): Int = _depth
+  def depth: Int = _depth
+
+  def lastPlayer: Byte = this._lastPlayer
 
   def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = position
@@ -34,33 +36,42 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
       _board(row)(col) = player
       freePositions -= 1
       _depth += 1
-      lastMove = position
-      lastPlayer = player
+      _lastMove = position
+      _lastPlayer = player
       true
     }
   }
 
   def undoMove(position: Position, player: Byte): Boolean = {
-    //    assert(_board(position._1)(position._2) > 0)
-    if (_board(position._1)(position._2) > 0) {
-      _board(position._1)(position._2) = 0
+    val (i, j) = position
+
+    assert(_board(i)(j) > 0)
+    if (_board(i)(j) > 0) {
+
+      _board(i)(j) = 0
       freePositions += 1
       _depth -= 1
-      lastPlayer = player
+      _lastPlayer = player
       true
     } else false
   }
 
+  // last player win? 1
+  // last player lost? -1
+  // else 0
   override def score(): Int = ???
 
+  // check if board has k in a row of last player then return true otherwise false
+  // create a general method to check player p if won.
   protected def checkWin(): Boolean = ???
+
 
   override def gameEnded(): Boolean = gameEnded(_depth)
 
   /**
     * TODO: not sure is well designed here,
     * every call is calling gameEnded to check, and if depth is not enough
-    * would re-set everytime the lookups won Some(false).
+    * would re-set every time the lookups won Some(false).
     * It is used just for the score function mainly
     *
     * TODO: reconsider the Lookups.won Option[Boolean] for is usage case.
@@ -75,5 +86,5 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
 
   def nextPlayer(): Byte = ???
 
-  override def display(): Unit = ???
+  override def display(): String = ???
 }
