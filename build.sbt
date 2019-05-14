@@ -1,13 +1,30 @@
-lazy val Benchmark = config("bench") extend Test
-lazy val root = (project in file("."))
-  .configs(Benchmark)
-  .settings(
-    inConfig(Benchmark)(Defaults.testSettings): _*
-  )
+import sbt.Keys.{libraryDependencies, parallelExecution}
 
-//val common_scalacOptions = Seq(
-//
-//)
+// ---- scalameter
+// see: https://github.com/scalameter/scalameter-examples/blob/master/basic-with-separate-config/build.sbt
+lazy val Benchmark = config("bench") extend Test
+lazy val settingsScalameter = Seq(
+  name in Benchmark := "board-m-n-k-benchmarks",
+  publishArtifact in Benchmark := false,
+  scalacOptions in Benchmark ++= Seq(
+    "-optimize",
+    "-opt", "_",
+  ),
+  parallelExecution in Benchmark := false,
+  logBuffered in Benchmark := false,
+  fork in Benchmark := true,
+  outputStrategy in Benchmark := Some(StdoutOutput),
+  connectInput in Benchmark := true,
+  testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework"),
+)
+// --- end - scalameter
+
+lazy val root = Project(
+  "board-m-n-k", file("."))
+  .settings(Defaults.coreDefaultSettings)
+  .configs(Benchmark)
+  .settings(inConfig(Benchmark)(Defaults.testSettings ++ settingsScalameter): _*
+  )
 
 name := "board-m-n-k"
 version := "0.1"
@@ -24,13 +41,6 @@ scalacOptions ++= Seq(
   //  "-Xdisable-assertions",
 )
 
-
-scalacOptions in Benchmark ++= Seq(
-  //  "-Ypartial-unification",
-  "-optimize",
-  "-opt", "_"
-)
-
 scalacOptions in Test ++= Seq(
   "-Xdev"
 )
@@ -44,33 +54,15 @@ libraryDependencies += "com.typesafe" % "config" % "1.3.2"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
-// ---- scalameter
-// see: https://github.com/scalameter/scalameter-examples/blob/master/basic-with-separate-config/build.sbt
-resolvers ++= Seq(
+resolvers in Benchmark ++= Seq(
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
   "Sonatype OSS Releases" at "https://oss.sonatype.org/content/repositories/releases"
 )
 
-libraryDependencies += "com.storm-enroute" %% "scalameter" % "0.17" % "bench"
-libraryDependencies += "com.storm-enroute" %% "scalameter-core" % "0.17" % "bench"
-testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework")
-parallelExecution in Benchmark := false
-//logBuffered := false
-fork := true
-outputStrategy := Some(StdoutOutput)
-connectInput := true
-
-// class path "bug"
-//val classPath = Seq(
-//  ".",
-//)
-
-//packageOptions += Package.ManifestAttributes(
-//  "Class-Path" -> classPath.mkString(" ")
-//)
-
-
-// --- end - scalameter
+libraryDependencies ++= Seq(
+  "com.storm-enroute" %% "scalameter" % "0.17" % "bench",
+  "com.storm-enroute" %% "scalameter-core" % "0.17" % "bench"
+)
 
 //libraryDependencies += "org.typelevel" %% "cats-core" % "1.5.0-RC1"
 //val monocleVersion = "1.5.0" // 1.5.0-cats based on cats 1.0.x
