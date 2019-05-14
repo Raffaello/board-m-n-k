@@ -2,6 +2,11 @@ language: scala
 scala:
  - 2.12.4
 
+dist: trusty
+
+jdk:
+  - oraclejdk8
+
 branches:
  only:
   - master
@@ -10,11 +15,18 @@ cache:
   directories:
     - '$HOME/.ivy2/cache'
     - '$HOME/.sbt/boot/'
+    - '$HOME/.sonar/cache'
+
+addons:
+  sonarcloud:
+    organization: raffaello-github
+#    token:
+#      secure: "*********" # encrypted value of your token
 
 script:
   - sbt clean coverage test coverageReport
+  - sonar-scanner
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - CODACY_PROJECT_TOKEN="6a4d9d12f0194f6ab84a3a5430ead17a" sbt codacyCoverage
-
