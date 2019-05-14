@@ -5,14 +5,14 @@ import org.scalameter.api._
 object ArrayCopyBench extends Bench.OfflineRegressionReport {
 
   performance of "ArrayCopyBench" config(
-    exec.benchRuns -> 10,
+    exec.benchRuns -> 100,
     exec.minWarmupRuns -> 10,
     exec.maxWarmupRuns -> 10,
-    exec.warmupCovThreshold -> 0.1,
-    exec.independentSamples -> 10,
+    exec.warmupCovThreshold -> 0.5,
+    exec.independentSamples -> 3,
     exec.requireGC -> true,
     exec.outliers.retries -> 3,
-    exec.outliers.suspectPercent -> 10,
+    exec.outliers.suspectPercent -> 15,
     exec.outliers.covMultiplier -> 2.0,
     exec.reinstantiation.fullGC -> true,
     exec.reinstantiation.frequency -> 3
@@ -44,13 +44,13 @@ object ArrayCopyBench extends Bench.OfflineRegressionReport {
         }
       }
 
-      measure method "array2dCopy" in {
+      measure method "array1dCopy" in {
         using(arrays1d) in {
           case (n, a) => array1dCopy(n, a)
         }
       }
 
-      measure method "forLoop2d" in {
+      measure method "forLoop1d" in {
         using(arrays1d) in {
           case (n, a) => forLoop1d(n, a)
         }
