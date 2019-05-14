@@ -1,7 +1,7 @@
 import ai.Stats
 import benchmarks.MNKSolvers._
 import game.Score
-import org.scalameter.api.Bench
+import org.scalameter.api._
 
 object MNKSolversBench extends Bench.OfflineRegressionReport {
 
@@ -10,7 +10,19 @@ object MNKSolversBench extends Bench.OfflineRegressionReport {
   var cacheHits: Int = 0
   var cacheSize: Int = 0
 
-  performance of "MNKSolversBench" in {
+  performance of "MNKSolversBench" config(
+    exec.benchRuns -> 15,
+    exec.minWarmupRuns -> 3,
+    exec.maxWarmupRuns -> 3,
+    exec.warmupCovThreshold -> 0.3,
+    exec.independentSamples -> 5,
+    exec.requireGC -> true,
+    exec.outliers.retries -> 1,
+    exec.outliers.suspectPercent -> 10,
+    exec.outliers.covMultiplier -> 2.0,
+    exec.reinstantiation.fullGC -> true,
+    exec.reinstantiation.frequency -> 1
+  ) in {
     for (k <- 3 to 3) {
       performance of "MNKSolvers" in {
         measure method s"old.minimax_k=$k" in {
