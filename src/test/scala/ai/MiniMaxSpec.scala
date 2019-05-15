@@ -1,6 +1,6 @@
 package ai
 
-import game.{BoardMNK, BoardTicTacToe, BoardTicTacToe2}
+import game.{BoardTicTacToe, BoardTicTacToe2, Status}
 import org.scalatest.{Matchers, WordSpec}
 
 class MiniMaxSpec extends WordSpec with Matchers {
@@ -12,7 +12,8 @@ class MiniMaxSpec extends WordSpec with Matchers {
     }
 
     "have first move" in {
-      game.nextMove(maximizing = true, 0) shouldEqual(0, (0, 0))
+      val s: Status = (0, (0, 0))
+      game.nextMove(maximizing = true, 0) shouldEqual s
     }
   }
 
@@ -24,7 +25,8 @@ class MiniMaxSpec extends WordSpec with Matchers {
 
     "have first move" in {
       val game = new BoardTicTacToe with MiniMax
-      game.nextMove(maximizing = true, 0) shouldEqual(0, (0, 0))
+      val s: Status = (0, (0, 0))
+      game.nextMove(maximizing = true, 0) shouldEqual s
     }
   }
 }

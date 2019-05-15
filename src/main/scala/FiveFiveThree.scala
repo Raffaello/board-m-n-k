@@ -50,7 +50,7 @@ object FiveFiveThree extends App {
           }
         }
         else {
-          val (_, i, j) = negamaxNextMove(game, -1)
+          val (_, (i, j)) = negamaxNextMove(game, -1)
           game.playMove((i, j), computerPlayer)
         }
         playerTurn = !playerTurn
@@ -82,7 +82,7 @@ object FiveFiveThree extends App {
           player = computerPlayer
         }
 
-        val (_, i, j, a2 , b2) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
+        val (_, (i, j), (a2 , b2)) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
         a = a2
         b = b2
         depth +=1

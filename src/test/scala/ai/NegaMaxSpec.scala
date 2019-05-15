@@ -1,6 +1,6 @@
 package ai
 
-import game.{BoardTicTacToe, BoardTicTacToe2}
+import game.{BoardTicTacToe, BoardTicTacToe2, Status}
 import org.scalatest.{Matchers, WordSpec}
 
 class NegaMaxSpec extends WordSpec with Matchers {
@@ -12,7 +12,8 @@ class NegaMaxSpec extends WordSpec with Matchers {
     }
 
     "have first move" in {
-      game.nextMove(1, 0) shouldEqual(0, (0, 0))
+      val s: Status = (0, (0, 0))
+      game.nextMove(1, 0) shouldEqual s
     }
   }
 
@@ -23,7 +24,8 @@ class NegaMaxSpec extends WordSpec with Matchers {
     }
 
     "have first move" in {
-      game.nextMove(1, 0) shouldEqual(0, (0, 0))
+      val s: Status = (0, (0, 0))
+      game.nextMove(1, 0) shouldEqual s
     }
   }
 }

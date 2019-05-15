@@ -4,6 +4,7 @@ import game.BoardMN
 
 import scala.collection.mutable
 
+// TODO: Use a more performant hash
 trait TranspositionTable extends BoardMN {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 

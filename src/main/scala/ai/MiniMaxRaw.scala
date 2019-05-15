@@ -1,8 +1,10 @@
 package ai
 
+import game.Score
+
 trait MiniMaxRaw extends MiniMax {
 
-  override def solve(maximizing: Boolean = true, depth: Int = 0): Int = {
+  override def solve(maximizing: Boolean = true, depth: Int = 0): Score = {
     if (gameEnded(depth)) {
       score()
     } else {

@@ -1,6 +1,6 @@
 package ai
 
-import game.{BoardTicTacToe, BoardTicTacToe2}
+import game.{BoardTicTacToe, BoardTicTacToe2, Score}
 import org.scalatest.{Matchers, WordSpec}
 
 class AlphaBetaSpec extends WordSpec with Matchers {
@@ -12,7 +12,8 @@ class AlphaBetaSpec extends WordSpec with Matchers {
     }
 
     "have first move" in {
-      game.nextMove() shouldEqual((0, Int.MaxValue), (0, (0, 0)))
+      val abStatus: ABStatus[Score] = ((0, Int.MaxValue), (0, (0, 0)))
+      game.nextMove() shouldEqual abStatus
     }
   }
 
@@ -23,7 +24,8 @@ class AlphaBetaSpec extends WordSpec with Matchers {
     }
 
     "have first move" in {
-      game.nextMove() shouldEqual((0, Int.MaxValue), (0, (0, 0)))
+      val abStauts: ABStatus[Score] = ((0, Int.MaxValue), (0, (0, 0)))
+      game.nextMove() shouldEqual abStauts
     }
   }
 }

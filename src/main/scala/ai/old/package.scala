@@ -1,24 +1,15 @@
 package ai
 
-import game.{Board, BoardMNK}
+import game.{BoardMNK, Position, Score, Status}
 
 /**
   * @deprecated
   * Used for benchmarks.
   */
 package object old {
-  case class Transposition(score: Double, depth: Int, alpha: Double, beta: Double, isMaximizing: Boolean)
+  type ABMove = (Double, Position, AB[Double]) // score, position, Alpha, Beta
 
-  trait withGetBoard extends BoardMNK {
-    def board: Board = _board
-  }
-
-  /**
-    * @deprecated
-    */
-  class BoardMNKwithGetBoard(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with withGetBoard
-
-  def minimax(game: BoardMNK, isMaximizingPlayer: Boolean): Int = {
+  def minimax(game: BoardMNK, isMaximizingPlayer: Boolean): Score = {
     def minMaxLoop(maximizing: Boolean): Int = {
       var best: Int = 0
       var cmp: (Int, Int) => Int = null
@@ -59,7 +50,7 @@ package object old {
     * do not use.
     * Doesn't work as expected.
     */
-  def negamax(game: BoardMNK, color: Byte): Int = {
+  def negamax(game: BoardMNK, color: Byte): Score = {
     //    require(color == 1 || color == -1)
     if (game.gameEnded()) {
       color * game.score()
@@ -82,11 +73,11 @@ package object old {
     }
   }
 
-  def negamaxNextMove(game: BoardMNK, color: Byte): (Int, Short, Short) = {
+  def negamaxNextMove(game: BoardMNK, color: Byte): Status = {
     //    require(color == 1 || color == -1)
 
     if (game.gameEnded()) {
-      (color * game.score(), -1, -1)
+      (color * game.score(), game.lastMove)
     } else {
 
       var value = Int.MinValue
@@ -108,18 +99,18 @@ package object old {
         game.undoMove((i, j), player)
       }
 
-      (value, ibest, jbest)
+      (value, (ibest, jbest))
     }
   }
 
   def alphaBetaWithMem(
                         statuses: old.TranspositionTable,
-                        game: withGetBoard,
+                        game: WithGetBoard,
                         depth: Int = 0,
                         alpha: Double = Double.MinValue,
                         beta: Double = Double.MaxValue,
                         maximizingPlayer: Boolean = true
-                      ): Transposition = {
+                      ): old.Transposition = {
     val transposition = statuses.get(game.board)
 
     if (transposition.isDefined) {

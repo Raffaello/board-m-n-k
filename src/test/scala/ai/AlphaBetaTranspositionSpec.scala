@@ -1,6 +1,6 @@
 package ai
 
-import game.{BoardTicTacToe, BoardTicTacToe2}
+import game.{BoardTicTacToe, BoardTicTacToe2, Score}
 import org.scalatest.{Matchers, WordSpec}
 
 class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
@@ -10,15 +10,15 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
     "solve the game" in {
       val t = game.solve()
       t.score shouldEqual 0
-      t.alpha shouldEqual 0
-      t.beta shouldEqual Int.MaxValue
+      val ab: AB[Score] = (0, Int.MaxValue)
+      t.ab shouldEqual ab
       t.depth shouldEqual 0
     }
     "have first move" in {
       val t = game.nextMove()
       t.score shouldEqual 0
-      t.alpha shouldEqual 0
-      t.beta shouldEqual Int.MaxValue
+      val ab: AB[Score] = (0, Int.MaxValue)
+      t.ab shouldEqual ab
       t.depth shouldEqual 0
     }
   }
@@ -28,15 +28,14 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
     "solve the game" in {
       val t = game.solve()
       t.score shouldEqual 0
-      t.alpha shouldEqual 0
-      t.beta shouldEqual Int.MaxValue
-      t.depth shouldEqual 0
+      val ab: AB[Score] = (0, Int.MaxValue)
+      t.ab shouldEqual ab
     }
     "have first move" in {
       val t = game.nextMove()
       t.score shouldEqual 0
-      t.alpha shouldEqual 0
-      t.beta shouldEqual Int.MaxValue
+      val ab: AB[Score] = (0, Int.MaxValue)
+      t.ab shouldEqual ab
       t.depth shouldEqual 0
     }
   }

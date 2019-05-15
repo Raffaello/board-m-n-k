@@ -1,11 +1,12 @@
 package ai
 
-import game.{Position, Status}
+import game.{Position, Score, Status}
 
+// TODO: Cannot extends AiBoard, because it is extending MNKP, when the code is working only for MNK (2 players).. :/
 trait MiniMax extends AiBoard {
   protected def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
 
-  protected def mainBlock(player: Byte, depth: Int)(eval: Status => Int): Int = {
+  protected def mainBlock(player: Byte, depth: Int)(eval: Status => Score): Score = {
     if (gameEnded(depth)) {
       score()
     } else {
