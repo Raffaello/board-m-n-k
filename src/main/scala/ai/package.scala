@@ -2,19 +2,20 @@ import game._
 
 //noinspection NameBooleanParameters
 package object ai {
+  // TODO refactor
   object Stats {
     var totalCalls: Int = 0
     var cacheHits: Int = 0
   }
-  type AB = (Int, Int) // Alpha, Beta values
-  //  type ABScore = (AB, Int) // Alpha, Beta values plus score
-  //  type ABStatus = (AB, Status) // Alpha, Beta values plus Status
-  type ABStatus = (AB, Status) // Alpha, Beta values plus Status: Score, Position
+  type AB[T] = (T, T) // Alpha, Beta values
+  type ABStatus[T] = (AB[T], Status) // Alpha, Beta values plus Status: Score, Position
 
 
 
-  case class Transposition(score: Int, depth: Int, alpha: Int, beta: Int, isMaximizing: Boolean)
-
+  /**
+    * TODO: replace return type Double with Score (Int)
+    * @return
+    */
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     if (game.gameEnded(depth)) {
       //      return game.score()
@@ -64,12 +65,12 @@ package object ai {
   /**
     * @return (score, x pos, y pos, alpha, beta)
     */
-  def alphaBetaNextMove(game: BoardMNK, depth: Int = 0, alpha: Double, beta: Double, maximizingPlayer: Boolean): (Double, Short, Short, Double, Double) = {
+  def alphaBetaNextMove(game: BoardMNK, depth: Int = 0, alpha: Double, beta: Double, maximizingPlayer: Boolean): old.ABMove = {
     var ibest: Short = -1
     var jbest: Short = -1
 
     if (game.gameEnded(depth)) {
-      (game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0))), ibest, jbest, alpha, beta)
+      (game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0))), (ibest, jbest), (alpha, beta))
     } else {
       var best: Double = 0.0
       var player: Byte = 0
@@ -110,11 +111,11 @@ package object ai {
 
         game.undoMove((i, j), player)
         if (a >= beta) {
-          return (best, ibest, jbest, a, b)
+          return (best, (ibest, jbest), (a, b))
         }
       }
 
-      (best, ibest, jbest, a, b)
+      (best, (ibest, jbest), (a, b))
     }
   }
 
@@ -129,8 +130,7 @@ package object ai {
       val t = Transposition(
         score,
         depth,
-        score,
-        score,
+        (score, score),
         maximizingPlayer
       )
 
@@ -156,7 +156,7 @@ package object ai {
           }
         }
 
-        val t = Transposition(best, depth, a, beta, maximizingPlayer)
+        val t = Transposition(best, depth, (a, beta), maximizingPlayer)
         statuses.add(t)
         t
       } else {
@@ -176,7 +176,7 @@ package object ai {
           }
         }
 
-        val t = Transposition(best, depth, alpha, b, maximizingPlayer)
+        val t = Transposition(best, depth, (alpha, b), maximizingPlayer)
         statuses.add(t)
         t
       }

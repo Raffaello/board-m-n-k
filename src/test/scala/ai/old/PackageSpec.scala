@@ -1,6 +1,6 @@
 package ai.old
 
-import game.BoardTicTacToe2
+import game.{BoardTicTacToe2, Status}
 import org.scalatest.{FlatSpec, Matchers}
 
 //noinspection NameBooleanParameters
@@ -14,16 +14,17 @@ class PackageSpec extends FlatSpec with Matchers {
   "TicTacToe2 negamax" should "solve the game" in {
     val game = new BoardTicTacToe2()
     negamax(game, 1) shouldEqual 0
-    negamaxNextMove(game, 1) shouldEqual(0, 0, 0)
+    val s: Status = (0, (0, 0))
+    negamaxNextMove(game, 1) shouldEqual s
   }
 
   "TicTacToe2 Alpha-Beta with Memory" should "solve the game" in {
-    val game = new BoardTicTacToe2() with TranspositionTable with withGetBoard
+    val game = new BoardTicTacToe2() with TranspositionTable with WithGetBoard
     alphaBetaWithMem(game, game) shouldEqual Transposition(0.0, 0, 0.0, Double.MaxValue, isMaximizing = true)
   }
 
   "Player 1 TicTacToe2" should "win" in {
-    val game = new BoardTicTacToe2() with withGetBoard
+    val game = new BoardTicTacToe2() with WithGetBoard
     val status = new TranspositionTable {}
     game.playMove((0, 0), 1)
     game.playMove((0, 1), 1)

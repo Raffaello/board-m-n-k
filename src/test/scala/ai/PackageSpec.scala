@@ -1,19 +1,23 @@
 package ai
 
-import game.BoardTicTacToe2
+import game.{BoardTicTacToe2, Position}
 import org.scalatest.{FlatSpec, Matchers}
 
 class PackageSpec extends FlatSpec with Matchers {
   "TicTacToe2 alphaBeta" should "solve the game" in {
     val game = new BoardTicTacToe2()
     alphaBeta(game) shouldEqual 0.0
-    alphaBetaNextMove(game, 0, Double.MinValue, Double.MaxValue, maximizingPlayer = true) shouldEqual(0.0, 0, 0, 0.0, Double.MaxValue)
-    alphaBetaNextMove(game, 0, Double.MinValue, Double.MaxValue, maximizingPlayer = false) shouldEqual(0.0, 0, 0, Double.MinValue, 0.0)
+    val p: Position = (0, 0)
+    val abm1: old.ABMove = (0.0, p, (0.0, Double.MaxValue))
+    val abm2: old.ABMove = (0.0, p, (Double.MinValue, 0.0))
+
+    alphaBetaNextMove(game, 0, Double.MinValue, Double.MaxValue, maximizingPlayer = true) shouldEqual abm1
+    alphaBetaNextMove(game, 0, Double.MinValue, Double.MaxValue, maximizingPlayer = false) shouldEqual abm2
   }
 
   "TicTacToe2 alphaBeta with Memory" should "solve the game" in {
     val game = new BoardTicTacToe2() with TranspositionTable
-    alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, 0, Int.MaxValue, isMaximizing = true)
+    alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, (0, Int.MaxValue), isMaximizing = true)
   }
 
   "Player 1 TicTacToe2" should "win" in {

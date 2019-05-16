@@ -1,13 +1,13 @@
 package ai
 
-import game.Board
+//import game.Board
 
 class ZobristHash {
   type ZobristTable = Array[Array[Array[Int]]]
 
   var zobristKey = 0
-  val table:ZobristTable  = ???
-  def init() = ???
+//  val table:ZobristTable  = ???
+//  def init() = ???
 
-  def hash(board: Board) = ???
+//  def hash(board: Board) = ???
 }

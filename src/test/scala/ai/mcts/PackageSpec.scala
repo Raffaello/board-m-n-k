@@ -1,12 +1,10 @@
 package ai.mcts
 
-import ai.mcts.tree.{Node, Tree}
-import game.BoardTicTacToe2
+import ai.mcts.tree.Tree
+import game.{BoardTicTacToe2, Position}
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
-
-import scala.collection.mutable
 
 class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
 
@@ -192,8 +190,8 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     game.playMove((1, 1), 1)
     val tree = Tree(game, 1)
     val subTree = playNextMove(tree).get
-
-    subTree.root.state.board.lastMove shouldBe(0, 0)
+    val p: Position = (0, 0)
+    subTree.root.state.board.lastMove shouldBe p
     subTree.root.state.board.lastPlayer shouldBe 2
     subTree.root.state.board.gameEnded() shouldBe false
     subTree.lastPlayer shouldBe 2

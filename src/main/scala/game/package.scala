@@ -3,7 +3,5 @@ package object game {
   type Position = (Short, Short)
   type Score = Int
   type Status = (Score, Position)
-
-  class BoardTicTacToe extends BoardMNK(3, 3, 3)
 }
 
