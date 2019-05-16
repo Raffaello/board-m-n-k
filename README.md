@@ -4,6 +4,17 @@
 [![Build Status](https://travis-ci.org/Raffaello/board-m-n-k.svg?branch=master)](https://travis-ci.org/Raffaello/board-m-n-k)
 [![codecov](https://codecov.io/gh/Raffaello/board-m-n-k/branch/master/graph/badge.svg)](https://codecov.io/gh/Raffaello/board-m-n-k)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/d2223a115b26431faa31d9da12587d2b)](https://www.codacy.com/app/Raffaello/board-m-n-k?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Raffaello/board-m-n-k&amp;utm_campaign=Badge_Coverage)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=alert_status)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=bugs)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=code_smells)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=coverage)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=ncloc)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=security_rating)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
 
 Special case is (3,3,3) that is tic-tac-toe
 
