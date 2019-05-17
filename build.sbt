@@ -47,18 +47,17 @@ scalacOptions in Test ++= Seq(
 
 javacOptions += "--illegal-access=warn"
 
+resolvers in Benchmark ++= Seq(
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+  "Sonatype OSS Releases" at "https://oss.sonatype.org/content/repositories/releases"
+)
+
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
 libraryDependencies += "com.typesafe" % "config" % "1.3.2"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
-
-resolvers in Benchmark ++= Seq(
-  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
-  "Sonatype OSS Releases" at "https://oss.sonatype.org/content/repositories/releases"
-)
-
 libraryDependencies ++= Seq(
   "com.storm-enroute" %% "scalameter" % "0.17" % "bench",
   "com.storm-enroute" %% "scalameter-core" % "0.17" % "bench"
