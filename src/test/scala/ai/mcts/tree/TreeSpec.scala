@@ -33,7 +33,6 @@ class TreeSpec extends WordSpec with Matchers {
       root.descending() should be(root)
     }
 
-    // TODO remove the method. profiling if it improve performances.
     "parentAscending" in {
       root.parentAscending() shouldBe root.bestChild()
     }

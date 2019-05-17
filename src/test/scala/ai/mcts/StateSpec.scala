@@ -39,8 +39,6 @@ class StateSpec extends WordSpec with Matchers {
         states.foreach(s => s.player shouldBe state.opponent())
       }
 
-      // TODO: Refactor Using Lens Pattern (LENS library with CATS...)
-      // TODO: this one required to refactor LookUp nested Object
       "should be deep cloned" in {
         val state = initState()
         val states = state.allPossibleStates()
@@ -89,7 +87,7 @@ class StateSpec extends WordSpec with Matchers {
       "add deltaScore" in {
         val state = initState()
         state.addScore(1.0)
-        state.score() shouldBe 1.0
+        state.score shouldBe 1.0
       }
     }
   }

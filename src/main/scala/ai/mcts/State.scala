@@ -1,21 +1,14 @@
 package ai.mcts
 
-/**
-  * TODO (probably) have MctsBoard is not memory efficient...
-  *
-  * TODO remove case class... not really useful...
-  */
 sealed case class State(board: MctsBoard, player: Byte, private var _visitCount: Int, private var _score: Double) {
 
-  override def toString: String = s"W:${score()}, V:${visitCount()}"
-
-  private[mcts] def end(): Boolean = board.gameEnded()
+  override def toString: String = s"W:$score, V:${visitCount()}"
 
   private[mcts] def incVisitCount(): Unit = _visitCount += 1
 
   def visitCount(): Int = _visitCount
 
-  def score(): Double = _score
+  def score: Double = _score
 
   private[mcts] def addScore(deltaScore: Double): Unit = _score += deltaScore
 

@@ -12,7 +12,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     forAll("score", "parentVisited") {
       (score: Double, parentVisited: Int) =>
         whenever(parentVisited > 0) {
-          UCT(score, 0, parentVisited) shouldBe Double.MaxValue
+          uct(score, 0, parentVisited) shouldBe Double.MaxValue
         }
     }
   }
@@ -24,7 +24,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
       (visited: Int, parentVisited: Int) =>
         whenever(visited < 0 && parentVisited <= 0) {
           assertThrows[IllegalArgumentException] {
-            UCT(0.0, visited, parentVisited)
+            uct(0.0, visited, parentVisited)
           }
         }
     }
@@ -36,7 +36,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
     forAll(validDouble, validInt, validInt) {
       (score, visited, parentVisited) =>
-        UCT(score, visited, parentVisited) should be >= 0.0
+        uct(score, visited, parentVisited) should be >= 0.0
     }
   }
 

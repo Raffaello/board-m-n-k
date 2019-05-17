@@ -1,7 +1,7 @@
 package benchmarks
 
+import benchmarks.Array1dCopy.ns
 import org.scalameter.api.Gen
-import Array1dCopy.ns
 
 object Array2dCopy {
 

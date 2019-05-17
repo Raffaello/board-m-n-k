@@ -1,8 +1,8 @@
 package ai
 
-import game.BoardMNKPLookUp
+import game.BoardMNK
 
 /**
-  * TODO refactor and/or remove AiBoard Trait. ???
+  * Only for 2 player at the moment.
   */
-private[ai] trait AiBoard extends BoardMNKPLookUp with AiStats
+private[ai] trait AiBoard extends BoardMNK with AiStats

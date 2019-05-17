@@ -1,5 +1,7 @@
 package game
 
+import cats.implicits._
+
 import scala.annotation.tailrec
 
 /**
@@ -57,15 +59,15 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
     @tailrec
     def foldDownRight(acc: Int, offset: Int): Int = {
-      if (offset == stopU) acc
-      else if (_board(i + offset)(j + offset) == _lastPlayer) foldDownRight(acc + 1, offset + 1)
+      if (offset === stopU) acc
+      else if (_board(i + offset)(j + offset) === _lastPlayer) foldDownRight(acc + 1, offset + 1)
       else acc
     }
 
     @tailrec
     def foldUpLeft(acc: Int, offset: Int): Int = {
-      if (offset == stopD) acc
-      else if (_board(i - offset)(j - offset) == _lastPlayer) foldUpLeft(acc + 1, offset + 1)
+      if (offset === stopD) acc
+      else if (_board(i - offset)(j - offset) === _lastPlayer) foldUpLeft(acc + 1, offset + 1)
       else acc
     }
 
@@ -87,13 +89,13 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
     @tailrec
     def foldUpRight(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth == 0 || i < 0 || j >= n || _board(i)(j) != _lastPlayer) acc
+      if (depth === 0 || i < 0 || j >= n || _board(i)(j) =!= _lastPlayer) acc
       else foldUpRight(acc + 1, i - 1, j + 1, depth - 1)
     }
 
     @tailrec
     def foldDownLeft(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth == 0 || i >= m || j < 0 || _board(i)(j) != _lastPlayer) acc
+      if (depth === 0 || i >= m || j < 0 || _board(i)(j) =!= _lastPlayer) acc
       else foldDownLeft(acc + 1, i + 1, j - 1, depth - 1)
     }
 
@@ -110,15 +112,15 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
     @tailrec
     def foldDown(acc: Int, i: Int, stop: Int): Int = {
-      if (i == stop) acc
-      else if (_board(i)(j) == _lastPlayer) foldDown(acc + 1, i + 1, stop)
+      if (i === stop) acc
+      else if (_board(i)(j) === _lastPlayer) foldDown(acc + 1, i + 1, stop)
       else acc
     }
 
     @tailrec
     def foldUp(acc: Int, i: Int, stop: Int): Int = {
       if (i < stop) acc
-      else if (_board(i)(j) == _lastPlayer) foldUp(acc + 1, i - 1, stop)
+      else if (_board(i)(j) === _lastPlayer) foldUp(acc + 1, i - 1, stop)
       else acc
     }
 
@@ -136,15 +138,15 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
     @tailrec
     def foldRight(acc: Int, j: Int, stop: Int): Int = {
-      if (j == stop) acc
-      else if (_board(i)(j) == _lastPlayer) foldRight(acc + 1, j + 1, stop)
+      if (j === stop) acc
+      else if (_board(i)(j) === _lastPlayer) foldRight(acc + 1, j + 1, stop)
       else acc
     }
 
     @tailrec
     def foldLeft(acc: Int, j: Int, stop: Int): Int = {
       if (j < stop) acc
-      else if (_board(i)(j) == _lastPlayer) foldLeft(acc + 1, j - 1, stop)
+      else if (_board(i)(j) === _lastPlayer) foldLeft(acc + 1, j - 1, stop)
       else acc
     }
 
@@ -161,6 +163,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
   override def display(): String = {
     val str: StringBuilder = new StringBuilder()
+    val newLine = sys.props("line.separator")
 
     def value(p: Byte): Char = {
       p match {
@@ -176,11 +179,10 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
         str ++= s" ${value(_board(i)(j))} |"
       }
 
-      str ++= s" ${value(_board(i)(n - 1))}" + sys.props("line.separator")
+      str ++= s" ${value(_board(i)(n - 1))}" + newLine
     }
 
-    str ++= sys.props("line.separator")
+    str ++= newLine
     str.toString()
   }
-
 }

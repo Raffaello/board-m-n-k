@@ -22,14 +22,6 @@ object Tree {
   }
 
   def from(newRoot: Node): Tree = {
-    // TODO potentially need to clear memory of all nodes not descending from this newRoot
-    // TODO to claim that memory is required to DFS and clear all nodes skipping to DFS in newRoot.
-    // TODO would be a benefit for memory (?) [profile]
-    //    if (newRoot.parent.nonEmpty) newRoot.parent.get.children.clear()
-    //    val rootClone = newRoot.copy(parent = None, state = newRoot.state.copy(), children = Children)
-    //    rootClone.children.clear()
-    //    for (c <- rootClone.children) c.parent = Some(rootClone)
-    //    new Tree(rootClone)
     new Tree(Node(newRoot.state))
   }
 

@@ -207,8 +207,6 @@ class BoardMNKSpec extends WordSpec with Matchers {
     k <- NumericRange.inclusive[Short](3, 5, 1)
     if k <= Math.min(m, n)
   } {
-    // TODO: this value is because the board allows to make 1 player plays twice in a row... :/
-    // TODO: to avoid this should be forced to have a board to go in turns with players after each move.
     val forcedGameEndCheckedValue = k * 2
 
     s"${m}X${n}X$k Game" must {

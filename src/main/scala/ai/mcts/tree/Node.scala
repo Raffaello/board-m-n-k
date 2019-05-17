@@ -1,16 +1,16 @@
 package ai.mcts.tree
 
-import ai.mcts.{MctsBoard, State, UCT}
+import ai.mcts.{MctsBoard, State, uct}
+import cats.implicits._
 
 import scala.annotation.tailrec
 import scala.util.Random
 
-
-final class Node(val state: State, private[mcts] var parent: Option[Node], val children: Children) {
+protected[mcts] final class Node(val state: State, private[mcts] var parent: Option[Node], val children: Children) {
 
   def isLeaf: Boolean = children.isEmpty
 
-  def isTerminal: Boolean = state.end()
+  def isTerminal: Boolean = state.board.gameEnded()
 
   def isTerminalLeaf: Boolean = isTerminal && isLeaf
 
@@ -38,7 +38,7 @@ final class Node(val state: State, private[mcts] var parent: Option[Node], val c
     else children(Random.nextInt(children.length))
   }
 
-  private def mostVisitedChild(): Option[Node] = {
+  private[this] def mostVisitedChild(): Option[Node] = {
     if (children.isEmpty) None
     else Some(children.maxBy(c => c.state.visitCount()))
   }
@@ -58,8 +58,8 @@ final class Node(val state: State, private[mcts] var parent: Option[Node], val c
     }
   }
 
-  private def bestChildScore(): Node =
-    children.maxBy(c => UCT(c.state.score(), c.state.visitCount(), state.visitCount()))
+  private[this] def bestChildScore(): Node =
+    children.maxBy(c => uct(c.state.score, c.state.visitCount(), state.visitCount()))
 
 
   // TODO: improve this method after the first expansion, there are a lot of Double.Max UCT children and
@@ -105,7 +105,7 @@ final class Node(val state: State, private[mcts] var parent: Option[Node], val c
   @tailrec
   def backPropagate(player: Byte, deltaScore: Double): Node = {
     state.incVisitCount()
-    if (state.player == player) state.addScore(deltaScore)
+    if (state.player === player) state.addScore(deltaScore)
 
     parent match {
       case None => this
@@ -117,7 +117,7 @@ final class Node(val state: State, private[mcts] var parent: Option[Node], val c
 object Node {
   def apply(state: State): Node = Node(state.copy(), None)
 
-  def apply(state: State, parent: Option[Node]) = new Node(state.copy(), parent, new Children())
+  def apply(state: State, parent: Option[Node]): Node = new Node(state.copy(), parent, new Children())
 
   def apply(board: MctsBoard, player: Byte): Node = apply(State(board, player))
 }

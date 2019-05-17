@@ -1,6 +1,7 @@
 package ai
 
 import ai.mcts.tree.{Node, Tree}
+import cats.implicits._
 import com.typesafe.scalalogging.Logger
 import game.Score
 
@@ -10,13 +11,13 @@ package object mcts {
   private[mcts] val logger = Logger("mcts")
 
   // TODO import from config
-  final private val uctParameter: Double = Math.sqrt(2.0)
-  final private val maxIter: Int = 1000
+  final private[this] val uctParameter: Double = Math.sqrt(2.0)
+  final private[this] val maxIter: Int = 1000
 
   protected def remapScore(score: Score, player: Byte): Double = {
     score match {
-      case -1 => if (player == 2) 1.0 else 0.0
-      case 1 => if (player == 1) 1.0 else 0.0
+      case -1 => if (player === 2) 1.0 else 0.0
+      case 1 => if (player === 1) 1.0 else 0.0
       case 0 => 0.5
       case _ => ???
     }
@@ -27,7 +28,7 @@ package object mcts {
   /**
     * if visited is non zero then parentVisited is non zero
     */
-  def UCT(score: Double, visited: Int, parentVisited: Int): Double = {
+  def uct(score: Double, visited: Int, parentVisited: Int): Double = {
     require(visited >= 0)
     require(parentVisited > 0)
 
@@ -70,8 +71,6 @@ package object mcts {
     }
   }
 
-  // TODO fix game.Stats object.... remove singleton.
-  //    game.Stats.totalCalls = 0
   def findNextMove(root: Node): Node = {
     @tailrec
     def loop(iter: Int = 0): Int = {
@@ -90,7 +89,7 @@ package object mcts {
     val bestNode = bestRoot.mostVisitedDescending()
 
     logger.debug(
-      s"""Simulated game ${bestNode.state.board.boardStatus()}:
+      s"""Simulated game:
          |${bestNode.state.board.display()}
          |next move:
          |${bestRoot.state.board.display()}

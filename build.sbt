@@ -63,6 +63,8 @@ libraryDependencies ++= Seq(
   "com.storm-enroute" %% "scalameter-core" % "0.17" % "bench"
 )
 
+libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0-M1"
+
 //libraryDependencies += "org.typelevel" %% "cats-core" % "1.5.0-RC1"
 //val monocleVersion = "1.5.0" // 1.5.0-cats based on cats 1.0.x
 //

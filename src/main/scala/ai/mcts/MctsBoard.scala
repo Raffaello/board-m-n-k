@@ -1,15 +1,11 @@
 package ai.mcts
 
 import ai.AiBoard
+import cats.implicits._
 import game.Position
 
-/**
-  * todo convert to abstract class? need parameters....
-  */
 trait MctsBoard extends AiBoard with Cloneable {
-  // TODO remove, just for debug
-  def boardStatus(): String = _board.flatten.mkString
-
+  // TODO: improve it non generating invalid moves (after game won?), or is redundant.
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()
 
   def randomMove(): Option[Position] = {
@@ -19,7 +15,7 @@ trait MctsBoard extends AiBoard with Cloneable {
   }
 
   def playRandomMove(player: Byte): Boolean = {
-    assert(player != _lastPlayer)
+    require(player =!= _lastPlayer)
     randomMove() match {
       case Some(pos) => playMove(pos, player)
       case None => false
@@ -28,8 +24,8 @@ trait MctsBoard extends AiBoard with Cloneable {
 
   override def clone(): MctsBoard = {
     val clone = super.clone().asInstanceOf[MctsBoard]
-    clone._board = this._board.map(_.clone())
-    clone._lookUps = clone._lookUps.clone()
+    clone._board = _board.map(_.clone()) // <= check benchmark result
+    clone._lookUps = _lookUps.clone().asInstanceOf[clone.CLookUps]
 
     assert(clone ne this)
     assert(clone._board ne _board)

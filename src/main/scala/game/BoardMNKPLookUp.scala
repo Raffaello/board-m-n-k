@@ -1,5 +1,7 @@
 package game
 
+import cats.implicits._
+
 class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m, n, k, p) {
 
   /**
@@ -72,10 +74,8 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
 
   // Todo review this method and lookUps.ended ???
   override def gameEnded(depth: Int): Boolean = {
-    // TODO completely useless lookUps.ended
     if (depth < minWinDepth) false
-    //TODO freePosition ???
-    else if (freePositions == 0) true
+    else if (freePositions === 0) true
     else checkWin()
   }
 }

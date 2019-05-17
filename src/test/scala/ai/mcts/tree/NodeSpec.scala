@@ -4,9 +4,6 @@ import ai.mcts.MctsBoard
 import game.BoardTicTacToe2
 import org.scalatest.{Matchers, WordSpec}
 
-/**
-  * TODO change Node class to be private inside mcts package
-  */
 class NodeSpec extends WordSpec with Matchers {
 
   def emptyNode(): Node = {

@@ -24,14 +24,6 @@ object MNKSolvers {
     } yield (m, n)
   }
 
-  def gameScore(score: Double): String = {
-    score match {
-      case 0.0 => "STALE GAME"
-      case x if x > 0.0 => "P1 WIN"
-      case _ => "P2 WIN"
-    }
-  }
-
   def oldMinimax(m: Int, n: Int, k: Int): Score = {
     val board = new BoardMNK(m.toShort, n.toShort, k.toShort)
     Stats.totalCalls = 0

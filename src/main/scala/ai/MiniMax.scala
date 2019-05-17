@@ -1,9 +1,8 @@
 package ai
 
-import game.{Position, Score, Status}
+import game.{BoardMNK, Position, Score, Status}
 
-// TODO: Cannot extends AiBoard, because it is extending MNKP, when the code is working only for MNK (2 players).. :/
-trait MiniMax extends AiBoard {
+trait MiniMax extends BoardMNK with AiBoard {
   protected def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
 
   protected def mainBlock(player: Byte, depth: Int)(eval: Status => Score): Score = {
@@ -25,8 +24,6 @@ trait MiniMax extends AiBoard {
 
 
   /**
-    * TODO: Replace maximizing with player directly, player 1 always maximizing
-    * or just consider player 2 as all of the opponents.
     * Only for 2 players at the moment
     */
   def solve(maximizing: Boolean = true, depth: Int = 0): Int = {

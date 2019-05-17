@@ -1,6 +1,6 @@
 package ai.mcts
 
-import game.{Board, BoardMNKPLookUp, Position}
+import game.{Board, BoardMNK, Position}
 import org.scalatest.{FlatSpec, Matchers}
 
 class MctsBoardSpec extends FlatSpec with Matchers {
@@ -8,26 +8,26 @@ class MctsBoardSpec extends FlatSpec with Matchers {
   // TODO this imply a non-well design traits/classes, re extend from itself
   // Mcts board already extending from BoardMNKPLookup, here some sort of cycle because of the missing parameter
   // for the constructor: m,n,k,p that cannot be passed in the trait (yet)
-  sealed class MctsBoardStub(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKPLookUp(m, n, k, p) with MctsBoard {
+  sealed class MctsBoardStub(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with MctsBoard {
     def board: Board = _board
   }
 
-  def initBoard(m: Short, n: Short, k: Short, p: Byte): MctsBoard = new MctsBoardStub(m, n, k, p)
+  def initBoard(m: Short, n: Short, k: Short): MctsBoard = new MctsBoardStub(m, n, k)
 
   "MctsBoard" should "be initialized" in {
-    val game = new MctsBoardStub(3, 3, 3, 2)
+    val game = initBoard(3 ,3 ,3)
     game shouldBe an[MctsBoard]
   }
 
   it should "generate all possible moves for tic-tac-toe" in {
-    val game = initBoard(3, 3, 3, 2)
+    val game = initBoard(3, 3, 3)
     val moves = game.allPossibleMoves()
     moves should have length 9
     moves should equal(IndexedSeq[Position]((0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)))
   }
 
   it should "generate a random move" in {
-    val game = initBoard(3, 3, 3, 2)
+    val game = initBoard(3, 3, 3)
     val randomMove = game.randomMove()
     randomMove shouldNot be(None)
     val (x, y) = randomMove.get
@@ -36,7 +36,7 @@ class MctsBoardSpec extends FlatSpec with Matchers {
   }
 
   it should "not generate a random move" in {
-    val game = initBoard(3, 3, 3, 2)
+    val game = initBoard(3, 3, 3)
     for {
       i <- game.mIndices
       j <- game.nIndices
@@ -47,13 +47,13 @@ class MctsBoardSpec extends FlatSpec with Matchers {
   }
 
   it should "play a random move" in {
-    val game = initBoard(3, 3, 3, 2)
+    val game = initBoard(3, 3, 3)
     val randomMove = game.playRandomMove(1)
     randomMove shouldBe true
   }
 
   it should "not play a random move" in {
-    val game = initBoard(3, 3, 3, 2)
+    val game = initBoard(3, 3, 3)
     for {
       i <- game.mIndices
       j <- game.nIndices
@@ -64,7 +64,7 @@ class MctsBoardSpec extends FlatSpec with Matchers {
   }
 
   it should "deep cloned" in {
-    val game = initBoard(3, 3, 3, 2).asInstanceOf[MctsBoardStub]
+    val game = initBoard(3, 3, 3).asInstanceOf[MctsBoardStub]
     game.playRandomMove(1)
     val gameClone = game.clone().asInstanceOf[MctsBoardStub]
 

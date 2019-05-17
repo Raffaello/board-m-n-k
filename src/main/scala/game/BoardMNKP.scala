@@ -1,7 +1,7 @@
 package game
 
 import scala.collection.immutable.NumericRange
-
+import cats.implicits._
 /**
   * @param m          number of rows
   * @param n          number of cols
@@ -78,7 +78,7 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
     */
   def gameEnded(depth: Int): Boolean = {
     if (depth < minWinDepth) false
-    else if (freePositions == 0) true
+    else if (freePositions === 0) true
     else checkWin()
   }
 

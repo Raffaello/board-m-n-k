@@ -1,5 +1,7 @@
 package game
 
+import cats.implicits._
+
 import scala.collection.immutable.NumericRange
 
 abstract class BoardMN(val m: Short, val n: Short) {
@@ -9,7 +11,6 @@ abstract class BoardMN(val m: Short, val n: Short) {
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
-  // TODO remove cloneable method and interface
   protected var _board: Board = Array.ofDim[Byte](m, n)
   //  def board(): IndexedSeq[IndexedSeq[Byte]] = _board.map(_.toIndexedSeq).toIndexedSeq
 
@@ -22,7 +23,7 @@ abstract class BoardMN(val m: Short, val n: Short) {
     for {
       i <- mIndices
       j <- nIndices
-      if _board(i)(j) == 0
+      if _board(i)(j) === 0
     } yield (i, j)
   }
 
