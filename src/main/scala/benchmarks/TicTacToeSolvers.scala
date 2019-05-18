@@ -2,7 +2,7 @@ package benchmarks
 
 import ai._
 import ai.old.{TranspositionTable, WithGetBoard}
-import game.BoardTicTacToe2
+import game.{BoardTicTacToe2, Score}
 
 object TicTacToeSolvers extends App {
 
@@ -32,8 +32,7 @@ object TicTacToeSolvers extends App {
     println("\nMiniMax trait: ")
     val board = new BoardTicTacToe2 with MiniMax
     val start = System.currentTimeMillis()
-//    Stats.totalCalls = 0
-    val score = board.solve()
+    val score = board.solve
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${board.Stats.totalCalls}")
@@ -47,8 +46,7 @@ object TicTacToeSolvers extends App {
     println("\nMiniMax trait RAW: ")
     val board = new BoardTicTacToe2 with MiniMaxRaw
     val start = System.currentTimeMillis()
-//    Stats.totalCalls = 0
-    val score = board.solve()
+    val score:Score = board.solve
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${board.Stats.totalCalls}")
@@ -77,7 +75,6 @@ object TicTacToeSolvers extends App {
     println("\nNegaMax trait: ")
     val board = new BoardTicTacToe2 with NegaMax
     val start = System.currentTimeMillis()
-//    Stats.totalCalls = 0
     val score = board.solve()
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
@@ -107,7 +104,6 @@ object TicTacToeSolvers extends App {
     println("\nAlphaBeta trait: ")
     val board = new BoardTicTacToe2 with AlphaBeta
     val start = System.currentTimeMillis()
-//    Stats.totalCalls = 0
     val score = board.solve()
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
@@ -160,8 +156,6 @@ object TicTacToeSolvers extends App {
     println("\nAlpha Beta With TranspositionTable Trait:")
     val board = new BoardTicTacToe2 with AlphaBetaTransposition
     val start = System.currentTimeMillis()
-//    Stats.totalCalls = 0
-//    Stats.cacheHits = 0
     val transposition = board.solve()
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")

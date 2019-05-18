@@ -9,13 +9,10 @@ import game.Score
 import scala.annotation.tailrec
 
 package object mcts {
-  private[mcts] val logger = Logger("mcts")
-
-  val config: Config = ai.config.getConfig("mcts")
-
+  final private[mcts] val logger = Logger("mcts")
+  final val config: Config = ai.config.getConfig("mcts")
   final private[this] val uctParameter: Double = config.getDouble("uct.c")
   final val maxIter: Int = config.getInt("max_iter")
-
   final val seed: Option[Long] =  if (config.getIsNull("seed")) None else Some(config.getLong("seed"))
 
   protected def remapScore(score: Score, player: Byte): Double = {
@@ -52,13 +49,13 @@ package object mcts {
   def simulation(node: Node): Double = {
     @tailrec
     def gameLoop(board: MctsBoard, player: Byte): MctsBoard = {
-      if (!board.gameEnded() && board.playRandomMove(player)) gameLoop(board, board.opponent(player))
+      if (!board.gameEnded() && board.playRandomMove(player)) gameLoop(board, board.nextPlayer())
       else board
     }
 
     if (node.nonTerminalLeaf) {
       val tempNode = node.deepCopy()
-      val loopBoard = gameLoop(tempNode.state.board, tempNode.state.opponent())
+      val loopBoard = gameLoop(tempNode.state.board, tempNode.state.board.nextPlayer())
       remapScore(loopBoard, node.state.player)
     } else remapScore(node.state.board, node.state.player)
   }
@@ -76,14 +73,12 @@ package object mcts {
   }
 
   def findNextMove(root: Node): Node = {
-    val iter = root.state.board.iterate(root)
-
+    val iter = iterate(root)
     val bestRoot = root.mostVisited()
-    val bestNode = bestRoot.mostVisitedDescending()
 
     logger.debug(
       s"""Simulated game:
-         |${bestNode.state.board.display()}
+         |${bestRoot.mostVisitedDescending().state.board.display()}
          |next move:
          |${bestRoot.state.board.display()}
          |Total Calls (iter): $iter
@@ -91,4 +86,25 @@ package object mcts {
 
     bestRoot
   }
+
+  def findNextMove(tree: Tree): Node = findNextMove(tree.root)
+
+  def iterate(tree: Tree): Int = iterate(tree.root)
+
+  def iterate(node: Node, maxIter: Int): Int = {
+    @tailrec
+    def loop(iter: Int = 0): Int = {
+      if (iter < maxIter) {
+        val selNode = selection(node)
+        val expNode = expansion(selNode)
+        val gameScore = simulation(expNode)
+        backPropagation(expNode, gameScore)
+        loop(iter + 1)
+      } else iter
+    }
+
+    loop()
+  }
+
+  def iterate(node: Node): Int = iterate(node, maxIter)
 }

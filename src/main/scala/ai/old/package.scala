@@ -1,5 +1,6 @@
 package ai
 
+import cats.implicits._
 import game.{BoardMNK, Position, Score, Status}
 
 /**
@@ -51,7 +52,7 @@ package object old {
     * Doesn't work as expected.
     */
   def negamax(game: BoardMNK, color: Byte): Score = {
-    //    require(color == 1 || color == -1)
+    require(color === 1 || color === -1)
     if (game.gameEnded()) {
       color * game.score()
     } else {
@@ -74,8 +75,7 @@ package object old {
   }
 
   def negamaxNextMove(game: BoardMNK, color: Byte): Status = {
-    //    require(color == 1 || color == -1)
-
+    require(color === 1 || color === -1)
     if (game.gameEnded()) {
       (color * game.score(), game.lastMove)
     } else {

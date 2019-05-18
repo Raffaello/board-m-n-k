@@ -67,7 +67,10 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
 
   def solve: Score = solve().score
 
-  def nextMove(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Transposition = {
+  /**
+    * @TODO Incomplete, does not return pBest
+    */
+  def nextMove(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Transposition /*PosTrans*/ = {
     var pBest: Position = (-1, -1)
     var best = if (maximizing) Int.MinValue else Int.MaxValue
     var a1 = alpha

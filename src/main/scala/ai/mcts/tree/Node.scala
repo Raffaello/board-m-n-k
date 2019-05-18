@@ -4,7 +4,6 @@ import ai.mcts.{MctsBoard, State, uct}
 import cats.implicits._
 
 import scala.annotation.tailrec
-import scala.util.Random
 
 protected[mcts] final class Node(val state: State, private[mcts] var parent: Option[Node], val children: Children) {
 
@@ -35,7 +34,7 @@ protected[mcts] final class Node(val state: State, private[mcts] var parent: Opt
 
   def randomChild(): Node = {
     if (children.isEmpty) this
-    else children(Random.nextInt(children.length))
+    else children(this.state.board.random.nextInt(children.length))
   }
 
   private[this] def mostVisitedChild(): Option[Node] = {

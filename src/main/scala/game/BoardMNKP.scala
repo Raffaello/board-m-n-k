@@ -2,6 +2,7 @@ package game
 
 import scala.collection.immutable.NumericRange
 import cats.implicits._
+
 /**
   * @param m          number of rows
   * @param n          number of cols
@@ -9,9 +10,8 @@ import cats.implicits._
   * @param numPlayers 0 is not used, 1 or 2 is the player using the cell
   */
 class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends BoardMN(m, n) {
-  //  require(k > 2)
-  //  require(k <= m || k <= n)
-  //  require(numPlayers >= 2)
+  require(k <= m || k <= n)
+  require(numPlayers >= 2)
 
   protected val k1: Short = (k - 1).toShort
   protected val nkDiff: Short = (n - k).toShort
@@ -21,7 +21,7 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   protected val nkDiffIncIndices: NumericRange.Inclusive[Short] = NumericRange.inclusive[Short](0, nkDiff, 1)
   protected val k1mIndices = NumericRange(k1, m, 1)
 
-  protected var _lastPlayer: Byte = 0
+  protected var _lastPlayer: Byte = numPlayers
   protected val minWinDepth: Int = (2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
   protected var _depth: Int = 0
 
@@ -30,6 +30,7 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   def lastPlayer: Byte = this._lastPlayer
 
   def playMove(position: Position, player: Byte): Boolean = {
+    require(player>=1 && player <= numPlayers)
     val (row, col) = position
     if (_board(row)(col) > 0) false
     else {
@@ -82,9 +83,12 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
     else checkWin()
   }
 
-  def opponent(player: Byte): Byte = (numPlayers - player + 1).toByte
+  def opponent(player: Byte): Byte = {
+    require(player >= 1 && player <= numPlayers)
+    ((player % numPlayers) + 1).toByte
+  }
 
-  def nextPlayer(): Byte = ???
+  def nextPlayer(): Byte = opponent(_lastPlayer)
 
   override def display(): String = ???
 }
