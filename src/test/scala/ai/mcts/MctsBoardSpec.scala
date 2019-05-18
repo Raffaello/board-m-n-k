@@ -5,7 +5,7 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class MctsBoardSpec extends FlatSpec with Matchers {
 
-  // TODO this imply a non-well design traits/classes, re extend from itself
+  // This imply a non-well design traits/classes, re extend from itself
   // Mcts board already extending from BoardMNKPLookup, here some sort of cycle because of the missing parameter
   // for the constructor: m,n,k,p that cannot be passed in the trait (yet)
   sealed class MctsBoardStub(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with MctsBoard {
