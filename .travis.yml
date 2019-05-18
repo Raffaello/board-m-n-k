@@ -21,6 +21,10 @@ addons:
   sonarcloud:
     organization: raffaello-github
 
+before_script:
+  - curl https://github.com/RadoBuransky/sonar-scoverage-plugin/releases/download/v5.1.3/sonar-scoverage-plugin-5.1.3.jar --output sonar-scoverage-plugin-5.1.3.jar
+  - which sonar-scanner
+  - mv sonar-scoverage-plugin-5.1.3.jar ${which sonar-scanner}/../extensions/plugins
 script:
   - sbt clean coverage test coverageReport
   - sonar-scanner -X
