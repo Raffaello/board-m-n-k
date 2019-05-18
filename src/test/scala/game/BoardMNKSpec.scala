@@ -17,24 +17,11 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
       game.gameEnded(4) shouldEqual true
       game.score() shouldEqual 1
+
       game.lookUps.ended shouldEqual Some(true)
       game.lookUps.lastPlayerIdx shouldEqual 0
-
-      game.lookUps.rows(0)(0) shouldEqual 3
-      game.lookUps.rows(1)(0) shouldEqual 0
-      game.lookUps.rows(2)(0) shouldEqual 0
-
-      game.lookUps.rows(0)(1) shouldEqual 0
-      game.lookUps.rows(1)(1) shouldEqual 2
-      game.lookUps.rows(2)(1) shouldEqual 0
-
-      game.lookUps.cols(0)(0) shouldEqual 1
-      game.lookUps.cols(1)(0) shouldEqual 1
-      game.lookUps.cols(2)(0) shouldEqual 1
-
-      game.lookUps.cols(0)(1) shouldEqual 1
-      game.lookUps.cols(1)(1) shouldEqual 1
-      game.lookUps.cols(2)(1) shouldEqual 0
+      game.lookUps.rows shouldBe Array(Array(3, 0), Array(0, 2), Array(0, 0))
+      game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
     }
 
     "P2 win" in {
@@ -50,22 +37,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.score() shouldEqual -1
       game.lookUps.ended shouldEqual Some(true)
       game.lookUps.lastPlayerIdx shouldEqual 1
-
-      game.lookUps.rows(0)(0) shouldEqual 2
-      game.lookUps.rows(1)(0) shouldEqual 0
-      game.lookUps.rows(2)(0) shouldEqual 1
-
-      game.lookUps.rows(0)(1) shouldEqual 0
-      game.lookUps.rows(1)(1) shouldEqual 3
-      game.lookUps.rows(2)(1) shouldEqual 0
-
-      game.lookUps.cols(0)(0) shouldEqual 2
-      game.lookUps.cols(1)(0) shouldEqual 0
-      game.lookUps.cols(2)(0) shouldEqual 1
-
-      game.lookUps.cols(0)(1) shouldEqual 1
-      game.lookUps.cols(1)(1) shouldEqual 1
-      game.lookUps.cols(2)(1) shouldEqual 1
+      game.lookUps.rows shouldBe Array(Array(2, 0), Array(0, 3), Array(1, 0))
+      game.lookUps.cols shouldBe Array(Array(2, 1), Array(0, 1), Array(1, 1))
     }
 
     "STALE" in {
@@ -84,22 +57,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.score() shouldEqual 0
       game.lookUps.ended shouldEqual Some(false)
       game.lookUps.lastPlayerIdx shouldEqual 0
-
-      game.lookUps.rows(0)(0) shouldEqual 2
-      game.lookUps.rows(1)(0) shouldEqual 2
-      game.lookUps.rows(2)(0) shouldEqual 1
-
-      game.lookUps.rows(0)(1) shouldEqual 1
-      game.lookUps.rows(1)(1) shouldEqual 1
-      game.lookUps.rows(2)(1) shouldEqual 2
-
-      game.lookUps.cols(0)(0) shouldEqual 2
-      game.lookUps.cols(1)(0) shouldEqual 1
-      game.lookUps.cols(2)(0) shouldEqual 2
-
-      game.lookUps.cols(0)(1) shouldEqual 1
-      game.lookUps.cols(1)(1) shouldEqual 2
-      game.lookUps.cols(2)(1) shouldEqual 1
+      game.lookUps.rows shouldBe Array(Array(2, 1), Array(2, 1), Array(1, 2))
+      game.lookUps.cols shouldBe Array(Array(2, 1), Array(1, 2), Array(2, 1))
     }
 
     "P1 win diagonalTL" in {
@@ -114,24 +73,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.score() shouldEqual 1
       game.lookUps.ended shouldEqual Some(true)
       game.lookUps.lastPlayerIdx shouldEqual 0
-
-      game.lookUps.rows(0)(0) shouldEqual 1
-      game.lookUps.rows(1)(0) shouldEqual 1
-      game.lookUps.rows(2)(0) shouldEqual 1
-
-      game.lookUps.rows(0)(1) shouldEqual 1
-      game.lookUps.rows(1)(1) shouldEqual 1
-      game.lookUps.rows(2)(1) shouldEqual 0
-
-      game.lookUps.cols(0)(0) shouldEqual 1
-      game.lookUps.cols(1)(0) shouldEqual 1
-      game.lookUps.cols(2)(0) shouldEqual 1
-
-      game.lookUps.cols(0)(1) shouldEqual 1
-      game.lookUps.cols(1)(1) shouldEqual 1
-      game.lookUps.cols(2)(1) shouldEqual 0
-
-      // diag is when rows(x)(y) == cols(x)(y) && > 0
+      game.lookUps.rows shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
+      game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
     }
 
     "P1 win diagonalBR" in {
@@ -147,23 +90,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.lookUps.ended shouldEqual Some(true)
       game.lookUps.lastPlayerIdx shouldEqual 0
 
-      game.lookUps.rows(0)(0) shouldEqual 1
-      game.lookUps.rows(1)(0) shouldEqual 1
-      game.lookUps.rows(2)(0) shouldEqual 1
-
-      game.lookUps.rows(0)(1) shouldEqual 1
-      game.lookUps.rows(1)(1) shouldEqual 1
-      game.lookUps.rows(2)(1) shouldEqual 0
-
-      game.lookUps.cols(0)(0) shouldEqual 1
-      game.lookUps.cols(1)(0) shouldEqual 1
-      game.lookUps.cols(2)(0) shouldEqual 1
-
-      game.lookUps.cols(0)(1) shouldEqual 1
-      game.lookUps.cols(1)(1) shouldEqual 1
-      game.lookUps.cols(2)(1) shouldEqual 0
-
-      // diag is when rows(x)(y) == cols(x)(y) && > 0
+      game.lookUps.rows shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
+      game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
     }
 
   }
@@ -189,15 +117,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.lookUps.ended shouldEqual Some(true)
       game.lookUps.lastPlayerIdx shouldEqual 0
 
-      game.lookUps.rows(0) shouldEqual Array(2, 1)
-      game.lookUps.rows(1) shouldEqual Array(1, 2)
-      game.lookUps.rows(2) shouldEqual Array(1, 1)
-      game.lookUps.rows(3) shouldEqual Array(1, 0)
-
-      game.lookUps.cols(0) shouldEqual Array(1, 2)
-      game.lookUps.cols(1) shouldEqual Array(0, 2)
-      game.lookUps.cols(2) shouldEqual Array(4, 0)
-
+      game.lookUps.rows shouldBe Array(Array(2, 1), Array(1, 2), Array(1, 1), Array(1, 0))
+      game.lookUps.cols shouldBe Array(Array(1, 2), Array(0, 2), Array(4, 0))
     }
   }
 
