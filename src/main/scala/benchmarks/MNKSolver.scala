@@ -1,7 +1,7 @@
 package benchmarks
 
 import game.BoardMNK
-
+import cats.implicits._
 object MNKSolver extends App {
 
   println("Insert the board size:")
@@ -26,5 +26,5 @@ object MNKSolver extends App {
       case _ => "P2 WIN"
     }
   })
-  assert(score == 0.0)
+  assert(score === 0.0)
 }
