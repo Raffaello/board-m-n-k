@@ -16,6 +16,8 @@
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
 [![Known Vulnerabilities](https://snyk.io/test/github/Raffaello/board-m-n-k/badge.svg?targetFile=build.sbt)](https://snyk.io/test/github/Raffaello/board-m-n-k?targetFile=build.sbt)
+
+
 Special case is (3,3,3) that is tic-tac-toe
 
 ## Tic-tac-toe
