@@ -1,16 +1,11 @@
 package ai
 
-import game.{BoardTicTacToe, Status}
+import game.{BoardTicTacToe, Score, Status}
 import org.scalatest.{Matchers, WordSpec}
 
 class MiniMaxRawSpec extends WordSpec with Matchers {
 
   "BoardTicTacToe with minimaxRaw" should {
-    "solve the game" in {
-      val game = new BoardTicTacToe with MiniMaxRaw
-      game.solve() shouldEqual 0
-    }
-
     "have first move" in {
       val game = new BoardTicTacToe with MiniMaxRaw
       val s: Status = (0, (0, 0))
@@ -19,7 +14,8 @@ class MiniMaxRawSpec extends WordSpec with Matchers {
 
     "draw the game" in {
       val game = new BoardTicTacToe with MiniMaxRaw
-      game.solve shouldBe 0
+      val score: Score = game.solve
+      score shouldBe 0
     }
   }
 }

@@ -32,11 +32,11 @@ object BoardSolver extends App {
   }
 
   sealed class MiniMaxTraitRaw(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with ai.MiniMaxRaw {
-    def result(): Int = this.solve()
+    def result(): Int = this.solve
   }
 
   sealed class MiniMaxTrait(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with MiniMax {
-    def result(): Int = this.solve()
+    def result(): Int = this.solve
   }
 
   sealed class NegaMaxRaw(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) {

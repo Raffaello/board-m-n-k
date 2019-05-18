@@ -4,7 +4,7 @@ import game.Score
 
 trait MiniMaxRaw extends MiniMax {
 
-  override def solve(maximizing: Boolean = true, depth: Int = 0): Score = {
+  override def solve(maximizing: Boolean, depth: Int): Score = {
     if (gameEnded(depth)) {
       score()
     } else {

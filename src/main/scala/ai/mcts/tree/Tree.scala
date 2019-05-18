@@ -1,7 +1,6 @@
 package ai.mcts.tree
 
 import ai.mcts.{MctsBoard, State}
-import game.Position
 
 final class Tree(val root: Node)
 

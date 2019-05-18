@@ -43,7 +43,7 @@ object MNKSolversBench extends Bench.OfflineRegressionReport {
           } in {
             case (m, n) =>
               val board = traitMinimax(m, n, k)
-              score = board.solve()
+              score = board.solve
               totalCalls = board.Stats.totalCalls
           }
         }
@@ -56,7 +56,7 @@ object MNKSolversBench extends Bench.OfflineRegressionReport {
           } in {
             case (m, n) =>
               val board = traitMinimaxRaw(m, n, k)
-              score = board.solve()
+              score = board.solve
               totalCalls = board.Stats.totalCalls
           }
         }
