@@ -3,11 +3,7 @@ package ai.mcts.tree
 import ai.mcts.{MctsBoard, State}
 import game.Position
 
-final class Tree(val root: Node) {
-  def lastMove: Position = root.state.board.lastMove
-
-  def lastPlayer: Byte = root.state.player
-}
+final class Tree(val root: Node)
 
 object Tree {
   def apply(game: MctsBoard, player: Byte): Tree = {

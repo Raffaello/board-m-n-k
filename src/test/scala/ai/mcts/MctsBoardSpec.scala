@@ -96,4 +96,9 @@ class MctsBoardSpec extends FlatSpec with Matchers {
     game.lookUps.rows ne gameClone.lookUps.rows
     game.lookUps.rows should not be gameClone.lookUps.rows
   }
+
+  it should "solve" in {
+    val game = initBoard(3, 3, 3)
+    game.solve shouldBe 0
+  }
 }

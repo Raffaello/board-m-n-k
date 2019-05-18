@@ -194,7 +194,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     subTree.root.state.board.lastMove shouldBe p
     subTree.root.state.board.lastPlayer shouldBe 2
     subTree.root.state.board.gameEnded() shouldBe false
-    subTree.lastPlayer shouldBe 2
+    subTree.root.state.player shouldBe 2
   }
 
   ignore must "draw in this game (1,2),(1,0)" in {
@@ -210,7 +210,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     var st = Tree(game, 1)
     while (!st.root.state.board.gameEnded()) {
       st = playNextMove(st).get
-      game.playMove(st.lastMove, st.lastPlayer)
+      game.playMove(st.root.state.board.lastMove, st.root.state.player)
     }
 
     st.root.state.board.score() shouldBe 0
@@ -228,8 +228,8 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     var st = Tree(game, 1)
     while (!st.root.state.board.gameEnded()) {
       val st2 = playNextMove(st).get
-      game.playMove(st2.lastMove, st2.lastPlayer)
-      st2.lastPlayer shouldBe st.root.state.opponent()
+      game.playMove(st2.root.state.board.lastMove, st2.root.state.player)
+      st2.root.state.player shouldBe st.root.state.opponent()
       st = st2
     }
 

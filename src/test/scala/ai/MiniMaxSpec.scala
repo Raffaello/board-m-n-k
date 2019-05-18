@@ -28,5 +28,10 @@ class MiniMaxSpec extends WordSpec with Matchers {
       val s: Status = (0, (0, 0))
       game.nextMove(maximizing = true, 0) shouldEqual s
     }
+
+    "draw the game" in {
+      val game = new BoardTicTacToe with MiniMax
+      game.solve shouldBe 0
+    }
   }
 }

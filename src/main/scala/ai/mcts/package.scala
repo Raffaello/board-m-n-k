@@ -9,13 +9,10 @@ import game.Score
 import scala.annotation.tailrec
 
 package object mcts {
-  private[mcts] val logger = Logger("mcts")
-
-  val config: Config = ai.config.getConfig("mcts")
-
+  final private[mcts] val logger = Logger("mcts")
+  final val config: Config = ai.config.getConfig("mcts")
   final private[this] val uctParameter: Double = config.getDouble("uct.c")
   final val maxIter: Int = config.getInt("max_iter")
-
   final val seed: Option[Long] =  if (config.getIsNull("seed")) None else Some(config.getLong("seed"))
 
   protected def remapScore(score: Score, player: Byte): Double = {
