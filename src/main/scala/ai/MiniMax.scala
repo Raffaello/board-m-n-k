@@ -1,11 +1,11 @@
 package ai
 
-import game.{Position, Status}
+import game.{BoardMNK, Position, Score, Status}
 
-trait MiniMax extends AiBoard {
+trait MiniMax extends BoardMNK with AiBoard {
   protected def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
 
-  protected def mainBlock(player: Byte, depth: Int)(eval: Status => Int): Int = {
+  protected def mainBlock(player: Byte, depth: Int)(eval: Status => Score): Score = {
     if (gameEnded(depth)) {
       score()
     } else {
@@ -24,11 +24,9 @@ trait MiniMax extends AiBoard {
 
 
   /**
-    * TODO: Replace maximizing with player directly, player 1 always maximizing
-    * or just consider player 2 as all of the opponents.
     * Only for 2 players at the moment
     */
-  def solve(maximizing: Boolean = true, depth: Int = 0): Int = {
+  def solve(maximizing: Boolean = true, depth: Int = 0): Score = {
     val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
 
     mainBlock(player(maximizing), depth) { status =>
@@ -36,6 +34,8 @@ trait MiniMax extends AiBoard {
       cmp(status._1, value)
     }
   }
+
+  def solve: Score = solve()
 
   def nextMove(maximizing: Boolean, depth: Int): Status = {
     var pBest: Position = (-1, -1)

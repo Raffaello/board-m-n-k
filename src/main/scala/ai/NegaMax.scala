@@ -1,13 +1,13 @@
 package ai
 
-import game.{Status, Position}
+import game.{Position, Score, Status}
 
 /**
   * Basically same class as
   * @see MiniMax
   */
 trait NegaMax extends AiBoard {
-  protected def mainBlock(color: Byte, depth: Int)(eval: Status => Int): Int = {
+  protected def mainBlock(color: Byte, depth: Int)(eval: Status => Score): Score = {
     if (gameEnded(depth)) {
       score() * color
     } else {
@@ -25,11 +25,13 @@ trait NegaMax extends AiBoard {
     }
   }
 
-  def solve(color: Byte = 1, depth: Int = 0): Int = {
+  def solve(color: Byte = 1, depth: Int = 0): Score = {
     mainBlock(color, depth) { status =>
       Math.max(status._1, -solve((-color).toByte, depth + 1))
     }
   }
+
+  def solve: Score = solve()
 
   def nextMove(color: Byte, depth: Int): Status = {
     var pBest: Position = (-1, -1)

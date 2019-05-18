@@ -15,7 +15,7 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=security_rating)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Raffaello_board-m-n-k&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Raffaello_board-m-n-k)
-
+[![Known Vulnerabilities](https://snyk.io/test/github/Raffaello/board-m-n-k/badge.svg?targetFile=build.sbt)](https://snyk.io/test/github/Raffaello/board-m-n-k?targetFile=build.sbt)
 Special case is (3,3,3) that is tic-tac-toe
 
 ## Tic-tac-toe
@@ -63,7 +63,7 @@ combined with a less depth solution to gain a higher score, it reduces the searc
 
 `score + (Signum(score) * (1.0 / (depth + 1.0) ))`
 
-Probably doesn't improve. [Double check from AlphaBeta and above for improvements, benchmark]
+Probably does not improve. [Double check from AlphaBeta and above for improvements, benchmark]
 
 ## Transposition Table
 
@@ -131,7 +131,7 @@ from 2D array to ??? (1D? easier for hashing?)
 
 - [ ] basic implementation
 - [ ] multi threading
-- [ ] advanced???
+- [ ] RAVE
 
 ## AlphaZero
 
@@ -144,4 +144,8 @@ from 2D array to ??? (1D? easier for hashing?)
 - [Negamax](https://en.wikipedia.org/wiki/Negamax)
 - [Alpha–beta pruning](https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning)
 - [Zobrist Hashing](https://en.wikipedia.org/wiki/Zobrist_hashing)
-
+- [MCTS Part I](https://www.cs.swarthmore.edu/~bryce/cs63/s16/slides/2-15_MCTS.pdf)
+- [MCTS Part II](https://www.cs.swarthmore.edu/~bryce/cs63/s16/slides/2-17_extending_mcts.pdf)
+- [MCTS Part III](http://ccg.doc.gold.ac.uk/ccg_old/teaching/ludic_computing/ludic16.pdf)
+- [MCTS Intro](https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/)
+- [Wiki MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search)

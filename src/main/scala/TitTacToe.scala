@@ -1,6 +1,6 @@
 import ai._
 import ai.old.negamaxNextMove
-import game.BoardTicTacToe
+import game.BoardTicTacToe2
 
 object TitTacToe extends App {
   val humanPlayer: Byte = 1
@@ -20,13 +20,13 @@ object TitTacToe extends App {
 
     val numPlayers = scala.io.StdIn.readInt()
     if (numPlayers == -1) System.exit(0)
-    val game = new BoardTicTacToe()
+    val game = new BoardTicTacToe2()
     if (numPlayers > 0) {
       println("Do you want to start? [y, yes]")
       val playerStart = scala.io.StdIn.readBoolean()
       var playerTurn = playerStart
-      while (!game.gameEnded(game.minWinDepth)) {
-        game.display()
+      while (!game.gameEnded()) {
+        game.stdoutPrintln()
         if (playerTurn) {
           var valid = false
           while (!valid) {
@@ -37,13 +37,13 @@ object TitTacToe extends App {
           }
         }
         else {
-          val (_, i, j) = negamaxNextMove(game, -1)
+          val (_, (i, j)) = negamaxNextMove(game, -1)
           game.playMove((i, j), computerPlayer)
         }
         playerTurn = !playerTurn
       }
 
-      game.display()
+      game.stdoutPrintln()
       game.score() match {
         case 0 => println("STALEMATE!")
         case 1 => println("Player 1 (Human) wins")
@@ -55,7 +55,7 @@ object TitTacToe extends App {
       // Joshua player
       var joshuaPlay = true //Random.nextBoolean()
       while (!game.gameEnded(depth)) {
-        game.display()
+        game.stdoutPrintln()
         var color: Byte = 0
         var player: Byte = 0
         var a = Double.MinValue
@@ -70,7 +70,7 @@ object TitTacToe extends App {
         }
 
 //        val (score, i, j) = negamaxNextMove(game, color)
-        val (_, i, j, a2 , b2) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
+        val (_, (i, j), (a2 , b2)) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
         a = a2
         b = b2
         depth +=1
@@ -79,7 +79,7 @@ object TitTacToe extends App {
         joshuaPlay = !joshuaPlay
       }
 
-      game.display()
+      game.stdoutPrintln()
       game.score() match {
         case 0 =>
           println("GREETINGS PROFESSOR FALKEN!")

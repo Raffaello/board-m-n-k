@@ -1,10 +1,10 @@
 package ai
 
-import game.Position
+import game.{Position, Score}
 
 trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
 
-  protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus => Transposition): Transposition = {
+  protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus[Score] => Transposition): Transposition = {
     val transposition = get()
 
     if (transposition.isDefined) {
@@ -18,8 +18,7 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
       val t = Transposition(
         s2,
         depth,
-        s2,
-        s2,
+        (s2, s2),
         maximizing
       )
 
@@ -34,10 +33,12 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
 
       consumeMoves() { p =>
         playMove(p, player)
-        val s = eval((a, b), (best,p))
+        val abStatus: ABStatus[Score] = ((a, b), (best, p))
+        val s = eval(abStatus)
         best = s.score
-        a = s.alpha
-        b = s.beta
+        val (a0, b0) = s.ab
+        a = a0
+        b = b0
         undoMove(p, player)
 
         if (a >= b) {
@@ -45,7 +46,7 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
         }
       }
 
-      val t = Transposition(best, depth, a, b, maximizing)
+      val t = Transposition(best, depth, (a, b), maximizing)
       add(t)
       t
     }
@@ -58,11 +59,13 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
     mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, _)) =>
       val value = solve(!maximizing, depth + 1, a, b)
       val best = cmp(v, value.score)
-      if(maximizing) a1 = Math.max(a, best)
+      if (maximizing) a1 = Math.max(a, best)
       else b1 = Math.min(b, best)
-      Transposition(best, depth, a1, b1, maximizing)
+      Transposition(best, depth, (a1, b1), maximizing)
     }
   }
+
+  def solve: Score = solve().score
 
   def nextMove(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Transposition = {
     var pBest: Position = (-1, -1)
@@ -85,7 +88,7 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
         }
       }
 
-      Transposition(best, depth, a1, b1, maximizing)
+      Transposition(best, depth, (a1, b1), maximizing)
     }
   }
 }

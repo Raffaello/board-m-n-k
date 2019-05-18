@@ -1,6 +1,6 @@
 package ai.old
 
-import game.{Board, BoardTicTacToe}
+import game.{Board, BoardTicTacToe2}
 import org.scalatest.{FlatSpec, Matchers}
 
 import scala.collection.mutable
@@ -44,7 +44,7 @@ class TranspositionTableSpec extends FlatSpec with Matchers {
   }
 
   "Transposition table" should "be used" in {
-    val game = new BoardTicTacToe() with withGetBoard
+    val game = new BoardTicTacToe2() with WithGetBoard
     val trans = new TranspositionTableStub {}
     val t = ai.old.alphaBetaWithMem(trans, game)
 

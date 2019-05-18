@@ -1,19 +1,15 @@
 package ai
 
-import game.{Board, BoardMNK}
+import game.{BoardMNK, Position, Score, Status}
 
 /**
-  * Used for benchmarks.
+  * @deprecated
+  * Used for bench.benchmarks.
   */
 package object old {
-  case class Transposition(score: Double, depth: Int, alpha: Double, beta: Double, isMaximizing: Boolean)
-  trait withGetBoard extends BoardMNK {
-    def getBoard(): Board = board
-  }
+  type ABMove = (Double, Position, AB[Double]) // score, position, Alpha, Beta
 
-  class BoardMNKwithGetBoard(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with withGetBoard
-
-  def minimax(game: BoardMNK, isMaximizingPlayer: Boolean): Int = {
+  def minimax(game: BoardMNK, isMaximizingPlayer: Boolean): Score = {
     def minMaxLoop(maximizing: Boolean): Int = {
       var best: Int = 0
       var cmp: (Int, Int) => Int = null
@@ -43,7 +39,7 @@ package object old {
       best
     }
 
-    if (game.gameEnded(game.minWinDepth)) {
+    if (game.gameEnded()) {
       game.score()
     } else {
       minMaxLoop(isMaximizingPlayer)
@@ -54,9 +50,9 @@ package object old {
     * do not use.
     * Doesn't work as expected.
     */
-  def negamax(game: BoardMNK, color: Byte): Int = {
+  def negamax(game: BoardMNK, color: Byte): Score = {
     //    require(color == 1 || color == -1)
-    if (game.gameEnded(game.minWinDepth)) {
+    if (game.gameEnded()) {
       color * game.score()
     } else {
 
@@ -77,11 +73,11 @@ package object old {
     }
   }
 
-  def negamaxNextMove(game: BoardMNK, color: Byte): (Int, Short, Short) = {
+  def negamaxNextMove(game: BoardMNK, color: Byte): Status = {
     //    require(color == 1 || color == -1)
 
-    if (game.gameEnded(game.minWinDepth)) {
-      (color * game.score(), -1, -1)
+    if (game.gameEnded()) {
+      (color * game.score(), game.lastMove)
     } else {
 
       var value = Int.MinValue
@@ -103,19 +99,19 @@ package object old {
         game.undoMove((i, j), player)
       }
 
-      (value, ibest, jbest)
+      (value, (ibest, jbest))
     }
   }
 
   def alphaBetaWithMem(
                         statuses: old.TranspositionTable,
-                        game: withGetBoard,
+                        game: WithGetBoard,
                         depth: Int = 0,
                         alpha: Double = Double.MinValue,
                         beta: Double = Double.MaxValue,
                         maximizingPlayer: Boolean = true
-                      ): Transposition = {
-    val transposition = statuses.get(game.getBoard())
+                      ): old.Transposition = {
+    val transposition = statuses.get(game.board)
 
     if (transposition.isDefined) {
       Stats.cacheHits += 1
@@ -130,7 +126,7 @@ package object old {
         maximizingPlayer
       )
 
-      statuses.add(game.getBoard(), t)
+      statuses.add(game.board, t)
       t
     } else {
       Stats.totalCalls += 1
@@ -142,7 +138,7 @@ package object old {
           j <- game.nIndices
           if game.playMove((i, j), 1)
         } {
-          val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
+          val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, maximizingPlayer = false)
           best = Math.max(best, t.score)
           a = Math.max(a, best)
           game.undoMove((i, j), 1)
@@ -152,7 +148,7 @@ package object old {
         }
 
         val t = Transposition(best, depth, a, beta, maximizingPlayer)
-        statuses.add(game.getBoard(), t)
+        statuses.add(game.board, t)
         t
       } else {
         var best = Double.MaxValue
@@ -162,7 +158,7 @@ package object old {
           j <- game.nIndices
           if game.playMove((i, j), 2)
         } {
-          val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
+          val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, maximizingPlayer = true)
           best = Math.min(best, t.score)
           b = Math.max(b, best)
           game.undoMove((i, j), 2)
@@ -172,7 +168,7 @@ package object old {
         }
 
         val t = Transposition(best, depth, alpha, b, maximizingPlayer)
-        statuses.add(game.getBoard(), t)
+        statuses.add(game.board, t)
         t
       }
     }

@@ -1,5 +1,7 @@
 package game
 
+import cats.implicits._
+
 import scala.collection.immutable.NumericRange
 
 abstract class BoardMN(val m: Short, val n: Short) {
@@ -9,18 +11,33 @@ abstract class BoardMN(val m: Short, val n: Short) {
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
-  protected val board: Board = Array.ofDim[Byte](m, n)
+  protected var _board: Board = Array.ofDim[Byte](m, n)
+  //  def board(): IndexedSeq[IndexedSeq[Byte]] = _board.map(_.toIndexedSeq).toIndexedSeq
 
   protected var freePositions: Int = m * n
-  protected var lastMove: Position = (0, 0)
+  protected var _lastMove: Position = (0, 0)
 
-  def move(position: Position): Byte = board(position._1)(position._2)
+  def lastMove: Position = _lastMove
+
+  final protected def generateMoves(): IndexedSeq[Position] = {
+    for {
+      i <- mIndices
+      j <- nIndices
+      if _board(i)(j) === 0
+    } yield (i, j)
+  }
+
+  protected def consumeMoves()(f: Position => Unit): Unit = generateMoves().foreach(f)
 
   def playMove(position: Position, player: Byte): Boolean
 
-  def undoMove(position: Position, player: Byte): Unit
+  def undoMove(position: Position, player: Byte): Boolean
 
   def score(): Int
 
-  def gameEnded(depth: Int): Boolean
+  def gameEnded(): Boolean
+
+  def display(): String
+
+  def stdoutPrintln(): Unit = println(display())
 }

@@ -4,3 +4,4 @@ package object game {
   type Score = Int
   type Status = (Score, Position)
 }
+

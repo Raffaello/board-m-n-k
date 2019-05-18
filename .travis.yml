@@ -20,8 +20,6 @@ cache:
 addons:
   sonarcloud:
     organization: raffaello-github
-#    token:
-#      secure: "*********" # encrypted value of your token
 
 script:
   - sbt clean coverage test coverageReport
