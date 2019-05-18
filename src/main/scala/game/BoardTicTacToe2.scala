@@ -30,7 +30,6 @@ class BoardTicTacToe2 extends BoardTicTacToe {
   override def gameEnded(): Boolean = freePositions === 0 || checkWin()
 
   override protected def checkWin(): Boolean = {
-    if (scoreDiagsTL() > 0 || scoreDiagsBR() > 0) true
-    else mIndices.exists(i => scoreRow(i) > 0 || scoreCol(i) > 0)
+    scoreDiagsTL() > 0 || scoreDiagsBR() > 0 || mIndices.exists(i => scoreRow(i) > 0 || scoreCol(i) > 0)
   }
 }

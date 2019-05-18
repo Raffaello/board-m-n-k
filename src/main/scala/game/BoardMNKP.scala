@@ -9,9 +9,8 @@ import cats.implicits._
   * @param numPlayers 0 is not used, 1 or 2 is the player using the cell
   */
 class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends BoardMN(m, n) {
-  //  require(k > 2)
-  //  require(k <= m || k <= n)
-  //  require(numPlayers >= 2)
+    require(k <= m || k <= n)
+    require(numPlayers >= 2)
 
   protected val k1: Short = (k - 1).toShort
   protected val nkDiff: Short = (n - k).toShort

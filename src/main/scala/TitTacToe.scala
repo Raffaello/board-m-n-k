@@ -69,7 +69,6 @@ object TitTacToe extends App {
           player = computerPlayer
         }
 
-//        val (score, i, j) = negamaxNextMove(game, color)
         val (_, (i, j), (a2 , b2)) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
         a = a2
         b = b2

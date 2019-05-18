@@ -12,6 +12,7 @@ import scala.annotation.tailrec
   * @param k number of same move of a player "in a row" (or col or diagonal)
   */
 class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k, 2) {
+  require(k > 2)
 
   final protected def score2players(player: Byte): Int = {
     player match {

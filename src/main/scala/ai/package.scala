@@ -23,10 +23,7 @@ package object ai {
     */
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     if (game.gameEnded(depth)) {
-      //      return game.score()
-      //      return game.score() * (1.0/(depth + 1))
       return game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
-
     }
 
     Stats.totalCalls += 1
