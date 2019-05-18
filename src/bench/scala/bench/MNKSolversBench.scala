@@ -1,7 +1,9 @@
+package bench
+
 import ai.Stats
-import benchmarks.MNKSolvers._
+import bench.benchmarks.MNKSolvers._
 import game.Score
-import org.scalameter.api._
+import org.scalameter.api.{Bench, exec}
 
 object MNKSolversBench extends Bench.OfflineRegressionReport {
 

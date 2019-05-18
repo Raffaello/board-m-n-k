@@ -32,7 +32,7 @@ trait AlphaBeta extends AiBoard {
     }
   }
 
-  def solve(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Int = {
+  def solve(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Score = {
     val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
     var a1 = alpha
     var b1 = beta
@@ -44,6 +44,8 @@ trait AlphaBeta extends AiBoard {
       ((a1, b1), (best, p))
     }
   }
+
+  def solve: Score = solve()
 
   def nextMove(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): ABStatus[Score] = {
     var pBest: Position = (-1, -1)

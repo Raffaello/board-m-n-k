@@ -4,7 +4,7 @@ import sbt.Keys.{libraryDependencies, parallelExecution}
 // see: https://github.com/scalameter/scalameter-examples/blob/master/basic-with-separate-config/build.sbt
 lazy val Benchmark = config("bench") extend Test
 lazy val settingsScalameter = Seq(
-  name in Benchmark := "board-m-n-k-benchmarks",
+  name in Benchmark := "board-m-n-k-bench.benchmarks",
   publishArtifact in Benchmark := false,
   scalacOptions in Benchmark ++= Seq(
     "-optimize",

@@ -26,7 +26,7 @@ trait MiniMax extends BoardMNK with AiBoard {
   /**
     * Only for 2 players at the moment
     */
-  def solve(maximizing: Boolean = true, depth: Int = 0): Int = {
+  def solve(maximizing: Boolean = true, depth: Int = 0): Score = {
     val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
 
     mainBlock(player(maximizing), depth) { status =>
@@ -34,6 +34,8 @@ trait MiniMax extends BoardMNK with AiBoard {
       cmp(status._1, value)
     }
   }
+
+  def solve: Score = solve()
 
   def nextMove(maximizing: Boolean, depth: Int): Status = {
     var pBest: Position = (-1, -1)

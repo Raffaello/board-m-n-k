@@ -10,8 +10,6 @@ package object ai {
   type AB[T] = (T, T) // Alpha, Beta values
   type ABStatus[T] = (AB[T], Status) // Alpha, Beta values plus Status: Score, Position
 
-
-
   /**
     * TODO: replace return type Double with Score (Int)
     * @return

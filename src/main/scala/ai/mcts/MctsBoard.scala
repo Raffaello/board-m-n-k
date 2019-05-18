@@ -2,9 +2,11 @@ package ai.mcts
 
 import ai.AiBoard
 import cats.implicits._
-import game.Position
+import game.{Position, Score}
 
 trait MctsBoard extends AiBoard with Cloneable {
+  def solve: Score = ???
+
   // TODO: improve it non generating invalid moves (after game won?), or is redundant.
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()
 

@@ -4,7 +4,7 @@ import game.{BoardMNK, Position, Score, Status}
 
 /**
   * @deprecated
-  * Used for benchmarks.
+  * Used for bench.benchmarks.
   */
 package object old {
   type ABMove = (Double, Position, AB[Double]) // score, position, Alpha, Beta

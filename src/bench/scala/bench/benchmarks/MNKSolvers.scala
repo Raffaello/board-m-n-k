@@ -1,4 +1,4 @@
-package benchmarks
+package bench.benchmarks
 
 import ai._
 import ai.old.BoardMNKwithGetBoard

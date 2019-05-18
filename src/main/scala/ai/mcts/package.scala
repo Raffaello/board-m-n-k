@@ -1,6 +1,6 @@
 package ai
 
-import ai.mcts.tree.{Node, Tree}
+import ai.mcts.tree._
 import cats.implicits._
 import com.typesafe.scalalogging.Logger
 import game.Score
@@ -38,7 +38,7 @@ package object mcts {
     }
   }
 
-  def selection(node: Node): Node = node.descending()
+  def selection(node: tree.Node): tree.Node = node.descending()
 
   def expansion(node: Node): Node = {
     if (node.nonTerminalLeaf) node.expandChildren()
