@@ -1,6 +1,7 @@
 package ai.mcts
 
 import ai.mcts.tree.Tree
+import cats.implicits._
 import game.{BoardTicTacToe2, Position}
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
@@ -58,6 +59,10 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
     tree.root.bestChild().parent shouldBe Some(tree.root)
     tree.root.bestChild().bestChild().parent.get.parent shouldBe Some(tree.root)
+  }
+
+  it should "have seed 0" in {
+    ai.mcts.seed shouldBe Some(0)
   }
 
   it should "return the sub-tree" in {
@@ -183,7 +188,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     t shouldBe None
   }
 
-  ignore should "move to (0,0) in this case" in {
+  it should "move to (0,0) in this case" in {
     val game = new BoardTicTacToe2 with MctsBoard
     game.playMove((2, 2), 1)
     game.playMove((0, 1), 2)
@@ -197,7 +202,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     subTree.root.state.player shouldBe 2
   }
 
-  ignore must "draw in this game (1,2),(1,0)" in {
+  it must "draw in this game (1,2),(1,0)" in {
     val game = new BoardTicTacToe2 with MctsBoard
     game.playMove((0, 0), 1)
     game.playMove((1, 1), 2)
@@ -207,17 +212,13 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     game.playMove((2, 0), 2)
     game.playMove((0, 2), 1)
 
-    var st = Tree(game, 1)
-    while (!st.root.state.board.gameEnded()) {
-      st = playNextMove(st).get
-      game.playMove(st.root.state.board.lastMove, st.root.state.player)
-    }
-
+    val st = Tree(game, 1)
+    iterate(st) //shouldBe 100
     st.root.state.board.score() shouldBe 0
 
   }
 
-  ignore should "draw p1" in {
+  it should "draw p1" in {
     val game = new BoardTicTacToe2 with MctsBoard
     game.playMove((0, 0), 1)
     game.playMove((1, 1), 2)
@@ -225,19 +226,13 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     game.playMove((0, 1), 2)
     game.playMove((2, 1), 1)
 
-    var st = Tree(game, 1)
-    while (!st.root.state.board.gameEnded()) {
-      val st2 = playNextMove(st).get
-      game.playMove(st2.root.state.board.lastMove, st2.root.state.player)
-      st2.root.state.player shouldBe st.root.state.opponent()
-      st = st2
-    }
-
+    val st = Tree(game, 1)
+    iterate(st)
     st.root.state.board.score() shouldBe 0
 
   }
 
-  ignore should "Draw (always?)" in {
+  it should "Draw (always?)" in {
     val game = new BoardTicTacToe2 with MctsBoard
     var player: Byte = 2
     var tree = Tree(game, player)

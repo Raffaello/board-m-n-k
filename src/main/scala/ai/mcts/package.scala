@@ -73,14 +73,12 @@ package object mcts {
   }
 
   def findNextMove(root: Node): Node = {
-    val iter = root.state.board.iterate(root)
-
+    val iter = iterate(root)
     val bestRoot = root.mostVisited()
-    val bestNode = bestRoot.mostVisitedDescending()
 
     logger.debug(
       s"""Simulated game:
-         |${bestNode.state.board.display()}
+         |${bestRoot.mostVisitedDescending().state.board.display()}
          |next move:
          |${bestRoot.state.board.display()}
          |Total Calls (iter): $iter
@@ -88,4 +86,25 @@ package object mcts {
 
     bestRoot
   }
+
+  def findNextMove(tree: Tree): Node = findNextMove(tree.root)
+
+  def iterate(tree: Tree): Int = iterate(tree.root)
+
+  def iterate(node: Node, maxIter: Int): Int = {
+    @tailrec
+    def loop(iter: Int = 0): Int = {
+      if (iter < maxIter) {
+        val selNode = selection(node)
+        val expNode = expansion(selNode)
+        val gameScore = simulation(expNode)
+        backPropagation(expNode, gameScore)
+        loop(iter + 1)
+      } else iter
+    }
+
+    loop()
+  }
+
+  def iterate(node: Node): Int = iterate(node, maxIter)
 }

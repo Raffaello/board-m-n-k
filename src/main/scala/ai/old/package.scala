@@ -1,7 +1,7 @@
 package ai
 
-import game.{BoardMNK, Position, Score, Status}
 import cats.implicits._
+import game.{BoardMNK, Position, Score, Status}
 
 /**
   * @deprecated
