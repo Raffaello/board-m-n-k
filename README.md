@@ -131,7 +131,7 @@ from 2D array to ??? (1D? easier for hashing?)
 
 ## Monte Carlo Tree Search
 
-- [ ] basic implementation
+- [X] basic implementation
 - [ ] multi threading
 - [ ] RAVE
 
