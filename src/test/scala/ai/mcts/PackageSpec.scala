@@ -183,7 +183,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     t shouldBe None
   }
 
-  it should "move to (0,0) in this case" in {
+  ignore should "move to (0,0) in this case" in {
     val game = new BoardTicTacToe2 with MctsBoard
     game.playMove((2, 2), 1)
     game.playMove((0, 1), 2)

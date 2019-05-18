@@ -7,7 +7,6 @@ import com.typesafe.scalalogging.Logger
 import game.Score
 
 import scala.annotation.tailrec
-import scala.util.Random
 
 package object mcts {
   private[mcts] val logger = Logger("mcts")
