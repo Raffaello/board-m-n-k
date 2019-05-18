@@ -49,13 +49,13 @@ package object mcts {
   def simulation(node: Node): Double = {
     @tailrec
     def gameLoop(board: MctsBoard, player: Byte): MctsBoard = {
-      if (!board.gameEnded() && board.playRandomMove(player)) gameLoop(board, board.opponent(player))
+      if (!board.gameEnded() && board.playRandomMove(player)) gameLoop(board, board.nextPlayer())
       else board
     }
 
     if (node.nonTerminalLeaf) {
       val tempNode = node.deepCopy()
-      val loopBoard = gameLoop(tempNode.state.board, tempNode.state.opponent())
+      val loopBoard = gameLoop(tempNode.state.board, tempNode.state.board.nextPlayer())
       remapScore(loopBoard, node.state.player)
     } else remapScore(node.state.board, node.state.player)
   }

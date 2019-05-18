@@ -10,7 +10,7 @@ import scala.util.Random
 trait MctsBoard extends AiBoard with Cloneable {
   final private[mcts] val random = ai.mcts.seed match {
     case Some(x) => new Random(x)
-    case None => new Random
+    case None => new Random()
   }
 
   def solve: Score = {

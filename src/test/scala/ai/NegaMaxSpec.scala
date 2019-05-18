@@ -15,6 +15,12 @@ class NegaMaxSpec extends WordSpec with Matchers {
       val s: Status = (0, (0, 0))
       game.nextMove(1, 0) shouldEqual s
     }
+
+    "have 2nd move" in {
+      val s: Status = (0, (1, 1))
+      game.playMove((0, 0), 1)
+      game.nextMove(-1, 0) shouldEqual s
+    }
   }
 
   "BoardTicTacToe negamax" should {

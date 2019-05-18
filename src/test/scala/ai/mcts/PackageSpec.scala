@@ -242,8 +242,9 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
       tree = playNextMove(tree).get
       game.playMove(tree.root.state.board.lastMove, player)
       iter += 1
-      player = tree.root.state.board.opponent(player)
+      player = game.nextPlayer()
       tree.root.state.player shouldBe player
+
       tree.root.state.board.depth shouldBe iter
 
       tree
