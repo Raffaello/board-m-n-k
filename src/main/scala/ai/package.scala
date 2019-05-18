@@ -1,3 +1,5 @@
+import com.typesafe.config.Config
+import com.typesafe.scalalogging.Logger
 import game._
 
 //noinspection NameBooleanParameters
@@ -9,6 +11,11 @@ package object ai {
   }
   type AB[T] = (T, T) // Alpha, Beta values
   type ABStatus[T] = (AB[T], Status) // Alpha, Beta values plus Status: Score, Position
+
+
+  private[ai] val logger = Logger("ai")
+
+  val config: Config = settings.Loader.getConfig().getConfig("ai")
 
   /**
     * TODO: replace return type Double with Score (Int)

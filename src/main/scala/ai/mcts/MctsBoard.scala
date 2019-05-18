@@ -4,15 +4,25 @@ import ai.AiBoard
 import cats.implicits._
 import game.{Position, Score}
 
+import scala.util.Random
+
 trait MctsBoard extends AiBoard with Cloneable {
+  final private[this]val random = new Random()
+  ai.mcts.seed match {
+    case Some(x) => setSeed(x)
+    case None =>
+  }
+
   def solve: Score = ???
 
   // TODO: improve it non generating invalid moves (after game won?), or is redundant.
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()
 
+  def setSeed(seed: Long): Unit = random.setSeed(seed)
+
   def randomMove(): Option[Position] = {
     val moves = generateMoves()
-    if (moves.nonEmpty) moves.lift(scala.util.Random.nextInt(moves.size))
+    if (moves.nonEmpty) moves.lift(random.nextInt(moves.size))
     else None
   }
 

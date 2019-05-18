@@ -2,17 +2,22 @@ package ai
 
 import ai.mcts.tree._
 import cats.implicits._
+import com.typesafe.config.Config
 import com.typesafe.scalalogging.Logger
 import game.Score
 
 import scala.annotation.tailrec
+import scala.util.Random
 
 package object mcts {
   private[mcts] val logger = Logger("mcts")
 
-  // TODO import from config
-  final private[this] val uctParameter: Double = Math.sqrt(2.0)
-  final private[this] val maxIter: Int = 1000
+  val config: Config = ai.config.getConfig("mcts")
+
+  final private[this] val uctParameter: Double = config.getDouble("uct.c")
+  final private[this] val maxIter: Int = config.getInt("max_iter")
+
+  final val seed: Option[Long] =  if (config.getIsNull("seed")) None else Some(config.getLong("seed"))
 
   protected def remapScore(score: Score, player: Byte): Double = {
     score match {
@@ -34,7 +39,7 @@ package object mcts {
 
     visited match {
       case 0 => Double.MaxValue
-      case _ => score / visited.toDouble + uctParameter * Math.sqrt(Math.log(parentVisited) / visited.toDouble)
+      case _ => score / visited.toDouble + Math.sqrt(uctParameter * Math.log(parentVisited) / visited.toDouble)
     }
   }
 
