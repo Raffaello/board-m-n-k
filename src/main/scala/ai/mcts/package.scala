@@ -14,7 +14,7 @@ package object mcts {
   val config: Config = ai.config.getConfig("mcts")
 
   final private[this] val uctParameter: Double = config.getDouble("uct.c")
-  final private[this] val maxIter: Int = config.getInt("max_iter")
+  final val maxIter: Int = config.getInt("max_iter")
 
   final val seed: Option[Long] =  if (config.getIsNull("seed")) None else Some(config.getLong("seed"))
 
@@ -76,18 +76,7 @@ package object mcts {
   }
 
   def findNextMove(root: Node): Node = {
-    @tailrec
-    def loop(iter: Int = 0): Int = {
-      if (iter < maxIter) {
-        val selNode = selection(root)
-        val expNode = expansion(selNode)
-        val gameScore = simulation(expNode)
-        backPropagation(expNode, gameScore)
-        loop(iter + 1)
-      } else iter
-    }
-
-    val iter = loop()
+    val iter = root.state.board.iterate(root)
 
     val bestRoot = root.mostVisited()
     val bestNode = bestRoot.mostVisitedDescending()

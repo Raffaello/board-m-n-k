@@ -1,19 +1,42 @@
 package ai.mcts
 
 import ai.AiBoard
+import ai.mcts.tree.{Node, Tree}
 import cats.implicits._
 import game.{Position, Score}
 
+import scala.annotation.tailrec
 import scala.util.Random
 
 trait MctsBoard extends AiBoard with Cloneable {
-  final private[this]val random = new Random()
+  final private[this] val random = new Random()
   ai.mcts.seed match {
     case Some(x) => setSeed(x)
     case None =>
   }
 
-  def solve: Score = ???
+  def iterate(node: Node): Int = {
+    @tailrec
+    def loop(iter: Int = 0): Int = {
+      if (iter < ai.mcts.maxIter) {
+        val selNode = selection(node)
+        val expNode = expansion(selNode)
+        val gameScore = simulation(expNode)
+        backPropagation(expNode, gameScore)
+        loop(iter + 1)
+      } else iter
+    }
+
+    loop()
+  }
+
+  def iterate(tree: Tree): Int = iterate(tree.root)
+
+  def solve: Score = {
+    val tree = Tree(this, 1)
+    iterate(tree)
+    tree.root.mostVisitedDescending().state.board.score()
+  }
 
   // TODO: improve it non generating invalid moves (after game won?), or is redundant.
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()

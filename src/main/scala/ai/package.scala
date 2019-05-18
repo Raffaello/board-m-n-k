@@ -15,7 +15,7 @@ package object ai {
 
   private[ai] val logger = Logger("ai")
 
-  val config: Config = settings.Loader.getConfig().getConfig("ai")
+  val config: Config = settings.Loader.config.getConfig("ai")
 
   /**
     * TODO: replace return type Double with Score (Int)
