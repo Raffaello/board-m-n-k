@@ -166,6 +166,10 @@ from 2D array to 1D.
 - [ ] bit boards
 - [ ] connected/related to TranspositionTable
 
+
+## Genetic Algorithm
+
+
 ## Results
 
 ## references
