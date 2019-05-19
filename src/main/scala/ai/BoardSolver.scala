@@ -44,7 +44,7 @@ object BoardSolver extends App {
   }
 
   sealed class NegaMaxTrait(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with NegaMax {
-    def result(): Int = this.solve()
+    def result(): Int = this.solve
   }
 
   sealed class AlphaBetaRaw(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) {

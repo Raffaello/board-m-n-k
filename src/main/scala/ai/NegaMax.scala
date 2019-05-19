@@ -25,13 +25,13 @@ trait NegaMax extends AiBoard {
     }
   }
 
-  def solve(color: Byte = 1, depth: Int = 0): Score = {
+  def solve(color: Byte, depth: Int): Score = {
     mainBlock(color, depth) { status =>
       Math.max(status._1, -solve((-color).toByte, depth + 1))
     }
   }
 
-  def solve: Score = solve()
+  def solve: Score = solve(1, 0)
 
   def nextMove(color: Byte, depth: Int): Status = {
     var pBest: Position = (-1, -1)

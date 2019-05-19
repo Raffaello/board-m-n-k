@@ -29,6 +29,4 @@ class BoardMNKPSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
       }
     }
   }
-
-  ignore should "be to do" in {}
 }

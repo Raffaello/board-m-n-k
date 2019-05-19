@@ -1,6 +1,6 @@
 package ai
 
-import game.{BoardTicTacToe, BoardTicTacToe2, Score, Status}
+import game.{BoardTicTacToe, BoardTicTacToe2, Score}
 import org.scalatest.{Matchers, WordSpec}
 
 class AlphaBetaTranspositionSpec extends WordSpec with Matchers {

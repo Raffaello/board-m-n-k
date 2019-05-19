@@ -6,9 +6,9 @@ import scala.collection.immutable.NumericRange
 
 class BoardMNKSpec extends WordSpec with Matchers {
 
-  "3x3x3 board (BoardTicTacToe)" must {
+  "3x3x3 board (alias BoardTicTacToe)" must {
     "P1 win" in {
-      val game = new BoardMNK(3, 3, 3)
+      val game = new BoardTicTacToe()
       game.playMove((0, 0), 1)
       game.playMove((1, 1), 2)
       game.playMove((0, 1), 1)
@@ -25,7 +25,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
     }
 
     "P2 win" in {
-      val game = new BoardTicTacToe
+      val game = new BoardTicTacToe()
       game.playMove((0, 0), 1)
       game.playMove((1, 1), 2)
       game.playMove((2, 0), 1)
@@ -42,7 +42,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
     }
 
     "STALE" in {
-      val game = new BoardTicTacToe
+      val game = new BoardTicTacToe()
       game.playMove((0, 0), 1)
       game.playMove((0, 1), 2)
       game.playMove((0, 2), 1)
@@ -62,7 +62,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
     }
 
     "P1 win diagonalTL" in {
-      val game = new BoardTicTacToe
+      val game = new BoardTicTacToe()
       game.playMove((0, 0), 1)
       game.playMove((0, 1), 2)
       game.playMove((1, 1), 1)
@@ -78,7 +78,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
     }
 
     "P1 win diagonalBR" in {
-      val game = new BoardTicTacToe
+      val game = new BoardTicTacToe()
       game.playMove((2, 0), 1)
       game.playMove((0, 1), 2)
       game.playMove((1, 1), 1)
@@ -94,6 +94,15 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
     }
 
+    "display" in {
+      val game = new BoardTicTacToe
+      game.display() shouldBe
+        """ _ | _ | _
+          | _ | _ | _
+          | _ | _ | _
+          |
+          |""".stripMargin
+    }
   }
 
   "4x3x3 board" must {

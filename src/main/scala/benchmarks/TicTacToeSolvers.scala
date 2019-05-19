@@ -75,7 +75,7 @@ object TicTacToeSolvers extends App {
     println("\nNegaMax trait: ")
     val board = new BoardTicTacToe2 with NegaMax
     val start = System.currentTimeMillis()
-    val score = board.solve()
+    val score = board.solve
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${board.Stats.totalCalls}")
