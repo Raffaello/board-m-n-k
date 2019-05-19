@@ -4,6 +4,7 @@ import game.{Position, Score, Status}
 
 /**
   * Basically same class as
+  *
   * @see MiniMax
   */
 trait NegaMax extends AiBoard {
@@ -35,12 +36,12 @@ trait NegaMax extends AiBoard {
 
   def nextMove(color: Byte, depth: Int): Status = {
     var pBest: Position = (-1, -1)
-    val score = mainBlock(color, depth) { status =>
+    val score = mainBlock(color, depth) { case (score: Score, pos: Position) =>
       val newValue = -solve((-color).toByte, depth + 1)
-      var value = status._1
+      var value = score
       if (value < newValue) {
         value = newValue
-        pBest = status._2
+        pBest = pos
       }
 
       value
