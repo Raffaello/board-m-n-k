@@ -38,13 +38,10 @@ trait NegaMax extends AiBoard {
     var pBest: Position = (-1, -1)
     val score = mainBlock(color, depth) { case (score: Score, pos: Position) =>
       val newValue = -solve((-color).toByte, depth + 1)
-      var value = score
-      if (value < newValue) {
-        value = newValue
+      if (score < newValue) {
         pBest = pos
-      }
-
-      value
+        newValue
+      } else score
     }
 
     (score, pBest)
