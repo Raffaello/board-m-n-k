@@ -18,7 +18,5 @@ trait GameBoard {
 
   def display(): String
 
-  protected def generateMoves(): IndexedSeq[Position]
-
   protected def consumeMoves()(f: Position => Unit): Unit
 }

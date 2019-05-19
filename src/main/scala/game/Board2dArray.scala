@@ -4,18 +4,17 @@ import cats.implicits._
 
 import scala.collection.immutable.NumericRange
 
-abstract class Board2dArray(m: Short, n: Short) extends GameBoard {
+abstract class Board2dArray(m: Short, n: Short) extends BoardT {
   protected var _board: Board2d = Array.ofDim[Byte](m, n)
-
   protected def board(pos: Position): Byte = {
     val (i, j) = pos
     _board(i)(j)
   }
 
-  def setBoard(pos: Position, p: Player): Unit = {
-    val (i, j) = pos
-    _board(i)(j) = p
-  }
+//  def setBoard(pos: Position, p: Player): Unit = {
+//    val (i, j) = pos
+//    _board(i)(j) = p
+//  }
 
   protected def board(pos: Position)(p: Player): Unit = {
     val (i, j) = pos

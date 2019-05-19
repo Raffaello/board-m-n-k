@@ -1,6 +1,6 @@
 package game
 
-abstract class BoardMN(val m: Short, val n: Short) extends Board2dArray(m, n) {
+abstract class BoardMN(val m: Short, val n: Short) extends Board2dArray(m, n) with GameBoard {
   require(m > 2 && n > 2)
 
   val mnMin: Short = Math.min(m, n).toShort
