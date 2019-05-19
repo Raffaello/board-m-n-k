@@ -63,8 +63,17 @@ libraryDependencies ++= Seq(
   "com.storm-enroute" %% "scalameter-core" % "0.17" % "bench"
 )
 
-libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0-M1"
+libraryDependencies ++= Seq(
+  "org.deeplearning4j" % "deeplearning4j-core" % "1.0.0-beta4",
+  "org.nd4j" % "nd4j-native-platform" % "1.0.0-beta4"
+)
 
+// @see https://deeplearning4j.org/docs/latest/deeplearning4j-config-cudnn
+//libraryDependencies += "org.nd4j" % "nd4j-cuda-10.1-platform" % "1.0.0-beta4"
+//libraryDependencies += "org.deeplearning4j" % "deeplearning4j-cuda-10.0" % "1.0.0-beta4"
+
+
+libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0-M1"
 //libraryDependencies += "org.typelevel" %% "cats-core" % "1.5.0-RC1"
 //val monocleVersion = "1.5.0" // 1.5.0-cats based on cats 1.0.x
 //

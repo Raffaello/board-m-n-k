@@ -139,6 +139,34 @@ from 2D array to ??? (1D? easier for hashing?)
 
 ## AlphaZero
 
+- [ ] Reinforcement Learning
+- [ ] Residual CNN (?)
+- [ ] GAN
+- [ ] Q Learning
+- [ ] DQN
+- [ ] Save/Load Model(s)
+- [ ] game state encoders
+
+
+### Network
+
+- [ ] pooling
+- [ ] softmax
+
+
+#### Loss function
+
+- [ ] MSE
+- [ ] cross-entropy
+
+
+### Game State Encoders
+
+- [ ] basic
+- [ ] byte Array
+- [ ] bit boards
+- [ ] connected/related to TranspositionTable
+
 ## Results
 
 ## references
@@ -154,3 +182,5 @@ from 2D array to ??? (1D? easier for hashing?)
 - [MCTS Intro](https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/)
 - [Wiki MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search)
 - [MCTS Survey](http://mcts.ai/pubs/mcts-survey-master.pdf)
+- [Simple AlphaZero](https://web.stanford.edu/~surag/posts/alphazero.html)
+- [Deep Learning and the game of GO](https://www.oreilly.com/library/view/deep-learning-and/9781617295324/)
