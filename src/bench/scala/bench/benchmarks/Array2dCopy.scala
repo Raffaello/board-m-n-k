@@ -1,10 +1,10 @@
 package bench.benchmarks
 
-import bench.benchmarks.Array1dCopy.ns
 import org.scalameter.api.Gen
 
 object Array2dCopy {
 
+  val ns: Gen[Int] = Gen.range("n")(3, 5, 1)
   val arrays2d: Gen[(Int, Int, Array[Array[Int]])] = for {
     //    m <- ms
     n <- ns

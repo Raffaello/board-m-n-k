@@ -115,10 +115,9 @@ and check only around the move done instead of all the board.
 
 ### Board representation
 
-from 2D array to ??? (1D? easier for hashing?)
+from 2D array to 1D.
 
 - [ ] replace with 1D array and compute the moves as `i*n+j` for the exact index position
-
 - [ ] simplify the checking of end game looking around the value and moving trough the array.
 - [ ] simplify hashing.
 - [ ] consider to use a bit board for each player to represent the game.

@@ -4,7 +4,7 @@ import org.scalameter.api.Gen
 
 object Array1dCopy {
 
-  val ns: Gen[Int] = Gen.range("n")(3, 5, 1)
+  val ns: Gen[Int] = Gen.range("n")(3*3, 5*5, 1)
 
   val arrays1d: Gen[(Int, Array[Int])] = for {
     n <- ns
