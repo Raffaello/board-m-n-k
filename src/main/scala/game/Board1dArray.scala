@@ -4,7 +4,7 @@ import cats.implicits._
 
 import scala.collection.immutable.NumericRange
 
-abstract class Board1dArray(m: Short, n: Short) extends GameBoard {
+abstract class Board1dArray(m: Short, n: Short) extends BoardT with GameBoard {
   protected var _board: Board1d = Array.ofDim[Byte](m * n)
 
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)

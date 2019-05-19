@@ -1,5 +1,11 @@
 package game
 
+/**
+  * this is generic BoardMN, board2dArray should be the concrete implementation of this one.
+  * now is the other way arround. REDESIGN. 
+  * @param m
+  * @param n
+  */
 abstract class BoardMN(val m: Short, val n: Short) extends Board2dArray(m, n) with GameBoard {
   require(m > 2 && n > 2)
 
