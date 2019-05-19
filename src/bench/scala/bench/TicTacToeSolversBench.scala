@@ -229,6 +229,36 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
         }
       }
     }
+
+    performance of "TicTacToeArray1dBoard" in {
+      measure method s"alphaBeta" in {
+//        using(ticTacToe1) beforeTests reset afterTests {
+//          println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
+//        } in {
+//          _ => score = alphaBeta(new BoardTicTacToe)
+//        }
+      }
+    }
+
+    performance of "TicTacToeBitSetBoard" in {
+      measure method s"alphaBeta" in {
+//        using(ticTacToe1) beforeTests reset afterTests {
+//          println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
+//        } in {
+//          _ => score = alphaBeta(new BoardTicTacToe)
+//        }
+      }
+    }
+
+    performance of "TicTacToeBitBoard" in {
+      measure method s"alphaBeta" in {
+//        using(ticTacToe1) beforeTests reset afterTests {
+//          println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
+//        } in {
+//          _ => score = alphaBeta(new BoardTicTacToe)
+//        }
+      }
+    }
   }
 }
 
