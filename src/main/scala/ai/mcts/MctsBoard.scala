@@ -13,7 +13,7 @@ trait MctsBoard extends AiBoard with Cloneable {
     case None => new Random()
   }
 
-  private var _maxIter: Int = ai.mcts.maxIter
+  private[this] var _maxIter: Int = ai.mcts.maxIter
 
   def maxIter: Int = _maxIter
 
