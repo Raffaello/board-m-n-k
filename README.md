@@ -122,6 +122,10 @@ from 2D array to 1D.
 - [ ] simplify hashing.
 - [ ] consider to use a bit board for each player to represent the game.
 
+#### BitBoards
+
+- [ ] only TicTacToe 2 players (represent with 18 bit => 32 (Int32/Short x64))
+
 ## Principal Variation
 
 ## MTD-f
