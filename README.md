@@ -132,8 +132,10 @@ from 2D array to ??? (1D? easier for hashing?)
 ## Monte Carlo Tree Search
 
 - [X] basic implementation
-- [ ] multi threading
+- [ ] Pruning
 - [ ] RAVE
+- [ ] Transpositions
+- [ ] multi threading
 
 ## AlphaZero
 
@@ -151,3 +153,4 @@ from 2D array to ??? (1D? easier for hashing?)
 - [MCTS Part III](http://ccg.doc.gold.ac.uk/ccg_old/teaching/ludic_computing/ludic16.pdf)
 - [MCTS Intro](https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/)
 - [Wiki MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search)
+- [MCTS Survey](http://mcts.ai/pubs/mcts-survey-master.pdf)
