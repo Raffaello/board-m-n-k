@@ -18,7 +18,8 @@ class BitBoardTicTacToe extends BoardT with GameBoard {
 
   override def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = position
-    val value: BitBoard = row * m + col * player
+    // 0 0 0
+    val value: BitBoard = (1 << (row*m + col) ) << (player -1)
 
     if ((_board & value) > 0) false
     else {
@@ -33,7 +34,8 @@ class BitBoardTicTacToe extends BoardT with GameBoard {
 
   override def undoMove(position: (Short, Short), player: Player): Boolean = {
     val (i, j) = position
-    val value: BitBoard = i * m + j * player
+    val (row, col) = (i,j)
+    val value: BitBoard = (1 << (row*m + col) ) << (player -1)
 
     if ((_board & value) > 0) {
       _board ^= value
@@ -61,8 +63,8 @@ class BitBoardTicTacToe extends BoardT with GameBoard {
   protected def scoreDiagsTL(): Int = {
     // 1 0 0 | 0 1 0 | 0 0 1 || 1 0 0 | 0 1 0 | 0 0 1
     // 1 + 16 + 255 || 2^9 + 2^13 + 2^17
-    //  272 p1  || 139776 p2
-    if ((_board & 272) > 0) 1
+    //  273 p1  || 139776 p2
+    if ((_board & 273) > 0) 1
     else if ((_board & 139776) > 0) 2
     else 0
   }
@@ -86,9 +88,12 @@ class BitBoardTicTacToe extends BoardT with GameBoard {
 
   def scoreCols: Int = {
     // 1 0 0 | 1 0 0 | 1 0 0
+    // 0 1 0 | 0 1 0 | 0 1 0
+    // 0 0 1 | 0 0 1 | 0 0 1
+    // 0 0 0   0 0 0   0 0 0 1 0 0 1 0 0 1 0 0
     // 1 + 8 + 64 = 73
-    if ((_board & 73)> 0 ||(_board & 584) > 0 || (_board & 4672) > 0) 1
-    else if ((_board & 37376)> 0 ||(_board & 299008) > 0 || (_board & 2392064) > 0) 2
+    if ((_board & 73)> 0 ||(_board & 146) > 0 || (_board & 292) > 0) 1
+    else if ((_board & 37376)> 0 ||(_board & 74752) > 0 || (_board & 149504) > 0) 2
     else 0
   }
 
