@@ -4,6 +4,7 @@ import ai.old.BoardMNKwithGetBoard
 import game.BoardMNK
 
 object BoardSolver extends App {
+
   sealed trait _Stats {
     var totalCalls: Int = 0
     var cacheHits: Int = 0
@@ -11,6 +12,7 @@ object BoardSolver extends App {
 
   sealed trait SolverBoardTrait {
     def result(): Any
+
     def stats(): _Stats
   }
 
@@ -22,9 +24,13 @@ object BoardSolver extends App {
   }
 
   sealed abstract class SolverBoard(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with SolverBoardTrait {}
+
   sealed abstract class SolverBoardOld(m: Short, n: Short, k: Short) extends BoardMNKwithGetBoard(m, n, k) with SolverBoardTrait {}
+
   sealed abstract class SolverBoardRaw(m: Short, n: Short, k: Short) extends SolverBoard(m, n, k) with StatsWrapper {}
+
   sealed abstract class SolverBoardOldRaw(m: Short, n: Short, k: Short) extends SolverBoardOld(m, n, k) with StatsWrapper {}
+
   sealed abstract class SolverBoardAiTrait(m: Short, n: Short, k: Short) extends SolverBoard(m, n, k) with AiBoard with StatsWrapper {}
 
   sealed class MiniMaxRaw(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) {
@@ -44,7 +50,7 @@ object BoardSolver extends App {
   }
 
   sealed class NegaMaxTrait(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with NegaMax {
-    def result(): Int = this.solve()
+    def result(): Int = this.solve
   }
 
   sealed class AlphaBetaRaw(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) {
@@ -101,15 +107,15 @@ object BoardSolver extends App {
   print("choice: ")
   val choice = scala.io.StdIn.readInt()
   println()
-  val c = choices(choice)
-  println(s"you choose: ${c._1}")
+  val (ck, cv) = choices(choice)
+  println(s"you choose: ${ck}")
 
   println(s"Board size ${m}x${n}x$k")
   val startTime = System.currentTimeMillis()
-  val r = c._2.result()
-  val s = c._2.stats()
+  val r = cv.result()
+  val s = cv.stats()
   val endTime = System.currentTimeMillis()
-  println(s"Result: $r --- =[${c._2.getClass}]")
+  println(s"Result: $r --- =[${cv.getClass}]")
   println(s"Total Time: ${endTime - startTime}ms")
   println(s"Total calls: ${s.totalCalls}")
   println(s"Total cache: ${s.cacheHits}")

@@ -13,6 +13,16 @@ trait MctsBoard extends AiBoard with Cloneable {
     case None => new Random()
   }
 
+  private[this] var _maxIter: Int = ai.mcts.maxIter
+
+  def maxIter: Int = _maxIter
+
+  def maxIter_=(v: Int): Unit = {
+    require(v > 0)
+
+    _maxIter = v
+  }
+
   def solve: Score = {
     val tree = Tree(this, 2)
     iterate(tree)
