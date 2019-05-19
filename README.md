@@ -115,13 +115,16 @@ and check only around the move done instead of all the board.
 
 ### Board representation
 
-from 2D array to ??? (1D? easier for hashing?)
+from 2D array to 1D.
 
 - [ ] replace with 1D array and compute the moves as `i*n+j` for the exact index position
-
 - [ ] simplify the checking of end game looking around the value and moving trough the array.
 - [ ] simplify hashing.
 - [ ] consider to use a bit board for each player to represent the game.
+
+#### BitBoards
+
+- [ ] only TicTacToe 2 players (represent with 18 bit => 32 (Int32/Short x64))
 
 ## Principal Variation
 
@@ -139,6 +142,38 @@ from 2D array to ??? (1D? easier for hashing?)
 
 ## AlphaZero
 
+- [ ] Reinforcement Learning
+- [ ] Residual CNN (?)
+- [ ] GAN
+- [ ] Q Learning
+- [ ] DQN
+- [ ] Save/Load Model(s)
+- [ ] game state encoders
+
+
+### Network
+
+- [ ] pooling
+- [ ] softmax
+
+
+#### Loss function
+
+- [ ] MSE
+- [ ] cross-entropy
+
+
+### Game State Encoders
+
+- [ ] basic
+- [ ] byte Array
+- [ ] bit boards
+- [ ] connected/related to TranspositionTable
+
+
+## Genetic Algorithm
+
+
 ## Results
 
 ## references
@@ -154,3 +189,5 @@ from 2D array to ??? (1D? easier for hashing?)
 - [MCTS Intro](https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/)
 - [Wiki MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search)
 - [MCTS Survey](http://mcts.ai/pubs/mcts-survey-master.pdf)
+- [Simple AlphaZero](https://web.stanford.edu/~surag/posts/alphazero.html)
+- [Deep Learning and the game of GO](https://www.oreilly.com/library/view/deep-learning-and/9781617295324/)
