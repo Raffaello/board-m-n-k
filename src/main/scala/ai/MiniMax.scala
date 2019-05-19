@@ -39,18 +39,18 @@ trait MiniMax extends BoardMNK with AiBoard {
 
   def nextMove(maximizing: Boolean, depth: Int): Status = {
     var pBest: Position = (-1, -1)
-    val score = mainBlock(player(maximizing), depth) { status =>
+    val score = mainBlock(player(maximizing), depth) { case (score: Score, pos: Position) =>
       val newValue = solve(!maximizing, depth + 1)
-      var value = status._1
+      var value = score
       if (maximizing) {
         if (value < newValue) {
           value = newValue
-          pBest = status._2
+          pBest = pos
         }
       } else {
         if (value > newValue) {
           value = newValue
-          pBest = status._2
+          pBest = pos
         }
       }
 
