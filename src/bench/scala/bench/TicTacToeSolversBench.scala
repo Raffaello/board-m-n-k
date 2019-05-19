@@ -3,7 +3,7 @@ package bench
 import ai.old.{WithGetBoard, drafts}
 import ai.{alphaBeta => _, _}
 import bench.benchmarks.TicTacToeSolvers._
-import game.{BoardTicTacToe, BoardTicTacToe1dArray, BoardTicTacToe2, Score}
+import game.{BitBoardTicTacToe, BoardTicTacToe, BoardTicTacToe1dArray, BoardTicTacToe2, Score}
 import org.scalameter.api._
 
 object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
@@ -240,23 +240,13 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
       }
     }
 
-    performance of "TicTacToeBitSetBoard" in {
-      measure method s"alphaBeta" in {
-//        using(ticTacToe1) beforeTests reset afterTests {
-//          println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
-//        } in {
-//          _ => score = alphaBeta(new BoardTicTacToe)
-//        }
-      }
-    }
-
     performance of "TicTacToeBitBoard" in {
       measure method s"alphaBeta" in {
-//        using(ticTacToe1) beforeTests reset afterTests {
-//          println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
-//        } in {
-//          _ => score = alphaBeta(new BoardTicTacToe)
-//        }
+        using(board) beforeTests reset afterTests {
+          println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
+        } in {
+          _ => score = Math.round(drafts.alphaBetaBit(new BitBoardTicTacToe)).toInt
+        }
       }
     }
   }

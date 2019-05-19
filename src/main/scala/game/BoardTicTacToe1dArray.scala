@@ -1,5 +1,8 @@
 package game
 
+/**
+  * @DRAFT
+  */
 class BoardTicTacToe1dArray extends Board1dArray(3,3) {
   val m = 3
   val n = 3
