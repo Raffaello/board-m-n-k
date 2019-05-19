@@ -6,7 +6,7 @@ trait GameBoard {
 
   def undoMove(position: Position, player: Byte): Boolean
 
-  def score(): Int
+  def score(): Score
 
   def gameEnded(): Boolean
 

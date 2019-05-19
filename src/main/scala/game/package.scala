@@ -1,5 +1,3 @@
-import com.sun.org.apache.xalan.internal.xsltc.dom.BitArray
-
 import scala.collection.mutable
 
 package object game {
