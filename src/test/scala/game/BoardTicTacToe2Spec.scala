@@ -16,7 +16,7 @@ class BoardTicTacToe2Spec extends WordSpec with Matchers {
     for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {
       "won by player " + p.toString must {
         var score = 0
-        if (p == 1) {
+        if (p === 1) {
           score = 1
         } else {
           score = -1
