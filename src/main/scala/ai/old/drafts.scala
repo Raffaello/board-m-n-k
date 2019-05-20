@@ -1,7 +1,7 @@
 package ai.old
 
 import ai.Stats
-import game.{BitBoardTicTacToe, BoardTicTacToe1dArray}
+import game.{BitBoardTicTacToe, BoardTicTacToe1dArray, Player}
 
 object drafts {
   def alphaBeta(game: BoardTicTacToe1dArray, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
@@ -17,7 +17,7 @@ object drafts {
         i <- game.mIndices
         j <- game.nIndices
         if game.playMove((i, j), 1)
-      }  {
+      } {
         best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
         a = Math.max(a, best)
         game.undoMove((i, j), 1.toByte)
@@ -49,6 +49,7 @@ object drafts {
 
   def alphaBetaBit(game: BitBoardTicTacToe, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     if (game.gameEnded(depth)) {
+//      println(game.toStringArray)
       return game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
     }
 
@@ -56,14 +57,15 @@ object drafts {
     if (maximizingPlayer) {
       var best = Double.MinValue
       var a = alpha
+      val p: Player = 1.toByte
       for {
-        i <- 0 until 3
-        j <- 0 until 3
-        if game.playMove((i.toShort, j.toShort), 1)
-      }  {
+        i <- 0 until  3
+        j <- 0 until  3
+        if game.playMove((i.toShort, j.toShort), p)
+      } {
         best = Math.max(best, alphaBetaBit(game, depth + 1, a, beta, false))
         a = Math.max(a, best)
-        game.undoMove((i.toShort, j.toShort), 1.toByte)
+        game.undoMove((i.toShort, j.toShort), p)
         if (a >= beta) {
           return best
         }
@@ -73,14 +75,15 @@ object drafts {
     } else {
       var best = Double.MaxValue
       var b = beta
+      val p: Player = 2.toByte
       for {
         i <- 0 until 3
         j <- 0 until 3
-        if game.playMove((i.toShort, j.toShort), 2)
+        if game.playMove((i.toShort, j.toShort), p)
       } {
         best = Math.min(best, alphaBetaBit(game, depth + 1, alpha, b, true))
         b = Math.min(b, best)
-        game.undoMove((i.toShort, j.toShort), 2.toByte)
+        game.undoMove((i.toShort, j.toShort), p)
         if (alpha >= b) {
           return best
         }

@@ -20,7 +20,7 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
   }
 
   performance of "TicTacToeSolversBench" config(
-    exec.benchRuns -> 15,
+    exec.benchRuns -> 25,
     exec.minWarmupRuns -> 5,
     exec.maxWarmupRuns -> 5,
     exec.warmupCovThreshold -> 0.3,
