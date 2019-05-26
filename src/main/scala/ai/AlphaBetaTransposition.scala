@@ -6,12 +6,12 @@ import util.control.Breaks._
 trait AlphaBetaTransposition extends AlphaBeta with TranspositionTable {
 
   // TODO could be refactored to reuse the super.mainBlock
-  override protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
+  override protected def mainBlock(maximizing: Boolean, alpha: Int, beta: Int)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
     get() match {
       case Some(t) =>
         Stats.cacheHits += 1
         t.score
-      case None if gameEnded(depth) =>
+      case None if gameEnded() =>
         val s2 = scoreEval
         val ab = (s2, s2)
         add(Transposition(s2, depth, ab, maximizing))
