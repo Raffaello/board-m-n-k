@@ -28,8 +28,8 @@ trait NegaMax extends AiBoard with AiScoreEval {
   }
 
   def solve(color: Byte): Score = {
-    mainBlock(color) { status =>
-      Math.max(status._1, -solve((-color).toByte))
+    mainBlock(color) { case (score, _) =>
+      Math.max(score, -solve((-color).toByte))
     }
   }
 
