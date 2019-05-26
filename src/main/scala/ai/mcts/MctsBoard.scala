@@ -3,7 +3,7 @@ package ai.mcts
 import ai.AiBoard
 import ai.mcts.tree.Tree
 import cats.implicits._
-import game.{Position, Score}
+import game.{Position, Score, Status}
 
 import scala.util.Random
 
@@ -28,6 +28,13 @@ trait MctsBoard extends AiBoard with Cloneable {
     iterate(tree)
     tree.root.mostVisitedDescending().state.board.score()
   }
+
+  override def nextMove: Status = ??? /*{
+    val tree = Tree(this, 2)
+    iterate(tree)
+    val b = tree.root.mostVisited().state.board
+    (b.score(), b.lastMove) // ???
+  }*/
 
   // TODO: improve it non generating invalid moves (after game won?), or is redundant.
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()

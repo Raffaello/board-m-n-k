@@ -13,13 +13,14 @@ class NegaMaxSpec extends WordSpec with Matchers {
 
     "have first move" in {
       val s: Status = (0, (0, 0))
-      game.nextMove(1, 0) shouldEqual s
+      game.nextMove shouldEqual s
     }
 
     "have 2nd move" in {
       val s: Status = (0, (1, 1))
       game.playMove((0, 0), 1)
-      game.nextMove(-1, 0) shouldEqual s
+      game.depth shouldBe 1
+      game.nextMove shouldEqual s
     }
   }
 
@@ -32,7 +33,7 @@ class NegaMaxSpec extends WordSpec with Matchers {
     "have first move" in {
       val game = new BoardTicTacToe with NegaMax
       val s: Status = (0, (0, 0))
-      game.nextMove(1, 0) shouldEqual s
+      game.nextMove shouldEqual s
     }
   }
 }

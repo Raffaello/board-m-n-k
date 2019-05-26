@@ -13,7 +13,7 @@ package object ai {
 
   type AB[T] = (T, T) // Alpha, Beta values
   type ABStatus[T] = (AB[T], Status) // Alpha, Beta values plus Status: Score, Position
-  type PosTrans = (Position, Transposition)
+  type ABScore = (AB[Int], Score)
 
   private[ai] val logger = Logger("ai")
 

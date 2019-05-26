@@ -122,8 +122,8 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
         } in {
           _ =>
             val board = new BoardTicTacToe2 with AlphaBetaTransposition
-            val t = board.solve()
-            score = t.score
+            val s = board.solve
+            score = s
             totalCalls = board.Stats.totalCalls
             cacheHits = board.Stats.cacheHits
             cacheSize = board.transpositions.size
@@ -221,8 +221,8 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
         } in {
           _ =>
             val board = new BoardTicTacToe2 with AlphaBetaTransposition
-            val t = board.solve()
-            score = t.score
+            val s = board.solve
+            score = s
             totalCalls = board.Stats.totalCalls
             cacheHits = board.Stats.cacheHits
             cacheSize = board.transpositions.size
