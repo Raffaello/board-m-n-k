@@ -19,7 +19,8 @@ class NegaMaxSpec extends WordSpec with Matchers {
     "have 2nd move" in {
       val s: Status = (0, (1, 1))
       game.playMove((0, 0), 1)
-      game.nextMove(-1, 0) shouldEqual s
+      game.depth shouldBe 1
+      game.nextMove(-1, game.depth) shouldEqual s
     }
   }
 

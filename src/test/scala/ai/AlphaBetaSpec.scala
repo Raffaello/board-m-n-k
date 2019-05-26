@@ -19,7 +19,8 @@ class AlphaBetaSpec extends WordSpec with Matchers {
     "have 2nd move" in {
       val s: Status = (0, (1, 1))
       game.playMove((0, 0), 1)
-      val (_, status) = game.nextMove(maximizing = false)
+      game.depth shouldBe 1
+      val (_, status) = game.nextMove(maximizing = false, game.depth)
       status shouldEqual s
     }
   }

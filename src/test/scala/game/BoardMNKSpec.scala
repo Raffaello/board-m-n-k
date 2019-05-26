@@ -15,7 +15,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.playMove((1, 0), 2)
       game.playMove((0, 2), 1)
 
-      game.gameEnded(4) shouldEqual true
+      game.depth shouldBe 5
+      game.gameEnded() shouldEqual true
       game.score() shouldEqual 1
 
       game.lookUps.ended shouldEqual Some(true)
@@ -33,7 +34,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.playMove((0, 2), 1)
       game.playMove((1, 2), 2)
 
-      game.gameEnded(5) shouldEqual true
+      game.depth shouldBe 6
+      game.gameEnded() shouldEqual true
       game.score() shouldEqual -1
       game.lookUps.ended shouldEqual Some(true)
       game.lookUps.lastPlayerIdx shouldEqual 1
@@ -53,7 +55,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.playMove((2, 0), 2)
       game.playMove((2, 1), 1)
 
-      game.gameEnded(8) shouldEqual true
+      game.depth shouldBe 9
+      game.gameEnded() shouldEqual true
       game.score() shouldEqual 0
       game.lookUps.ended shouldEqual Some(false)
       game.lookUps.lastPlayerIdx shouldEqual 0
@@ -69,7 +72,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.playMove((1, 0), 2)
       game.playMove((2, 2), 1)
 
-      game.gameEnded(4) shouldEqual true
+      game.depth shouldBe 5
+      game.gameEnded() shouldEqual true
       game.score() shouldEqual 1
       game.lookUps.ended shouldEqual Some(true)
       game.lookUps.lastPlayerIdx shouldEqual 0
@@ -85,7 +89,8 @@ class BoardMNKSpec extends WordSpec with Matchers {
       game.playMove((1, 0), 2)
       game.playMove((0, 2), 1)
 
-      game.gameEnded(4) shouldEqual true
+      game.depth shouldBe 5
+      game.gameEnded() shouldEqual true
       game.score() shouldEqual 1
       game.lookUps.ended shouldEqual Some(true)
       game.lookUps.lastPlayerIdx shouldEqual 0
