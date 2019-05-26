@@ -3,10 +3,7 @@ package ai
 import cats.implicits._
 import game.{Position, Score, Status}
 
-trait AlphaBeta extends AiBoard {
-  protected var _alphaBetaNextMove: AB[Score] = (Int.MinValue, Int.MaxValue)
-
-  def alphaBetaNextMove: AB[Score] = _alphaBetaNextMove
+trait AlphaBeta extends AiBoard with AlphaBetaNextMove {
 
   protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
     if (gameEnded(depth)) {
@@ -22,10 +19,10 @@ trait AlphaBeta extends AiBoard {
       consumeMoves() { p =>
         playMove(p, player)
         val abStatus: ABStatus[Score] = ((a, b), (best, p))
-        val s = eval(abStatus)
-        best = s._2._1
-        a = s._1._1
-        b = s._1._2
+        val((a0, b0), (score, _)) = eval(abStatus)
+        best = score
+        a = a0
+        b = b0
         undoMove(p, player)
 
         if (a >= b) {
@@ -37,7 +34,7 @@ trait AlphaBeta extends AiBoard {
     }
   }
 
-  def solve(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Score = {
+  def solve(maximizing: Boolean, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Score = {
     val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
     var a1 = alpha
     var b1 = beta
@@ -50,7 +47,7 @@ trait AlphaBeta extends AiBoard {
     }
   }
 
-  def solve: Score = solve()
+  def solve: Score = solve(aiPlayer == nextPlayer())
 
   override def nextMove: Status = {
     val (a, b) = alphaBetaNextMove

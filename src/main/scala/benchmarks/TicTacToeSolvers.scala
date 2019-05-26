@@ -104,7 +104,7 @@ object TicTacToeSolvers extends App {
     println("\nAlphaBeta trait: ")
     val board = new BoardTicTacToe2 with AlphaBeta
     val start = System.currentTimeMillis()
-    val score = board.solve()
+    val score = board.solve
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${board.Stats.totalCalls}")
@@ -156,16 +156,16 @@ object TicTacToeSolvers extends App {
     println("\nAlpha Beta With TranspositionTable Trait:")
     val board = new BoardTicTacToe2 with AlphaBetaTransposition
     val start = System.currentTimeMillis()
-    val transposition = board.solve()
+    val score = board.solve
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${board.Stats.totalCalls}")
     println(s"Total cache: ${board.transpositions.size}")
     println(s"Total cache Hit: ${board.Stats.cacheHits}")
     println({
-      s"score value = $transposition => "
+      s"score value = "
     } + {
-      gameScore(transposition.score)
+      gameScore(score)
     })
   }
 }

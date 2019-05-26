@@ -66,15 +66,15 @@ object BoardSolver extends App {
   }
 
   sealed class AlphaBetaTrait(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta {
-    def result(): Int = this.solve()
+    def result(): Int = this.solve
   }
 
   sealed class AlphaBetaTraitTTOld(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with ai.old.TranspositionTable {
-    def result(): Int = this.solve()
+    def result(): Int = this.solve
   }
 
   sealed class AlphaBetaTraitTT(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with TranspositionTable {
-    def result(): Int = this.solve()
+    def result(): Int = this.solve
   }
 
   println("choose board size: ")

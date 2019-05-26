@@ -8,11 +8,9 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
   "TicTacToe2 Alpha Beta with Transposition" should {
     "solve the game" in {
       val game = new BoardTicTacToe2() with AlphaBetaTransposition
-      val t = game.solve()
-      t.score shouldEqual 0
-      val ab: AB[Score] = (0, Int.MaxValue)
-      t.ab shouldEqual ab
-      t.depth shouldEqual 0
+      val score = game.solve
+      score shouldEqual 0
+      game.depth shouldEqual 0
     }
     "have first move" in {
       val game = new BoardTicTacToe2() with AlphaBetaTransposition
@@ -48,10 +46,8 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
     "solve the game" in {
       val game = new BoardTicTacToe with AlphaBetaTransposition
 
-      val t = game.solve()
-      t.score shouldEqual 0
-      val ab: AB[Score] = (0, Int.MaxValue)
-      t.ab shouldEqual ab
+      val score = game.solve
+      score shouldEqual 0
     }
 
     "have first move" in {

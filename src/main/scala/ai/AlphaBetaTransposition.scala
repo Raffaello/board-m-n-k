@@ -1,22 +1,19 @@
 package ai
 
-import cats.implicits._
-import game.{Position, Score, Status}
+import game.Score
 
-// TODO refactor using AlphaBeta trait
-trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
-  protected var _alphaBetaNextMove: AB[Score] = (Int.MinValue, Int.MaxValue)
+trait AlphaBetaTransposition extends AlphaBeta with TranspositionTable {
 
-  def alphaBetaNextMove: AB[Score] = _alphaBetaNextMove
-
-  protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus[Score] => Transposition): Transposition = {
+  override def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
     val transposition = get()
 
     if (transposition.isDefined) {
       Stats.cacheHits += 1
-      return transposition.get
+      return transposition.get.score
     }
 
+    // TODO refactor to allow to call super.mainBlock
+    //super.mainBlock(maximizing, depth, alpha, beta)(eval)
     if (gameEnded(depth)) {
       val s = score()
       val s2 = Math.round((s + (Math.signum(s) * (1.0 / (depth + 1.0)))) * 1000).toInt
@@ -28,7 +25,7 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
       )
 
       add(t)
-      t
+      t.score
     } else {
       Stats.totalCalls += 1
       var best = if (maximizing) Int.MinValue else Int.MaxValue
@@ -39,70 +36,20 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
       consumeMoves() { p =>
         playMove(p, player)
         val abStatus: ABStatus[Score] = ((a, b), (best, p))
-        val s = eval(abStatus)
-        best = s.score
-        val (a0, b0) = s.ab
+        val ((a0, b0), (score, _)) = eval(abStatus)
+        best = score
         a = a0
         b = b0
         undoMove(p, player)
 
         if (a >= b) {
-          return s
+          return score
         }
       }
 
       val t = Transposition(best, depth, (a, b), maximizing)
       add(t)
-      t
+      t.score
     }
-  }
-
-  def solve(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Transposition = {
-    val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
-    var a1 = alpha
-    var b1 = beta
-    mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, _)) =>
-      val value = solve(!maximizing, depth + 1, a, b)
-      val best = cmp(v, value.score)
-      if (maximizing) a1 = Math.max(a, best)
-      else b1 = Math.min(b, best)
-      Transposition(best, depth, (a1, b1), maximizing)
-    }
-  }
-
-  def solve: Score = solve().score
-
-  override def nextMove: Status = {
-    val (a, b) = alphaBetaNextMove
-    val (ab, s): ABStatus[Score] = nextMove(nextPlayer() === aiPlayer, depth, a, b)
-    _alphaBetaNextMove = ab
-    s
-  }
-
-  protected def nextMove(maximizing: Boolean, depth: Int, alpha: Int, beta: Int): ABStatus[Score] = {
-    var pBest: Position = (-1, -1)
-    var best = if (maximizing) Int.MinValue else Int.MaxValue
-    var a1 = alpha
-    var b1 = beta
-    val t = mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, p)) =>
-      val value = solve(!maximizing, depth + 1, a, b)
-      if (maximizing) {
-        if (value.score > v) {
-          best = value.score
-          pBest = p
-          a1 = Math.max(a, best)
-        }
-      } else {
-        if (value.score < v) {
-          best = value.score
-          b1 = Math.min(b, best)
-          pBest = p
-        }
-      }
-
-      Transposition(best, depth, (a1, b1), maximizing)
-    }
-
-    (t.ab, (t.score, pBest))
   }
 }

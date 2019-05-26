@@ -8,7 +8,7 @@ class AlphaBetaSpec extends WordSpec with Matchers {
   "TicTacToe2 Alpha Beta" should {
     "solve the game" in {
       val game = new BoardTicTacToe2() with AlphaBeta
-      game.solve() shouldEqual 0
+      game.solve shouldEqual 0
     }
 
     "have first move" in {
@@ -31,7 +31,7 @@ class AlphaBetaSpec extends WordSpec with Matchers {
     "solve the game" in {
       val game = new BoardTicTacToe with AlphaBeta
 
-      game.solve() shouldEqual 0
+      game.solve shouldEqual 0
     }
 
     "have first move" in {
