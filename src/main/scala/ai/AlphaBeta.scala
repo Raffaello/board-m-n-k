@@ -3,12 +3,18 @@ package ai
 import cats.implicits._
 import game.{Position, Score, Status}
 
+import scala.util.control.Breaks._
+
 trait AlphaBeta extends AiBoard with AlphaBetaNextMove {
+
+  protected def scoreEval: Score = {
+    val s = score()
+    Math.round((s + (Math.signum(s) * (1.0 / (depth + 1.0)))) * 1000).toInt
+  }
 
   protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
     if (gameEnded(depth)) {
-      val s = score()
-      Math.round((s + (Math.signum(s) * (1.0 / (depth + 1.0)))) * 1000).toInt
+      scoreEval
     } else {
       Stats.totalCalls += 1
       var best = if (maximizing) Int.MinValue else Int.MaxValue
@@ -16,17 +22,19 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove {
       var b = beta
       val player: Byte = if (maximizing) 1 else 2
 
-      consumeMoves() { p =>
-        playMove(p, player)
-        val abStatus: ABStatus[Score] = ((a, b), (best, p))
-        val((a0, b0), (score, _)) = eval(abStatus)
-        best = score
-        a = a0
-        b = b0
-        undoMove(p, player)
+      breakable {
+        consumeMoves() { p =>
+          playMove(p, player)
+          val abStatus: ABStatus[Score] = ((a, b), (best, p))
+          val ((a0, b0), (score, _)) = eval(abStatus)
+          best = score
+          a = a0
+          b = b0
+          undoMove(p, player)
 
-        if (a >= b) {
-          return best
+          if (a >= b) {
+            break //((a, b), best)
+          }
         }
       }
 
@@ -38,13 +46,15 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove {
     val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
     var a1 = alpha
     var b1 = beta
-    mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, p)) =>
+    val score = mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, p)) =>
       val value = solve(!maximizing, depth + 1, a, b)
       val best = cmp(v, value)
       if (maximizing) a1 = Math.max(a, best)
       else b1 = Math.min(b, best)
       ((a1, b1), (best, p))
     }
+
+    score
   }
 
   def solve: Score = solve(aiPlayer === nextPlayer())
