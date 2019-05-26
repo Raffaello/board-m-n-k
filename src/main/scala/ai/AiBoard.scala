@@ -12,6 +12,5 @@ trait AiBoard extends BoardMNK with AiStats {
 
   def solve: Score
 
-  // TODO: keep internal the state for the next move...
-  def nextMove: Status = ???
+  def nextMove: Status
 }

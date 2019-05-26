@@ -1,8 +1,12 @@
 package ai
 
-import game.{Position, Score}
+import game.{Position, Score, Status}
 
+// TODO refactor using AlphaBeta trait
 trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
+  protected var _alphaBetaNextMove: AB[Score] = (Int.MinValue, Int.MaxValue)
+
+  def alphaBetaNextMove: AB[Score] = _alphaBetaNextMove
 
   protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus[Score] => Transposition): Transposition = {
     val transposition = get()
@@ -67,15 +71,23 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
 
   def solve: Score = solve().score
 
-  /**
-    * @TODO Incomplete, does not return pBest
-    */
-  def nextMove(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Transposition /*PosTrans*/ = {
+  override def nextMove: Status = {
+    val (a, b) = alphaBetaNextMove
+    val (ab, s): ABStatus[Score] = nextMove(nextPlayer() == aiPlayer, a, b)
+    _alphaBetaNextMove = ab
+    s
+  }
+
+  protected def nextMove(maximizing: Boolean, alpha: Int, beta: Int): ABStatus[Score] = {
+    nextMove(maximizing, depth, alpha, beta)
+  }
+
+  protected def nextMove(maximizing: Boolean, depth: Int, alpha: Int, beta: Int): ABStatus[Score] = {
     var pBest: Position = (-1, -1)
     var best = if (maximizing) Int.MinValue else Int.MaxValue
     var a1 = alpha
     var b1 = beta
-    mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, p)) =>
+    val t = mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, p)) =>
       val value = solve(!maximizing, depth + 1, a, b)
       if (maximizing) {
         if (value.score > v) {
@@ -93,5 +105,7 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
 
       Transposition(best, depth, (a1, b1), maximizing)
     }
+
+    (t.ab, (t.score, pBest))
   }
 }
