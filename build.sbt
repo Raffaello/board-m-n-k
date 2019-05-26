@@ -17,7 +17,47 @@ lazy val settingsScalameter = Seq(
   connectInput in Benchmark := true,
   testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework"),
 )
+
+val scalaMeterVersion = "0.18"
+libraryDependencies ++= Seq(
+  "com.storm-enroute" %% "scalameter" % scalaMeterVersion % "bench",
+  "com.storm-enroute" %% "scalameter-core" % scalaMeterVersion % "bench"
+)
 // --- end - scalameter
+
+// CATS
+scalacOptions ++= Seq(
+  "-Ypartial-unification"
+)
+
+val catsVersion = "2.0.0-M1"
+libraryDependencies ++= Seq(
+  "org.typelevel" %% "cats-core" % catsVersion,
+  "org.typelevel" %% "cats-kernel" % catsVersion,
+  "org.typelevel" %% "cats-macros" % catsVersion,
+)
+// CATS -- end
+
+// Monocle
+//val monocleVersion = "1.5.0" // 1.5.0-cats based on cats 1.0.x
+//
+//libraryDependencies ++= Seq(
+//  "com.github.julien-truffaut" %%  "monocle-core"  % monocleVersion,
+//  "com.github.julien-truffaut" %%  "monocle-macro" % monocleVersion,
+//  "com.github.julien-truffaut" %%  "monocle-law"   % monocleVersion % "test"
+//)
+// Monocle --- end
+
+// Deep learning
+val dl4jVersion = "1.0.0-beta4"
+libraryDependencies ++= Seq(
+  "org.deeplearning4j" % "deeplearning4j-core" % dl4jVersion,
+  "org.nd4j" % "nd4j-native-platform" % dl4jVersion,
+  // @see https://deeplearning4j.org/docs/latest/deeplearning4j-config-cudnn
+  "org.nd4j" % "nd4j-cuda-10.1-platform" % dl4jVersion,
+  "org.deeplearning4j" % "deeplearning4j-cuda-10.0" % dl4jVersion
+)
+// Deep Learning -- -end
 
 lazy val root = Project(
   "board-m-n-k", file("."))
@@ -30,7 +70,6 @@ name := "board-m-n-k"
 version := "0.1"
 scalaVersion := "2.12.8"
 scalacOptions ++= Seq(
-  "-Ypartial-unification",
   "-deprecation",
   "-feature",
   "-explaintypes",
@@ -55,33 +94,11 @@ resolvers in Benchmark ++= Seq(
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
+
 libraryDependencies += "com.typesafe" % "config" % "1.3.2"
+
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
-libraryDependencies ++= Seq(
-  "com.storm-enroute" %% "scalameter" % "0.17" % "bench",
-  "com.storm-enroute" %% "scalameter-core" % "0.17" % "bench"
-)
-
-libraryDependencies ++= Seq(
-  "org.deeplearning4j" % "deeplearning4j-core" % "1.0.0-beta4",
-  "org.nd4j" % "nd4j-native-platform" % "1.0.0-beta4"
-)
-
-// @see https://deeplearning4j.org/docs/latest/deeplearning4j-config-cudnn
-//libraryDependencies += "org.nd4j" % "nd4j-cuda-10.1-platform" % "1.0.0-beta4"
-//libraryDependencies += "org.deeplearning4j" % "deeplearning4j-cuda-10.0" % "1.0.0-beta4"
-
-
-libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0-M1"
-//libraryDependencies += "org.typelevel" %% "cats-core" % "1.5.0-RC1"
-//val monocleVersion = "1.5.0" // 1.5.0-cats based on cats 1.0.x
-//
-//libraryDependencies ++= Seq(
-//  "com.github.julien-truffaut" %%  "monocle-core"  % monocleVersion,
-//  "com.github.julien-truffaut" %%  "monocle-macro" % monocleVersion,
-//  "com.github.julien-truffaut" %%  "monocle-law"   % monocleVersion % "test"
-//)
 
 //fork in run := true
 //javaOptions in run += "-agentlib:hprof=cpu=samples"
