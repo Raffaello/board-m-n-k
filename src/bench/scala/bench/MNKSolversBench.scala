@@ -98,7 +98,7 @@ object MNKSolversBench extends Bench.OfflineRegressionReport {
           } in {
             case (m, n) =>
               val board = traitAlphaBeta(m, n, k)
-              score = board.solve()
+              score = board.solve
               totalCalls = board.Stats.totalCalls
           }
         }
@@ -135,8 +135,8 @@ object MNKSolversBench extends Bench.OfflineRegressionReport {
           } in {
             case (m, n) =>
               val board = traitAlphaBetaTT(m, n, k)
-              val t = board.solve()
-              score = t.score
+              val s = board.solve
+              score = s
               totalCalls = board.Stats.totalCalls
               cacheHits = board.Stats.cacheHits
               cacheSize = board.transpositions.size

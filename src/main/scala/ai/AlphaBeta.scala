@@ -1,30 +1,34 @@
 package ai
 
-import game.{Position, Score}
+import cats.implicits._
+import game.{Position, Score, Status}
 
-trait AlphaBeta extends AiBoard {
-  protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
-    if (gameEnded(depth)) {
-      val s = score()
-      Math.round((s + (Math.signum(s) * (1.0 / (depth + 1.0)))) * 1000).toInt
-    } else {
+import scala.util.control.Breaks._
+
+trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiScoreEval {
+
+  protected def mainBlock(maximizing: Boolean, alpha: Int, beta: Int)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
+    if (gameEnded()) scoreEval
+    else {
       Stats.totalCalls += 1
       var best = if (maximizing) Int.MinValue else Int.MaxValue
       var a = alpha
       var b = beta
       val player: Byte = if (maximizing) 1 else 2
 
-      consumeMoves() { p =>
-        playMove(p, player)
-        val abStatus: ABStatus[Score] = ((a, b), (best, p))
-        val s = eval(abStatus)
-        best = s._2._1
-        a = s._1._1
-        b = s._1._2
-        undoMove(p, player)
+      breakable {
+        consumeMoves() { p =>
+          playMove(p, player)
+          val abStatus: ABStatus[Score] = ((a, b), (best, p))
+          val ((a0, b0), (score, _)) = eval(abStatus)
+          best = score
+          a = a0
+          b = b0
+          undoMove(p, player)
 
-        if (a >= b) {
-          return best
+          if (a >= b) {
+            break //((a, b), best)
+          }
         }
       }
 
@@ -32,28 +36,37 @@ trait AlphaBeta extends AiBoard {
     }
   }
 
-  def solve(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Score = {
+  def solve(maximizing: Boolean, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Score = {
     val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
     var a1 = alpha
     var b1 = beta
-    mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, p)) =>
-      val value = solve(!maximizing, depth + 1, a, b)
+    val score = mainBlock(maximizing, alpha, beta) { case ((a, b), (v, p)) =>
+      val value = solve(!maximizing, a, b)
       val best = cmp(v, value)
       if (maximizing) a1 = Math.max(a, best)
       else b1 = Math.min(b, best)
       ((a1, b1), (best, p))
     }
+
+    score
   }
 
-  def solve: Score = solve()
+  def solve: Score = solve(aiPlayer === nextPlayer())
 
-  def nextMove(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): ABStatus[Score] = {
+  override def nextMove: Status = {
+    val (a, b) = alphaBetaNextMove
+    val (ab, status) = nextMove(nextPlayer() === aiPlayer, a, b)
+    _alphaBetaNextMove = ab
+    status
+  }
+
+  protected def nextMove(maximizing: Boolean, alpha: Int, beta: Int): ABStatus[Score] = {
     var pBest: Position = (-1, -1)
     var best = if (maximizing) Int.MinValue else Int.MaxValue
     var a1 = alpha
     var b1 = beta
-    mainBlock(maximizing, depth, alpha, beta) { case ((a, b), (v, p)) =>
-      val value = solve(!maximizing, depth + 1, a, b)
+    mainBlock(maximizing, alpha, beta) { case ((a, b), (v, p)) =>
+      val value = solve(!maximizing, a, b)
 
       if (maximizing) {
         if (value > v) {

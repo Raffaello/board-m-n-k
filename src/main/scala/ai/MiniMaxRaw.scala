@@ -4,9 +4,9 @@ import game.Score
 
 trait MiniMaxRaw extends MiniMax {
 
-  override def solve(maximizing: Boolean, depth: Int): Score = {
-    if (gameEnded(depth)) {
-      score()
+  override def solve(maximizing: Boolean): Score = {
+    if (gameEnded()) {
+      scoreEval
     } else {
       Stats.totalCalls += 1
       val cmp: (Int, Int) => Int = if(maximizing) Math.max else Math.min
@@ -15,7 +15,7 @@ trait MiniMaxRaw extends MiniMax {
       consumeMoves() { p =>
 
         playMove(p, pl)
-        value = cmp(value, solve(!maximizing, depth + 1))
+        value = cmp(value, solve(!maximizing))
         undoMove(p, pl)
       }
 
