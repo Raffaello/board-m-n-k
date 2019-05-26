@@ -1,8 +1,12 @@
 package ai
 
-import game.{Position, Score}
+import game.{Position, Score, Status}
 
 trait AlphaBeta extends AiBoard {
+  protected var _alphaBetaNextMove: AB[Score] = (Int.MinValue, Int.MaxValue)
+
+  def alphaBetaNextMove: AB[Score] = _alphaBetaNextMove
+
   protected def mainBlock(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
     if (gameEnded(depth)) {
       val s = score()
@@ -47,7 +51,14 @@ trait AlphaBeta extends AiBoard {
 
   def solve: Score = solve()
 
-  def nextMove(maximizing: Boolean = true, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): ABStatus[Score] = {
+  override def nextMove: Status = {
+    val (ab, status) = nextMove(nextPlayer() == aiPlayer, _alphaBetaNextMove)
+    _alphaBetaNextMove = ab
+    status
+  }
+
+  protected def nextMove(maximizing: Boolean = true, ab: AB[Score]): ABStatus[Score] = {
+    val (alpha, beta) = ab
     nextMove(maximizing, depth, alpha, beta)
   }
 

@@ -1,5 +1,6 @@
 package ai
 
+import cats.implicits._
 import game.{BoardMNK, Position, Score, Status}
 
 trait MiniMax extends BoardMNK with AiBoard {
@@ -39,16 +40,16 @@ trait MiniMax extends BoardMNK with AiBoard {
 
   private[this] def signum(value: Boolean): Byte = if (value) +1 else -1
 
-  def nextMove(maximizing: Boolean): Status = {
-    nextMove(maximizing, depth)
-  }
+  override def nextMove: Status = nextMove(nextPlayer() === aiPlayer, depth)
+
+  protected def nextMove(maximizing: Boolean): Status = nextMove(maximizing, depth)
 
   protected def nextMove(maximizing: Boolean, depth: Int): Status = {
     var pBest: Position = (-1, -1)
     val score = mainBlock(player(maximizing), depth) { case (score: Score, pos: Position) =>
       val newValue = solve(!maximizing, depth + 1)
       val sig = signum(maximizing)
-      if(score * sig < newValue * sig) {
+      if (score * sig < newValue * sig) {
         pBest = pos
         newValue
       } else score
