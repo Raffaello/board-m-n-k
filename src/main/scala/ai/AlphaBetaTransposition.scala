@@ -1,5 +1,6 @@
 package ai
 
+import cats.implicits._
 import game.{Position, Score, Status}
 
 // TODO refactor using AlphaBeta trait
@@ -73,13 +74,9 @@ trait AlphaBetaTransposition extends AiBoard with TranspositionTable {
 
   override def nextMove: Status = {
     val (a, b) = alphaBetaNextMove
-    val (ab, s): ABStatus[Score] = nextMove(nextPlayer() == aiPlayer, a, b)
+    val (ab, s): ABStatus[Score] = nextMove(nextPlayer() === aiPlayer, depth, a, b)
     _alphaBetaNextMove = ab
     s
-  }
-
-  protected def nextMove(maximizing: Boolean, alpha: Int, beta: Int): ABStatus[Score] = {
-    nextMove(maximizing, depth, alpha, beta)
   }
 
   protected def nextMove(maximizing: Boolean, depth: Int, alpha: Int, beta: Int): ABStatus[Score] = {

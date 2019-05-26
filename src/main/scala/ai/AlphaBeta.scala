@@ -1,5 +1,6 @@
 package ai
 
+import cats.implicits._
 import game.{Position, Score, Status}
 
 trait AlphaBeta extends AiBoard {
@@ -52,14 +53,10 @@ trait AlphaBeta extends AiBoard {
   def solve: Score = solve()
 
   override def nextMove: Status = {
-    val (ab, status) = nextMove(nextPlayer() == aiPlayer, _alphaBetaNextMove)
+    val (a, b) = alphaBetaNextMove
+    val (ab, status) = nextMove(nextPlayer() === aiPlayer, depth, a, b)
     _alphaBetaNextMove = ab
     status
-  }
-
-  protected def nextMove(maximizing: Boolean = true, ab: AB[Score]): ABStatus[Score] = {
-    val (alpha, beta) = ab
-    nextMove(maximizing, depth, alpha, beta)
   }
 
   protected def nextMove(maximizing: Boolean, depth: Int, alpha: Int, beta: Int): ABStatus[Score] = {

@@ -1,5 +1,6 @@
 package ai
 
+import cats.implicits._
 import game.{Position, Score, Status}
 
 /**
@@ -34,11 +35,7 @@ trait NegaMax extends AiBoard {
 
   def solve: Score = solve(1, 0)
 
-  override def nextMove: Status = nextMove(if (nextPlayer() == aiPlayer) 1 else -1)
-
-  protected def nextMove(color: Byte): Status = {
-    nextMove(color, depth)
-  }
+  override def nextMove: Status = nextMove(if (nextPlayer() === aiPlayer) 1 else -1, depth)
 
   protected def nextMove(color: Byte, depth: Int): Status = {
     var pBest: Position = (-1, -1)
