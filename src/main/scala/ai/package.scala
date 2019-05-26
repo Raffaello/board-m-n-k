@@ -11,6 +11,9 @@ package object ai {
     var cacheHits: Int = 0
   }
 
+  // TODO review the type definitions.... they are not ok.
+  //final case class AlphaBeta[T](alpha: T, Beta: T)
+  // todo refactor with a case class alpha, beta
   type AB[T] = (T, T) // Alpha, Beta values
   type ABStatus[T] = (AB[T], Status) // Alpha, Beta values plus Status: Score, Position
   type ABScore = (AB[Int], Score)
@@ -19,11 +22,6 @@ package object ai {
 
   val config: Config = settings.Loader.config.getConfig("ai")
 
-  /**
-    * TODO: replace return type Double with Score (Int)
-    *
-    * @return
-    */
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     if (game.gameEnded(depth)) {
       return game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
@@ -68,6 +66,8 @@ package object ai {
   }
 
   /**
+    * TODO replace return type with a case class.
+    *
     * @return (score, x pos, y pos, alpha, beta)
     */
   def alphaBetaNextMove(game: BoardMNK, depth: Int = 0, alpha: Double, beta: Double, maximizingPlayer: Boolean): old.ABMove = {
@@ -125,9 +125,7 @@ package object ai {
   }
 
   def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
-    val transposition = statuses.get()
-
-    transposition match {
+    statuses.get() match {
       case Some(t) =>
         Stats.cacheHits += 1
         t
