@@ -13,13 +13,13 @@ class MiniMaxSpec extends WordSpec with Matchers {
 
     "have first move" in {
       val s: Status = (0, (0, 0))
-      game.nextMove(maximizing = true, game.depth) shouldEqual s
+      game.nextMove(maximizing = true) shouldEqual s
     }
 
     "have 2nd move" in {
       val s: Status = (0, (1, 1))
       game.playMove((0, 0), 1)
-      game.nextMove(maximizing = false, game.depth) shouldEqual s
+      game.nextMove(maximizing = false) shouldEqual s
     }
   }
 
@@ -32,7 +32,7 @@ class MiniMaxSpec extends WordSpec with Matchers {
     "have first move" in {
       val game = new BoardTicTacToe with MiniMax
       val s: Status = (0, (0, 0))
-      game.nextMove(maximizing = true, 0) shouldEqual s
+      game.nextMove(maximizing = true) shouldEqual s
     }
   }
 }

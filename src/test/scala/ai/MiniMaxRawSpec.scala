@@ -9,7 +9,7 @@ class MiniMaxRawSpec extends WordSpec with Matchers {
     "have first move" in {
       val game = new BoardTicTacToe with MiniMaxRaw
       val s: Status = (0, (0, 0))
-      game.nextMove(maximizing = true, 0) shouldEqual s
+      game.nextMove(maximizing = true) shouldEqual s
     }
 
     "draw the game" in {

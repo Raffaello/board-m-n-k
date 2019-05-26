@@ -47,7 +47,11 @@ trait AlphaBeta extends AiBoard {
 
   def solve: Score = solve()
 
-  def nextMove(maximizing: Boolean = true, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): ABStatus[Score] = {
+  def nextMove(maximizing: Boolean = true, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): ABStatus[Score] = {
+    nextMove(maximizing, depth, alpha, beta)
+  }
+
+  protected def nextMove(maximizing: Boolean, depth: Int, alpha: Int, beta: Int): ABStatus[Score] = {
     var pBest: Position = (-1, -1)
     var best = if (maximizing) Int.MinValue else Int.MaxValue
     var a1 = alpha

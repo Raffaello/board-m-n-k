@@ -34,7 +34,11 @@ trait NegaMax extends AiBoard {
 
   def solve: Score = solve(1, 0)
 
-  def nextMove(color: Byte, depth: Int): Status = {
+  def nextMove(color: Byte): Status = {
+    nextMove(color, depth)
+  }
+
+  protected def nextMove(color: Byte, depth: Int): Status = {
     var pBest: Position = (-1, -1)
     val score = mainBlock(color, depth) { case (score: Score, pos: Position) =>
       val newValue = -solve((-color).toByte, depth + 1)
