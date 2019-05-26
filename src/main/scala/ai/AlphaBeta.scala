@@ -47,7 +47,7 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove {
     }
   }
 
-  def solve: Score = solve(aiPlayer == nextPlayer())
+  def solve: Score = solve(aiPlayer === nextPlayer())
 
   override def nextMove: Status = {
     val (a, b) = alphaBetaNextMove
