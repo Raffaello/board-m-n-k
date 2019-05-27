@@ -1,5 +1,8 @@
 package game
 
+import game.boards.{BoardT, GameBoard}
+import game.types.Position
+
 class BitBoardTicTacToe extends GameBoard with BoardT {
 
   override def generateMoves(): IndexedSeq[Position] = ???

@@ -1,6 +1,8 @@
 package game
 
 import cats.implicits._
+import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
+import game.types.{BoardMNSize, Position}
 
 /**
   * TODO Board2fArray trait should not be included here... remove it later.
@@ -53,7 +55,6 @@ class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) ex
   // check if board has k in a row of last player then return true otherwise false
   // create a general method to check player p if won.
   protected def checkWin(): Boolean = ???
-
 
   override def gameEnded(): Boolean = gameEnded(depth)
 

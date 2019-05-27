@@ -1,4 +1,6 @@
-package game
+package game.types
+
+import game.Board2d
 
 import scala.collection.immutable.NumericRange
 

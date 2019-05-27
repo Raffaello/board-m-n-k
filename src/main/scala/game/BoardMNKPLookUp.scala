@@ -1,6 +1,7 @@
 package game
 
 import cats.implicits._
+import game.types.{BoardMNSize, Position}
 
 class BoardMNKPLookUp(boardMNSize: BoardMNSize, k: Short, p: Byte) extends BoardMNKP(boardMNSize, k, p) {
 

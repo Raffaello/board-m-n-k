@@ -1,3 +1,5 @@
+import game.types.Position
+
 package object game {
   type Board = Board2d
   type Score = Int

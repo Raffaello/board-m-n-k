@@ -1,7 +1,8 @@
 package ai.old
 
 import ai.Stats
-import game.{BitBoardTicTacToe, BoardTicTacToe1dArray, Player, Position}
+import game.types.Position
+import game.{BitBoardTicTacToe, BoardTicTacToe1dArray, Player}
 
 object Drafts {
   def alphaBeta(

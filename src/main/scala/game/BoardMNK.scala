@@ -1,6 +1,7 @@
 package game
 
 import cats.implicits._
+import game.types.{BoardMNSize, Position}
 
 import scala.annotation.tailrec
 

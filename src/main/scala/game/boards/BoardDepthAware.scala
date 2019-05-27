@@ -1,4 +1,4 @@
-package game
+package game.boards
 
 trait BoardDepthAware {
   protected var _depth: Int = 0

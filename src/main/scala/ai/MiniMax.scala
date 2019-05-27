@@ -1,7 +1,8 @@
 package ai
 
 import cats.implicits._
-import game.{BoardMNK, Position, Score, Status}
+import game.types.Position
+import game.{BoardMNK, Score, Status}
 
 trait MiniMax extends BoardMNK with AiBoard with AiBoardScoreEval {
   protected def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2

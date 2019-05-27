@@ -1,6 +1,6 @@
 package bench
 
-import ai.old.{WithGetBoard, Drafts}
+import ai.old.{getBoard, Drafts}
 import ai.{alphaBeta => _, _}
 import bench.benchmarks.TicTacToeSolvers._
 import game.{BitBoardTicTacToe, BoardTicTacToe, BoardTicTacToe1dArray, BoardTicTacToe2, Score}
@@ -99,7 +99,7 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe with WithGetBoard with old.TranspositionTable
+            val board = new BoardTicTacToe with getBoard with old.TranspositionTable
             val t = old.alphaBetaWithMem(board, board)
             score = Math.round(t.score).toInt
             cacheSize = board.transpositions.size

@@ -1,6 +1,7 @@
 package ai
 
-import game.{BoardTicTacToe, BoardTicTacToe2, Position, Status}
+import game.types.Position
+import game.{BoardTicTacToe, BoardTicTacToe2, Status}
 import org.scalatest.{Matchers, WordSpec}
 
 class NegaMaxSpec extends WordSpec with Matchers {

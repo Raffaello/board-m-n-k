@@ -2,7 +2,8 @@ package ai.mcts
 
 import ai.mcts.tree.Tree
 import cats.implicits._
-import game.{BoardTicTacToe2, Position}
+import game.BoardTicTacToe2
+import game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}

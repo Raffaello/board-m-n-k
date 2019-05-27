@@ -1,6 +1,7 @@
 package ai
 
-import game.{BoardDepthAware, GameBoard, Score}
+import game.boards.{BoardDepthAware, GameBoard}
+import game.Score
 
 trait AiBoardScoreEval extends GameBoard with BoardDepthAware {
   protected def scoreEval: Score = {

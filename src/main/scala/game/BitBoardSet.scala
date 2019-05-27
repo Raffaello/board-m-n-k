@@ -1,5 +1,7 @@
 package game
 
+import game.boards.GameBoard
+
 import scala.collection.immutable.NumericRange
 
 abstract class BitBoardSet(m: Short, n: Short) extends GameBoard {

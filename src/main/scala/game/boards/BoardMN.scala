@@ -1,4 +1,6 @@
-package game
+package game.boards
+
+import game.types.{BoardMNSize, Position}
 
 abstract class BoardMN(val boardMNSize: BoardMNSize) extends GameBoard with BoardT {
   @inline val m: Short = boardMNSize.m

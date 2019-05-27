@@ -1,6 +1,8 @@
 package game
 
 import cats.implicits._
+import game.boards.BoardT
+import game.types.{BoardMNType2dArray, Position}
 
 // TODO: decouple the 2 used traits if it is possible. Type Classes?
 trait Board2dArray extends BoardMNType2dArray with BoardT {
@@ -9,6 +11,9 @@ trait Board2dArray extends BoardMNType2dArray with BoardT {
 
   @inline
   protected def board_=(pos: Position)(p: Player): Unit = _board(pos.row)(pos.col) = p
+
+
+  override protected def board: Board2d = _board
 
   def generateMoves(): IndexedSeq[Position] = {
     for {

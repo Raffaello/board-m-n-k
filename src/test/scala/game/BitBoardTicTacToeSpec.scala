@@ -2,6 +2,7 @@ package game
 
 import ai.AiTicTacToeExpectedStats
 import ai.old.Drafts
+import game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{Matchers, WordSpec}

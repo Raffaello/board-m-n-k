@@ -44,7 +44,7 @@ class TranspositionTableSpec extends FlatSpec with Matchers {
   }
 
   "Transposition table" should "be used" in {
-    val game = new BoardTicTacToe2() with WithGetBoard
+    val game = new BoardTicTacToe2() with getBoard
     val trans = new TranspositionTableStub {}
     val t = ai.old.alphaBetaWithMem(trans, game)
 

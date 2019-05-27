@@ -1,6 +1,7 @@
 import ai._
 import ai.old.negamaxNextMove
-import game.{BoardTicTacToe2, Position}
+import game.BoardTicTacToe2
+import game.types.Position
 
 object TitTacToe extends App {
   val humanPlayer: Byte = 1

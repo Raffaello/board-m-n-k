@@ -1,7 +1,8 @@
 package ai
 
 import cats.implicits._
-import game.{Position, Score, Status}
+import game.types.Position
+import game.{Score, Status}
 
 /**
   * Basically same class as

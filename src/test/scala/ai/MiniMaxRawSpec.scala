@@ -1,6 +1,7 @@
 package ai
 
-import game.{BoardTicTacToe, Position, Score, Status}
+import game.types.Position
+import game.{BoardTicTacToe, Score, Status}
 import org.scalatest.{Matchers, WordSpec}
 
 class MiniMaxRawSpec extends WordSpec with Matchers {

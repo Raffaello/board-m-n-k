@@ -1,6 +1,8 @@
 package game
 
 import cats.implicits._
+import game.boards.GameBoard
+import game.types.Position
 
 import scala.collection.immutable.NumericRange
 

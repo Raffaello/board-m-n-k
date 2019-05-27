@@ -1,6 +1,7 @@
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.Logger
 import game._
+import game.types.Position
 
 //noinspection NameBooleanParameters
 package object ai {

@@ -1,5 +1,6 @@
 package game
 
+import game.types.{BoardMNSize, Position}
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}

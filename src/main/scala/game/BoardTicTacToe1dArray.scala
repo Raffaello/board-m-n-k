@@ -1,5 +1,7 @@
 package game
 
+import game.types.Position
+
 /**
   * TODO DRAFT
   */

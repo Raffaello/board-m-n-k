@@ -1,5 +1,6 @@
 package game
 
+import game.types.{BoardMNSize, Position}
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.collection.immutable.NumericRange

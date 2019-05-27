@@ -1,6 +1,7 @@
 package ai
 
-import game.{BoardTicTacToe2, Position}
+import game.BoardTicTacToe2
+import game.types.Position
 import org.scalatest.{FlatSpec, Matchers}
 
 

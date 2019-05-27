@@ -1,7 +1,8 @@
 package benchmarks
 
-import game.{BoardMNK, BoardMNSize}
+import game.BoardMNK
 import cats.implicits._
+import game.types.BoardMNSize
 object MNKSolver extends App {
 
   println("Insert the board size:")

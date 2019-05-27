@@ -2,7 +2,8 @@ package bench.benchmarks
 
 import ai._
 import ai.old.BoardMNKwithGetBoard
-import game.{BoardMNK, BoardMNSize, Score}
+import game.types.BoardMNSize
+import game.{BoardMNK, Score}
 import org.scalameter.api.Gen
 
 object MNKSolvers {

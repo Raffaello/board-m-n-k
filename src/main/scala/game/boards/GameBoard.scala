@@ -1,4 +1,7 @@
-package game
+package game.boards
+
+import game.Score
+import game.types.Position
 
 trait GameBoard {
 

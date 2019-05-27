@@ -1,7 +1,8 @@
 package ai.old
 
 import ai.AiTicTacToeExpectedStats
-import game.{BoardTicTacToe2, Position, Status}
+import game.types.Position
+import game.{BoardTicTacToe2, Status}
 import org.scalatest.{FlatSpec, Matchers}
 
 //noinspection NameBooleanParameters
@@ -26,13 +27,13 @@ class PackageSpec extends FlatSpec with Matchers {
   }
 
   "TicTacToe2 Alpha-Beta with Memory" should "solve the game" in new AiTicTacToeExpectedStats {
-    val game = new BoardTicTacToe2() with TranspositionTable with WithGetBoard
+    val game = new BoardTicTacToe2() with TranspositionTable with getBoard
     alphaBetaWithMem(game, game) shouldEqual Transposition(0.0, 0, 0.0, Double.MaxValue, isMaximizing = true)
     expAlphaBetaWithMemStats(game.transpositions.size)
   }
 
   "Player 1 TicTacToe2" should "win" in {
-    val game = new BoardTicTacToe2() with WithGetBoard
+    val game = new BoardTicTacToe2() with getBoard
     val status = new TranspositionTable {}
     game.playMove(Position(0, 0), 1)
     game.playMove(Position(0, 1), 1)

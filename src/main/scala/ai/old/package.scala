@@ -1,7 +1,8 @@
 package ai
 
 import cats.implicits._
-import game.{BoardMNK, Position, Score, Status}
+import game.types.Position
+import game.{BoardMNK, Score, Status}
 
 /**
   * @deprecated
@@ -103,7 +104,7 @@ package object old {
 
   def alphaBetaWithMem(
                         statuses: old.TranspositionTable,
-                        game: WithGetBoard,
+                        game: getBoard,
                         depth: Int = 0,
                         alpha: Double = Double.MinValue,
                         beta: Double = Double.MaxValue,
