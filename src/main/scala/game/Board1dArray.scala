@@ -1,26 +1,24 @@
 package game
 
 import cats.implicits._
-import game.boards.GameBoard
-import game.types.Position
+import game.boards.BoardT
+import game.types.{BoardMNType1dArray, Position}
 
-import scala.collection.immutable.NumericRange
+trait Board1dArray extends BoardMNType1dArray with BoardT {
 
-abstract class Board1dArray(m: Short, n: Short) extends GameBoard {
-  var _board: Board1d = Array.ofDim[Byte](m * n)
+  override def display(): String = ???
+
+  override protected def board: Board1d = _board
 
   protected def board(pos: Position): Byte = {
-    val (i, j) = (pos.row, pos.col)
-    _board(i * m + j)
+    // TODO look up i*m as a im
+    _board(mLookups(pos.row) + pos.col)
   }
 
   protected def board_=(pos: Position)(p: Player): Unit = {
     val (i, j) = (pos.row, pos.col)
     _board(i * m + j) = p
   }
-
-  val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
-  val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
   def generateMoves(): IndexedSeq[Position] = {
     for {

@@ -6,7 +6,7 @@ import game.types.Position
 //noinspection NameBooleanParameters
 package object ai {
 
-  // TODO refactor
+  // TODO refactor/remove
   object Stats {
     var totalCalls: Int = 0
     var cacheHits: Int = 0

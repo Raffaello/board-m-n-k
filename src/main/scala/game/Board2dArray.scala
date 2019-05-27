@@ -23,6 +23,8 @@ trait Board2dArray extends BoardMNType2dArray with BoardT {
     } yield Position(i, j)
   }
 
+  // TODO should not be here this is for a Board 2D Array with 2 players,
+  //  this is trait is just a 2d array board implementation
   def display(): String = {
     val str: StringBuilder = new StringBuilder()
     val newLine = sys.props("line.separator")

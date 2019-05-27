@@ -1,30 +1,27 @@
 package game
 
-import game.types.Position
+import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
+import game.types.{BoardMNSize, Position}
 
 /**
-  * TODO DRAFT
+  * TODO: DRAFT extends BoardMNKP
   */
-class BoardTicTacToe1dArray extends Board1dArray(3,3) {
-  val m = 3
-  val n = 3
-  protected var _lastPlayer: Byte = 2
-  protected val minWinDepth: Int = 4 //(2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
-  protected var _depth: Int = 0
+class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray with LastMoveTracker with BoardDepthAware {
+
+  protected val minWinDepth: Int = 5
   protected var freePositions: Int = m * n
-  protected var _lastMove: Position = Position(0, 0)
 
-  val m2 = m*2
+  val m2 = m * 2
 
-  def depth: Int = _depth
+  protected var _lastPlayer: Byte = 2
 
   def lastPlayer: Byte = this._lastPlayer
 
-  override  def playMove(position: Position, player: Byte): Boolean = {
+  override def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = (position.row, position.col)
-    if (_board(row*m + col) > 0) false
+    if (_board(row * m + col) > 0) false
     else {
-      _board(row*m + col) = player
+      _board(row * m + col) = player
       freePositions -= 1
       _depth += 1
       _lastMove = position
@@ -36,8 +33,8 @@ class BoardTicTacToe1dArray extends Board1dArray(3,3) {
   override def undoMove(position: Position, player: Player): Boolean = {
     val (i, j) = (position.row, position.col)
 
-    if (_board(i *m +j) == player) {
-      _board(i *m +j) = 0
+    if (_board(i * m + j) == player) {
+      _board(i * m + j) = 0
       freePositions += 1
       _depth -= 1
       true
@@ -45,37 +42,36 @@ class BoardTicTacToe1dArray extends Board1dArray(3,3) {
   }
 
   override def gameEnded(depth: Score): Boolean = {
-      if (depth < minWinDepth) false
-      else if (freePositions == 0) true
-      else checkWin()
+    if (depth < minWinDepth) false
+    else if (freePositions == 0) true
+    else checkWin()
   }
 
-  override def opponent(player: Player): Player = ???
+  def opponent(player: Player): Player = ???
 
-  override def nextPlayer(): Player = ???
+  def nextPlayer(): Player = ???
 
-  override def display(): String = ???
 
   override def consumeMoves()(f: Position => Unit): Unit = ??? //generateMoves().foreach(f)
 
   protected def scoreRow(row: Int): Int = {
-    val i = row*m
-    if (_board(i) == _board(i+1) && _board(i) == _board(i+2)) _board(i)
+    val i = row * m
+    if (_board(i) == _board(i + 1) && _board(i) == _board(i + 2)) _board(i)
     else 0
   }
 
   protected def scoreCol(col: Short): Int = {
-    if (_board(col) == _board(m+col) && _board(col) == _board(m2 + col)) _board(col)
+    if (_board(col) == _board(m + col) && _board(col) == _board(m2 + col)) _board(col)
     else 0
   }
 
   protected def scoreDiagsTL(): Int = {
-    if (_board(0) == _board(m+1) && _board(0) == _board(m2+2)) _board(0)
+    if (_board(0) == _board(m + 1) && _board(0) == _board(m2 + 2)) _board(0)
     else 0
   }
 
   protected def scoreDiagsBR(): Int = {
-    if (_board(m2) == _board(m+1) && _board(m2) == _board(2)) _board(2)
+    if (_board(m2) == _board(m + 1) && _board(m2) == _board(2)) _board(2)
     else 0
   }
 

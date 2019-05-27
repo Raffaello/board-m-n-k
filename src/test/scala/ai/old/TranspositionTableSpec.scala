@@ -1,6 +1,6 @@
 package ai.old
 
-import game.{Board, BoardTicTacToe2}
+import game.{Board2d, BoardTicTacToe2}
 import org.scalatest.{FlatSpec, Matchers}
 
 import scala.collection.mutable
@@ -12,7 +12,7 @@ class TranspositionTableSpec extends FlatSpec with Matchers {
     val markerAdd: mutable.Map[String, Int] = mutable.Map.empty
     val markerGet: mutable.Map[String, Int] = mutable.Map.empty
 
-    override def add(board: Board, t: Transposition): Unit = {
+    override def add(board: Board2d, t: Transposition): Unit = {
       val h = hash(board)
 
       if(transpositions.isDefinedAt(h)) {
@@ -29,7 +29,7 @@ class TranspositionTableSpec extends FlatSpec with Matchers {
       super.add(board, t)
     }
 
-    override def get(board: Board): Option[Transposition] = {
+    override def get(board: Board2d): Option[Transposition] = {
       val t = super.get(board)
       val h = hash(board)
       if (t.isDefined) {
@@ -38,7 +38,7 @@ class TranspositionTableSpec extends FlatSpec with Matchers {
       t
     }
 
-    def getMarker(board: Board): Int = {
+    def getMarker(board: Board2d): Int = {
       markerAdd(hash(board))
     }
   }
