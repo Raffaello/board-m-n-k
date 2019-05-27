@@ -1,6 +1,6 @@
 package game
 
-trait GameBoard {
+trait GameBoard extends BoardT {
 
   def playMove(position: Position, player: Byte): Boolean
 
@@ -19,4 +19,6 @@ trait GameBoard {
   def display(): String
 
   protected def consumeMoves()(f: Position => Unit): Unit
+
+  protected def generateMoves(): IndexedSeq[Position]
 }

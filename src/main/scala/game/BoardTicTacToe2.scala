@@ -8,22 +8,22 @@ import cats.implicits._
 class BoardTicTacToe2 extends BoardTicTacToe {
 
   protected def scoreRow(row: Short): Int = {
-    if (_board(row)(0) === _board(row)(1) && _board(row)(0) === _board(row)(2)) _board(row)(0)
+    if (board((row, 0)) === board((row, 1)) && board((row, 0)) === board((row, 2))) board((row, 0))
     else 0
   }
 
   protected def scoreCol(col: Short): Int = {
-    if (_board(0)(col) === _board(1)(col) && _board(0)(col) === _board(2)(col)) _board(0)(col)
+    if (board((0, col)) === board((1, col)) && board((0, col)) === board((2, col))) board((0, col))
     else 0
   }
 
   protected def scoreDiagsTL(): Int = {
-    if (_board(0)(0) === _board(1)(1) && _board(0)(0) === _board(2)(2)) _board(0)(0)
+    if (board((0, 0)) === board((1, 1)) && board((0, 0)) === board((2, 2))) _board(0)(0)
     else 0
   }
 
   protected def scoreDiagsBR(): Int = {
-    if (_board(2)(0) === _board(1)(1) && _board(2)(0) === _board(0)(2)) _board(2)(0)
+    if (board((2, 0)) === board((1, 1)) && board((2, 0)) === board((0, 2))) board((2, 0))
     else 0
   }
 

@@ -4,8 +4,18 @@ import cats.implicits._
 
 import scala.collection.immutable.NumericRange
 
-abstract class Board1dArray(m: Short, n: Short) extends BoardT with GameBoard {
+abstract class Board1dArray(m: Short, n: Short) extends GameBoard {
   var _board: Board1d = Array.ofDim[Byte](m * n)
+
+  protected def board(pos: Position): Byte = {
+    val (i, j) = pos
+    _board(i * m + j)
+  }
+
+  protected def board_=(pos: Position)(p: Player): Unit = {
+    val (i, j) = pos
+    _board(i * m + j) = p
+  }
 
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
@@ -18,15 +28,6 @@ abstract class Board1dArray(m: Short, n: Short) extends BoardT with GameBoard {
     } yield (i, j)
   }
 
-  protected def board(pos: Position): Byte = {
-    val (i, j) = pos
-    _board(i * m + j)
-  }
 
-  protected def board(pos: Position)(p: Player): Unit = {
-    val (i, j) = pos
-    _board(i * m + j) = p
-  }
-
-//  override def flatten: Board1d = _board
+  //  override def flatten: Board1d = _board
 }

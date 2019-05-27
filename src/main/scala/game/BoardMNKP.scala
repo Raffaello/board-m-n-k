@@ -30,9 +30,9 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   def playMove(position: Position, player: Byte): Boolean = {
     require(player >= 1 && player <= numPlayers)
     val (row, col) = position
-    if (_board(row)(col) > 0) false
+    if (board((row, col)) > 0) false
     else {
-      _board(row)(col) = player
+      board_=((row, col))( player)
       freePositions -= 1
       _depth += 1
       _lastMove = position
@@ -44,8 +44,8 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   def undoMove(position: Position, player: Byte): Boolean = {
     val (i, j) = position
 
-    if (_board(i)(j) === player) {
-      _board(i)(j) = 0
+    if (board((i, j)) === player) {
+      board_=((i, j))(0)
       freePositions += 1
       _depth -= 1
       true

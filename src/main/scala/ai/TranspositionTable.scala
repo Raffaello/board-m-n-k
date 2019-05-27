@@ -8,6 +8,7 @@ import scala.collection.mutable
 trait TranspositionTable extends BoardMN {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 
+  // TODO can be done only with array 2d at the moment
   def hash(): String = _board.flatten.mkString
 
   def add(t: Transposition): Unit = {

@@ -18,11 +18,9 @@ package game
 
 
 trait BoardT {
-//  def board
-
   protected def board(pos: Position): Byte
 
-  protected def board(pos: Position)(p: Player): Unit
+  protected def board_=(pos: Position)(p: Player): Unit
 
-  protected def generateMoves(): IndexedSeq[Position]
+
 }

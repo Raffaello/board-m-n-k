@@ -1,12 +1,16 @@
 package game
 
-class BitBoardTicTacToe extends BoardT with GameBoard {
+class BitBoardTicTacToe extends GameBoard {
   val m = 3
   val n = 3
   val mn = m * n
   val numPlayers: Player = 2
 
   var _board: BitBoard = 0
+
+  override protected def board(pos: (Short, Short)): Player = ???
+
+  override protected def board_=(pos: (Short, Short))(p: Player): Unit = ???
 
   protected var _lastPlayer: Byte = numPlayers
   protected val minWinDepth: Int = 4 //(2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
@@ -22,10 +26,10 @@ class BitBoardTicTacToe extends BoardT with GameBoard {
     } {
       val v1 = (_board & boardValue((i.toShort, j.toShort), 1)) > 0
       val v2 = (_board & boardValue((i.toShort, j.toShort), 2)) > 0
-//      assert((v1 && !v2) || (!v1 && v2))
-      if (v1) str +="X"
-      else if(v2) str+="O"
-      else str+="_"
+      //      assert((v1 && !v2) || (!v1 && v2))
+      if (v1) str += "X"
+      else if (v2) str += "O"
+      else str += "_"
     }
 
     str
@@ -147,10 +151,6 @@ class BitBoardTicTacToe extends BoardT with GameBoard {
     if (checkWin()) score2players(_lastPlayer)
     else 0
   }
-
-  override protected def board(pos: (Short, Short)): Player = ???
-
-  override protected def board(pos: (Short, Short))(p: Player): Unit = ???
 
   override protected def generateMoves(): IndexedSeq[(Short, Short)] = ???
 }
