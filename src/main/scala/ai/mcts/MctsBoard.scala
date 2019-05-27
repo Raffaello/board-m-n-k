@@ -3,11 +3,11 @@ package ai.mcts
 import ai.AiBoard
 import ai.mcts.tree.Tree
 import cats.implicits._
-import game.{Position, Score, Status}
+import game.{BoardMNKPLookUp, Position, Score, Status}
 
 import scala.util.Random
 
-trait MctsBoard extends AiBoard with Cloneable {
+trait MctsBoard extends BoardMNKPLookUp with AiBoard with Cloneable {
   final private[mcts] val random = ai.mcts.seed match {
     case Some(x) => new Random(x)
     case None => new Random()

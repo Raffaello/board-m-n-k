@@ -1,6 +1,6 @@
 package game
 
-trait DepthAware {
+trait BoardDepthAware {
   protected var _depth: Int = 0
 
   def depth: Int = _depth
