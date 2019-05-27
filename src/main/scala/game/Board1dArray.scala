@@ -8,12 +8,12 @@ abstract class Board1dArray(m: Short, n: Short) extends GameBoard {
   var _board: Board1d = Array.ofDim[Byte](m * n)
 
   protected def board(pos: Position): Byte = {
-    val (i, j) = pos
+    val (i, j) = (pos.row, pos.col)
     _board(i * m + j)
   }
 
   protected def board_=(pos: Position)(p: Player): Unit = {
-    val (i, j) = pos
+    val (i, j) = (pos.row, pos.col)
     _board(i * m + j) = p
   }
 
@@ -25,7 +25,7 @@ abstract class Board1dArray(m: Short, n: Short) extends GameBoard {
       i <- mIndices
       j <- nIndices
       if _board(i * m + j) === 0
-    } yield (i, j)
+    } yield Position(i, j)
   }
 
 

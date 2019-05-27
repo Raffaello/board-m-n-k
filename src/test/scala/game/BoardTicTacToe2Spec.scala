@@ -25,7 +25,7 @@ class BoardTicTacToe2Spec extends WordSpec with Matchers {
 
           for (i <- 0 until 3) {
             val game = new BoardTicTacToe2()
-            for(j <- 0 until  3) game.playMove((i.toShort, j.toShort), p)
+            for(j <- 0 until  3) game.playMove(Position(i.toShort, j.toShort), p)
             game.gameEnded() should be(true)
             game.score() should be(score)
           }
@@ -34,7 +34,7 @@ class BoardTicTacToe2Spec extends WordSpec with Matchers {
         "by cols" in {
           for (j <- 0 until 3) {
             val game = new BoardTicTacToe2()
-            for (i <- 0 until 3) game.playMove((i.toShort, j.toShort), p)
+            for (i <- 0 until 3) game.playMove(Position(i.toShort, j.toShort), p)
             game.gameEnded() should be(true)
             game.score() should be(score)
           }
@@ -42,14 +42,14 @@ class BoardTicTacToe2Spec extends WordSpec with Matchers {
 
         "by Diagonals Top Left -> Bottom Right" in {
           val game = new BoardTicTacToe2()
-          for (i <- 0 until 3) game.playMove((i.toShort, i.toShort), p)
+          for (i <- 0 until 3) game.playMove(Position(i.toShort, i.toShort), p)
           game.gameEnded() should be(true)
           game.score() should be(score)
         }
 
         "by diagonals Bottom Left -> Top Right" in {
           val game = new BoardTicTacToe2()
-          for (i <- 0 until 3) game.playMove(((2 - i).toShort, i.toShort),  p)
+          for (i <- 0 until 3) game.playMove(Position((2 - i).toShort, i.toShort),  p)
           game.gameEnded() should be(true)
           game.score() should be(score)
         }

@@ -24,7 +24,7 @@ class BoardMNKPSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
         for (i <- NumericRange.inclusive[Short](1, p, 1)) {
           val np = game.nextPlayer()
           np shouldBe i
-          game.playMove((i, 0), np) shouldBe true
+          game.playMove(Position(i, 0), np) shouldBe true
         }
       }
     }

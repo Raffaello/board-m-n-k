@@ -1,7 +1,7 @@
 package game
 
 /**
-  * @DRAFT
+  * TODO DRAFT
   */
 class BoardTicTacToe1dArray extends Board1dArray(3,3) {
   val m = 3
@@ -10,7 +10,7 @@ class BoardTicTacToe1dArray extends Board1dArray(3,3) {
   protected val minWinDepth: Int = 4 //(2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
   protected var _depth: Int = 0
   protected var freePositions: Int = m * n
-  protected var _lastMove: Position = (0, 0)
+  protected var _lastMove: Position = Position(0, 0)
 
   val m2 = m*2
 
@@ -18,12 +18,8 @@ class BoardTicTacToe1dArray extends Board1dArray(3,3) {
 
   def lastPlayer: Byte = this._lastPlayer
 
-//  override protected def board(pos: (Short, Short)): Player = ???
-
-//  override protected def board(pos: (Short, Short))(p: Player): Unit = ???
-
   override  def playMove(position: Position, player: Byte): Boolean = {
-    val (row, col) = position
+    val (row, col) = (position.row, position.col)
     if (_board(row*m + col) > 0) false
     else {
       _board(row*m + col) = player
@@ -35,8 +31,8 @@ class BoardTicTacToe1dArray extends Board1dArray(3,3) {
     }
   }
 
-  override def undoMove(position: (Short, Short), player: Player): Boolean = {
-    val (i, j) = position
+  override def undoMove(position: Position, player: Player): Boolean = {
+    val (i, j) = (position.row, position.col)
 
     if (_board(i *m +j) == player) {
       _board(i *m +j) = 0
@@ -58,7 +54,7 @@ class BoardTicTacToe1dArray extends Board1dArray(3,3) {
 
   override def display(): String = ???
 
-  override protected def consumeMoves()(f: ((Short, Short)) => Unit): Unit = ??? //generateMoves().foreach(f)
+  override protected def consumeMoves()(f: (Position) => Unit): Unit = ??? //generateMoves().foreach(f)
 
   protected def scoreRow(row: Int): Int = {
     val i = row*m

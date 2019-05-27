@@ -61,7 +61,7 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
   }
 
   protected def nextMove(maximizing: Boolean, alpha: Int, beta: Int): ABStatus[Score] = {
-    var pBest: Position = (-1, -1)
+    var pBest: Position = Position(-1, -1)
     var best = if (maximizing) Int.MinValue else Int.MaxValue
     var a1 = alpha
     var b1 = beta

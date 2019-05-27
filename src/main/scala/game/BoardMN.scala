@@ -12,7 +12,7 @@ abstract class BoardMN(val m: Short, val n: Short) extends Board2dArray(m, n) wi
   val mnMin: Short = Math.min(m, n).toShort
 
   protected var freePositions: Int = m * n
-  protected var _lastMove: Position = (0, 0)
+  protected var _lastMove: Position = Position(0, 0)
 
   def lastMove: Position = _lastMove
 

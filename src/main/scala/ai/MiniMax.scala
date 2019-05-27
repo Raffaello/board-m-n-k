@@ -43,7 +43,7 @@ trait MiniMax extends BoardMNK with AiBoard with AiBoardScoreEval {
   override def nextMove: Status = nextMove(nextPlayer() === aiPlayer)
 
   protected def nextMove(maximizing: Boolean): Status = {
-    var pBest: Position = (-1, -1)
+    var pBest: Position = Position(-1, -1)
     val score = mainBlock(player(maximizing)) { case (score: Score, pos: Position) =>
       val newValue = solve(!maximizing)
       val sig = signum(maximizing)

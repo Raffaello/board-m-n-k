@@ -8,15 +8,15 @@ class BitBoardTicTacToe extends GameBoard {
 
   var _board: BitBoard = 0
 
-  override protected def board(pos: (Short, Short)): Player = ???
+  override protected def board(pos: Position): Player = ???
 
-  override protected def board_=(pos: (Short, Short))(p: Player): Unit = ???
+  override protected def board_=(pos: Position)(p: Player): Unit = ???
 
   protected var _lastPlayer: Byte = numPlayers
   protected val minWinDepth: Int = 4 //(2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
   protected var _depth: Int = 0
   protected var freePositions: Int = m * n
-  protected var _lastMove: Position = (0, 0)
+  protected var _lastMove: Position = Position(0, 0)
 
   def toStringArray: String = {
     var str = ""
@@ -24,8 +24,8 @@ class BitBoardTicTacToe extends GameBoard {
       i <- 0 until m
       j <- 0 until n
     } {
-      val v1 = (_board & boardValue((i.toShort, j.toShort), 1)) > 0
-      val v2 = (_board & boardValue((i.toShort, j.toShort), 2)) > 0
+      val v1 = (_board & boardValue(Position(i.toShort, j.toShort), 1)) > 0
+      val v2 = (_board & boardValue(Position(i.toShort, j.toShort), 2)) > 0
       //      assert((v1 && !v2) || (!v1 && v2))
       if (v1) str += "X"
       else if (v2) str += "O"
@@ -40,16 +40,14 @@ class BitBoardTicTacToe extends GameBoard {
   def lastPlayer: Byte = this._lastPlayer
 
   private[this] def boardValue(position: Position, player: Player): BitBoard = {
-    val (row, col) = position
-    assert(row >= 0 && row < 3)
-    assert(col >= 0 && col < 3)
-    (1 << (row * m + col)) << mn * (player - 1)
+    assert(position.row >= 0 && position.row < 3)
+    assert(position.col >= 0 && position.col < 3)
+    (1 << (position.row * m + position.col)) << mn * (player - 1)
   }
 
   private[this] def boardValueCheck(position: Position): BitBoard = {
-    val (row, col) = position
-    assert(row >= 0 && row < 3)
-    assert(col >= 0 && col < 3)
+    assert(position.row >= 0 && position.row < 3)
+    assert(position.col >= 0 && position.col < 3)
 
     var sum = 0
     for (p <- 1 to numPlayers) sum += boardValue(position, p.toByte)
@@ -93,7 +91,7 @@ class BitBoardTicTacToe extends GameBoard {
 
   override def display(): String = ???
 
-  override protected def consumeMoves()(f: ((Short, Short)) => Unit): Unit = ??? //generateMoves().foreach(f)
+  override protected def consumeMoves()(f: (Position) => Unit): Unit = ??? //generateMoves().foreach(f)
 
 
   protected def scoreDiagsTL(): Int = {
@@ -152,5 +150,5 @@ class BitBoardTicTacToe extends GameBoard {
     else 0
   }
 
-  override protected def generateMoves(): IndexedSeq[(Short, Short)] = ???
+  override protected def generateMoves(): IndexedSeq[Position] = ???
 }

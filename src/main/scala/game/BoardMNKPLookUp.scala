@@ -19,7 +19,7 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
     var ended: Option[Boolean] = Some(false)
 
     def inc(pos: Position, playerIdx: Int): Unit = {
-      val (x, y) = pos
+      val (x, y) = (pos.row, pos.col)
 
       lastPlayerIdx = playerIdx
       rows(x)(playerIdx) = (1 + rows(x)(playerIdx)).toByte
@@ -32,7 +32,7 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
     }
 
     def dec(pos: Position, playerIdx: Int): Unit = {
-      val (x, y) = pos
+      val (x, y) = (pos.row, pos.col)
 
       rows(x)(playerIdx) = (rows(x)(playerIdx) - 1).toByte
       assert(rows(x)(playerIdx) >= 0)

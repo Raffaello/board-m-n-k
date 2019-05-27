@@ -1,6 +1,6 @@
 import ai._
 import ai.old.negamaxNextMove
-import game.BoardTicTacToe2
+import game.{BoardTicTacToe2, Position}
 
 object TitTacToe extends App {
   val humanPlayer: Byte = 1
@@ -33,12 +33,12 @@ object TitTacToe extends App {
             println("Make your move: ")
             val move = scala.io.StdIn.readByte()
             val (i, j) = (move / 3, move % 3)
-            valid = game.playMove((i.toShort, j.toShort), humanPlayer)
+            valid = game.playMove(Position(i.toShort, j.toShort), humanPlayer)
           }
         }
         else {
-          val (_, (i, j)) = negamaxNextMove(game, -1)
-          game.playMove((i, j), computerPlayer)
+          val (_, pos) = negamaxNextMove(game, -1)
+          game.playMove(pos, computerPlayer)
         }
         playerTurn = !playerTurn
       }
@@ -60,7 +60,7 @@ object TitTacToe extends App {
         var player: Byte = 0
         var a = Double.MinValue
         var b = Double.MaxValue
-        if (joshuaPlay)  {
+        if (joshuaPlay) {
           color = 1
           player = joshuaPlayer
         }
@@ -69,12 +69,12 @@ object TitTacToe extends App {
           player = computerPlayer
         }
 
-        val (_, (i, j), (a2 , b2)) = alphaBetaNextMove(game, depth, a, b,  joshuaPlay)
+        val (_, pos, (a2, b2)) = alphaBetaNextMove(game, depth, a, b, joshuaPlay)
         a = a2
         b = b2
-        depth +=1
+        depth += 1
 
-        game.playMove((i, j), player)
+        game.playMove(pos, player)
         joshuaPlay = !joshuaPlay
       }
 

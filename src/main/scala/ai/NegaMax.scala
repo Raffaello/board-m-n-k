@@ -38,7 +38,7 @@ trait NegaMax extends AiBoard with AiBoardScoreEval {
   override def nextMove: Status = nextMove(if (nextPlayer() === aiPlayer) 1 else -1)
 
   protected def nextMove(color: Byte): Status = {
-    var pBest: Position = (-1, -1)
+    var pBest: Position = Position(-1, -1)
     val score = mainBlock(color) { case (score: Score, pos: Position) =>
       val newValue = -solve((-color).toByte)
       if (score < newValue) {

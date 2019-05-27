@@ -31,10 +31,10 @@ package object old {
       for {
         i <- game.mIndices
         j <- game.nIndices
-        if game.playMove((i, j), player)
+        if game.playMove(Position(i, j), player)
       } {
         best = cmp(best, minimax(game, !maximizing))
-        game.undoMove((i, j), player)
+        game.undoMove(Position(i, j), player)
       }
 
       best
@@ -64,10 +64,10 @@ package object old {
       for {
         i <- game.mIndices
         j <- game.nIndices
-        if game.playMove((i, j), player)
+        if game.playMove(Position(i, j), player)
       } {
         value = Math.max(value, -negamax(game, (-color).toByte))
-        game.undoMove((i, j), player)
+        game.undoMove(Position(i, j), player)
       }
 
       value
@@ -88,7 +88,7 @@ package object old {
       for {
         i <- game.mIndices
         j <- game.nIndices
-        if game.playMove((i, j), player)
+        if game.playMove(Position(i, j), player)
       } {
         val newValue = -negamax(game, (-color).toByte)
         if (value < newValue) {
@@ -96,10 +96,10 @@ package object old {
           ibest = i
           jbest = j
         }
-        game.undoMove((i, j), player)
+        game.undoMove(Position(i, j), player)
       }
 
-      (value, (ibest, jbest))
+      (value, Position(ibest, jbest))
     }
   }
 
@@ -137,12 +137,12 @@ package object old {
           for {
             i <- game.mIndices
             j <- game.nIndices
-            if game.playMove((i, j), 1)
+            if game.playMove(Position(i, j), 1)
           } {
             val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, maximizingPlayer = false)
             best = Math.max(best, t.score)
             a = Math.max(a, best)
-            game.undoMove((i, j), 1)
+            game.undoMove(Position(i, j), 1)
             if (a >= beta) {
               return t
             }
@@ -157,12 +157,12 @@ package object old {
           for {
             i <- game.mIndices
             j <- game.nIndices
-            if game.playMove((i, j), 2)
+            if game.playMove(Position(i, j), 2)
           } {
             val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, maximizingPlayer = true)
             best = Math.min(best, t.score)
             b = Math.max(b, best)
-            game.undoMove((i, j), 2)
+            game.undoMove(Position(i, j), 2)
             if (alpha >= b) {
               return t
             }

@@ -34,11 +34,11 @@ package object ai {
       for {
         i <- game.mIndices
         j <- game.nIndices
-        if game.playMove((i, j), 1)
+        if game.playMove(Position(i, j), 1)
       } {
         best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
         a = Math.max(a, best)
-        game.undoMove((i, j), 1)
+        game.undoMove(Position(i, j), 1)
         if (a >= beta) {
           return best
         }
@@ -51,11 +51,11 @@ package object ai {
       for {
         i <- game.mIndices
         j <- game.nIndices
-        if game.playMove((i, j), 2)
+        if game.playMove(Position(i, j), 2)
       } {
         best = Math.min(best, alphaBeta(game, depth + 1, alpha, b, true))
         b = Math.min(b, best)
-        game.undoMove((i, j), 2)
+        game.undoMove(Position(i, j), 2)
         if (alpha >= b) {
           return best
         }
@@ -75,7 +75,7 @@ package object ai {
     var jbest: Short = -1
 
     if (game.gameEnded(depth)) {
-      (game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0))), (ibest, jbest), (alpha, beta))
+      (game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0))), Position(ibest, jbest), (alpha, beta))
     } else {
       var best: Double = 0.0
       var player: Byte = 0
@@ -93,7 +93,7 @@ package object ai {
       for {
         i <- game.mIndices
         j <- game.nIndices
-        if game.playMove((i, j), player)
+        if game.playMove(Position(i, j), player)
       } {
         val newBest = alphaBeta(game, depth + 1, a, b, !maximizingPlayer)
 
@@ -114,13 +114,13 @@ package object ai {
           b = Math.min(b, best)
         }
 
-        game.undoMove((i, j), player)
+        game.undoMove(Position(i, j), player)
         if (a >= beta) {
-          return (best, (ibest, jbest), (a, b))
+          return (best, Position(ibest, jbest), (a, b))
         }
       }
 
-      (best, (ibest, jbest), (a, b))
+      (best, Position(ibest, jbest), (a, b))
     }
   }
 
@@ -156,12 +156,12 @@ package object ai {
           for {
             i <- game.mIndices
             j <- game.nIndices
-            if game.playMove((i, j), 1)
+            if game.playMove(Position(i, j), 1)
           } {
             val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
             best = Math.max(best, t.score)
             a = Math.max(a, best)
-            game.undoMove((i, j), 1)
+            game.undoMove(Position(i, j), 1)
             if (a >= beta) {
               return t
             }
@@ -176,12 +176,12 @@ package object ai {
           for {
             i <- game.mIndices
             j <- game.nIndices
-            if game.playMove((i, j), 2)
+            if game.playMove(Position(i, j), 2)
           } {
             val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
             best = Math.min(best, t.score)
             b = Math.max(b, best)
-            game.undoMove((i, j), 2)
+            game.undoMove(Position(i, j), 2)
             if (alpha >= b) {
               return t
             }

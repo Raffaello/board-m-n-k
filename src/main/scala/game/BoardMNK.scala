@@ -53,7 +53,7 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
     * South-East direction checking: bottom-right to top-left
     */
   protected def scoreDiagSE(): Int = {
-    val (i, j) = _lastMove
+    val (i, j) = (_lastMove.row, _lastMove.col)
     val bMin = Math.min(n - j, m - i)
     lazy val stopU = Math.min(k, bMin)
     lazy val stopD = Math.min(i, j) + 1
@@ -61,14 +61,14 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
     @tailrec
     def foldDownRight(acc: Int, offset: Int): Int = {
       if (offset === stopU) acc
-      else if (board(((i + offset).toShort, (j + offset).toShort)) === _lastPlayer) foldDownRight(acc + 1, offset + 1)
+      else if (board(Position((i + offset).toShort, (j + offset).toShort)) === _lastPlayer) foldDownRight(acc + 1, offset + 1)
       else acc
     }
 
     @tailrec
     def foldUpLeft(acc: Int, offset: Int): Int = {
       if (offset === stopD) acc
-      else if (board(((i - offset).toShort, (j - offset).toShort)) === _lastPlayer) foldUpLeft(acc + 1, offset + 1)
+      else if (board(Position((i - offset).toShort, (j - offset).toShort)) === _lastPlayer) foldUpLeft(acc + 1, offset + 1)
       else acc
     }
 
@@ -86,17 +86,17 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
     * @return
     */
   protected def scoreDiagNE(): Int = {
-    val (i, j) = _lastMove
+    val (i, j) = (_lastMove.row, _lastMove.col)
 
     @tailrec
     def foldUpRight(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth === 0 || i < 0 || j >= n || board((i.toShort, j.toShort)) =!= _lastPlayer) acc
+      if (depth === 0 || i < 0 || j >= n || board(Position(i.toShort, j.toShort)) =!= _lastPlayer) acc
       else foldUpRight(acc + 1, i - 1, j + 1, depth - 1)
     }
 
     @tailrec
     def foldDownLeft(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth === 0 || i >= m || j < 0 || board((i.toShort, j.toShort)) =!= _lastPlayer) acc
+      if (depth === 0 || i >= m || j < 0 || board(Position(i.toShort, j.toShort)) =!= _lastPlayer) acc
       else foldDownLeft(acc + 1, i + 1, j - 1, depth - 1)
     }
 
@@ -109,19 +109,19 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
   }
 
   protected def scoreCol(): Int = {
-    val (i, j) = _lastMove
+    val (i, j) = (_lastMove.row, _lastMove.col)
 
     @tailrec
     def foldDown(acc: Int, i: Int, stop: Int): Int = {
       if (i === stop) acc
-      else if (board((i.toShort, j.toShort)) === _lastPlayer) foldDown(acc + 1, i + 1, stop)
+      else if (board(Position(i.toShort, j.toShort)) === _lastPlayer) foldDown(acc + 1, i + 1, stop)
       else acc
     }
 
     @tailrec
     def foldUp(acc: Int, i: Int, stop: Int): Int = {
       if (i < stop) acc
-      else if (board((i.toShort, j.toShort)) === _lastPlayer) foldUp(acc + 1, i - 1, stop)
+      else if (board(Position(i.toShort, j.toShort)) === _lastPlayer) foldUp(acc + 1, i - 1, stop)
       else acc
     }
 
@@ -135,19 +135,19 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
   }
 
   protected def scoreRow(): Int = {
-    val (i, j) = _lastMove
+    val (i, j) = (_lastMove.row, _lastMove.col)
 
     @tailrec
     def foldRight(acc: Int, j: Int, stop: Int): Int = {
       if (j === stop) acc
-      else if (board((i.toShort, j.toShort)) === _lastPlayer) foldRight(acc + 1, j + 1, stop)
+      else if (board(Position(i.toShort, j.toShort)) === _lastPlayer) foldRight(acc + 1, j + 1, stop)
       else acc
     }
 
     @tailrec
     def foldLeft(acc: Int, j: Int, stop: Int): Int = {
       if (j < stop) acc
-      else if (board((i.toShort, j.toShort)) === _lastPlayer) foldLeft(acc + 1, j - 1, stop)
+      else if (board(Position(i.toShort, j.toShort)) === _lastPlayer) foldLeft(acc + 1, j - 1, stop)
       else acc
     }
 
@@ -177,10 +177,10 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
 
     for (i <- mIndices) {
       for (j <- 0 until n - 1) {
-        str ++= s" ${value(board((i.toShort, j.toShort)))} |"
+        str ++= s" ${value(board(Position(i.toShort, j.toShort)))} |"
       }
 
-      str ++= s" ${value(board((i.toShort, (n-1).toShort)))}" + newLine
+      str ++= s" ${value(board(Position(i.toShort, (n-1).toShort)))}" + newLine
     }
 
     str ++= newLine
