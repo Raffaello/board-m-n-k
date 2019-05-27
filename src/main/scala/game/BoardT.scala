@@ -17,10 +17,27 @@ package game
 //  implicit object Board2dImpl extends Board[Board2d]
 
 
+trait BoardMNType {
+  val m: Short
+
+  val n: Short
+
+  def display(): String
+}
+
+//case class CBoard2(boardMNSize: BoardMNSize) extends BoardMNType(boardMNSize){
+
+//}
+//case class CBoard1d(boardMNSize: BoardMNSize) extends BoardMNType(boardMNSize)
+
+// TODO use a type class.
+//trait Board[T <: BoardMNType] {
 trait BoardT {
   protected def board(pos: Position): Byte
 
   protected def board_=(pos: Position)(p: Player): Unit
 
+  def generateMoves(): IndexedSeq[Position]
 
+  //  protected def board: BoardT
 }

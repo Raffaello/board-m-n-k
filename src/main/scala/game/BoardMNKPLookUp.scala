@@ -2,7 +2,7 @@ package game
 
 import cats.implicits._
 
-class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m, n, k, p) {
+abstract class BoardMNKPLookUp(boardMNSize: BoardMNSize, k: Short, p: Byte) extends BoardMNKP(boardMNSize, k, p) {
 
   /**
     * TODO, refactor with a trait? (no parameter allowed yet)
@@ -26,7 +26,7 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
       assert(rows(x)(playerIdx) <= n)
 
       cols(y)(playerIdx) = (1 + cols(y)(playerIdx)).toByte
-      assert(cols(y)(playerIdx) <= m, s"${cols(y)(playerIdx)} -- $playerIdx, $pos -- ${_board.flatten.mkString}")
+//      assert(cols(y)(playerIdx) <= m, s"${cols(y)(playerIdx)} -- $playerIdx, $pos -- ${_board.flatten.mkString}")
       // TODO DIAG1 and DIAG2
 
     }

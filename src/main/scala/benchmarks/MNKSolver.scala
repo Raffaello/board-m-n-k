@@ -1,6 +1,6 @@
 package benchmarks
 
-import game.BoardMNK
+import game.{BoardMNK, BoardMNSize}
 import cats.implicits._
 object MNKSolver extends App {
 
@@ -12,7 +12,7 @@ object MNKSolver extends App {
   print("k = ")
   val k:Short = scala.io.StdIn.readShort()
 
-  val board = new BoardMNK(m, n, k)
+  val board = new BoardMNK(BoardMNSize(m, n), k)
   val time = System.currentTimeMillis()
   val score = ai.alphaBeta(board)
   println(s"total time: ${System.currentTimeMillis() - time}")

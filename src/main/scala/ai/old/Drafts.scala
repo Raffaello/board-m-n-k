@@ -3,8 +3,14 @@ package ai.old
 import ai.Stats
 import game.{BitBoardTicTacToe, BoardTicTacToe1dArray, Player, Position}
 
-object drafts {
-  def alphaBeta(game: BoardTicTacToe1dArray, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
+object Drafts {
+  def alphaBeta(
+                 game: BoardTicTacToe1dArray,
+                 depth: Int = 0,
+                 alpha: Double = Double.MinValue,
+                 beta: Double = Double.MaxValue,
+                 maximizingPlayer: Boolean = true
+               ): Double = {
     if (game.gameEnded(depth)) {
       return game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
     }
@@ -47,9 +53,14 @@ object drafts {
     }
   }
 
-  def alphaBetaBit(game: BitBoardTicTacToe, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
+  def alphaBetaBit(
+                    game: BitBoardTicTacToe,
+                    depth: Int = 0,
+                    alpha: Double = Double.MinValue,
+                    beta: Double = Double.MaxValue,
+                    maximizingPlayer: Boolean = true
+                  ): Double = {
     if (game.gameEnded(depth)) {
-//      println(game.toStringArray)
       return game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
     }
 
@@ -59,8 +70,8 @@ object drafts {
       var a = alpha
       val p: Player = 1.toByte
       for {
-        i <- 0 until  3
-        j <- 0 until  3
+        i <- 0 until 3
+        j <- 0 until 3
         if game.playMove(Position(i.toShort, j.toShort), p)
       } {
         best = Math.max(best, alphaBetaBit(game, depth + 1, a, beta, false))

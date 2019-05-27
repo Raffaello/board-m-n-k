@@ -6,12 +6,8 @@ import scala.annotation.tailrec
 
 /**
   * TODO: potentially split in BoardNMK and BoardMNKLookUp (traits)
-  *
-  * @param m number of rows
-  * @param n number of cols
-  * @param k number of same move of a player "in a row" (or col or diagonal)
   */
-class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k, 2) {
+class BoardMNK(boardMNSize: BoardMNSize, val k: Short) extends BoardMNKPLookUp(boardMNSize, k, 2) {
   require(k > 2)
 
   final protected def score2players(player: Byte): Int = {
@@ -159,31 +155,5 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
       if (countR + countL >= k1) _lastPlayer
       else 0
     } else 0
-  }
-
-
-  override def display(): String = {
-    val str: StringBuilder = new StringBuilder()
-    val newLine = sys.props("line.separator")
-
-    def value(p: Byte): Char = {
-      p match {
-        case 0 => '_'
-        case 1 => 'X'
-        case 2 => 'O'
-        case _ => ???
-      }
-    }
-
-    for (i <- mIndices) {
-      for (j <- 0 until n - 1) {
-        str ++= s" ${value(board(Position(i.toShort, j.toShort)))} |"
-      }
-
-      str ++= s" ${value(board(Position(i.toShort, (n-1).toShort)))}" + newLine
-    }
-
-    str ++= newLine
-    str.toString()
   }
 }

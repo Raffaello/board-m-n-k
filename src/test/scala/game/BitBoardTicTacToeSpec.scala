@@ -1,7 +1,7 @@
 package game
 
 import ai.AiTicTacToeExpectedStats
-import ai.old.drafts
+import ai.old.Drafts
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{Matchers, WordSpec}
@@ -109,7 +109,7 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
 
     "draw (drafts)" in new AiTicTacToeExpectedStats {
       val game = new BitBoardTicTacToe
-      drafts.alphaBetaBit(game) shouldBe 0.0
+      Drafts.alphaBetaBit(game) shouldBe 0.0
       expAlphaBeta()
     }
 

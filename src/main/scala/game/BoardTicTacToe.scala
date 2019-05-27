@@ -1,3 +1,3 @@
 package game
 
-class BoardTicTacToe extends BoardMNK(3, 3, 3)
+class BoardTicTacToe extends BoardMNK(BoardMNSize(3, 3), 3)

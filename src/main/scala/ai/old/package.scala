@@ -29,12 +29,11 @@ package object old {
       }
 
       for {
-        i <- game.mIndices
-        j <- game.nIndices
-        if game.playMove(Position(i, j), player)
+        p <- game.generateMoves()
+        if game.playMove(p, player)
       } {
         best = cmp(best, minimax(game, !maximizing))
-        game.undoMove(Position(i, j), player)
+        game.undoMove(p, player)
       }
 
       best
@@ -62,12 +61,11 @@ package object old {
       var player = color
       if (player == -1) player = 2
       for {
-        i <- game.mIndices
-        j <- game.nIndices
-        if game.playMove(Position(i, j), player)
+        p <- game.generateMoves()
+        if game.playMove(p, player)
       } {
         value = Math.max(value, -negamax(game, (-color).toByte))
-        game.undoMove(Position(i, j), player)
+        game.undoMove(p, player)
       }
 
       value
@@ -86,17 +84,17 @@ package object old {
       var player = color
       if (player === -1) player = 2
       for {
-        i <- game.mIndices
-        j <- game.nIndices
-        if game.playMove(Position(i, j), player)
+        p <- game.generateMoves()
+        if game.playMove(p, player)
       } {
         val newValue = -negamax(game, (-color).toByte)
         if (value < newValue) {
           value = newValue
-          ibest = i
-          jbest = j
+          // TODO fix those 2 vars i,j best
+          ibest = p.row
+          jbest = p.col
         }
-        game.undoMove(Position(i, j), player)
+        game.undoMove(p, player)
       }
 
       (value, Position(ibest, jbest))

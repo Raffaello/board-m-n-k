@@ -32,13 +32,12 @@ package object ai {
       var best = Double.MinValue
       var a = alpha
       for {
-        i <- game.mIndices
-        j <- game.nIndices
-        if game.playMove(Position(i, j), 1)
+        p <- game.generateMoves()
+        if game.playMove(p, 1)
       } {
         best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
         a = Math.max(a, best)
-        game.undoMove(Position(i, j), 1)
+        game.undoMove(p, 1)
         if (a >= beta) {
           return best
         }
@@ -49,13 +48,12 @@ package object ai {
       var best = Double.MaxValue
       var b = beta
       for {
-        i <- game.mIndices
-        j <- game.nIndices
-        if game.playMove(Position(i, j), 2)
+        p <- game.generateMoves()
+        if game.playMove(p, 2)
       } {
         best = Math.min(best, alphaBeta(game, depth + 1, alpha, b, true))
         b = Math.min(b, best)
-        game.undoMove(Position(i, j), 2)
+        game.undoMove(p, 2)
         if (alpha >= b) {
           return best
         }
@@ -91,30 +89,31 @@ package object ai {
         player = 2
       }
       for {
-        i <- game.mIndices
-        j <- game.nIndices
-        if game.playMove(Position(i, j), player)
+        p <- game.generateMoves()
+        if game.playMove(p, player)
       } {
         val newBest = alphaBeta(game, depth + 1, a, b, !maximizingPlayer)
 
         if (maximizingPlayer) {
           if (newBest > best) {
             best = newBest
-            ibest = i
-            jbest = j
+            // TODO fix those 2 vars
+            ibest = p.row
+            jbest = p.col
           }
           a = Math.max(a, best)
         } else {
           if (newBest < best) {
             best = newBest
-            ibest = i
-            jbest = j
+            // TODO fix those 2 vars
+            ibest = p.row
+            jbest = p.col
           }
 
           b = Math.min(b, best)
         }
 
-        game.undoMove(Position(i, j), player)
+        game.undoMove(p, player)
         if (a >= beta) {
           return (best, Position(ibest, jbest), (a, b))
         }
@@ -154,14 +153,13 @@ package object ai {
           var best = Int.MinValue
           var a = alpha
           for {
-            i <- game.mIndices
-            j <- game.nIndices
-            if game.playMove(Position(i, j), 1)
+            p <- game.generateMoves()
+            if game.playMove(p, 1)
           } {
             val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
             best = Math.max(best, t.score)
             a = Math.max(a, best)
-            game.undoMove(Position(i, j), 1)
+            game.undoMove(p, 1)
             if (a >= beta) {
               return t
             }
@@ -174,14 +172,13 @@ package object ai {
           var best = Int.MaxValue
           var b = beta
           for {
-            i <- game.mIndices
-            j <- game.nIndices
-            if game.playMove(Position(i, j), 2)
+            p <- game.generateMoves()
+            if game.playMove(p, 2)
           } {
             val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
             best = Math.min(best, t.score)
             b = Math.max(b, best)
-            game.undoMove(Position(i, j), 2)
+            game.undoMove(p, 2)
             if (alpha >= b) {
               return t
             }

@@ -1,6 +1,6 @@
 package bench
 
-import ai.old.{WithGetBoard, drafts}
+import ai.old.{WithGetBoard, Drafts}
 import ai.{alphaBeta => _, _}
 import bench.benchmarks.TicTacToeSolvers._
 import game.{BitBoardTicTacToe, BoardTicTacToe, BoardTicTacToe1dArray, BoardTicTacToe2, Score}
@@ -235,7 +235,7 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = Math.round(drafts.alphaBeta(new BoardTicTacToe1dArray)).toInt
+          _ => score = Math.round(Drafts.alphaBeta(new BoardTicTacToe1dArray)).toInt
         }
       }
     }
@@ -245,7 +245,7 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = Math.round(drafts.alphaBetaBit(new BitBoardTicTacToe)).toInt
+          _ => score = Math.round(Drafts.alphaBetaBit(new BitBoardTicTacToe)).toInt
         }
       }
     }

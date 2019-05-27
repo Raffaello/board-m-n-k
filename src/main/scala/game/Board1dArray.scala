@@ -20,7 +20,7 @@ abstract class Board1dArray(m: Short, n: Short) extends GameBoard {
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
 
-  final protected def generateMoves(): IndexedSeq[Position] = {
+  def generateMoves(): IndexedSeq[Position] = {
     for {
       i <- mIndices
       j <- nIndices

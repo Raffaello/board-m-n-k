@@ -1,7 +1,7 @@
 package ai
 
 import ai.old.BoardMNKwithGetBoard
-import game.BoardMNK
+import game.{Board2dArray, BoardMNK, BoardMNSize}
 
 object BoardSolver extends App {
 
@@ -10,7 +10,7 @@ object BoardSolver extends App {
     var cacheHits: Int = 0
   }
 
-  sealed trait SolverBoardTrait {
+  sealed trait SolverBoardTrait extends Board2dArray {
     def result(): Any
 
     def stats(): _Stats
@@ -23,9 +23,9 @@ object BoardSolver extends App {
     }
   }
 
-  sealed abstract class SolverBoard(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with SolverBoardTrait {}
+  sealed abstract class SolverBoard(m: Short, n: Short, k: Short) extends BoardMNK(BoardMNSize(m, n), k) with SolverBoardTrait {}
 
-  sealed abstract class SolverBoardOld(m: Short, n: Short, k: Short) extends BoardMNKwithGetBoard(m, n, k) with SolverBoardTrait {}
+  sealed abstract class SolverBoardOld(m: Short, n: Short, k: Short) extends BoardMNKwithGetBoard(BoardMNSize(m, n), k) with SolverBoardTrait {}
 
   sealed abstract class SolverBoardRaw(m: Short, n: Short, k: Short) extends SolverBoard(m, n, k) with StatsWrapper {}
 

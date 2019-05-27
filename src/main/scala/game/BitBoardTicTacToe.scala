@@ -1,6 +1,9 @@
 package game
 
 class BitBoardTicTacToe extends GameBoard {
+
+  override def generateMoves(): IndexedSeq[Position] = ???
+
   val m = 3
   val n = 3
   val mn = m * n
@@ -149,6 +152,4 @@ class BitBoardTicTacToe extends GameBoard {
     if (checkWin()) score2players(_lastPlayer)
     else 0
   }
-
-  override protected def generateMoves(): IndexedSeq[Position] = ???
 }

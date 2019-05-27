@@ -19,6 +19,4 @@ trait GameBoard extends BoardT {
   def display(): String
 
   protected def consumeMoves()(f: Position => Unit): Unit
-
-  protected def generateMoves(): IndexedSeq[Position]
 }

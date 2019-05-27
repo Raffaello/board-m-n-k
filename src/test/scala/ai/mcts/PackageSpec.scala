@@ -232,7 +232,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
   }
 
-  it should "Draw (always?)" in {
+  it should "Draw" in {
     val game = new BoardTicTacToe2 with MctsBoard
     var player: Byte = 2
     var tree = Tree(game, player)

@@ -18,7 +18,7 @@ class BoardMNKPSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
 
     forAll(ps) { p: Byte =>
       whenever(p >= 2) {
-        val game = new BoardMNKP(m, n, k, p)
+        val game = new BoardMNKP(BoardMNSize(m, n), k, p)
         game.lastPlayer shouldBe p
 
         for (i <- NumericRange.inclusive[Short](1, p, 1)) {
