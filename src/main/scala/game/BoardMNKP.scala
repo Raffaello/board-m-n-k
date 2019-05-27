@@ -9,7 +9,7 @@ import cats.implicits._
   * @param k          number of same move of a player "in a row" (or col or diagonal)
   * @param numPlayers 0 is not used, 1 or 2 is the player using the cell
   */
-class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends BoardMN(m, n) {
+class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends BoardMN(m, n) with DepthAware {
   require(k <= m || k <= n)
   require(numPlayers >= 2)
 
@@ -23,9 +23,7 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
 
   protected var _lastPlayer: Byte = numPlayers
   protected val minWinDepth: Int = numPlayers*k1+1//(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
-  protected var _depth: Int = 0
 
-  def depth: Int = _depth
 
   def lastPlayer: Byte = this._lastPlayer
 

@@ -108,7 +108,7 @@ object BoardSolver extends App {
   val choice = scala.io.StdIn.readInt()
   println()
   val (ck, cv) = choices(choice)
-  println(s"you choose: ${ck}")
+  println(s"you choose: $ck")
 
   println(s"Board size ${m}x${n}x$k")
   val startTime = System.currentTimeMillis()

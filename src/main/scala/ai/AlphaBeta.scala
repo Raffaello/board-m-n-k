@@ -5,7 +5,7 @@ import game.{Position, Score, Status}
 
 import scala.util.control.Breaks._
 
-trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiScoreEval {
+trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
 
   protected def mainBlock(maximizing: Boolean, alpha: Int, beta: Int)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
     if (gameEnded()) scoreEval

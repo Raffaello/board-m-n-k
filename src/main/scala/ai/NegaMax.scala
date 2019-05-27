@@ -8,7 +8,7 @@ import game.{Position, Score, Status}
   *
   * @see MiniMax
   */
-trait NegaMax extends AiBoard with AiScoreEval {
+trait NegaMax extends AiBoard with AiBoardScoreEval {
   protected def mainBlock(color: Byte)(eval: Status => Score): Score = {
     if (gameEnded()) {
       scoreEval * color
