@@ -13,11 +13,11 @@ package object ai {
   }
 
   // TODO review the type definitions.... they are not ok.
-  //final case class AlphaBeta[T](alpha: T, Beta: T)
+  //  final case class AlphaBeta[T](alpha: T, Beta: T)
   // todo refactor with a case class alpha, beta
   type AB[T] = (T, T) // Alpha, Beta values
   type ABStatus[T] = (AB[T], Status) // Alpha, Beta values plus Status: Score, Position
-  type ABScore = (AB[Int], Score)
+  type ABScore = (AB[Score], Score)
 
   private[ai] val logger = Logger("ai")
 
@@ -25,42 +25,42 @@ package object ai {
 
   def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
     if (game.gameEnded(depth)) {
-      return game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
-    }
-
-    Stats.totalCalls += 1
-    if (maximizingPlayer) {
-      var best = Double.MinValue
-      var a = alpha
-      for {
-        p <- game.generateMoves()
-        if game.playMove(p, 1)
-      } {
-        best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
-        a = Math.max(a, best)
-        game.undoMove(p, 1)
-        if (a >= beta) {
-          return best
-        }
-      }
-
-      best
+      game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
     } else {
-      var best = Double.MaxValue
-      var b = beta
-      for {
-        p <- game.generateMoves()
-        if game.playMove(p, 2)
-      } {
-        best = Math.min(best, alphaBeta(game, depth + 1, alpha, b, true))
-        b = Math.min(b, best)
-        game.undoMove(p, 2)
-        if (alpha >= b) {
-          return best
+      Stats.totalCalls += 1
+      if (maximizingPlayer) {
+        var best = Double.MinValue
+        var a = alpha
+        for {
+          p <- game.generateMoves()
+          if game.playMove(p, 1)
+        } {
+          best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
+          a = Math.max(a, best)
+          game.undoMove(p, 1)
+          if (a >= beta) {
+            return best
+          }
         }
-      }
 
-      best
+        best
+      } else {
+        var best = Double.MaxValue
+        var b = beta
+        for {
+          p <- game.generateMoves()
+          if game.playMove(p, 2)
+        } {
+          best = Math.min(best, alphaBeta(game, depth + 1, alpha, b, true))
+          b = Math.min(b, best)
+          game.undoMove(p, 2)
+          if (alpha >= b) {
+            return best
+          }
+        }
+
+        best
+      }
     }
   }
 
