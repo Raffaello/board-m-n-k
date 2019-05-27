@@ -28,7 +28,7 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   def lastPlayer: Byte = this._lastPlayer
 
   def playMove(position: Position, player: Byte): Boolean = {
-    require(player>=1 && player <= numPlayers)
+    require(player >= 1 && player <= numPlayers)
     val (row, col) = position
     if (_board(row)(col) > 0) false
     else {
