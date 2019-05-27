@@ -3,11 +3,11 @@ package ai.mcts
 import ai.AiBoard
 import ai.mcts.tree.Tree
 import cats.implicits._
-import game.{Board2dArray, BoardMNKPLookUp, Position, Score, Status}
+import game.{BoardMNKPLookUp, Position, Score, Status}
 
 import scala.util.Random
 
-trait MctsBoard extends BoardMNKPLookUp with Board2dArray with AiBoard with Cloneable {
+trait MctsBoard extends BoardMNKPLookUp with AiBoard with Cloneable {
   final private[mcts] val random = ai.mcts.seed match {
     case Some(x) => new Random(x)
     case None => new Random()
@@ -29,12 +29,14 @@ trait MctsBoard extends BoardMNKPLookUp with Board2dArray with AiBoard with Clon
     tree.root.mostVisitedDescending().state.board.score()
   }
 
-  override def nextMove: Status = ??? /*{
-    val tree = Tree(this, 2)
-    iterate(tree)
-    val b = tree.root.mostVisited().state.board
-    (b.score(), b.lastMove) // ???
-  }*/
+  override def nextMove: Status = ???
+
+  /*{
+     val tree = Tree(this, 2)
+     iterate(tree)
+     val b = tree.root.mostVisited().state.board
+     (b.score(), b.lastMove) // ???
+   }*/
 
   // TODO: improve it non generating invalid moves (after game won?), or is redundant.
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()

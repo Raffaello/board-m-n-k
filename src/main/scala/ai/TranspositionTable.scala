@@ -1,11 +1,11 @@
 package ai
 
-import game.{Board2dArray, BoardMNKP}
+import game.BoardMNKP
 
 import scala.collection.mutable
 
 // TODO: Use a more performant hash
-trait TranspositionTable extends BoardMNKP with Board2dArray {
+trait TranspositionTable extends BoardMNKP {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 
   // TODO can be done only with array 2d at the moment

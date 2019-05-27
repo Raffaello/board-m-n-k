@@ -1,7 +1,7 @@
 package ai.old
 
-import game.{Board, Board2dArray, BoardMNK}
+import game.{Board, BoardMNK}
 
-trait WithGetBoard extends BoardMNK with Board2dArray {
+trait WithGetBoard extends BoardMNK {
   def board: Board = _board
 }
