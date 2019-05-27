@@ -1,6 +1,6 @@
 package game
 
-class BitBoardTicTacToe extends GameBoard {
+class BitBoardTicTacToe extends GameBoard with BoardT {
 
   override def generateMoves(): IndexedSeq[Position] = ???
 
@@ -94,7 +94,7 @@ class BitBoardTicTacToe extends GameBoard {
 
   override def display(): String = ???
 
-  override protected def consumeMoves()(f: (Position) => Unit): Unit = ??? //generateMoves().foreach(f)
+  override def consumeMoves()(f: Position => Unit): Unit = ??? //generateMoves().foreach(f)
 
 
   protected def scoreDiagsTL(): Int = {

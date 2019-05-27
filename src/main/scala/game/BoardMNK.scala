@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 /**
   * TODO: potentially split in BoardNMK and BoardMNKLookUp (traits)
   */
-class BoardMNK(boardMNSize: BoardMNSize, val k: Short) extends BoardMNKPLookUp(boardMNSize, k, 2) {
+class BoardMNK(boardMNSize: BoardMNSize, k: Short) extends BoardMNKPLookUp(boardMNSize, k, 2) {
   require(k > 2)
 
   final protected def score2players(player: Byte): Int = {

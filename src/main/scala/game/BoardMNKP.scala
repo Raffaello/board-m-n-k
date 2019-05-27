@@ -1,22 +1,24 @@
 package game
 
-import scala.collection.immutable.NumericRange
 import cats.implicits._
 
-class BoardMNKP(boardMNSize: BoardMNSize, k: Short, val numPlayers: Byte) extends BoardMN(boardMNSize) with Board2dArray with BoardDepthAware {
+/**
+  * TODO Board2fArray trait should not be included here... remove it later.
+  * TODO Board2Array has to be a type of boards not a with trait
+  */
+class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) extends BoardMN(boardMNSize)
+  with BoardDepthAware with LastMoveTracker with Board2dArray {
+
   require(k <= m || k <= n)
   require(numPlayers >= 2)
 
-  protected val k1: Short = (k - 1).toShort
-  protected val nkDiff: Short = (n - k).toShort
-  protected val mkDiff: Short = (m - k).toShort
+  protected var freePositions: Int = m * n
 
-  protected val mkDiffIncIndices: NumericRange.Inclusive[Int] = NumericRange.inclusive(0, mkDiff, 1)
-  protected val nkDiffIncIndices: NumericRange.Inclusive[Short] = NumericRange.inclusive[Short](0, nkDiff, 1)
-  protected val k1mIndices = NumericRange(k1, m, 1)
+  protected val k1: Short = (k - 1).toShort
+
+  final val minWinDepth: Int = numPlayers * k1 + 1 //(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
 
   protected var _lastPlayer: Byte = numPlayers
-  final val minWinDepth: Int = numPlayers*k1+1//(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
 
   def lastPlayer: Byte = this._lastPlayer
 
@@ -24,7 +26,7 @@ class BoardMNKP(boardMNSize: BoardMNSize, k: Short, val numPlayers: Byte) extend
     require(player >= 1 && player <= numPlayers)
     if (board(position) > 0) false
     else {
-      board_=(position)( player)
+      board_=(position)(player)
       freePositions -= 1
       _depth += 1
       _lastMove = position
@@ -53,7 +55,7 @@ class BoardMNKP(boardMNSize: BoardMNSize, k: Short, val numPlayers: Byte) extend
   protected def checkWin(): Boolean = ???
 
 
-  override def gameEnded(): Boolean = gameEnded(_depth)
+  override def gameEnded(): Boolean = gameEnded(depth)
 
   /**
     * TODO: not sure is well designed here,
@@ -74,5 +76,5 @@ class BoardMNKP(boardMNSize: BoardMNSize, k: Short, val numPlayers: Byte) extend
     ((player % numPlayers) + 1).toByte
   }
 
-  def nextPlayer(): Byte = opponent(_lastPlayer)
+  def nextPlayer(): Byte = opponent(lastPlayer)
 }

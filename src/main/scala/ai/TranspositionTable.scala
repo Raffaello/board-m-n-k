@@ -1,11 +1,12 @@
 package ai
 
-import game.BoardMNKP
+import game.{Board2dArray, BoardMNKP}
 
 import scala.collection.mutable
 
 // TODO: Use a more performant hash
-trait TranspositionTable extends BoardMNKP {
+// TODO: at the moment force 2d array due to _board as a 2d array.. how to solve it??
+trait TranspositionTable extends BoardMNKP with Board2dArray {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 
   // TODO can be done only with array 2d at the moment

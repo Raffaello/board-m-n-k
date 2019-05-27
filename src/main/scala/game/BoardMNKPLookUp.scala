@@ -2,7 +2,7 @@ package game
 
 import cats.implicits._
 
-abstract class BoardMNKPLookUp(boardMNSize: BoardMNSize, k: Short, p: Byte) extends BoardMNKP(boardMNSize, k, p) {
+class BoardMNKPLookUp(boardMNSize: BoardMNSize, k: Short, p: Byte) extends BoardMNKP(boardMNSize, k, p) {
 
   /**
     * TODO, refactor with a trait? (no parameter allowed yet)

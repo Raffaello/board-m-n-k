@@ -54,7 +54,7 @@ class BoardTicTacToe1dArray extends Board1dArray(3,3) {
 
   override def display(): String = ???
 
-  override protected def consumeMoves()(f: (Position) => Unit): Unit = ??? //generateMoves().foreach(f)
+  override def consumeMoves()(f: Position => Unit): Unit = ??? //generateMoves().foreach(f)
 
   protected def scoreRow(row: Int): Int = {
     val i = row*m

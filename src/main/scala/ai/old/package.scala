@@ -133,14 +133,13 @@ package object old {
           var best = Double.MinValue
           var a = alpha
           for {
-            i <- game.mIndices
-            j <- game.nIndices
-            if game.playMove(Position(i, j), 1)
+            p <- game.generateMoves()
+            if game.playMove(p, 1)
           } {
             val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, maximizingPlayer = false)
             best = Math.max(best, t.score)
             a = Math.max(a, best)
-            game.undoMove(Position(i, j), 1)
+            game.undoMove(p, 1)
             if (a >= beta) {
               return t
             }
@@ -153,14 +152,13 @@ package object old {
           var best = Double.MaxValue
           var b = beta
           for {
-            i <- game.mIndices
-            j <- game.nIndices
-            if game.playMove(Position(i, j), 2)
+            p <- game.generateMoves()
+            if game.playMove(p, 2)
           } {
             val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, maximizingPlayer = true)
             best = Math.min(best, t.score)
             b = Math.max(b, best)
-            game.undoMove(Position(i, j), 2)
+            game.undoMove(p, 2)
             if (alpha >= b) {
               return t
             }
