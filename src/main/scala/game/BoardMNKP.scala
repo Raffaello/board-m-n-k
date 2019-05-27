@@ -22,7 +22,7 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   protected val k1mIndices = NumericRange(k1, m, 1)
 
   protected var _lastPlayer: Byte = numPlayers
-  protected val minWinDepth: Int = numPlayers*k1+1//(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
+  final val minWinDepth: Int = numPlayers*k1+1//(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
 
 
   def lastPlayer: Byte = this._lastPlayer

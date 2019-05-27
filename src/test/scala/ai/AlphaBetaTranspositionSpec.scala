@@ -6,11 +6,12 @@ import org.scalatest.{Matchers, WordSpec}
 class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
 
   "TicTacToe2 Alpha Beta with Transposition" should {
-    "solve the game" in {
+    "solve the game" in new AiTicTacToeExpectedStats {
       val game = new BoardTicTacToe2() with AlphaBetaTransposition
-      val score = game.solve
+      val score: Score = game.solve
       score shouldEqual 0
       game.depth shouldEqual 0
+      expAlphaBetaTTTrait(game.Stats.totalCalls, game.Stats.cacheHits, game.transpositions.size)
     }
     "have first move" in {
       val game = new BoardTicTacToe2() with AlphaBetaTransposition
@@ -38,9 +39,10 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
   }
 
   "BoardTicTacToe Alpha Beta with Transposition" should {
-    "draw the game" in {
+    "draw the game" in new AiTicTacToeExpectedStats {
       val game = new BoardTicTacToe with AlphaBetaTransposition
       game.solve shouldBe 0
+      expAlphaBetaTTTrait(game.Stats.totalCalls, game.Stats.cacheHits, game.transpositions.size)
     }
 
     "solve the game" in {

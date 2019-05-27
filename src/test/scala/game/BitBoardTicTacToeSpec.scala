@@ -1,5 +1,6 @@
 package game
 
+import ai.AiTicTacToeExpectedStats
 import ai.old.drafts
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
@@ -13,7 +14,7 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
     "in progress" in {
       val game = new BitBoardTicTacToe()
 
-      game.gameEnded(0) should be(false)
+      game.gameEnded(0) shouldBe false
     }
 
     "playMove/undoMove" should {
@@ -102,12 +103,14 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
       game.playMove((0,2), 1) shouldBe true
       game.playMove((1,0), 2) shouldBe true
       game.gameEnded() shouldBe false
+      game.depth shouldEqual 4
       game.score() shouldBe 0
     }
 
-    "draw (drafts)" in {
+    "draw (drafts)" in new AiTicTacToeExpectedStats {
       val game = new BitBoardTicTacToe
       drafts.alphaBetaBit(game) shouldBe 0.0
+      expAlphaBeta()
     }
 
     for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {

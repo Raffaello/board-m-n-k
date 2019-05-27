@@ -9,11 +9,11 @@ class BoardMNKSpec extends WordSpec with Matchers {
   "3x3x3 board (alias BoardTicTacToe)" must {
     "P1 win" in {
       val game = new BoardTicTacToe()
-      game.playMove((0, 0), 1)
-      game.playMove((1, 1), 2)
-      game.playMove((0, 1), 1)
-      game.playMove((1, 0), 2)
-      game.playMove((0, 2), 1)
+      game.playMove((0, 0), 1) shouldBe true
+      game.playMove((1, 1), 2) shouldBe true
+      game.playMove((0, 1), 1) shouldBe true
+      game.playMove((1, 0), 2) shouldBe true
+      game.playMove((0, 2), 1) shouldBe true
 
       game.depth shouldBe 5
       game.gameEnded() shouldEqual true
@@ -27,12 +27,12 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
     "P2 win" in {
       val game = new BoardTicTacToe()
-      game.playMove((0, 0), 1)
-      game.playMove((1, 1), 2)
-      game.playMove((2, 0), 1)
-      game.playMove((1, 0), 2)
-      game.playMove((0, 2), 1)
-      game.playMove((1, 2), 2)
+      game.playMove((0, 0), 1) shouldBe true
+      game.playMove((1, 1), 2) shouldBe true
+      game.playMove((2, 0), 1) shouldBe true
+      game.playMove((1, 0), 2) shouldBe true
+      game.playMove((0, 2), 1) shouldBe true
+      game.playMove((1, 2), 2) shouldBe true
 
       game.depth shouldBe 6
       game.gameEnded() shouldEqual true
@@ -45,15 +45,15 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
     "STALE" in {
       val game = new BoardTicTacToe()
-      game.playMove((0, 0), 1)
-      game.playMove((0, 1), 2)
-      game.playMove((0, 2), 1)
-      game.playMove((1, 1), 2)
-      game.playMove((1, 0), 1)
-      game.playMove((2, 2), 2)
-      game.playMove((1, 2), 1)
-      game.playMove((2, 0), 2)
-      game.playMove((2, 1), 1)
+      game.playMove((0, 0), 1) shouldBe true
+      game.playMove((0, 1), 2) shouldBe true
+      game.playMove((0, 2), 1) shouldBe true
+      game.playMove((1, 1), 2) shouldBe true
+      game.playMove((1, 0), 1) shouldBe true
+      game.playMove((2, 2), 2) shouldBe true
+      game.playMove((1, 2), 1) shouldBe true
+      game.playMove((2, 0), 2) shouldBe true
+      game.playMove((2, 1), 1) shouldBe true
 
       game.depth shouldBe 9
       game.gameEnded() shouldEqual true
@@ -66,11 +66,11 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
     "P1 win diagonalTL" in {
       val game = new BoardTicTacToe()
-      game.playMove((0, 0), 1)
-      game.playMove((0, 1), 2)
-      game.playMove((1, 1), 1)
-      game.playMove((1, 0), 2)
-      game.playMove((2, 2), 1)
+      game.playMove((0, 0), 1) shouldBe true
+      game.playMove((0, 1), 2) shouldBe true
+      game.playMove((1, 1), 1) shouldBe true
+      game.playMove((1, 0), 2) shouldBe true
+      game.playMove((2, 2), 1) shouldBe true
 
       game.depth shouldBe 5
       game.gameEnded() shouldEqual true
@@ -83,11 +83,11 @@ class BoardMNKSpec extends WordSpec with Matchers {
 
     "P1 win diagonalBR" in {
       val game = new BoardTicTacToe()
-      game.playMove((2, 0), 1)
-      game.playMove((0, 1), 2)
-      game.playMove((1, 1), 1)
-      game.playMove((1, 0), 2)
-      game.playMove((0, 2), 1)
+      game.playMove((2, 0), 1) shouldBe true
+      game.playMove((0, 1), 2) shouldBe true
+      game.playMove((1, 1), 1) shouldBe true
+      game.playMove((1, 0), 2) shouldBe true
+      game.playMove((0, 2), 1) shouldBe true
 
       game.depth shouldBe 5
       game.gameEnded() shouldEqual true
@@ -113,18 +113,19 @@ class BoardMNKSpec extends WordSpec with Matchers {
   "4x3x3 board" must {
     "game status 121 221 201 001" in {
       val game = new BoardMNK(4, 3, 3)
-      game.playMove((0, 0), 1)
-      game.playMove((0, 1), 2)
-      game.playMove((0, 2), 1)
+      game.minWinDepth shouldBe 5
+      game.playMove((0, 0), 1) shouldBe true
+      game.playMove((0, 1), 2) shouldBe true
+      game.playMove((0, 2), 1) shouldBe true
 
-      game.playMove((1, 0), 2)
-      game.playMove((1, 2), 1)
-      game.playMove((1, 1), 2)
+      game.playMove((1, 0), 2) shouldBe true
+      game.playMove((1, 2), 1) shouldBe true
+      game.playMove((1, 1), 2) shouldBe true
 
-      game.playMove((3, 2), 1)
+      game.playMove((3, 2), 1) shouldBe true
 
-      game.playMove((2, 0), 2)
-      game.playMove((2, 2), 1)
+      game.playMove((2, 0), 2) shouldBe true
+      game.playMove((2, 2), 1) shouldBe true
 
       game.gameEnded(8) shouldEqual true
       game.score() shouldEqual 1

@@ -20,7 +20,7 @@ class PackageSpec extends FlatSpec with Matchers {
     val game = new BoardTicTacToe2() with TranspositionTable
     alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, (0, Int.MaxValue), isMaximizing = true)
 
-    expAlphaBetaWithMemStats(ai.Stats.totalCalls, ai.Stats.cacheHits, game.transpositions.size)
+    expAlphaBetaWithMemStats(game.transpositions.size)
     game.score() shouldBe 0.0
   }
 

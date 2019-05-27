@@ -7,8 +7,9 @@ class NegaMaxSpec extends WordSpec with Matchers {
 
   "TicTacToe2 negamax" should {
     val game = new BoardTicTacToe2() with NegaMax
-    "solve the game" in {
+    "solve the game" in new AiTicTacToeExpectedStats {
       game.solve shouldEqual 0
+      expNegamax(game.Stats.totalCalls)
     }
 
     "have first move" in {
@@ -25,9 +26,10 @@ class NegaMaxSpec extends WordSpec with Matchers {
   }
 
   "BoardTicTacToe negamax" should {
-    "solve the game" in {
+    "solve the game" in new AiTicTacToeExpectedStats {
       val game = new BoardTicTacToe with NegaMax
       game.solve shouldEqual 0
+      expNegamax(game.Stats.totalCalls)
     }
 
     "have first move" in {

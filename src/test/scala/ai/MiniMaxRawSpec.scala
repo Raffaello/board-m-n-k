@@ -12,10 +12,11 @@ class MiniMaxRawSpec extends WordSpec with Matchers {
       game.nextMove shouldEqual s
     }
 
-    "draw the game" in {
+    "draw the game" in new AiTicTacToeExpectedStats {
       val game = new BoardTicTacToe with MiniMaxRaw
       val score: Score = game.solve
       score shouldBe 0
+      expMiniMax(game.Stats.totalCalls)
     }
   }
 }

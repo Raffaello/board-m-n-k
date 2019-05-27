@@ -7,8 +7,9 @@ class MiniMaxSpec extends WordSpec with Matchers {
 
   "TicTacToe2 game with minimax" should {
     val game = new BoardTicTacToe2() with MiniMax
-    "solve the game" in {
+    "solve the game" in new AiTicTacToeExpectedStats {
       game.solve shouldEqual 0
+      expMiniMax(game.Stats.totalCalls)
     }
 
     "have first move" in {
@@ -24,9 +25,10 @@ class MiniMaxSpec extends WordSpec with Matchers {
   }
 
   "BoardTicTacToe with minimax" should {
-    "draw the game" in {
+    "draw the game" in new AiTicTacToeExpectedStats {
       val game = new BoardTicTacToe with MiniMax
       game.solve shouldEqual 0
+      expMiniMax(game.Stats.totalCalls)
     }
 
     "have first move" in {
