@@ -1,5 +1,6 @@
 package game
 
+import game.boards.concrete.BoardBitBoard
 import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 
@@ -7,60 +8,35 @@ import game.types.{BoardMNSize, Position}
   * TODO should extend BoardMNKP, but the code is not clean yet
   * TODO implement BoardBitBoard with numplayers... then refactor
   */
-class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardDepthAware with LastMoveTracker with BoardPlayers {
+class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard with BoardDepthAware with LastMoveTracker with BoardPlayers {
 
-  override protected def board: AnyRef = ???
-
-  override def generateMoves(): IndexedSeq[Position] = ???
-
-  val numPlayers: Player = 2
-
-  var _board: BitBoard = 0
-
-  override protected def board(pos: Position): Player = ???
-
-  override protected def board_=(pos: Position)(p: Player): Unit = ???
+  override val numPlayers: Player = 2
 
   protected val minWinDepth: Int = 5
 
-  def toStringArray: String = {
-    var str = ""
-    for {
-      i <- 0 until m
-      j <- 0 until n
-    } {
-      val v1 = (_board & boardValue(Position(i.toShort, j.toShort), 1)) > 0
-      val v2 = (_board & boardValue(Position(i.toShort, j.toShort), 2)) > 0
-      //      assert((v1 && !v2) || (!v1 && v2))
-      if (v1) str += "X"
-      else if (v2) str += "O"
-      else str += "_"
-    }
-
-    str
-  }
-
-  private[this] def boardValue(position: Position, player: Player): BitBoard = {
-    assert(position.row >= 0 && position.row < 3)
-    assert(position.col >= 0 && position.col < 3)
-    (1 << (position.row * m + position.col)) << mn * (player - 1)
-  }
-
-  private[this] def boardValueCheck(position: Position): BitBoard = {
-    assert(position.row >= 0 && position.row < 3)
-    assert(position.col >= 0 && position.col < 3)
-
-    var sum = 0
-    for (p <- 1 to numPlayers) sum += boardValue(position, p.toByte)
-    sum
-  }
+//  def toStringArray: String = {
+//    var str = ""
+//    for {
+//      i <- 0 until m
+//      j <- 0 until n
+//    } {
+//      val v1 = (_board & boardValue(Position(i.toShort, j.toShort), 1)) > 0
+//      val v2 = (_board & boardValue(Position(i.toShort, j.toShort), 2)) > 0
+//      //      assert((v1 && !v2) || (!v1 && v2))
+//      if (v1) str += "X"
+//      else if (v2) str += "O"
+//      else str += "_"
+//    }
+//
+//    str
+//  }
 
   override def playMove(position: Position, player: Player): Boolean = {
     val value: BitBoard = boardValue(position, player)
 
-    if ((_board & boardValueCheck(position)) > 0) false
+    if (board(position) > 0) false
     else {
-      _board ^= value
+      board_=(position)(player)
       freePositions -= 1
       _depth += 1
       _lastMove = position
@@ -70,10 +46,9 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardDepthAware 
   }
 
   override def undoMove(position: Position, player: Player): Boolean = {
-    val value: BitBoard = boardValue(position, player)
 
-    if ((_board & boardValueCheck(position)) > 0) {
-      _board ^= value
+    if (board(position) > 0) {
+      board(position)(player)
       freePositions += 1
       _depth -= 1
       true

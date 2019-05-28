@@ -1,23 +1,20 @@
 package game
 
 import game.boards.concrete.Board1dArray
-import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
+import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 
 /**
   * TODO: DRAFT extends BoardMNK
   */
-class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray with LastMoveTracker with BoardDepthAware {
+class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray with LastMoveTracker with BoardDepthAware with BoardPlayers {
+  override val numPlayers: Player = 2
 
   override def display(): String = ???
 
   protected val minWinDepth: Int = 5
 
   val m2 = m * 2
-
-  protected var _lastPlayer: Byte = 2
-
-  def lastPlayer: Byte = this._lastPlayer
 
   override def playMove(position: Position, player: Byte): Boolean = {
     val (row, col) = (position.row, position.col)
@@ -52,9 +49,6 @@ class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray
   def opponent(player: Player): Player = ???
 
   def nextPlayer(): Player = ???
-
-
-  override def consumeMoves()(f: Position => Unit): Unit = ??? //generateMoves().foreach(f)
 
   protected def scoreRow(row: Int): Int = {
     val i = row * m

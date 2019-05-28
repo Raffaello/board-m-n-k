@@ -12,7 +12,7 @@ trait Board1dArray extends BoardMNType1dArray with BoardT with BoardMovesGenerat
 
   private[this] def boardOffset(pos: Position): Int = mLookups(pos.row) + pos.col
 
-  protected def board(pos: Position): Byte = {
+  protected def board(pos: Position): Player = {
     // TODO look up i*m as a im
     _board(boardOffset(pos))
   }
