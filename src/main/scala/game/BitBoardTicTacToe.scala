@@ -4,7 +4,8 @@ import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 
 /**
-  * TODO should extend BoardMNK, but the code is not clean yet
+  * TODO should extend BoardMNKP, but the code is not clean yet
+  * TODO implement BoardBitBoard with numplayers... then refactor
   */
 class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardDepthAware with LastMoveTracker {
 
@@ -24,7 +25,7 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardDepthAware 
 
   def lastPlayer: Byte = this._lastPlayer
 
-  protected val minWinDepth: Int = 5 //(2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
+  protected val minWinDepth: Int = 5
 
   def toStringArray: String = {
     var str = ""

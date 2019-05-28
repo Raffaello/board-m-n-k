@@ -1,16 +1,14 @@
 package game.boards.concrete
 
 import cats.implicits._
-import game.boards.{BoardMoves, BoardT}
+import game.Player
+import game.boards.{BoardMovesGenerator, BoardT}
 import game.types.{BoardMNType1dArray, Position}
-import game.{Board1d, Player}
 
 /**
   * TODO the Position of the board can be stored and reused, are always the same n*m classes... consideration.
   */
-trait Board1dArray extends BoardMNType1dArray with BoardT with BoardMoves {
-
-  override protected def board: Board1d = _board
+trait Board1dArray extends BoardMNType1dArray with BoardT with BoardMovesGenerator {
 
   private[this] def boardOffset(pos: Position): Int = mLookups(pos.row) + pos.col
 

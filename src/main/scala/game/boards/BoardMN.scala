@@ -2,7 +2,9 @@ package game.boards
 
 import game.types.{BoardMNSize, BoardMNType, Position}
 
-abstract class BoardMN(boardMNSize: BoardMNSize) extends GameBoard with BoardT with BoardMNType with BoardMoves {
+abstract class BoardMN(boardMNSize: BoardMNSize) extends GameBoard with BoardT with BoardMNType
+  with BoardMovesGenerator with BoardMovesConsumer {
+
   @inline val m: Short = boardMNSize.m
   @inline val n: Short = boardMNSize.n
 
@@ -11,5 +13,6 @@ abstract class BoardMN(boardMNSize: BoardMNSize) extends GameBoard with BoardT w
 
   def consumeMoves()(f: Position => Unit): Unit = generateMoves().foreach(f)
 
+  // TODO remove and move into a trait
   def stdoutPrintln(): Unit = println(display())
 }

@@ -2,7 +2,7 @@ package game
 
 import cats.implicits._
 import game.boards.concrete.Board2dArray
-import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
+import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 
 /**
@@ -10,7 +10,7 @@ import game.types.{BoardMNSize, Position}
   * TODO Board2dArray has to be a type of boards not a with trait
   */
 class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) extends BoardMN(boardMNSize)
-  with BoardDepthAware with LastMoveTracker with Board2dArray {
+  with BoardDepthAware with LastMoveTracker with Board2dArray with BoardPlayers {
 
   require(k <= m || k <= n)
   require(numPlayers >= 2)
@@ -18,10 +18,6 @@ class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) ex
   protected val k1: Short = (k - 1).toShort
 
   final val minWinDepth: Int = numPlayers * k1 + 1 //(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
-
-  protected var _lastPlayer: Byte = numPlayers
-
-  def lastPlayer: Byte = this._lastPlayer
 
   def playMove(position: Position, player: Byte): Boolean = {
     require(player >= 1 && player <= numPlayers)
