@@ -5,7 +5,7 @@ import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 
 /**
-  * TODO: DRAFT extends BoardMNKP
+  * TODO: DRAFT extends BoardMNK
   */
 class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray with LastMoveTracker with BoardDepthAware {
 
