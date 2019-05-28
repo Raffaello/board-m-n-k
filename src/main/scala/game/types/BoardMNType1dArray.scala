@@ -11,6 +11,7 @@ trait BoardMNType1dArray extends BoardMNType {
 
   val mIndices: NumericRange[Short] = NumericRange[Short](0, m, 1)
   val nIndices: NumericRange[Short] = NumericRange[Short](0, n, 1)
+  val mnIndices: Range = 0 to mn
   val mLookups: NumericRange[Int] = NumericRange[Int](0, mn, m)
 
 }

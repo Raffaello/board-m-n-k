@@ -4,30 +4,33 @@ import cats.implicits._
 import game.boards.BoardT
 import game.types.{BoardMNType1dArray, Position}
 
+/**
+  * TODO the Position of the board can be stored and reused, are always the same n*m classes... consideration.
+  */
 trait Board1dArray extends BoardMNType1dArray with BoardT {
 
   override def display(): String = ???
 
   override protected def board: Board1d = _board
 
+  private[this] def boardOffset(pos: Position): Int = mLookups(pos.row) + pos.col
+
   protected def board(pos: Position): Byte = {
     // TODO look up i*m as a im
-    _board(mLookups(pos.row) + pos.col)
+    _board(boardOffset(pos))
   }
 
-  protected def board_=(pos: Position)(p: Player): Unit = {
-    val (i, j) = (pos.row, pos.col)
-    _board(i * m + j) = p
-  }
+  protected def board_=(pos: Position)(p: Player): Unit = _board(boardOffset(pos)) = p
 
   def generateMoves(): IndexedSeq[Position] = {
     for {
       i <- mIndices
       j <- nIndices
-      if _board(i * m + j) === 0
+      if _board(boardOffset(Position(i, j))) === 0
     } yield Position(i, j)
+//    for {
+//      i <- mnIndices
+//      if _board(i) === 0
+//    } yield Position((i/m).toShort, (i%m).toShort)
   }
-
-
-  //  override def flatten: Board1d = _board
 }

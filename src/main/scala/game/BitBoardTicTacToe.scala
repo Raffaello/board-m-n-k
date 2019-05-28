@@ -1,14 +1,15 @@
 package game
 
-import game.boards.{BoardT, GameBoard}
-import game.types.Position
+import game.boards.BoardMN
+import game.types.{BoardMNSize, Position}
 
-class BitBoardTicTacToe extends GameBoard with BoardT {
+/**
+  * TODO should extend BoardMNK, but the code is not clean yet
+  */
+class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) {
 
   override def generateMoves(): IndexedSeq[Position] = ???
 
-  val m = 3
-  val n = 3
   val mn = m * n
   val numPlayers: Player = 2
 

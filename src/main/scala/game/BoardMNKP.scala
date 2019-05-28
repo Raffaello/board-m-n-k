@@ -5,8 +5,8 @@ import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 
 /**
-  * TODO Board2fArray trait should not be included here... remove it later.
-  * TODO Board2Array has to be a type of boards not a with trait
+  * TODO Board2dArray trait should not be included here... remove it later.
+  * TODO Board2dArray has to be a type of boards not a with trait
   */
 class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) extends BoardMN(boardMNSize)
   with BoardDepthAware with LastMoveTracker with Board2dArray {
