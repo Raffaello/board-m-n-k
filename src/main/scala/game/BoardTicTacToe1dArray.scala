@@ -1,5 +1,6 @@
 package game
 
+import game.boards.concrete.Board1dArray
 import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 
@@ -8,8 +9,9 @@ import game.types.{BoardMNSize, Position}
   */
 class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray with LastMoveTracker with BoardDepthAware {
 
+  override def display(): String = ???
+
   protected val minWinDepth: Int = 5
-  protected var freePositions: Int = m * n
 
   val m2 = m * 2
 

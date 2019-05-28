@@ -1,16 +1,17 @@
 package game
 
-import game.boards.BoardMN
+import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 
 /**
   * TODO should extend BoardMNK, but the code is not clean yet
   */
-class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) {
+class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardDepthAware with LastMoveTracker {
+
+  override protected def board: AnyRef = ???
 
   override def generateMoves(): IndexedSeq[Position] = ???
 
-  val mn = m * n
   val numPlayers: Player = 2
 
   var _board: BitBoard = 0
@@ -20,10 +21,10 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) {
   override protected def board_=(pos: Position)(p: Player): Unit = ???
 
   protected var _lastPlayer: Byte = numPlayers
-  protected val minWinDepth: Int = 4 //(2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
-  protected var _depth: Int = 0
-  protected var freePositions: Int = m * n
-  protected var _lastMove: Position = Position(0, 0)
+
+  def lastPlayer: Byte = this._lastPlayer
+
+  protected val minWinDepth: Int = 5 //(2 * k) - 2 // 2*(k-1) // 2*k1 // zero-based depth require to subtract 1 extra more
 
   def toStringArray: String = {
     var str = ""
@@ -41,10 +42,6 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) {
 
     str
   }
-
-  def depth: Int = _depth
-
-  def lastPlayer: Byte = this._lastPlayer
 
   private[this] def boardValue(position: Position, player: Player): BitBoard = {
     assert(position.row >= 0 && position.row < 3)
@@ -97,9 +94,6 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) {
   override def nextPlayer(): Player = ???
 
   override def display(): String = ???
-
-  override def consumeMoves()(f: Position => Unit): Unit = ??? //generateMoves().foreach(f)
-
 
   protected def scoreDiagsTL(): Int = {
     // 1 0 0 | 0 1 0 | 0 0 1 || 1 0 0 | 0 1 0 | 0 0 1

@@ -1,15 +1,14 @@
-package game
+package game.boards.concrete
 
 import cats.implicits._
-import game.boards.BoardT
+import game.boards.{BoardMoves, BoardT}
 import game.types.{BoardMNType1dArray, Position}
+import game.{Board1d, Player}
 
 /**
   * TODO the Position of the board can be stored and reused, are always the same n*m classes... consideration.
   */
-trait Board1dArray extends BoardMNType1dArray with BoardT {
-
-  override def display(): String = ???
+trait Board1dArray extends BoardMNType1dArray with BoardT with BoardMoves {
 
   override protected def board: Board1d = _board
 
@@ -28,9 +27,9 @@ trait Board1dArray extends BoardMNType1dArray with BoardT {
       j <- nIndices
       if _board(boardOffset(Position(i, j))) === 0
     } yield Position(i, j)
-//    for {
-//      i <- mnIndices
-//      if _board(i) === 0
-//    } yield Position((i/m).toShort, (i%m).toShort)
+    //    for {
+    //      i <- mnIndices
+    //      if _board(i) === 0
+    //    } yield Position((i/m).toShort, (i%m).toShort)
   }
 }

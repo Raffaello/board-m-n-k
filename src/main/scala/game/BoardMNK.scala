@@ -157,4 +157,29 @@ class BoardMNK(boardMNSize: BoardMNSize, k: Short) extends BoardMNKPLookUp(board
       else 0
     } else 0
   }
+
+  override def display(): String = {
+    val str: StringBuilder = new StringBuilder()
+    val newLine = sys.props("line.separator")
+
+    def value(p: Byte): Char = {
+      p match {
+        case 0 => '_'
+        case 1 => 'X'
+        case 2 => 'O'
+        case _ => ???
+      }
+    }
+
+    for (i <- mIndices) {
+      for (j <- 0 until n - 1) {
+        str ++= s" ${value(board(Position(i.toShort, j.toShort)))} |"
+      }
+
+      str ++= s" ${value(board(Position(i.toShort, (n - 1).toShort)))}" + newLine
+    }
+
+    str ++= newLine
+    str.toString()
+  }
 }

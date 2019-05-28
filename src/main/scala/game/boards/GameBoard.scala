@@ -20,6 +20,4 @@ trait GameBoard {
   def nextPlayer(): Byte
 
   def display(): String
-
-  def consumeMoves()(f: Position => Unit): Unit
 }

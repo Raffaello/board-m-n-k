@@ -1,6 +1,7 @@
 package game
 
 import cats.implicits._
+import game.boards.concrete.Board2dArray
 import game.boards.{BoardDepthAware, BoardMN, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 
@@ -13,8 +14,6 @@ class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) ex
 
   require(k <= m || k <= n)
   require(numPlayers >= 2)
-
-  protected var freePositions: Int = m * n
 
   protected val k1: Short = (k - 1).toShort
 
@@ -78,4 +77,6 @@ class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) ex
   }
 
   def nextPlayer(): Byte = opponent(lastPlayer)
+
+  override def display(): String = ???
 }

@@ -4,6 +4,7 @@ import ai.AiBoard
 import ai.mcts.tree.Tree
 import cats.implicits._
 import game._
+import game.boards.concrete.Board2dArray
 import game.types.Position
 
 import scala.util.Random
