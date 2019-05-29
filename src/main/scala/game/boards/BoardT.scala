@@ -6,7 +6,7 @@ import game.types.Position
 // TODO use a type class?
 //trait BoardT[T <: BoardMNType] {
 trait BoardT {
-  protected def board(pos: Position): Player
+  protected def boardPlayer(pos: Position): Player
 
-  protected def board_=(pos: Position)(p: Player): Unit
+  protected def boardPlayer_=(pos: Position)(p: Player): Unit
 }

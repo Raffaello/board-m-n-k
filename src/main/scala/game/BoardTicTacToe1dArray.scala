@@ -16,11 +16,11 @@ class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray
 
   val m2 = m * 2
 
+  // TODO not vey elegant this block of code... ??
   override def playMove(position: Position, player: Byte): Boolean = {
-    val (row, col) = (position.row, position.col)
-    if (_board(row * m + col) > 0) false
+    if (boardPlayer(position) > 0) false
     else {
-      _board(row * m + col) = player
+      boardPlayer_=(position)(player)
       freePositions -= 1
       _depth += 1
       _lastMove = position
@@ -30,10 +30,8 @@ class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray
   }
 
   override def undoMove(position: Position, player: Player): Boolean = {
-    val (i, j) = (position.row, position.col)
-
-    if (_board(i * m + j) == player) {
-      _board(i * m + j) = 0
+    if (boardPlayer(position) == player) {
+      boardPlayer_=(position)(player)
       freePositions += 1
       _depth -= 1
       true
@@ -51,23 +49,23 @@ class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray
   def nextPlayer(): Player = ???
 
   protected def scoreRow(row: Int): Int = {
-    val i = row * m
-    if (_board(i) == _board(i + 1) && _board(i) == _board(i + 2)) _board(i)
+    val i = mLookups(row)
+    if (board(i) == board(i + 1) && board(i) == board(i + 2)) board(i)
     else 0
   }
 
   protected def scoreCol(col: Short): Int = {
-    if (_board(col) == _board(m + col) && _board(col) == _board(m2 + col)) _board(col)
+    if (board(col) == board(m + col) && board(col) == board(m2 + col)) board(col)
     else 0
   }
 
   protected def scoreDiagsTL(): Int = {
-    if (_board(0) == _board(m + 1) && _board(0) == _board(m2 + 2)) _board(0)
+    if (board(0) == board(m + 1) && board(0) == board(m2 + 2)) board(0)
     else 0
   }
 
   protected def scoreDiagsBR(): Int = {
-    if (_board(m2) == _board(m + 1) && _board(m2) == _board(2)) _board(2)
+    if (board(m2) == board(m + 1) && board(m2) == board(2)) board(2)
     else 0
   }
 

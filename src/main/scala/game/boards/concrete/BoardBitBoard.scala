@@ -24,21 +24,21 @@ trait BoardBitBoard extends BoardMNTypeBitBoard with BoardT with BoardMovesGener
   //    }
   //  }
 
-  override protected def board(pos: Position): Player = {
+  override protected def boardPlayer(pos: Position): Player = {
     val v = boardValue(pos)
-    _board.zipWithIndex.collectFirst{ case (b, i) if (b & v) === v => i} match {
+    board.zipWithIndex.collectFirst{ case (b, i) if (b & v) === v => i} match {
       case None => 0.toByte
       case Some(i) => i.toByte
     }
   }
 
-  override protected def board_=(pos: Position)(p: Player): Unit = _board(p) ^= boardValue(pos)
+  override protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(p) ^= boardValue(pos)
 
   override def generateMoves(): IndexedSeq[Position] = {
       for {
         i <- mIndices
         j <- nIndices
-        if _board(boardValue(Position(i, j))) === 0
+        if board(boardValue(Position(i, j))) === 0
       } yield Position(i, j)
   }
 }

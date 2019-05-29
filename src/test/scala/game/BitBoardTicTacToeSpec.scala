@@ -2,6 +2,7 @@ package game
 
 import ai.AiTicTacToeExpectedStats
 import ai.old.Drafts
+import game.boards.concrete.BoardBitBoard
 import game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
@@ -10,6 +11,10 @@ import org.scalatest.{Matchers, WordSpec}
 import scala.collection.immutable.NumericRange
 
 class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenPropertyChecks {
+
+  sealed trait getBoard extends BoardBitBoard {
+    override  def board: BitBoardPlayers = super.board
+  }
 
   "A Game" should {
     "in progress" in {
@@ -21,43 +26,43 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
     "playMove/undoMove" should {
       "p1" in {
         val p: Player = 1.toByte
-        val game = new BitBoardTicTacToe
+        val game = new BitBoardTicTacToe  with getBoard
         game.playMove(Position(0, 0), p) shouldBe true
-        game._board shouldBe 1
+        game.board shouldBe 1
         game.undoMove(Position(0, 0), p) shouldBe true
-        game._board shouldBe 0
+        game.board shouldBe 0
       }
 
       "p2" in {
         val p: Player = 2.toByte
-        val game = new BitBoardTicTacToe
+        val game = new BitBoardTicTacToe  with getBoard
         game.playMove(Position(0, 0), p) shouldBe true
-        game._board shouldBe 1 << 9
+        game.board shouldBe 1 << 9
         game.undoMove(Position(0, 0), p) shouldBe true
-        game._board shouldBe 0
+        game.board shouldBe 0
       }
 
       "be valid always" in {
         val ps = for (i <- Gen.choose[Byte](1, 2)) yield i
         val ms = for (i <- Gen.choose[Short](0, 2)) yield i
         val ns = for (i <- Gen.choose[Short](0, 2)) yield i
-        val game = new BitBoardTicTacToe
+        val game = new BitBoardTicTacToe  with getBoard
 
         forAll(ps, ns, ms) { (p: Player, n: Short, m: Short) =>
           val pos: Position = Position(m, n)
           game.playMove(pos, p) shouldBe true
 
-          val pBoard: BitBoard = game._board >> 9 * (p - 1)
+          val pBoard: BitBoard = game.board(p-1) >> 9
           // (0,0) 0 (0,1) 1 (0,2) 2
           // (1,0) 3       4       5
           // (2,0) 6 (2,1) 7 (2,2) 8
           val bit = 1 << (m * 3 + n)
 
           pBoard shouldBe bit
-          game._board shouldBe (bit << 9 * (p - 1))
+          game.board(p-1) shouldBe (bit << 9)
 
           game.undoMove(pos, p) shouldBe true
-          game._board shouldBe 0
+          game.board shouldBe 0
         }
       }
     }

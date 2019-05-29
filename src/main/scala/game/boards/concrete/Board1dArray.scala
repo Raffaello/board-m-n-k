@@ -12,18 +12,18 @@ trait Board1dArray extends BoardMNType1dArray with BoardT with BoardMovesGenerat
 
   private[this] def boardOffset(pos: Position): Int = mLookups(pos.row) + pos.col
 
-  protected def board(pos: Position): Player = {
+  protected def boardPlayer(pos: Position): Player = {
     // TODO look up i*m as a im
-    _board(boardOffset(pos))
+    board(boardOffset(pos))
   }
 
-  protected def board_=(pos: Position)(p: Player): Unit = _board(boardOffset(pos)) = p
+  protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(boardOffset(pos)) = p
 
   def generateMoves(): IndexedSeq[Position] = {
     for {
       i <- mIndices
       j <- nIndices
-      if _board(boardOffset(Position(i, j))) === 0
+      if board(boardOffset(Position(i, j))) === 0
     } yield Position(i, j)
     //    for {
     //      i <- mnIndices

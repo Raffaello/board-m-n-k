@@ -21,9 +21,9 @@ class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) ex
 
   def playMove(position: Position, player: Byte): Boolean = {
     require(player >= 1 && player <= numPlayers)
-    if (board(position) > 0) false
+    if (boardPlayer(position) > 0) false
     else {
-      board_=(position)(player)
+      boardPlayer_=(position)(player)
       freePositions -= 1
       _depth += 1
       _lastMove = position
@@ -34,8 +34,8 @@ class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) ex
 
   def undoMove(position: Position, player: Byte): Boolean = {
 
-    if (board(position) === player) {
-      board_=(position)(0)
+    if (boardPlayer(position) === player) {
+      boardPlayer_=(position)(0)
       freePositions += 1
       _depth -= 1
       true

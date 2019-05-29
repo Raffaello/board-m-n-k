@@ -32,11 +32,9 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard wi
 //  }
 
   override def playMove(position: Position, player: Player): Boolean = {
-    val value: BitBoard = boardValue(position, player)
-
-    if (board(position) > 0) false
+    if (boardPlayer(position) > 0) false
     else {
-      board_=(position)(player)
+      boardPlayer_=(position)(player)
       freePositions -= 1
       _depth += 1
       _lastMove = position
@@ -46,9 +44,8 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard wi
   }
 
   override def undoMove(position: Position, player: Player): Boolean = {
-
-    if (board(position) > 0) {
-      board(position)(player)
+    if (boardPlayer(position) > 0) {
+      boardPlayer_=(position)(player)
       freePositions += 1
       _depth -= 1
       true
@@ -71,8 +68,8 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard wi
     // 1 0 0 | 0 1 0 | 0 0 1 || 1 0 0 | 0 1 0 | 0 0 1
     // 1 + 16 + 255 || 2^9 + 2^13 + 2^17
     //  273 p1  || 139776 p2
-    if ((_board & 273) == 273) 1
-    else if ((_board & 139776) == 139776) 2
+    if ((board(0) & 273) == 273) 1
+    else if ((board(1) & 273) == 273) 2
     else 0
   }
 
@@ -80,16 +77,16 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard wi
     // 0 0 1 | 0 1 0 | 1 0 0 || 0 0 1 | 0 1 0 | 1 0 0
     // 4 + 16 + 64 || 2^11 + 2^13 + 2^15
     //  84 p1  || 43008 p2
-    if ((_board & 84) == 84) 1
-    else if ((_board & 43008) == 43008) 2
+    if ((board(0) & 84) == 84) 1
+    else if ((board(1) & 84) == 84) 2
     else 0
   }
 
   def scoreRows: Int = {
     // 1 1 1 || 1 1 1
     // 1+2+4 ||
-    if ((_board & 7) == 7 || (_board & 56) == 56 || (_board & 448) == 448) 1
-    else if ((_board & 3584) == 3584 || (_board & 28672) == 28672 || (_board & 229376) == 229376) 2
+    if ((board(0) & 7) == 7 || (board(0) & 56) == 56 || (board(0) & 448) == 448) 1
+    else if ((board(1) & 7) == 7 || (board(1) & 56) == 56 || (board(1) & 448) == 448) 2
     else 0
   }
 
@@ -99,8 +96,8 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard wi
     // 0 0 1 | 0 0 1 | 0 0 1
     // 0 0 0   0 0 0   0 0 0 1 0 0 1 0 0 1 0 0
     // 1 + 8 + 64 = 73
-    if ((_board & 73) == 73 || (_board & 146) == 146 || (_board & 292) == 292) 1
-    else if ((_board & 37376) == 37376 || (_board & 74752) == 74752 || (_board & 149504) == 149504) 2
+    if ((board(0) & 73) == 73 || (board(0) & 146) == 146 || (board(0) & 292) == 292) 1
+    else if ((board(1) & 73) == 73 || (board(1) & 146) == 146 || (board(1) & 146) == 146) 2
     else 0
   }
 

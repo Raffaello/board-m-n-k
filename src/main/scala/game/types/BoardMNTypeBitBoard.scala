@@ -7,7 +7,7 @@ import game.boards.BoardPlayers
   * TODO need numplayers...
   */
 trait BoardMNTypeBitBoard extends BoardMNType with BoardPlayers {
-  var _board: BitBoardPlayers = Array.ofDim(numPlayers)
+  private[this] var _board: BitBoardPlayers = Array.ofDim(numPlayers)
 
   override protected def board: BitBoardPlayers = _board
 
