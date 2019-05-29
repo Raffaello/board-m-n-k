@@ -13,9 +13,11 @@ import scala.collection.immutable.NumericRange
 class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenPropertyChecks {
 
   sealed trait getBoard extends BoardBitBoard {
-    override  def board: BitBoardPlayers = super.board
-  }
+    override def board: BitBoardPlayers = super.board
 
+    override def boardPlayer(pos: Position): Player = super.boardPlayer(pos)
+  }
+  
   "A Game" should {
     "in progress" in {
       val game = new BitBoardTicTacToe()
@@ -24,45 +26,42 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
     }
 
     "playMove/undoMove" should {
-      "p1" in {
-        val p: Player = 1.toByte
-        val game = new BitBoardTicTacToe  with getBoard
-        game.playMove(Position(0, 0), p) shouldBe true
-        game.board shouldBe 1
-        game.undoMove(Position(0, 0), p) shouldBe true
-        game.board shouldBe 0
-      }
-
-      "p2" in {
-        val p: Player = 2.toByte
-        val game = new BitBoardTicTacToe  with getBoard
-        game.playMove(Position(0, 0), p) shouldBe true
-        game.board shouldBe 1 << 9
-        game.undoMove(Position(0, 0), p) shouldBe true
-        game.board shouldBe 0
+      for(p: Player <- NumericRange[Byte](1, 2, 1)) {
+        s"p$p" in {
+          val game = new BitBoardTicTacToe with getBoard
+          val pos = Position(0, 0)
+          game.playMove(pos, p) shouldBe true
+          game.boardPlayer(pos) shouldBe p
+          game.undoMove(pos, p) shouldBe true
+          game.boardPlayer(pos) shouldBe 0
+        }
       }
 
       "be valid always" in {
+        val emptyBoard: BitBoardPlayers = Array.ofDim[BitBoard](2)
+
         val ps = for (i <- Gen.choose[Byte](1, 2)) yield i
         val ms = for (i <- Gen.choose[Short](0, 2)) yield i
         val ns = for (i <- Gen.choose[Short](0, 2)) yield i
-        val game = new BitBoardTicTacToe  with getBoard
+        val game = new BitBoardTicTacToe with getBoard
 
-        forAll(ps, ns, ms) { (p: Player, n: Short, m: Short) =>
-          val pos: Position = Position(m, n)
-          game.playMove(pos, p) shouldBe true
+          forAll(ps, ns, ms) { (p: Player, n: Short, m: Short) =>
+//          whenever(p > 0)
+          { // <= this probably is a bug in scalacheck generator
+            game.depth shouldBe 0
+            game.board shouldBe emptyBoard
 
-          val pBoard: BitBoard = game.board(p-1) >> 9
-          // (0,0) 0 (0,1) 1 (0,2) 2
-          // (1,0) 3       4       5
-          // (2,0) 6 (2,1) 7 (2,2) 8
-          val bit = 1 << (m * 3 + n)
+            val pos: Position = Position(m, n)
+            game.playMove(pos, p) shouldBe true
 
-          pBoard shouldBe bit
-          game.board(p-1) shouldBe (bit << 9)
+            val bit = 1 << (m * 3 + n)
+            game.board(p - 1) shouldBe bit
+            game.boardPlayer(pos) shouldBe p
 
-          game.undoMove(pos, p) shouldBe true
-          game.board shouldBe 0
+            game.undoMove(pos, p) shouldBe true
+            game.board(p - 1) shouldBe 0
+            game.boardPlayer(pos) shouldBe 0
+          }
         }
       }
     }
@@ -95,7 +94,7 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
 
         s"be correct with diag NE" in {
           val game = new BitBoardTicTacToe
-          for (j <- 0 until 3) game.playMove(Position(j.toShort, (2-j).toShort), p.toByte) shouldBe true
+          for (j <- 0 until 3) game.playMove(Position(j.toShort, (2 - j).toShort), p.toByte) shouldBe true
           game.gameEnded() shouldBe true
           game.score() shouldBe s
         }
@@ -104,10 +103,10 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
 
     "not ended" in {
       val game = new BitBoardTicTacToe
-      game.playMove(Position(0,0), 1) shouldBe true
-      game.playMove(Position(0,1), 2) shouldBe true
-      game.playMove(Position(0,2), 1) shouldBe true
-      game.playMove(Position(1,0), 2) shouldBe true
+      game.playMove(Position(0, 0), 1) shouldBe true
+      game.playMove(Position(0, 1), 2) shouldBe true
+      game.playMove(Position(0, 2), 1) shouldBe true
+      game.playMove(Position(1, 0), 2) shouldBe true
       game.gameEnded() shouldBe false
       game.depth shouldEqual 4
       game.score() shouldBe 0
@@ -137,12 +136,12 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
           }
         }
 
-        "by cols" in {
-          for (j <- 0 until 3) {
+        for (j <- 0 until 3) {
+          s"by cols $j" in {
             val game = new BitBoardTicTacToe()
             for (i <- 0 until 3) game.playMove(Position(i.toShort, j.toShort), p)
-            game.gameEnded() should be(true)
-            game.score() should be(score)
+            game.gameEnded() shouldBe true
+            game.score() shouldBe score
           }
         }
 

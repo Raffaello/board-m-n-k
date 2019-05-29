@@ -10,10 +10,11 @@ trait BoardBitBoard extends BoardMNTypeBitBoard with BoardT with BoardMovesGener
   private[this] def boardValue(position: Position): BitBoard = {
     assert(position.row >= 0 && position.row < 3)
     assert(position.col >= 0 && position.col < 3)
-    (1 << (position.row * m + position.col)) << mn
+    // TODO mLookups
+    1 << (position.row * m + position.col)
   }
 
-//  private[this] def boardValueCheck(position: Position): BitBoard = {
+  //  private[this] def boardValueCheck(position: Position): BitBoard = {
   //    assert(position.row >= 0 && position.row < 3)
   //    assert(position.col >= 0 && position.col < 3)
   //    val v = boardValue(position)
@@ -26,19 +27,19 @@ trait BoardBitBoard extends BoardMNTypeBitBoard with BoardT with BoardMovesGener
 
   override protected def boardPlayer(pos: Position): Player = {
     val v = boardValue(pos)
-    board.zipWithIndex.collectFirst{ case (b, i) if (b & v) === v => i} match {
+    board.zipWithIndex.collectFirst { case (b, i) if (b & v) === v => i } match {
       case None => 0.toByte
-      case Some(i) => i.toByte
+      case Some(i) => (i + 1).toByte
     }
   }
 
   override protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(p) ^= boardValue(pos)
 
   override def generateMoves(): IndexedSeq[Position] = {
-      for {
-        i <- mIndices
-        j <- nIndices
-        if board(boardValue(Position(i, j))) === 0
-      } yield Position(i, j)
+    for {
+      i <- mIndices
+      j <- nIndices
+      if board(boardValue(Position(i, j))) === 0
+    } yield Position(i, j)
   }
 }

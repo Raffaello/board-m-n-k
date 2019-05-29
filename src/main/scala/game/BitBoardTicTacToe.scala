@@ -14,27 +14,29 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard wi
 
   protected val minWinDepth: Int = 5
 
-//  def toStringArray: String = {
-//    var str = ""
-//    for {
-//      i <- 0 until m
-//      j <- 0 until n
-//    } {
-//      val v1 = (_board & boardValue(Position(i.toShort, j.toShort), 1)) > 0
-//      val v2 = (_board & boardValue(Position(i.toShort, j.toShort), 2)) > 0
-//      //      assert((v1 && !v2) || (!v1 && v2))
-//      if (v1) str += "X"
-//      else if (v2) str += "O"
-//      else str += "_"
-//    }
-//
-//    str
-//  }
+  //  def toStringArray: String = {
+  //    var str = ""
+  //    for {
+  //      i <- 0 until m
+  //      j <- 0 until n
+  //    } {
+  //      val v1 = (_board & boardValue(Position(i.toShort, j.toShort), 1)) > 0
+  //      val v2 = (_board & boardValue(Position(i.toShort, j.toShort), 2)) > 0
+  //      //      assert((v1 && !v2) || (!v1 && v2))
+  //      if (v1) str += "X"
+  //      else if (v2) str += "O"
+  //      else str += "_"
+  //    }
+  //
+  //    str
+  //  }
 
   override def playMove(position: Position, player: Player): Boolean = {
+    assert(numPlayers > 0)
+    require(player >= 1 && player <= numPlayers)
     if (boardPlayer(position) > 0) false
     else {
-      boardPlayer_=(position)(player)
+      boardPlayer_=(position)((player - 1).toByte)
       freePositions -= 1
       _depth += 1
       _lastMove = position
@@ -45,7 +47,7 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard wi
 
   override def undoMove(position: Position, player: Player): Boolean = {
     if (boardPlayer(position) > 0) {
-      boardPlayer_=(position)(player)
+      boardPlayer_=(position)((player - 1).toByte)
       freePositions += 1
       _depth -= 1
       true
@@ -97,7 +99,7 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard wi
     // 0 0 0   0 0 0   0 0 0 1 0 0 1 0 0 1 0 0
     // 1 + 8 + 64 = 73
     if ((board(0) & 73) == 73 || (board(0) & 146) == 146 || (board(0) & 292) == 292) 1
-    else if ((board(1) & 73) == 73 || (board(1) & 146) == 146 || (board(1) & 146) == 146) 2
+    else if ((board(1) & 73) == 73 || (board(1) & 146) == 146 || (board(1) & 292) == 292) 2
     else 0
   }
 
