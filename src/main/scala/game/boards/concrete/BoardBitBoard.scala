@@ -7,30 +7,18 @@ import game.{BitBoard, Player}
 
 trait BoardBitBoard extends BoardMNTypeBitBoard with BoardT with BoardMovesGenerator {
 
-  private[this] def boardValue(position: Position): BitBoard = {
-    assert(position.row >= 0 && position.row < 3)
-    assert(position.col >= 0 && position.col < 3)
-    // TODO mLookups
-    1 << (position.row * m + position.col)
-  }
-
-  //  private[this] def boardValueCheck(position: Position): BitBoard = {
-  //    assert(position.row >= 0 && position.row < 3)
-  //    assert(position.col >= 0 && position.col < 3)
-  //    val v = boardValue(position)
-  //
-  //    board.find(bp => (bp & v) === 1) match {
-  //      case Some(board) => board
-  //      case None => 0
-  //    }
-  //  }
+  @inline
+  private[this] def boardValue(position: Position): BitBoard = 1 << (mLookups(position.row) + position.col)
 
   override protected def boardPlayer(pos: Position): Player = {
     val v = boardValue(pos)
-    board.zipWithIndex.collectFirst { case (b, i) if (b & v) === v => i } match {
-      case None => 0.toByte
-      case Some(i) => (i + 1).toByte
-    }
+    for {
+      p <- 0 until numPlayers
+      if (board(p) & v) === v
+    } return (p + 1).toByte
+
+    0.toByte
+//    board.zipWithIndex.collectFirst { case (b, i) if (b & v) === v => i + 1 }.getOrElse(0).toByte
   }
 
   override protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(p) ^= boardValue(pos)

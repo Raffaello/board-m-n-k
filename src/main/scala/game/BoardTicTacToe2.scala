@@ -19,7 +19,7 @@ class BoardTicTacToe2 extends BoardTicTacToe {
   }
 
   protected def scoreDiagsTL(): Int = {
-    if (boardPlayer(Position(0, 0)) === boardPlayer(Position(1, 1)) && boardPlayer(Position(0, 0)) === boardPlayer(Position(2, 2))) _board(0)(0)
+    if (boardPlayer(Position(0, 0)) === boardPlayer(Position(1, 1)) && boardPlayer(Position(0, 0)) === boardPlayer(Position(2, 2))) board(0)(0)
     else 0
   }
 

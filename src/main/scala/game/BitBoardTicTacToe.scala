@@ -14,23 +14,6 @@ class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard wi
 
   protected val minWinDepth: Int = 5
 
-  //  def toStringArray: String = {
-  //    var str = ""
-  //    for {
-  //      i <- 0 until m
-  //      j <- 0 until n
-  //    } {
-  //      val v1 = (_board & boardValue(Position(i.toShort, j.toShort), 1)) > 0
-  //      val v2 = (_board & boardValue(Position(i.toShort, j.toShort), 2)) > 0
-  //      //      assert((v1 && !v2) || (!v1 && v2))
-  //      if (v1) str += "X"
-  //      else if (v2) str += "O"
-  //      else str += "_"
-  //    }
-  //
-  //    str
-  //  }
-
   override def playMove(position: Position, player: Player): Boolean = {
     assert(numPlayers > 0)
     require(player >= 1 && player <= numPlayers)

@@ -10,7 +10,7 @@ import game.types.{BoardMNSize, Position}
   * TODO Board2dArray has to be a type of boards not a with trait
   */
 class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) extends BoardMN(boardMNSize)
-  with BoardDepthAware with LastMoveTracker with Board2dArray with BoardPlayers {
+  with BoardDepthAware with LastMoveTracker with BoardPlayers with Board2dArray {
 
   require(k <= m || k <= n)
   require(numPlayers >= 2)

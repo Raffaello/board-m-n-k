@@ -2,7 +2,7 @@ package ai
 
 import cats.implicits._
 import game.types.Position
-import game.{BoardMNK, Score, Status}
+import game.{Board2d, BoardMNK, Score, Status}
 
 /**
   * @deprecated
@@ -110,7 +110,7 @@ package object old {
                         beta: Double = Double.MaxValue,
                         maximizingPlayer: Boolean = true
                       ): old.Transposition = {
-    val transposition = statuses.get(game.board)
+    val transposition = statuses.get(game.board.asInstanceOf[Board2d])
 
     transposition match {
       case Some(t) =>
@@ -126,7 +126,7 @@ package object old {
           maximizingPlayer
         )
 
-        statuses.add(game.board, t)
+        statuses.add(game.board.asInstanceOf[Board2d], t)
         t
       case _ =>
         Stats.totalCalls += 1
@@ -147,7 +147,7 @@ package object old {
           }
 
           val t = Transposition(best, depth, a, beta, maximizingPlayer)
-          statuses.add(game.board, t)
+          statuses.add(game.board.asInstanceOf[Board2d], t)
           t
         } else {
           var best = Double.MaxValue
@@ -164,9 +164,9 @@ package object old {
               return t
             }
           }
-
+  
           val t = Transposition(best, depth, alpha, b, maximizingPlayer)
-          statuses.add(game.board, t)
+          statuses.add(game.board.asInstanceOf[Board2d], t)
           t
         }
     }

@@ -6,8 +6,8 @@ package object game {
   type Player = Byte
 
   // TODO remove Board Type definition... those should be abstract "Board".
-  type Board2d = Array[Array[Player]]
   type Board1d = Array[Player]
+  type Board2d = Array[Array[Player]]
   type BitBoard = Int
   type BitBoardPlayers = Array[BitBoard]
 }

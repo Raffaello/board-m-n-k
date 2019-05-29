@@ -3,12 +3,13 @@ package game.types
 import game.BitBoardPlayers
 import game.boards.BoardPlayers
 
-/**
-  * TODO need numplayers...
-  */
-trait BoardMNTypeBitBoard extends BoardMNType with BoardPlayers {
-  lazy private[this] val _board: BitBoardPlayers = Array.ofDim(numPlayers)
+import scala.collection.immutable.NumericRange
 
-  override protected def board: BitBoardPlayers = _board
+trait BoardMNTypeBitBoard extends BoardMNType with BoardPlayers {
+  type Board = BitBoardPlayers
+  lazy private[this] val _board: Board = Array.ofDim(numPlayers)
+  lazy val mLookups: NumericRange[Int] = NumericRange[Int](0, mn, m)
+
+  override protected def board: Board = _board
 
 }

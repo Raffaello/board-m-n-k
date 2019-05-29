@@ -10,12 +10,10 @@ import game.types.{BoardMNType1dArray, Position}
   */
 trait Board1dArray extends BoardMNType1dArray with BoardT with BoardMovesGenerator {
 
+  @inline
   private[this] def boardOffset(pos: Position): Int = mLookups(pos.row) + pos.col
 
-  protected def boardPlayer(pos: Position): Player = {
-    // TODO look up i*m as a im
-    board(boardOffset(pos))
-  }
+  protected def boardPlayer(pos: Position): Player = board(boardOffset(pos))
 
   protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(boardOffset(pos)) = p
 
@@ -25,9 +23,5 @@ trait Board1dArray extends BoardMNType1dArray with BoardT with BoardMovesGenerat
       j <- nIndices
       if board(boardOffset(Position(i, j))) === 0
     } yield Position(i, j)
-    //    for {
-    //      i <- mnIndices
-    //      if _board(i) === 0
-    //    } yield Position((i/m).toShort, (i%m).toShort)
   }
 }

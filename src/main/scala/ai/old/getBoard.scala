@@ -1,8 +1,8 @@
 package ai.old
 
-import game.{Board2d, BoardMNK}
+import game.BoardMNK
 
 // TODO remove/refactor
 trait getBoard extends BoardMNK {
-  override def board: Board2d = super.board
+  override def board: Board = super.board
 }

@@ -3,7 +3,8 @@ package game.types
 import game.Board2d
 
 trait BoardMNType2dArray extends BoardMNType {
-  /*private[this]*/ protected var _board: Board2d = Array.ofDim[Byte](m, n)
+  type Board = Board2d
+  /*private[this]*/ protected var _board: Board = Array.ofDim[Byte](m, n)
 
-  override protected def board: Board2d = _board
+  override protected def board: Board = _board
 }
