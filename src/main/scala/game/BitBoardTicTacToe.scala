@@ -1,6 +1,6 @@
 package game
 
-import game.boards.implementation.BoardBitBoard
+import game.boards.implementations.BoardBitBoard
 import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 

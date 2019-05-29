@@ -1,12 +1,8 @@
 package game.boards
 
-import game.Player
-import game.types.Position
+// TODO implement type class for type Board[T]
+// where T can be board 2d,1d,bit at the moment...
 
-trait BoardT {
-  @inline
-  protected def boardPlayer(pos: Position): Player
-
-  @inline
-  protected def boardPlayer_=(pos: Position)(p: Player): Unit
-}
+//trait BoardT {
+//
+//}

@@ -3,7 +3,7 @@ package ai
 import ai.old.BoardMNKwithGetBoard
 import game.types.BoardMNSize
 import game.BoardMNK
-import game.boards.implementation.Board2dArray
+import game.boards.implementations.Board2dArray
 
 object BoardSolver extends App {
 

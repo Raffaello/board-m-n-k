@@ -1,11 +1,10 @@
-package game.boards.implementation
+package game.boards.implementations
 
 import cats.implicits._
-import game.boards.{BoardMovesGenerator, BoardT}
 import game.types.{BoardMNTypeBitBoard, Position}
 import game.{BitBoard, Player}
 
-trait BoardBitBoard extends BoardMNTypeBitBoard with BoardT with BoardMovesGenerator {
+trait BoardBitBoard extends BoardMNTypeBitBoard {
 
   @inline
   private[this] def boardValue(position: Position): BitBoard = 1 << (mLookups(position.row) + position.col)
