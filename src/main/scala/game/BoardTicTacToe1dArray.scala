@@ -31,7 +31,7 @@ class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray
 
   override def undoMove(position: Position, player: Player): Boolean = {
     if (boardPlayer(position) == player) {
-      boardPlayer_=(position)(player)
+      boardPlayer_=(position)(0)
       freePositions += 1
       _depth -= 1
       true
