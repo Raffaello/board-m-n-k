@@ -1,7 +1,7 @@
 package game
 
 import cats.implicits._
-import game.boards.concrete.Board2dArray
+import game.boards.implementation.Board2dArray
 import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 

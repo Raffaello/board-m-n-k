@@ -1,4 +1,4 @@
-package game.boards.concrete
+package game.boards.implementation
 
 import cats.implicits._
 import game.boards.{BoardMovesGenerator, BoardT}

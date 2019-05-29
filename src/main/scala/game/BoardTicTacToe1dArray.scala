@@ -1,6 +1,6 @@
 package game
 
-import game.boards.concrete.Board1dArray
+import game.boards.implementation.Board1dArray
 import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
 import game.types.{BoardMNSize, Position}
 

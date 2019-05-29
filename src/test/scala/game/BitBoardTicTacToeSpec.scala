@@ -2,7 +2,7 @@ package game
 
 import ai.AiTicTacToeExpectedStats
 import ai.old.Drafts
-import game.boards.concrete.BoardBitBoard
+import game.boards.implementation.BoardBitBoard
 import game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks

@@ -1,7 +1,7 @@
 package ai
 
 import game.BoardMNKP
-import game.boards.concrete.Board2dArray
+import game.boards.implementation.Board2dArray
 
 import scala.collection.mutable
 
