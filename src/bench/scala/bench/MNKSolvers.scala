@@ -5,7 +5,7 @@ import bench.benchmarks.MNKSolvers._
 import game.Score
 import org.scalameter.api.{Bench, exec}
 
-object MNKSolversBench extends Bench.OfflineRegressionReport {
+object MNKSolvers extends Bench.OfflineRegressionReport {
 
   var score: Score = 0
   var totalCalls: Int = 0

@@ -4,7 +4,7 @@ import bench.benchmarks.Array1dCopy.{array1dCopy, arrays1d, clone1d, forLoop1d}
 import bench.benchmarks.Array2dCopy.{array2dCopy, arrays2d, forLoop2d, mapClone2d}
 import org.scalameter.api.{Bench, exec}
 
-object ArrayCopyBench extends Bench.OfflineRegressionReport {
+object ArrayCopy extends Bench.OfflineRegressionReport {
 
   performance of "ArrayCopyBench" config(
     exec.benchRuns -> 100,

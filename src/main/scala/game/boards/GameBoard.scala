@@ -1,13 +1,13 @@
 package game.boards
 
-import game.Score
+import game.{Player, Score}
 import game.types.Position
 
 trait GameBoard {
 
-  def playMove(position: Position, player: Byte): Boolean
+  def playMove(position: Position, player: Player): Boolean
 
-  def undoMove(position: Position, player: Byte): Boolean
+  def undoMove(position: Position, player: Player): Boolean
 
   def score(): Score
 
@@ -15,9 +15,9 @@ trait GameBoard {
 
   def gameEnded(depth: Int): Boolean
 
-  def opponent(player: Byte): Byte
+  def opponent(player: Player): Player
 
-  def nextPlayer(): Byte
+  def nextPlayer(): Player
 
   def display(): String
 }

@@ -1,12 +1,15 @@
 package bench
 
-import ai.old.{GetBoard, Drafts}
+import ai.old.{Drafts, GetBoard}
 import ai.{alphaBeta => _, _}
 import bench.benchmarks.TicTacToeSolvers._
 import game.{BitBoardTicTacToe, BoardTicTacToe, BoardTicTacToe1dArray, BoardTicTacToe2, Score}
 import org.scalameter.api._
 
-object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
+
+// TODO find a better method to test, have to test only solve method
+// initialization and assignment of other variable has to been move out.
+object TicTacToeSolvers extends Bench.OfflineRegressionReport {
   var score: Score = 0
   var totalCalls: Int = 0
   var cacheHits: Int = 0
