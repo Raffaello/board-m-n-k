@@ -49,14 +49,14 @@ libraryDependencies ++= Seq(
 // Monocle --- end
 
 // Deep learning
-val dl4jVersion = "1.0.0-beta4"
-libraryDependencies ++= Seq(
-  "org.deeplearning4j" % "deeplearning4j-core" % dl4jVersion,
-  "org.nd4j" % "nd4j-native-platform" % dl4jVersion,
-  // @see https://deeplearning4j.org/docs/latest/deeplearning4j-config-cudnn
-  "org.nd4j" % "nd4j-cuda-10.1-platform" % dl4jVersion,
-  "org.deeplearning4j" % "deeplearning4j-cuda-10.0" % dl4jVersion
-)
+//val dl4jVersion = "1.0.0-beta4"
+//libraryDependencies ++= Seq(
+//  "org.deeplearning4j" % "deeplearning4j-core" % dl4jVersion,
+//  "org.nd4j" % "nd4j-native-platform" % dl4jVersion,
+//  // @see https://deeplearning4j.org/docs/latest/deeplearning4j-config-cudnn
+//  "org.nd4j" % "nd4j-cuda-10.1-platform" % dl4jVersion,
+//  "org.deeplearning4j" % "deeplearning4j-cuda-10.0" % dl4jVersion
+//)
 // Deep Learning -- -end
 
 lazy val root = Project(
