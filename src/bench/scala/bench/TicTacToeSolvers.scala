@@ -3,7 +3,7 @@ package bench
 import ai.old.{Drafts, GetBoard}
 import ai.{alphaBeta => _, _}
 import bench.benchmarks.TicTacToeSolvers._
-import game.{BitBoardTicTacToe, BoardTicTacToe, BoardTicTacToe1dArray, BoardTicTacToe2, Score}
+import game._
 import org.scalameter.api._
 
 
