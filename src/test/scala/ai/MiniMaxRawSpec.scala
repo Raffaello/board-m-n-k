@@ -1,7 +1,7 @@
 package ai
 
-import game.types.Position
-import game.{BoardTicTacToe, Score, Status}
+import game.types.{Position, Status}
+import game.{BoardTicTacToe, Score}
 import org.scalatest.{Matchers, WordSpec}
 
 class MiniMaxRawSpec extends WordSpec with Matchers {
@@ -9,7 +9,7 @@ class MiniMaxRawSpec extends WordSpec with Matchers {
   "BoardTicTacToe with minimaxRaw" should {
     "have first move" in {
       val game = new BoardTicTacToe with MiniMaxRaw
-      val s: Status = (0, Position(0, 0))
+      val s: Status[Score] = Status(0, Position(0, 0))
       game.nextMove shouldEqual s
     }
 

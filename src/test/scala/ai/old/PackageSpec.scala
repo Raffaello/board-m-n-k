@@ -2,7 +2,7 @@ package ai.old
 
 import ai.AiTicTacToeExpectedStats
 import game.types.Position
-import game.{BoardTicTacToe2, Status}
+import game.{BoardTicTacToe2, StatusOld}
 import org.scalatest.{FlatSpec, Matchers}
 
 //noinspection NameBooleanParameters
@@ -22,7 +22,7 @@ class PackageSpec extends FlatSpec with Matchers {
 
   it should "have expected next move" in {
     val game = new BoardTicTacToe2()
-    val s: Status = (0, Position(0, 0))
+    val s: StatusOld = (0, Position(0, 0))
     negamaxNextMove(game, 1) shouldEqual s
   }
 

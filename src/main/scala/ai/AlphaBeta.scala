@@ -1,11 +1,12 @@
 package ai
 
 import cats.implicits._
-import game.types.Position
-import game.{Score, Status}
+import game.types.{Position, Status}
+import game.Score
 
 import scala.util.control.Breaks._
 
+// TODO define the trait with a [T <: Numeric[T]] later on...
 trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
 
   protected def mainBlock(maximizing: Boolean, alpha: Int, beta: Int)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
@@ -54,11 +55,13 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
 
   def solve: Score = solve(aiPlayer === nextPlayer())
 
-  override def nextMove: Status = {
+  override def nextMove: Status[Score] = {
     val (a, b) = alphaBetaNextMove
     val (ab, status) = nextMove(nextPlayer() === aiPlayer, a, b)
     _alphaBetaNextMove = ab
-    status
+    // TODO just a wrapper for now
+    val (score, pos) = status
+    Status[Int](score, pos)
   }
 
   protected def nextMove(maximizing: Boolean, alpha: Int, beta: Int): ABStatus[Score] = {

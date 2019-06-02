@@ -1,17 +1,18 @@
 package benchmarks
 
-import game.BoardMNK
 import cats.implicits._
+import game.BoardMNK
 import game.types.BoardMNSize
+
 object MNKSolver extends App {
 
   println("Insert the board size:")
   print("m = ")
-  val m:Short = scala.io.StdIn.readShort()
+  val m: Short = scala.io.StdIn.readShort()
   print("n = ")
-  val n:Short = scala.io.StdIn.readShort()
+  val n: Short = scala.io.StdIn.readShort()
   print("k = ")
-  val k:Short = scala.io.StdIn.readShort()
+  val k: Short = scala.io.StdIn.readShort()
 
   val board = new BoardMNK(BoardMNSize(m, n), k)
   val time = System.currentTimeMillis()
@@ -23,7 +24,7 @@ object MNKSolver extends App {
   } + {
     score match {
       case 0.0 => "STALE GAME"
-      case x if x>0.0 => "P1 WIN"
+      case x if x > 0.0 => "P1 WIN"
       case _ => "P2 WIN"
     }
   })

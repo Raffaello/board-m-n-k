@@ -5,7 +5,7 @@ import ai.mcts.tree.Tree
 import cats.implicits._
 import game._
 import game.boards.implementations.Board2dArray
-import game.types.Position
+import game.types.{Position, Status}
 
 import scala.util.Random
 
@@ -31,7 +31,7 @@ trait MctsBoard extends BoardMNKPLookUp with Board2dArray with AiBoard with Clon
     tree.root.mostVisitedDescending().state.board.score()
   }
 
-  override def nextMove: Status = ???
+  override def nextMove: Status[Score] = ???
 
   /*{
      val tree = Tree(this, 2)

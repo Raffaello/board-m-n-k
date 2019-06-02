@@ -3,7 +3,6 @@ import com.typesafe.scalalogging.Logger
 import game._
 import game.types.Position
 
-//noinspection NameBooleanParameters
 package object ai {
 
   // TODO refactor/remove
@@ -15,8 +14,10 @@ package object ai {
   // TODO review the type definitions.... they are not ok.
   //  final case class AlphaBeta[T](alpha: T, Beta: T)
   // todo refactor with a case class alpha, beta
+//  final case class AlphaBetaValues[T<: Numeric[T]](alpha: T, beta: T)
   type AB[T] = (T, T) // Alpha, Beta values
-  type ABStatus[T] = (AB[T], Status) // Alpha, Beta values plus Status: Score, Position
+//  final case class AlphaBetaStatus[T <: Numeric[T]](alphaBetaValues: AlphaBetaValues[T], status: Status)
+  type ABStatus[T] = (AB[T], StatusOld) // Alpha, Beta values plus Status: Score, Position
   type ABScore = (AB[Score], Score)
 
   private[ai] val logger = Logger("ai")

@@ -2,7 +2,7 @@ package ai
 
 import cats.implicits._
 import game.types.Position
-import game.{Board2d, BoardMNK, Score, Status}
+import game.{Board2d, BoardMNK, Score, StatusOld}
 
 /**
   * @deprecated
@@ -73,7 +73,7 @@ package object old {
     }
   }
 
-  def negamaxNextMove(game: BoardMNK, color: Byte): Status = {
+  def negamaxNextMove(game: BoardMNK, color: Byte): StatusOld = {
     require(color === 1 || color === -1)
     if (game.gameEnded()) {
       (color * game.score(), game.lastMove)

@@ -69,7 +69,7 @@ object Drafts {
     if (maximizingPlayer) {
       var best = Double.MinValue
       var a = alpha
-      val p: Player = 1.toByte
+      val p: Player = 1
       for {
         i <- 0 until 3
         j <- 0 until 3
