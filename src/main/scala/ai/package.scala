@@ -1,3 +1,4 @@
+import ai.old.StatusOld
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.Logger
 import game._

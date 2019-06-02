@@ -1,8 +1,8 @@
 package ai
 
 import cats.implicits._
+import game.Score
 import game.types.{Position, Status}
-import game.{Score, StatusOld}
 
 /**
   * Basically same class as
@@ -10,7 +10,7 @@ import game.{Score, StatusOld}
   * @see MiniMax
   */
 trait NegaMax extends AiBoard with AiBoardScoreEval {
-  protected def mainBlock(color: Byte)(eval: StatusOld => Score): Score = {
+  protected def mainBlock(color: Byte)(eval: Status[Score] => Score): Score = {
     if (gameEnded()) {
       scoreEval * color
     } else {
@@ -20,7 +20,7 @@ trait NegaMax extends AiBoard with AiBoardScoreEval {
 
       consumeMoves() { p =>
         playMove(p, player)
-        value = eval((value, p))
+        value = eval(Status(value, p))
         undoMove(p, player)
       }
 
@@ -29,8 +29,8 @@ trait NegaMax extends AiBoard with AiBoardScoreEval {
   }
 
   def solve(color: Byte): Score = {
-    mainBlock(color) { case (score, _) =>
-      Math.max(score, -solve((-color).toByte))
+    mainBlock(color) { status: Status[Score] =>
+      Math.max(status.score, -solve((-color).toByte))
     }
   }
 
@@ -40,12 +40,12 @@ trait NegaMax extends AiBoard with AiBoardScoreEval {
 
   protected def nextMove(color: Byte): Status[Score] = {
     var pBest: Position = Position(-1, -1)
-    val score = mainBlock(color) { case (score: Score, pos: Position) =>
+    val score = mainBlock(color) { status: Status[Score] =>
       val newValue = -solve((-color).toByte)
-      if (score < newValue) {
-        pBest = pos
+      if (status.score < newValue) {
+        pBest = status.position
         newValue
-      } else score
+      } else status.score
     }
 
     Status(score, pBest)

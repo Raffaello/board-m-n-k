@@ -1,7 +1,8 @@
 package ai
 
+import ai.old.StatusOld
 import game.types.{Position, Status}
-import game.{BoardTicTacToe, BoardTicTacToe2, Score, StatusOld}
+import game.{BoardTicTacToe, BoardTicTacToe2, Score}
 import org.scalatest.{Matchers, WordSpec}
 
 class AlphaBetaSpec extends WordSpec with Matchers {

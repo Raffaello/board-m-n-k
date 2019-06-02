@@ -1,11 +1,10 @@
 package ai.old
 
 import ai.AiTicTacToeExpectedStats
+import game.BoardTicTacToe2
 import game.types.Position
-import game.{BoardTicTacToe2, StatusOld}
 import org.scalatest.{FlatSpec, Matchers}
 
-//noinspection NameBooleanParameters
 class PackageSpec extends FlatSpec with Matchers {
   "TicTacToe2 game with minimax" should "solve the game" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2()

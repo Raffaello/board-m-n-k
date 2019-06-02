@@ -2,7 +2,7 @@ package ai
 
 import cats.implicits._
 import game.types.Position
-import game.{Board2d, BoardMNK, Score, StatusOld}
+import game.{Board2d, BoardMNK, Score}
 
 /**
   * @deprecated
@@ -10,6 +10,7 @@ import game.{Board2d, BoardMNK, Score, StatusOld}
   */
 package object old {
   type ABMove = (Double, Position, AB[Double]) // score, position, Alpha, Beta
+  type StatusOld = (Score, Position)
 
   def minimax(game: BoardMNK, isMaximizingPlayer: Boolean): Score = {
     def minMaxLoop(maximizing: Boolean): Int = {
@@ -164,7 +165,7 @@ package object old {
               return t
             }
           }
-  
+
           val t = Transposition(best, depth, alpha, b, maximizingPlayer)
           statuses.add(game.board.asInstanceOf[Board2d], t)
           t

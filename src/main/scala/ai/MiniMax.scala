@@ -2,13 +2,13 @@ package ai
 
 import cats.implicits._
 import game.types.{Position, Status}
-import game.{BoardMNK, Score, StatusOld}
+import game.{BoardMNK, Score}
 
 // TODO extends later to BoardMNKP... with a type T <: Numeric
 trait MiniMax extends BoardMNK with AiBoard with AiBoardScoreEval {
   protected def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
 
-  protected def mainBlock(player: Byte)(eval: StatusOld => Score): Score = {
+  protected def mainBlock(player: Byte)(eval: Status[Score] => Score): Score = {
     if (gameEnded()) {
       scoreEval
     } else {
@@ -17,7 +17,7 @@ trait MiniMax extends BoardMNK with AiBoard with AiBoardScoreEval {
 
       consumeMoves() { p =>
         playMove(p, player)
-        value = eval((value, p))
+        value = eval(Status(value, p))
         undoMove(p, player)
       }
 
@@ -30,11 +30,11 @@ trait MiniMax extends BoardMNK with AiBoard with AiBoardScoreEval {
     * Only for 2 players at the moment
     */
   def solve(maximizing: Boolean): Score = {
-    val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
+    lazy val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
 
     mainBlock(player(maximizing)) { status =>
       val value = solve(!maximizing)
-      cmp(status._1, value)
+      cmp(status.score, value)
     }
   }
 
@@ -46,13 +46,13 @@ trait MiniMax extends BoardMNK with AiBoard with AiBoardScoreEval {
 
   protected def nextMove(maximizing: Boolean): Status[Score] = {
     var pBest: Position = Position(-1, -1)
-    val score = mainBlock(player(maximizing)) { case (score: Score, pos: Position) =>
+    val score = mainBlock(player(maximizing)) { status: Status[Score] =>
       val newValue = solve(!maximizing)
       val sig = signum(maximizing)
-      if (score * sig < newValue * sig) {
-        pBest = pos
+      if (status.score * sig < newValue * sig) {
+        pBest = status.position
         newValue
-      } else score
+      } else status.score
     }
 
     Status(score, pBest)
