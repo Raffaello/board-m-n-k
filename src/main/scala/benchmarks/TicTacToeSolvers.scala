@@ -1,7 +1,7 @@
 package benchmarks
 
 import ai._
-import ai.old.{TranspositionTable, getBoard}
+import ai.old.{TranspositionTable, GetBoard}
 import game.{BoardTicTacToe2, Score}
 
 object TicTacToeSolvers extends App {
@@ -116,7 +116,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nAlpha Beta With TranspositionTableOld:")
-    val board = new BoardTicTacToe2 with TranspositionTable with getBoard
+    val board = new BoardTicTacToe2 with TranspositionTable with GetBoard
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0

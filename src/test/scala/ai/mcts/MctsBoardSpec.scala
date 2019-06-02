@@ -1,6 +1,6 @@
 package ai.mcts
 
-import ai.old.getBoard
+import ai.old.GetBoard
 import game.BoardMNK
 import game.types.Position
 import org.scalatest.{FlatSpec, Matchers}
@@ -11,7 +11,7 @@ class MctsBoardSpec extends FlatSpec with Matchers {
   // Mcts board already extending from BoardMNKPLookup, here some sort of cycle because of the missing parameter
   // for the constructor: m,n,k,p that cannot be passed in the trait (yet)
   sealed class MctsBoardStub(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k)
-    with MctsBoard with getBoard
+    with MctsBoard with GetBoard
 
   def initBoard(m: Short, n: Short, k: Short): MctsBoard = new MctsBoardStub(m, n, k)
 

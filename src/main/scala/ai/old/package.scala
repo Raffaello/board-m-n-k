@@ -105,7 +105,7 @@ package object old {
 
   def alphaBetaWithMem(
                         statuses: old.TranspositionTable,
-                        game: getBoard,
+                        game: GetBoard,
                         depth: Int = 0,
                         alpha: Double = Double.MinValue,
                         beta: Double = Double.MaxValue,

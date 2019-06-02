@@ -26,13 +26,13 @@ class PackageSpec extends FlatSpec with Matchers {
   }
 
   "TicTacToe2 Alpha-Beta with Memory" should "solve the game" in new AiTicTacToeExpectedStats {
-    val game = new BoardTicTacToe2() with TranspositionTable with getBoard
+    val game = new BoardTicTacToe2() with TranspositionTable with GetBoard
     alphaBetaWithMem(game, game) shouldEqual Transposition(0.0, 0, 0.0, Double.MaxValue, isMaximizing = true)
     expAlphaBetaWithMemStats(game.transpositions.size)
   }
 
   "Player 1 TicTacToe2" should "win" in {
-    val game = new BoardTicTacToe2() with getBoard
+    val game = new BoardTicTacToe2() with GetBoard
     val status = new TranspositionTable {}
     game.playMove(Position(0, 0), 1)
     game.playMove(Position(0, 1), 1)
