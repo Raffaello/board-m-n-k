@@ -1,5 +1,6 @@
 package ai
 
+import ai.types.AlphaBetaValues
 import game.types.{Position, Status}
 import game.{BoardTicTacToe, BoardTicTacToe2, Score}
 import org.scalatest.{Matchers, WordSpec}
@@ -17,10 +18,9 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
     "have first move" in {
       val game = new BoardTicTacToe2() with AlphaBetaTransposition
       val status: Status[Score] = game.nextMove
-      val (a, b) = game.alphaBetaNextMove
+      val ab = game.alphaBetaNextMove
       status.score shouldEqual 0
-      val ab: AB[Score] = (0, Int.MaxValue)
-      (a, b) shouldEqual ab
+      ab shouldEqual AlphaBetaValues[Score](0, Int.MaxValue)
       game.depth shouldEqual 0
       val p: Position = Position(0, 0)
       status.position shouldBe p
@@ -32,10 +32,9 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
       val s: Status[Score] = Status(0, Position(1, 1))
       game.playMove(Position(0, 0), 1)
       val status: Status[Score] = game.nextMove
-      val (a, b) = game.alphaBetaNextMove
+      val ab = game.alphaBetaNextMove
       status shouldEqual s
-      val ab: AB[Score] = (Int.MinValue, 0)
-      (a, b) shouldBe ab
+      ab shouldBe AlphaBetaValues[Score](Int.MinValue, 0)
     }
   }
 
@@ -56,11 +55,10 @@ class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
     "have first move" in {
       val game = new BoardTicTacToe with AlphaBetaTransposition
       val status: Status[Score] = game.nextMove
-      val (a, b) = game.alphaBetaNextMove
+      val ab = game.alphaBetaNextMove
       val s: Status[Score] = Status(0, Position(0, 0))
       status shouldEqual s
-      val ab: AB[Score] = (0, Int.MaxValue)
-      (a, b) shouldEqual ab
+      ab shouldEqual AlphaBetaValues[Score](0, Int.MaxValue)
       game.depth shouldEqual 0
     }
   }

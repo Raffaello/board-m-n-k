@@ -1,5 +1,6 @@
 package ai
 
+import ai.types.AlphaBetaValues
 import game.BoardTicTacToe2
 import game.types.Position
 import org.scalatest.{FlatSpec, Matchers}
@@ -19,7 +20,7 @@ class PackageSpec extends FlatSpec with Matchers {
 
   "TicTacToe2 alphaBeta with Memory" should "solve the game" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2() with TranspositionTable
-    alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, (0, Int.MaxValue), isMaximizing = true)
+    alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, AlphaBetaValues(0, Int.MaxValue), isMaximizing = true)
 
     expAlphaBetaWithMemStats(game.transpositions.size)
     game.score() shouldBe 0.0

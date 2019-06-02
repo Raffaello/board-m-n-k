@@ -1,4 +1,5 @@
 import ai.old.StatusOld
+import ai.types.AlphaBetaValues
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.Logger
 import game._
@@ -15,9 +16,9 @@ package object ai {
   // TODO review the type definitions.... they are not ok.
   //  final case class AlphaBeta[T](alpha: T, Beta: T)
   // todo refactor with a case class alpha, beta
-//  final case class AlphaBetaValues[T<: Numeric[T]](alpha: T, beta: T)
+
   type AB[T] = (T, T) // Alpha, Beta values
-//  final case class AlphaBetaStatus[T <: Numeric[T]](alphaBetaValues: AlphaBetaValues[T], status: Status)
+
   type ABStatus[T] = (AB[T], StatusOld) // Alpha, Beta values plus Status: Score, Position
   type ABScore = (AB[Score], Score)
 
@@ -137,7 +138,7 @@ package object ai {
         val t = Transposition(
           score,
           depth,
-          (score, score),
+          AlphaBetaValues(score, score),
           maximizingPlayer
         )
 
@@ -168,7 +169,7 @@ package object ai {
             }
           }
 
-          val t = Transposition(best, depth, (a, beta), maximizingPlayer)
+          val t = Transposition(best, depth, AlphaBetaValues(a, beta), maximizingPlayer)
           statuses.add(t)
           t
         } else {
@@ -187,7 +188,7 @@ package object ai {
             }
           }
 
-          val t = Transposition(best, depth, (alpha, b), maximizingPlayer)
+          val t = Transposition(best, depth, AlphaBetaValues(alpha, b), maximizingPlayer)
           statuses.add(t)
           t
         }

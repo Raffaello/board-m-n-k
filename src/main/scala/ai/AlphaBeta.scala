@@ -1,35 +1,37 @@
 package ai
 
+import ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import cats.implicits._
-import game.types.{Position, Status}
 import game.Score
+import game.types.{Position, Status}
 
 import scala.util.control.Breaks._
 
-// TODO define the trait with a [T <: Numeric[T]] later on...
+// TODO define the trait with a [T : Numeric] later on...?
 trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
 
-  protected def mainBlock(maximizing: Boolean, alpha: Int, beta: Int)(eval: ABStatus[Score] => ABStatus[Score]): Score = {
+  protected def mainBlock(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score])
+                         (eval: AlphaBetaStatus[Score] => AlphaBetaStatus[Score]): Score = {
+
     if (gameEnded()) scoreEval
     else {
       Stats.totalCalls += 1
       var best = if (maximizing) Int.MinValue else Int.MaxValue
-      var a = alpha
-      var b = beta
+      var ab = alphaBetaValues
       val player: Byte = if (maximizing) 1 else 2
 
       breakable {
+        // TODO consumeMoves should return here a value to be assigned instead
         consumeMoves() { p =>
           playMove(p, player)
-          val abStatus: ABStatus[Score] = ((a, b), (best, p))
-          val ((a0, b0), (score, _)) = eval(abStatus)
-          best = score
-          a = a0
-          b = b0
+          val abStatus: AlphaBetaStatus[Score] = AlphaBetaStatus(ab, Status(best, p))
+          val newAbStatus = eval(abStatus)
+          best = newAbStatus.status.score
+          ab = newAbStatus.alphaBetaValues
           undoMove(p, player)
 
-          if (a >= b) {
-            break //((a, b), best)
+          if (ab.isAlphaGteBeta) {
+            break
           }
         }
       }
@@ -38,57 +40,54 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
     }
   }
 
-  def solve(maximizing: Boolean, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue): Score = {
-    val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
-    var a1 = alpha
-    var b1 = beta
-    val score = mainBlock(maximizing, alpha, beta) { case ((a, b), (v, p)) =>
-      val value = solve(!maximizing, a, b)
-      val best = cmp(v, value)
-      if (maximizing) a1 = Math.max(a, best)
-      else b1 = Math.min(b, best)
-      ((a1, b1), (best, p))
+  def solve(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score]): Score = {
+    lazy val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
+    var a = alphaBetaValues.alpha
+    var b = alphaBetaValues.beta
+    val score = mainBlock(maximizing, alphaBetaValues) { abStatus: AlphaBetaStatus[Score] =>
+      val value = solve(!maximizing, abStatus.alphaBetaValues)
+      val best = cmp(abStatus.status.score, value)
+      if (maximizing) a = Math.max(abStatus.alphaBetaValues.alpha, best)
+      else b = Math.min(abStatus.alphaBetaValues.beta, best)
+      // TODO use LENSES / Monocle for deep copy
+      AlphaBetaStatus(AlphaBetaValues(a, b), Status(best, abStatus.status.position))
     }
 
     score
   }
 
-  def solve: Score = solve(aiPlayer === nextPlayer())
+  def solve: Score = solve(aiPlayer === nextPlayer(), AlphaBetaValues.alphaBetaValueScore)
 
   override def nextMove: Status[Score] = {
-    val (a, b) = alphaBetaNextMove
-    val (ab, status) = nextMove(nextPlayer() === aiPlayer, a, b)
-    _alphaBetaNextMove = ab
-    // TODO just a wrapper for now
-    val (score, pos) = status
-    Status[Int](score, pos)
+    val abStatus: AlphaBetaStatus[Score] = nextMove(nextPlayer() === aiPlayer, alphaBetaNextMove)
+    _alphaBetaNextMove = abStatus.alphaBetaValues
+    abStatus.status
   }
 
-  protected def nextMove(maximizing: Boolean, alpha: Int, beta: Int): ABStatus[Score] = {
+  protected def nextMove(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score]): AlphaBetaStatus[Score] = {
     var pBest: Position = Position(-1, -1)
     var best = if (maximizing) Int.MinValue else Int.MaxValue
-    var a1 = alpha
-    var b1 = beta
-    mainBlock(maximizing, alpha, beta) { case ((a, b), (v, p)) =>
-      val value = solve(!maximizing, a, b)
+    var (a1, b1) = (alphaBetaValues.alpha, alphaBetaValues.beta)
 
+    mainBlock(maximizing, alphaBetaValues) { abStatus: AlphaBetaStatus[Score] =>
+      val value = solve(!maximizing, abStatus.alphaBetaValues)
       if (maximizing) {
-        if (value > v) {
+        if (value > abStatus.status.score) {
           best = value
-          pBest = p
-          a1 = Math.max(a, best)
+          pBest = abStatus.status.position
+          a1 = Math.max(abStatus.alphaBetaValues.alpha, best)
         }
       } else {
-        if (value < v) {
+        if (value < abStatus.status.score) {
           best = value
-          b1 = Math.min(b, best)
-          pBest = p
+          b1 = Math.min(abStatus.alphaBetaValues.beta, best)
+          pBest = abStatus.status.position
         }
       }
 
-      ((a1, b1), (best, p))
+      AlphaBetaStatus[Score](AlphaBetaValues(a1, b1), Status(best, abStatus.status.position))
     }
 
-    ((a1, b1), (best, pBest))
+    AlphaBetaStatus[Score](AlphaBetaValues(a1, b1), Status(best, pBest))
   }
 }

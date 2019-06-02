@@ -1,5 +1,5 @@
 package object game {
-  // Todo generalize score to be numeric.
+  // Todo generalize score to be numeric?
   type Score = Int
   // status old is/will be used only for ai.old, move there?
 
