@@ -3,13 +3,13 @@ package game
 import cats.implicits._
 import game.boards.implementations.Board2dArray
 import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
-import game.types.{BoardMNSize, Position}
+import game.types.Position
 
 /**
   * TODO Board2dArray trait should not be included here... remove it later.
   * TODO Board2dArray has to be a type of boards not a with trait
   */
-class BoardMNKP(boardMNSize: BoardMNSize, val k: Short, val numPlayers: Byte) extends BoardMN(boardMNSize)
+class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends BoardMN(m, n)
   with BoardDepthAware with LastMoveTracker with BoardPlayers with Board2dArray {
 
   require(k <= m || k <= n)

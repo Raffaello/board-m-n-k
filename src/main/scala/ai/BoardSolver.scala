@@ -1,7 +1,6 @@
 package ai
 
 import ai.old.BoardMNKwithGetBoard
-import game.types.BoardMNSize
 import game.BoardMNK
 import game.boards.implementations.Board2dArray
 
@@ -25,9 +24,9 @@ object BoardSolver extends App {
     }
   }
 
-  sealed abstract class SolverBoard(m: Short, n: Short, k: Short) extends BoardMNK(BoardMNSize(m, n), k) with SolverBoardTrait {}
+  sealed abstract class SolverBoard(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with SolverBoardTrait {}
 
-  sealed abstract class SolverBoardOld(m: Short, n: Short, k: Short) extends BoardMNKwithGetBoard(BoardMNSize(m, n), k) with SolverBoardTrait {}
+  sealed abstract class SolverBoardOld(m: Short, n: Short, k: Short) extends BoardMNKwithGetBoard(m, n, k) with SolverBoardTrait {}
 
   sealed abstract class SolverBoardRaw(m: Short, n: Short, k: Short) extends SolverBoard(m, n, k) with StatsWrapper {}
 

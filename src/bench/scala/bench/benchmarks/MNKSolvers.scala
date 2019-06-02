@@ -2,7 +2,6 @@ package bench.benchmarks
 
 import ai._
 import ai.old.BoardMNKwithGetBoard
-import game.types.BoardMNSize
 import game.{BoardMNK, Score}
 import org.scalameter.api.Gen
 
@@ -15,7 +14,7 @@ object MNKSolvers {
     for {
       n <- ns
       m <- ms
-    } yield new BoardMNK(BoardMNSize(m.toShort, n.toShort), k)
+    } yield new BoardMNK(m.toShort, n.toShort, k)
   }
 
   val boardSizes: Gen[(Int, Int)] = {
@@ -26,46 +25,46 @@ object MNKSolvers {
   }
 
   def oldMinimax(m: Int, n: Int, k: Int): Score = {
-    val board = new BoardMNK(BoardMNSize(m.toShort, n.toShort), k.toShort)
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort)
     Stats.totalCalls = 0
     ai.old.minimax(board, true)
   }
 
   def traitMinimax(m: Int, n: Int, k: Int): MiniMax = {
-    val board = new BoardMNK(BoardMNSize(m.toShort, n.toShort), k.toShort) with MiniMax
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with MiniMax
     board
   }
 
   def traitMinimaxRaw(m: Int, n: Int, k: Int): MiniMaxRaw = {
-    val board = new BoardMNK(BoardMNSize(m.toShort, n.toShort), k.toShort) with MiniMaxRaw
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with MiniMaxRaw
     board
   }
 
   def oldNegamax(m: Int, n: Int, k: Int): Score = {
-    val board = new BoardMNK(BoardMNSize(m.toShort, n.toShort), k.toShort)
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort)
     Stats.totalCalls = 0
     ai.old.negamax(board, 1)
   }
 
 
   def traitNegamax(m: Int, n: Int, k: Int): NegaMax = {
-    val board = new BoardMNK(BoardMNSize(m.toShort, n.toShort), k.toShort) with NegaMax
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with NegaMax
     board
   }
 
   def alphaBeta(m: Int, n: Int, k: Int): Score = {
-    val board = new BoardMNK(BoardMNSize(m.toShort, n.toShort), k.toShort)
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort)
     Stats.totalCalls = 0
     Math.round(ai.alphaBeta(board)).toInt
   }
 
   def traitAlphaBeta(m: Int, n: Int, k: Int): AlphaBeta = {
-    val board = new BoardMNK(BoardMNSize(m.toShort, n.toShort), k.toShort) with AlphaBeta
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with AlphaBeta
     board
   }
 
   def oldAlphaBetaTTOld(m: Int, n: Int, k: Int): (Double, Int) = {
-    val board = new BoardMNKwithGetBoard(BoardMNSize(m.toShort, n.toShort), k.toShort) with old.TranspositionTable
+    val board = new BoardMNKwithGetBoard(m.toShort, n.toShort, k.toShort) with old.TranspositionTable
     Stats.totalCalls = 0
     Stats.cacheHits = 0
     val t = ai.old.alphaBetaWithMem(board, board)
@@ -73,7 +72,7 @@ object MNKSolvers {
   }
 
   def alphaBetaWithMem(m: Int, n: Int, k: Int): (Double, Int) = {
-    val board = new BoardMNK(BoardMNSize(m.toShort, n.toShort), k.toShort) with TranspositionTable
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with TranspositionTable
     Stats.totalCalls = 0
     Stats.cacheHits = 0
     val t = ai.alphaBetaWithMem(board, board)
@@ -81,7 +80,7 @@ object MNKSolvers {
   }
 
   def traitAlphaBetaTT(m: Int, n: Int, k: Int): AlphaBetaTransposition = {
-    val board = new BoardMNK(BoardMNSize(m.toShort, n.toShort), k.toShort) with AlphaBetaTransposition
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with AlphaBetaTransposition
     board
   }
 }

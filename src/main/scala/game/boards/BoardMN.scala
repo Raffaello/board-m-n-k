@@ -1,12 +1,12 @@
 package game.boards
 
-import game.types.{BoardMNSize, BoardMNType, Position}
+import game.types.{BoardMNType, Position}
 
-abstract class BoardMN(boardMNSize: BoardMNSize) extends GameBoard with BoardMNType
+abstract class BoardMN(val m: Short, val n: Short) extends GameBoard with BoardMNType
   with BoardMovesGenerator with BoardMovesConsumer {
 
-  @inline override val m: Short = boardMNSize.m
-  @inline override val n: Short = boardMNSize.n
+//  @inline override val m: Short = boardMNSize.m
+//  @inline override val n: Short = boardMNSize.n
 
   lazy val mnMin: Short = Math.min(m, n).toShort
   protected var freePositions: Int = mn

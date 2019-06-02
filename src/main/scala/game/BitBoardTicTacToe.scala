@@ -2,13 +2,13 @@ package game
 
 import game.boards.implementations.BoardBitBoard
 import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
-import game.types.{BoardMNSize, Position}
+import game.types.Position
 
 /**
   * TODO should extend BoardMNKP, but the code is not clean yet
   * TODO implement BoardBitBoard with numplayers... then refactor
   */
-class BitBoardTicTacToe extends BoardMN(BoardMNSize(3, 3)) with BoardBitBoard with BoardDepthAware with LastMoveTracker with BoardPlayers {
+class BitBoardTicTacToe extends BoardMN(3, 3) with BoardBitBoard with BoardDepthAware with LastMoveTracker with BoardPlayers {
 
   override val numPlayers: Player = 2
 

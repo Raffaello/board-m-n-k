@@ -2,12 +2,13 @@ package game
 
 import game.boards.implementations.Board1dArray
 import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
-import game.types.{BoardMNSize, Position}
+import game.types.Position
 
 /**
   * TODO: DRAFT extends BoardMNK
   */
-class BoardTicTacToe1dArray extends BoardMN(BoardMNSize(3, 3)) with Board1dArray with LastMoveTracker with BoardDepthAware with BoardPlayers {
+class BoardTicTacToe1dArray extends BoardMN(3, 3)
+  with Board1dArray with LastMoveTracker with BoardDepthAware with BoardPlayers {
   override val numPlayers: Player = 2
 
   override def display(): String = ???
