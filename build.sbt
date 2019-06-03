@@ -80,10 +80,6 @@ scalacOptions ++= Seq(
   //  "-Xdisable-assertions",
 )
 
-scalacOptions in Test ++= Seq(
-  "-Xdev"
-)
-
 javacOptions += "--illegal-access=warn"
 
 resolvers in Benchmark ++= Seq(
@@ -91,14 +87,22 @@ resolvers in Benchmark ++= Seq(
   "Sonatype OSS Releases" at "https://oss.sonatype.org/content/repositories/releases"
 )
 
+// Tests
+scalacOptions in Test ++= Seq(
+  "-Xdev"
+)
+
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
 
+logBuffered in Test := false
+//parallelExecution in Test := false
+// end - Tests
 libraryDependencies += "com.typesafe" % "config" % "1.3.2"
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
-//fork in run := true
+fork in run := true
 //javaOptions in run += "-agentlib:hprof=cpu=samples"

@@ -3,6 +3,7 @@ package ai
 import org.scalatest.Matchers
 
 trait AiTicTacToeExpectedStats extends Matchers {
+  // TODO this force to run the suite not in parallel
   ai.Stats.totalCalls = 0
   ai.Stats.cacheHits = 0
 
