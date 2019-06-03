@@ -61,7 +61,7 @@ trait TLookUps extends BoardMNType with BoardPlayers {
 
 }
 
-class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m, n, k, p) with CLookUpsT {
+class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m, n, k, p) with TLookUps {
 
   override def playMove(position: Position, player: Byte): Boolean = {
     lookUps.ended = None
