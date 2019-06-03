@@ -4,6 +4,7 @@ import cats.implicits._
 import game.boards.BoardPlayers
 import game.types.{BoardMNType, Position}
 
+// TODO this file is strictly designed for a 2d array board implementation not for a general one, need to be rewritten
 
 /**
   * TODO all arrays must be cloned so at the moment using var :/
@@ -18,9 +19,9 @@ trait TLookUps extends BoardMNType with BoardPlayers {
     * TODO also should be a concrete implementation for the different kind of boards. this is for 2d array
     * TODO rethink in a more general way.
     */
-  class CLookUps extends Cloneable {
-    var rows: Array[Array[Byte]] = Array.ofDim[Byte](m, numPlayers)
-    var cols: Array[Array[Byte]] = Array.ofDim[Byte](n, numPlayers)
+  class CLookUps() extends Cloneable {
+    var rows: Array[Array[Player]] = Array.ofDim[Player](m, numPlayers)
+    var cols: Array[Array[Player]] = Array.ofDim[Player](n, numPlayers)
     var lastPlayerIdx: Int = 0
     var ended: Option[Boolean] = Some(false)
 
@@ -34,7 +35,6 @@ trait TLookUps extends BoardMNType with BoardPlayers {
       cols(y)(playerIdx) = (1 + cols(y)(playerIdx)).toByte
       //      assert(cols(y)(playerIdx) <= m, s"${cols(y)(playerIdx)} -- $playerIdx, $pos -- ${_board.flatten.mkString}")
       // TODO DIAG1 and DIAG2
-
     }
 
     def dec(pos: Position, playerIdx: Int): Unit = {
@@ -58,7 +58,6 @@ trait TLookUps extends BoardMNType with BoardPlayers {
       clone
     }
   }
-
 }
 
 class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m, n, k, p) with TLookUps {
@@ -79,7 +78,9 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
   }
 
   // Todo review this method and lookUps.ended ???
+  // TODO !!!!!!!!!!! FIX, SHOULD BE REMOVED OR USE LOOKUPS !!!!!!!!!!!!!!
   override def gameEnded(depth: Int): Boolean = {
+//    lookUps.ended.getOrElse(checkWin())
     if (depth < minWinDepth) false
     else if (freePositions === 0) true
     else checkWin()

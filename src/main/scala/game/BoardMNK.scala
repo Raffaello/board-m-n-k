@@ -15,7 +15,6 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     player match {
       case 2 => -1
       case 1 => 1
-      case _ => ??? // could be zero, but should never reach here.
     }
   }
 
@@ -47,7 +46,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
   }
 
   /**
-    * South-East direction checking: bottom-right to top-left
+    * South-East direction checking: top-left to bottom-right
     */
   protected def scoreDiagSE(): Int = {
     val (i, j) = (_lastMove.row, _lastMove.col)
@@ -161,22 +160,14 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
   override def display(): String = {
     val str: StringBuilder = new StringBuilder()
     val newLine = sys.props("line.separator")
-
-    def value(p: Byte): Char = {
-      p match {
-        case 0 => '_'
-        case 1 => 'X'
-        case 2 => 'O'
-        case _ => ???
-      }
-    }
-
+    val n1 = n - 1
+    val value: IndexedSeq[Char] = IndexedSeq('_', 'X', 'O')
     for (i <- mIndices) {
-      for (j <- 0 until n - 1) {
+      for (j <- 0 until n1) {
         str ++= s" ${value(boardPlayer(Position(i.toShort, j.toShort)))} |"
       }
 
-      str ++= s" ${value(boardPlayer(Position(i.toShort, (n - 1).toShort)))}" + newLine
+      str ++= s" ${value(boardPlayer(Position(i.toShort, n1.toShort)))}" + newLine
     }
 
     str ++= newLine

@@ -19,5 +19,6 @@ trait GameBoard {
 
   def nextPlayer(): Player
 
-  def display(): String
+  protected def checkWin(): Boolean
+
 }

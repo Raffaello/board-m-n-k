@@ -11,8 +11,6 @@ class BoardTicTacToe1dArray extends BoardMN(3, 3)
   with Board1dArray with LastMoveTracker with BoardDepthAware with BoardPlayers {
   override val numPlayers: Player = 2
 
-  override def display(): String = ???
-
   protected val minWinDepth: Int = 5
 
   val m2 = m * 2

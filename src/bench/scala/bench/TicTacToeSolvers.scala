@@ -35,7 +35,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
     exec.reinstantiation.fullGC -> true,
     exec.reinstantiation.frequency -> 5
   ) in {
-    performance of "TicTacToe" in {
+    performance of "TicTacToe (lookups)" in {
       measure method "old.minimax" in {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
@@ -134,7 +134,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
       }
     }
 
-    performance of "TicTacToe2" in {
+    performance of "TicTacToe2 (specific checks)" in {
       measure method s"old.minimax" in {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
@@ -232,7 +232,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
       }
     }
 
-    performance of "TicTacToeArray1dBoard" in {
+    performance of "TicTacToeArray1dBoard (dedicated)" in {
       measure method s"alphaBeta" in {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
@@ -242,7 +242,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
       }
     }
 
-    performance of "TicTacToeBitBoard" in {
+    performance of "TicTacToeBitBoard (dedicated)" in {
       measure method s"alphaBeta" in {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")

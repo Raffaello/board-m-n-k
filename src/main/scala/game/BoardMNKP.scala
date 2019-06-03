@@ -8,6 +8,7 @@ import game.types.Position
 /**
   * TODO Board2dArray trait should not be included here... remove it later.
   * TODO Board2dArray has to be a type of boards not a with trait
+  *      used for generateMoves.
   */
 class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends BoardMN(m, n)
   with BoardDepthAware with LastMoveTracker with BoardPlayers with Board2dArray {
@@ -49,18 +50,10 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
 
   // check if board has k in a row of last player then return true otherwise false
   // create a general method to check player p if won.
-  protected def checkWin(): Boolean = ???
+  override protected def checkWin(): Boolean = ???
 
   override def gameEnded(): Boolean = gameEnded(depth)
 
-  /**
-    * TODO: not sure is well designed here,
-    * every call is calling gameEnded to check, and if depth is not enough
-    * would re-set every time the lookups won Some(false).
-    * It is used just for the score function mainly
-    *
-    * TODO: reconsider the Lookups.won Option[Boolean] for is usage case.
-    */
   def gameEnded(depth: Int): Boolean = {
     if (depth < minWinDepth) false
     else if (freePositions === 0) true
@@ -73,6 +66,4 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   }
 
   def nextPlayer(): Byte = opponent(lastPlayer)
-
-  override def display(): String = ???
 }

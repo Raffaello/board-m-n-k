@@ -48,7 +48,7 @@ class BitBoardTicTacToe
 
   override def nextPlayer(): Player = ???
 
-  override def display(): String = ???
+//  override def display(): String = ???
 
   protected def scoreDiagsTL(): Int = {
     // 1 0 0 | 0 1 0 | 0 0 1 || 1 0 0 | 0 1 0 | 0 0 1

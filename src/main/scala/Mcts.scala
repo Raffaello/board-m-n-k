@@ -12,7 +12,7 @@ object Mcts extends App {
     t match {
       case None => None
       case Some(x) =>
-        x.root.state.board.stdoutPrintln()
+        x.root.state.board.display()
         playNextMove(x) match {
           case None => Some(x)
           case Some(y) => selfPlaying(Some(y))
