@@ -7,11 +7,11 @@ import org.scalameter.api.{Bench, exec}
 object ArrayCopy extends Bench.OfflineRegressionReport {
 
   performance of "ArrayCopyBench" config(
-    exec.benchRuns -> 100,
+    exec.benchRuns -> 500,
     exec.minWarmupRuns -> 10,
     exec.maxWarmupRuns -> 10,
     exec.warmupCovThreshold -> 0.5,
-    exec.independentSamples -> 3,
+    exec.independentSamples -> 5,
     exec.requireGC -> true,
     exec.outliers.retries -> 3,
     exec.outliers.suspectPercent -> 15,
