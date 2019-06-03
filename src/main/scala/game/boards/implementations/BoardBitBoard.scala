@@ -19,10 +19,9 @@ trait BoardBitBoard extends BoardMNTypeBitBoard with BoardMovesGenerator with Bi
     } return (p + 1).toByte
 
     0.toByte
-//    board.zipWithIndex.collectFirst { case (b, i) if (b & v) === v => i + 1 }.getOrElse(0).toByte
   }
 
-  override protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(p) ^= boardValue(pos)
+  override protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(p - 1) ^= boardValue(pos)
 
   override def generateMoves(): IndexedSeq[Position] = {
     for {

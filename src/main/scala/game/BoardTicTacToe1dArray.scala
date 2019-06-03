@@ -15,7 +15,7 @@ class BoardTicTacToe1dArray extends BoardMN(3, 3)
 
   val m2 = m * 2
 
-  // TODO not vey elegant this block of code... ??
+  // TODO duplicate code
   override def playMove(position: Position, player: Byte): Boolean = {
     if (boardPlayer(position) > 0) false
     else {
@@ -28,6 +28,7 @@ class BoardTicTacToe1dArray extends BoardMN(3, 3)
     }
   }
 
+  // TODO duplicate code
   override def undoMove(position: Position, player: Player): Boolean = {
     if (boardPlayer(position) == player) {
       boardPlayer_=(position)(0)

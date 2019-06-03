@@ -1,6 +1,7 @@
 package game
 
 import cats.implicits._
+import game.boards.BoardDisplay
 import game.types.Position
 
 import scala.annotation.tailrec
@@ -8,7 +9,7 @@ import scala.annotation.tailrec
 /**
   * TODO: potentially split in BoardNMK and BoardMNKLookUp (traits)
   */
-class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) {
+class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) with BoardDisplay {
   require(k > 2)
 
   final protected def score2players(player: Byte): Int = {

@@ -4,12 +4,16 @@ import ai.AiBoard
 import ai.mcts.tree.Tree
 import cats.implicits._
 import game._
+import game.boards.BoardDisplay
 import game.boards.implementations.Board2dArray
 import game.types.{Position, Status}
 
 import scala.util.Random
 
-trait MctsBoard extends BoardMNKPLookUp with Board2dArray with AiBoard with Cloneable {
+// TODO remove board2darray
+// TODO remove boarddisplay
+// todo remove clonable
+trait MctsBoard extends BoardMNKPLookUp with BoardDisplay with Board2dArray with AiBoard with Cloneable {
   final private[mcts] val random = ai.mcts.seed match {
     case Some(x) => new Random(x)
     case None => new Random()
@@ -52,7 +56,7 @@ trait MctsBoard extends BoardMNKPLookUp with Board2dArray with AiBoard with Clon
   }
 
   def playRandomMove(player: Byte): Boolean = {
-    require(player =!= _lastPlayer)
+    assert(player =!= _lastPlayer)
     randomMove() match {
       case Some(pos) => playMove(pos, player)
       case None => false

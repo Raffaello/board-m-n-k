@@ -6,9 +6,6 @@ import game.boards.BoardMovesGenerator
 import game.boards.lookups.MLookup
 import game.types.{BoardMNType1dArray, Position}
 
-/**
-  * TODO the Position of the board can be stored and reused, are always the same n*m classes... consideration.
-  */
 trait Board1dArray extends BoardMNType1dArray with BoardMovesGenerator with MLookup {
 
   @inline

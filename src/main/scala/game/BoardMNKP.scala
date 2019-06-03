@@ -21,7 +21,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   final val minWinDepth: Int = numPlayers * k1 + 1 //(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
 
   def playMove(position: Position, player: Byte): Boolean = {
-    require(player >= 1 && player <= numPlayers)
+    assert(player >= 1 && player <= numPlayers)
     if (boardPlayer(position) > 0) false
     else {
       boardPlayer_=(position)(player)
@@ -61,7 +61,7 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   }
 
   def opponent(player: Byte): Byte = {
-    require(player >= 1 && player <= numPlayers)
+    assert(player >= 1 && player <= numPlayers)
     ((player % numPlayers) + 1).toByte
   }
 

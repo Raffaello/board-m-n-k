@@ -1,6 +1,7 @@
 import ai._
 import ai.old.negamaxNextMove
 import game.BoardTicTacToe2
+import game.boards.BoardDisplay
 import game.types.Position
 
 object TitTacToe extends App {
@@ -21,7 +22,7 @@ object TitTacToe extends App {
 
     val numPlayers = scala.io.StdIn.readInt()
     if (numPlayers == -1) System.exit(0)
-    val game = new BoardTicTacToe2()
+    val game = new BoardTicTacToe2() with BoardDisplay
     if (numPlayers > 0) {
       println("Do you want to start? [y, yes]")
       val playerStart = scala.io.StdIn.readBoolean()
