@@ -2,10 +2,10 @@ package ai
 
 import cats.implicits._
 import game.types.{Position, Status}
-import game.{BoardMNK, Score}
+import game.{BoardMNK, BoardMNKP, Score}
 
 // TODO extends later to BoardMNKP... with a type T <: Numeric
-trait MiniMax extends BoardMNK with AiBoard with AiBoardScoreEval {
+trait MiniMax extends  BoardMNKP with AiBoard with AiBoardScoreEval {
   protected def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
 
   protected def mainBlock(player: Byte)(eval: Status[Score] => Score): Score = {

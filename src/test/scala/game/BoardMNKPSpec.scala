@@ -1,5 +1,6 @@
 package game
 
+import ai.MiniMax
 import game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
@@ -29,5 +30,10 @@ class BoardMNKPSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
         }
       }
     }
+  }
+
+  ignore should "draw using Minimax with 3, 3, 3, 2" in {
+    val game = new BoardMNKP(3, 3, 3, 2) with MiniMax
+    game.solve shouldBe 0
   }
 }

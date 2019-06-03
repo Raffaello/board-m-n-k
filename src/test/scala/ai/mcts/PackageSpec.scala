@@ -19,13 +19,13 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     }
   }
 
-  it should "throw an IllegalArgumentException" in {
+  it should "throw an AssertionError" in {
     val negativeInts = for (i <- Gen.choose(Int.MinValue, -1)) yield i
     val nonPositiveInts = for (i <- Gen.choose(Int.MinValue, 0)) yield i
     forAll(negativeInts, nonPositiveInts) {
       (visited: Int, parentVisited: Int) =>
         whenever(visited < 0 && parentVisited <= 0) {
-          assertThrows[IllegalArgumentException] {
+          assertThrows[AssertionError] {
             uct(0.0, visited, parentVisited)
           }
         }
