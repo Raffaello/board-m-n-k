@@ -2,10 +2,11 @@ package game.boards.implementations
 
 import cats.implicits._
 import game.Player
+import game.boards.BoardMovesGenerator
 import game.types.{BoardMNType2dArray, Position}
 
 // TODO: decouple the 2 used traits if it is possible. Type Classes?
-trait Board2dArray extends BoardMNType2dArray {
+trait Board2dArray extends BoardMNType2dArray with BoardMovesGenerator {
   protected def boardPlayer(pos: Position): Player = board(pos.row)(pos.col)
 
   protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(pos.row)(pos.col) = p

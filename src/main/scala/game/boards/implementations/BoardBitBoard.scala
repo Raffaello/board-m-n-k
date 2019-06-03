@@ -1,13 +1,15 @@
 package game.boards.implementations
 
 import cats.implicits._
+import game.boards.BoardMovesGenerator
+import game.boards.lookups.BitBoardLookup
 import game.types.{BoardMNTypeBitBoard, Position}
 import game.{BitBoard, Player}
 
-trait BoardBitBoard extends BoardMNTypeBitBoard {
+trait BoardBitBoard extends BoardMNTypeBitBoard with BoardMovesGenerator with BitBoardLookup {
 
   @inline
-  private[this] def boardValue(position: Position): BitBoard = 1 << (mLookups(position.row) + position.col)
+  private[this] def boardValue(position: Position): BitBoard = bitsLookup.getOrElse(position, bitValue(position))
 
   override protected def boardPlayer(pos: Position): Player = {
     val v = boardValue(pos)

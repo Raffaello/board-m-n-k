@@ -1,12 +1,11 @@
 package game.types
 
 import game.Player
-import game.boards.BoardMovesGenerator
 
 import scala.collection.immutable.NumericRange
 
 // TODO convert to ad hoc polymorphism? Type Classes?
-trait BoardMNType extends BoardMovesGenerator {
+trait BoardMNType {
   type Board
 
   val m: Short
