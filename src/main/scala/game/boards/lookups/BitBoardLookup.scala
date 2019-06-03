@@ -6,16 +6,7 @@ import game.types.Position
 import scala.annotation.tailrec
 
 trait BitBoardLookup extends BitBoardValueLookup {
-  lazy val bitsLookup: Map[Position, BitBoard] = {
-    //    var acc: Map[Position, BitBoard] = Map.empty
-    //    for {
-    //      row <- mIndices
-    //      col <- nIndices
-    //    } {
-    //      acc += (Position(row, col) -> (1 << mLookups(row) + col))
-    //    }
-    //
-    //    acc
+  val bitsLookup: Map[Position, BitBoard] = {
 
     @tailrec
     def computeRow(row: Short, acc: Map[Position, BitBoard]): Map[Position, BitBoard] = {

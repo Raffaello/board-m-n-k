@@ -1,19 +1,24 @@
 package game
 
 import cats.implicits._
-import game.types.Position
+import game.boards.BoardPlayers
+import game.types.{BoardMNType, Position}
 
-class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m, n, k, p) {
+
+/**
+  * TODO all arrays must be cloned so at the moment using var :/
+  */
+trait TLookUps extends BoardMNType with BoardPlayers {
+  protected var _lookUps = new CLookUps
+
+  def lookUps: CLookUps = _lookUps
 
   /**
-    * TODO, refactor with a trait? (no parameter allowed yet)
-    * TODO also should be protected? test will be different
-    * TODO review....
-    *
-    * TODO all arrays must be cloned so at the moment using var :/
+    * TODO define a copy method, remove clonable and define an inline def for array cloning
+    * TODO also should be a concrete implementation for the different kind of boards. this is for 2d array
+    * TODO rethink in a more general way.
     */
   class CLookUps extends Cloneable {
-
     var rows: Array[Array[Byte]] = Array.ofDim[Byte](m, numPlayers)
     var cols: Array[Array[Byte]] = Array.ofDim[Byte](n, numPlayers)
     var lastPlayerIdx: Int = 0
@@ -54,9 +59,9 @@ class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m
     }
   }
 
-  protected var _lookUps = new CLookUps
+}
 
-  def lookUps: CLookUps = _lookUps
+class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m, n, k, p) with CLookUpsT {
 
   override def playMove(position: Position, player: Byte): Boolean = {
     lookUps.ended = None
