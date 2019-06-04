@@ -6,7 +6,7 @@ import game.boards.BoardMovesGenerator
 import game.boards.lookups.MLookup
 import game.types.{BoardMNType1dArray, Position}
 
-trait Board1dArray extends BoardMNType1dArray with BoardMovesGenerator with MLookup {
+private[game] trait Board1dArray extends BoardMNType1dArray with BoardMovesGenerator with MLookup {
 
   @inline
   private[this] def boardOffset(pos: Position): Int = mLookups(pos.row) + pos.col

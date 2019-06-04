@@ -2,6 +2,7 @@ package benchmarks
 
 import cats.implicits._
 import game.BoardMNK
+import game.types.BOARD_2D_ARRAY
 
 object MNKSolver extends App {
 
@@ -13,7 +14,7 @@ object MNKSolver extends App {
   print("k = ")
   val k: Short = scala.io.StdIn.readShort()
 
-  val board = new BoardMNK(m, n, k)
+  val board = BoardMNK(m, n, k, BOARD_2D_ARRAY)
   val time = System.currentTimeMillis()
   val score = ai.alphaBeta(board)
   println(s"total time: ${System.currentTimeMillis() - time}")

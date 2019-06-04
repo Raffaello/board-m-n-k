@@ -1,31 +1,12 @@
 package game
 
 import cats.implicits._
-import game.boards.implementations.Board2dArray
+import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
 import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
-import game.types.Position
+import game.types._
 
-/**
-  * TODO Board2dArray trait should not be included here... remove it later.
-  * TODO Board2dArray has to be a type of boards not a with trait
-  *      used for generateMoves.
-  *
-  * Error:(13, 7) class BoardMNKP needs to be abstract, since:
-  * it has 4 unimplemented members.
-  * /** As seen from class BoardMNKP, the missing signatures are as follows.
-  * *  For convenience, these are usable as stub implementations.
-  **/
-  * // Members declared in game.types.BoardMNType
-  * protected def board: game.BoardMNKP#Board = ???
-  * protected def boardPlayer(pos: game.types.Position): game.Player = ???
-  * protected def boardPlayer_=(pos: game.types.Position)(p: game.Player): Unit = ???
-  *
-  * // Members declared in game.boards.BoardMovesGenerator
-  * def generateMoves(): IndexedSeq[game.types.Position] = ???
-  * class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends BoardMN(m, n)
-  */
-class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends BoardMN(m, n)
-  with BoardDepthAware with LastMoveTracker with BoardPlayers /*with Board2dArray*/ {
+abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends BoardMN(m, n)
+  with BoardDepthAware with LastMoveTracker with BoardPlayers {
 
   require(k <= m || k <= n)
   require(numPlayers >= 2)
@@ -60,9 +41,16 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   // last player win? 1
   // last player lost? -1
   // else 0
-  override def score(): Int = ???
+  override def score(): Int = score(lastPlayer)
 
-  // check if board has k in a row of last player then return true otherwise false
+  /**
+    * if player won 1
+    * if player lost -1
+    * if it is a draw 0
+    */
+  def score(player: Player): Int = ???
+
+  // check if board has k in a row of any player then return true otherwise false
   // create a general method to check player p if won.
   override protected def checkWin(): Boolean = ???
 
@@ -80,4 +68,14 @@ class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends 
   }
 
   def nextPlayer(): Byte = opponent(lastPlayer)
+}
+
+object BoardMNKP {
+  def apply(m: Short, n: Short, k: Short, numPlayers: Player, boardType: BoardMNTypeEnum): BoardMNKP = {
+    boardType match {
+      case BOARD_1D_ARRAY => new BoardMNKP(m, n, k, numPlayers) with Board1dArray
+      case BOARD_2D_ARRAY => new BoardMNKP(m, n, k, numPlayers) with Board2dArray
+      case BOARD_BIT_BOARD => new BoardMNKP(m, n, k, numPlayers) with BoardBitBoard
+    }
+  }
 }

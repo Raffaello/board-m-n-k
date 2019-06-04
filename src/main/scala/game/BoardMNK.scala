@@ -2,15 +2,15 @@ package game
 
 import cats.implicits._
 import game.boards.BoardDisplay
-import game.types.Position
+import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
+import game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BOARD_BIT_BOARD, BoardMNTypeEnum, Position}
 
 import scala.annotation.tailrec
 
 /**
   * TODO: potentially split in BoardNMK and BoardMNKLookUp (traits)
   */
-class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) with BoardDisplay {
-  require(k > 2)
+abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) with BoardDisplay {
 
   final protected def score2players(player: Byte): Int = {
     player match {
@@ -27,7 +27,7 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
     * @return
     */
   override def score(): Int = {
-    if (checkWin()) score2players(_lastPlayer)
+    if (checkWin()) score2players(lastPlayer)
     else 0
   }
 
@@ -173,5 +173,15 @@ class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
 
     str ++= newLine
     str.toString()
+  }
+}
+
+object BoardMNK {
+  def apply(m: Short, n: Short, k: Short, boardType: BoardMNTypeEnum): BoardMNK = {
+    boardType match {
+      case BOARD_1D_ARRAY => new BoardMNK(m, n, k) with Board1dArray
+      case BOARD_2D_ARRAY => new BoardMNK(m, n, k) with Board2dArray
+      case BOARD_BIT_BOARD => new BoardMNK(m, n, k) with BoardBitBoard
+    }
   }
 }

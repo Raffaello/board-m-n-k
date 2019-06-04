@@ -2,7 +2,7 @@ package ai
 
 import cats.implicits._
 import game.types.{Position, Status}
-import game.{BoardMNK, BoardMNKP, Score}
+import game.{BoardMNKP, Score}
 
 // TODO extends later to BoardMNKP... with a type T <: Numeric
 trait MiniMax extends  BoardMNKP with AiBoard with AiBoardScoreEval {

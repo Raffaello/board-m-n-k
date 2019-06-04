@@ -2,6 +2,8 @@ package bench.benchmarks
 
 import ai._
 import ai.old.BoardMNKwithGetBoard
+import game.boards.implementations.Board2dArray
+import game.types.BOARD_2D_ARRAY
 import game.{BoardMNK, Score}
 import org.scalameter.api.Gen
 
@@ -14,7 +16,7 @@ object MNKSolvers {
     for {
       n <- ns
       m <- ms
-    } yield new BoardMNK(m.toShort, n.toShort, k)
+    } yield BoardMNK(m.toShort, n.toShort, k, BOARD_2D_ARRAY)
   }
 
   val boardSizes: Gen[(Int, Int)] = {
@@ -25,41 +27,41 @@ object MNKSolvers {
   }
 
   def oldMinimax(m: Int, n: Int, k: Int): Score = {
-    val board = new BoardMNK(m.toShort, n.toShort, k.toShort)
+    val board = BoardMNK(m.toShort, n.toShort, k.toShort, BOARD_2D_ARRAY)
     Stats.totalCalls = 0
     ai.old.minimax(board, true)
   }
 
   def traitMinimax(m: Int, n: Int, k: Int): MiniMax = {
-    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with MiniMax
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with Board2dArray with MiniMax
     board
   }
 
   def traitMinimaxRaw(m: Int, n: Int, k: Int): MiniMaxRaw = {
-    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with MiniMaxRaw
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with Board2dArray with MiniMaxRaw
     board
   }
 
   def oldNegamax(m: Int, n: Int, k: Int): Score = {
-    val board = new BoardMNK(m.toShort, n.toShort, k.toShort)
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with Board2dArray
     Stats.totalCalls = 0
     ai.old.negamax(board, 1)
   }
 
 
   def traitNegamax(m: Int, n: Int, k: Int): NegaMax = {
-    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with NegaMax
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with Board2dArray with NegaMax
     board
   }
 
   def alphaBeta(m: Int, n: Int, k: Int): Score = {
-    val board = new BoardMNK(m.toShort, n.toShort, k.toShort)
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with Board2dArray
     Stats.totalCalls = 0
     Math.round(ai.alphaBeta(board)).toInt
   }
 
   def traitAlphaBeta(m: Int, n: Int, k: Int): AlphaBeta = {
-    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with AlphaBeta
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with Board2dArray  with AlphaBeta
     board
   }
 

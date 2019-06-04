@@ -1,5 +1,6 @@
 package ai
 
+import game.boards.implementations.Board2dArray
 import game.types.{Position, Status}
 import game.{BoardTicTacToe, BoardTicTacToe2, Score}
 import org.scalatest.{Matchers, WordSpec}
@@ -27,13 +28,13 @@ class MiniMaxSpec extends WordSpec with Matchers {
 
   "BoardTicTacToe with minimax" should {
     "draw the game" in new AiTicTacToeExpectedStats {
-      val game = new BoardTicTacToe with MiniMax
+      val game = new BoardTicTacToe with Board2dArray with MiniMax
       game.solve shouldEqual 0
       expMiniMax(game.Stats.totalCalls)
     }
 
     "have first move" in {
-      val game = new BoardTicTacToe with MiniMax
+      val game = new BoardTicTacToe with Board2dArray with MiniMax
       val s: Status[Score] = Status(0, Position(0, 0))
       game.nextMove shouldEqual s
     }

@@ -6,7 +6,7 @@ import game.boards.lookups.BitBoardLookup
 import game.types.{BoardMNTypeBitBoard, Position}
 import game.{BitBoard, Player}
 
-trait BoardBitBoard extends BoardMNTypeBitBoard with BoardMovesGenerator with BitBoardLookup {
+private[game] trait BoardBitBoard extends BoardMNTypeBitBoard with BoardMovesGenerator with BitBoardLookup {
 
   @inline
   private[this] def boardValue(position: Position): BitBoard = bitsLookup.getOrElse(position, bitValue(position))

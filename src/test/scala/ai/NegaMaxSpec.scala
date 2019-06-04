@@ -1,5 +1,6 @@
 package ai
 
+import game.boards.implementations.Board2dArray
 import game.types.{Position, Status}
 import game.{BoardTicTacToe, BoardTicTacToe2, Score}
 import org.scalatest.{Matchers, WordSpec}
@@ -28,13 +29,13 @@ class NegaMaxSpec extends WordSpec with Matchers {
 
   "BoardTicTacToe negamax" should {
     "solve the game" in new AiTicTacToeExpectedStats {
-      val game = new BoardTicTacToe with NegaMax
+      val game = new BoardTicTacToe with Board2dArray with NegaMax
       game.solve shouldEqual 0
       expNegamax(game.Stats.totalCalls)
     }
 
     "have first move" in {
-      val game = new BoardTicTacToe with NegaMax
+      val game = new BoardTicTacToe with Board2dArray with NegaMax
       val s: Status[Score] = Status(0, Position(0, 0))
       game.nextMove shouldEqual s
     }

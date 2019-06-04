@@ -4,8 +4,7 @@ import game.Player
 
 import scala.collection.immutable.NumericRange
 
-// TODO convert to ad hoc polymorphism? Type Classes?
-trait BoardMNType {
+private[game] trait BoardMNType {
   type Board
 
   val m: Short
