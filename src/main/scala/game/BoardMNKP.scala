@@ -9,9 +9,23 @@ import game.types.Position
   * TODO Board2dArray trait should not be included here... remove it later.
   * TODO Board2dArray has to be a type of boards not a with trait
   *      used for generateMoves.
+  *
+  * Error:(13, 7) class BoardMNKP needs to be abstract, since:
+  * it has 4 unimplemented members.
+  * /** As seen from class BoardMNKP, the missing signatures are as follows.
+  * *  For convenience, these are usable as stub implementations.
+  **/
+  * // Members declared in game.types.BoardMNType
+  * protected def board: game.BoardMNKP#Board = ???
+  * protected def boardPlayer(pos: game.types.Position): game.Player = ???
+  * protected def boardPlayer_=(pos: game.types.Position)(p: game.Player): Unit = ???
+  *
+  * // Members declared in game.boards.BoardMovesGenerator
+  * def generateMoves(): IndexedSeq[game.types.Position] = ???
+  * class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends BoardMN(m, n)
   */
 class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends BoardMN(m, n)
-  with BoardDepthAware with LastMoveTracker with BoardPlayers with Board2dArray {
+  with BoardDepthAware with LastMoveTracker with BoardPlayers /*with Board2dArray*/ {
 
   require(k <= m || k <= n)
   require(numPlayers >= 2)

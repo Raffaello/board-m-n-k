@@ -54,8 +54,27 @@ class BoardTicTacToe1dArray extends BoardMN(3, 3)
     else 0
   }
 
+  // TODO generalized for k and p, move where appropriate
+  protected def scoreRowKP(row: Short): Player = {
+    val k = 3
+    val i = mLookups(row)
+    val head = board(i)
+
+    if ((i+1 until i+k).forall(v => head == board(v))) head
+    else 0
+  }
+
   protected def scoreCol(col: Short): Int = {
     if (board(col) == board(m + col) && board(col) == board(m2 + col)) board(col)
+    else 0
+  }
+
+  // TODO generalized for k and p, move where appropriate
+  protected def scoreCol2(col: Short): Player = {
+    val k = 3
+    val head = board(col)
+
+    if ((col+m until col+ m*k).forall(v => head == v)) head
     else 0
   }
 
