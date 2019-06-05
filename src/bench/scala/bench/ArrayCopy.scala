@@ -26,7 +26,7 @@ object ArrayCopy extends Bench.OfflineRegressionReport {
         }
       }
 
-      measure method "mapClone" in {
+      measure method "forClone" in {
         using(arrays2d) in {
           case (m, n, a) => forClone2d(m, n, a)
         }
