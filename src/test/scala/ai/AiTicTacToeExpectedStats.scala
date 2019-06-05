@@ -23,17 +23,17 @@ trait AiTicTacToeExpectedStats extends Matchers {
     totalCalls shouldBe minimaxTotalCallsDepth0
   }
 
-  def expMiniMax(): Unit = expMiniMax(ai.Stats.totalCalls)
+//  def expMiniMax(): Unit = expMiniMax(ai.Stats.totalCalls)
 
   def expNegamax(totalCalls: Int): Unit = expMiniMax(totalCalls)
 
-  def expNegamax(): Unit = expMiniMax(ai.Stats.totalCalls)
+//  def expNegamax(): Unit = expMiniMax(ai.Stats.totalCalls)
 
   def expAlphaBeta(totalCalls: Int): Unit = {
     totalCalls shouldBe alphaBetaTotalCallsDepth0
   }
 
-  def expAlphaBeta(): Unit = expAlphaBeta(ai.Stats.totalCalls)
+//  def expAlphaBeta(): Unit = expAlphaBeta(ai.Stats.totalCalls)
 
   def expAlphaBetaWithMemStats(totalCalls: Int, totalCache: Int, memSize: Int): Unit = {
     totalCalls shouldBe alphaBetaWithMemTotalCallsDepth0
@@ -41,9 +41,9 @@ trait AiTicTacToeExpectedStats extends Matchers {
     memSize shouldBe withMemSize
   }
 
-  def expAlphaBetaWithMemStats(memSize: Int): Unit = {
-    expAlphaBetaWithMemStats(ai.Stats.totalCalls, ai.Stats.cacheHits, memSize)
-  }
+//  def expAlphaBetaWithMemStats(memSize: Int): Unit = {
+//    expAlphaBetaWithMemStats(ai.Stats.totalCalls, ai.Stats.cacheHits, memSize)
+//  }
 
   def expAlphaBetaTTTrait(totalCalls: Int, totalCache: Int, memSize: Int): Unit = {
     totalCalls shouldBe alphaBetaTTTTotalCalls

@@ -113,7 +113,7 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
     "draw (Drafts)" in new AiTicTacToeExpectedStats {
       val game = new BitBoardTicTacToe
       Drafts.alphaBetaBit(game) shouldBe 0.0
-      expAlphaBeta()
+//      expAlphaBeta()
     }
 
     for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {
