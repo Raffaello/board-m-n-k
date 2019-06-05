@@ -35,7 +35,8 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
     exec.outliers.suspectPercent -> 10,
     exec.outliers.covMultiplier -> 2.0,
     exec.reinstantiation.fullGC -> true,
-    exec.reinstantiation.frequency -> 5
+    exec.reinstantiation.frequency -> 5,
+    reports.resultDir -> (reports.resultDir + this.getClass.getName)
   ) in {
     performance of "TicTacToe (lookups)" in {
       measure method "old.minimax" in {

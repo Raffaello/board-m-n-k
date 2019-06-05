@@ -2,7 +2,7 @@ package bench
 
 import bench.benchmarks.Array1dCopy.{array1dCopy, arrays1d, clone1d, forLoop1d}
 import bench.benchmarks.Array2dCopy._
-import org.scalameter.api.{Bench, exec}
+import org.scalameter.api.{Bench, exec, reports}
 
 object ArrayCopy extends Bench.OfflineRegressionReport {
 
@@ -17,7 +17,8 @@ object ArrayCopy extends Bench.OfflineRegressionReport {
     exec.outliers.suspectPercent -> 15,
     exec.outliers.covMultiplier -> 2.0,
     exec.reinstantiation.fullGC -> true,
-    exec.reinstantiation.frequency -> 3
+    exec.reinstantiation.frequency -> 3,
+    reports.resultDir -> (reports.resultDir + this.getClass.getName)
   ) in {
     performance of "Array2dCopy" in {
       measure method "mapClone" in {
