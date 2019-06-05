@@ -1,7 +1,7 @@
 package bench
 
 import bench.benchmarks.Array1dCopy.{array1dCopy, arrays1d, clone1d, forLoop1d}
-import bench.benchmarks.Array2dCopy.{array2dCopy, arrays2d, forLoop2d, mapClone2d}
+import bench.benchmarks.Array2dCopy._
 import org.scalameter.api.{Bench, exec}
 
 object ArrayCopy extends Bench.OfflineRegressionReport {
@@ -23,6 +23,12 @@ object ArrayCopy extends Bench.OfflineRegressionReport {
       measure method "mapClone" in {
         using(arrays2d) in {
           case (_, _, a) => mapClone2d(a)
+        }
+      }
+
+      measure method "mapClone" in {
+        using(arrays2d) in {
+          case (m, n, a) => forClone2d(m, n, a)
         }
       }
 

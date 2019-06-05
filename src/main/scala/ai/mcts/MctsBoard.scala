@@ -13,7 +13,9 @@ import scala.util.Random
 // TODO remove board2darray
 // TODO remove boarddisplay
 // todo remove clonable
-trait MctsBoard extends BoardMNKPLookUp with BoardDisplay with Board2dArray with AiBoard with Cloneable {
+trait MctsBoard extends BoardMNKPLookUp
+  with BoardDisplay with Board2dArray with AiBoard with Cloneable {
+
   final private[mcts] val random = ai.mcts.seed match {
     case Some(x) => new Random(x)
     case None => new Random()
@@ -66,7 +68,7 @@ trait MctsBoard extends BoardMNKPLookUp with BoardDisplay with Board2dArray with
   override def clone(): MctsBoard = {
     val clone = super.clone().asInstanceOf[MctsBoard]
     clone._board = _board.map(_.clone()) // <= check benchmark result
-    clone._lookUps = _lookUps.clone().asInstanceOf[clone.CLookUps]
+    clone._lookUps = _lookUps.deepCopy().asInstanceOf[clone.CLookUps]
 
     assert(clone ne this)
     assert(clone._board ne _board)

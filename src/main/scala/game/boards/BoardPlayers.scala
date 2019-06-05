@@ -5,5 +5,5 @@ trait BoardPlayers {
 
   protected var _lastPlayer: Byte = numPlayers
 
-  def lastPlayer: Byte = this._lastPlayer
+  def lastPlayer: Byte = _lastPlayer
 }

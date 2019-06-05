@@ -79,8 +79,6 @@ abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m,
 
   /**
     * North-East direction checking: bottom-left to top-right
-    *
-    * @return
     */
   protected def scoreDiagNE(): Int = {
     val (i, j) = (_lastMove.row, _lastMove.col)
@@ -105,6 +103,7 @@ abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m,
     else 0
   }
 
+  // TODO this is using lookup, need to be decoupled
   protected def scoreCol(): Int = {
     val (i, j) = (_lastMove.row, _lastMove.col)
 
@@ -131,6 +130,7 @@ abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m,
     } else 0
   }
 
+  // TODO this is using lookup, need to be decoupled
   protected def scoreRow(): Int = {
     val (i, j) = (_lastMove.row, _lastMove.col)
 

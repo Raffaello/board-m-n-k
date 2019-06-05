@@ -6,56 +6,71 @@ import game.types.{BoardMNType, Position}
 
 // TODO this file is strictly designed for a 2d array board implementation not for a general one, need to be rewritten
 
-/**
-  * TODO all arrays must be cloned so at the moment using var :/
-  */
 trait TLookUps extends BoardMNType with BoardPlayers {
   protected var _lookUps = new CLookUps
 
+  // TODO remove/refactor, only used for testing.
   def lookUps: CLookUps = _lookUps
 
   /**
-    * TODO define a copy method, remove clonable and define an inline def for array cloning
     * TODO also should be a concrete implementation for the different kind of boards. this is for 2d array
     * TODO rethink in a more general way.
+    *
+    * TODO the ended variable is not really significative:
+    *      check win once only for each playMove so it is just overhead the ended.
+    *      it is used because it might call in multiple times the check as a cache,
+    *      double checked it
+    *      ideally this internal states of rows and cols and lastplayers
+    *      should be encapsulated and just the ended returned true/false
+    *      so it means the LookUps must known the rules m,n,k,p .....
+    *      and call gameEnded() / checkWin(), otherwise it is just a data structure and it is ok.
     */
-  class CLookUps() extends Cloneable {
-    var rows: Array[Array[Player]] = Array.ofDim[Player](m, numPlayers)
-    var cols: Array[Array[Player]] = Array.ofDim[Player](n, numPlayers)
-    var lastPlayerIdx: Int = 0
-    var ended: Option[Boolean] = Some(false)
+  final class CLookUps(
+                        val rows: Array[Array[Player]] = Array.ofDim[Player](m, numPlayers),
+                        val cols: Array[Array[Player]] = Array.ofDim[Player](n, numPlayers),
+                        var lastPlayerIdx: Int = numPlayers - 1,
+                        var ended: Option[Boolean] = Some(false)) {
+
+    def deepCopy(
+                  newRows: Array[Array[Player]] = rows,
+                  newCols: Array[Array[Player]] = cols,
+                  newLastPlayerIdx: Int = lastPlayerIdx,
+                  newEnded: Option[Boolean] = ended
+                ): CLookUps = {
+
+      def copying(newArr: Array[Array[Player]], arr: Array[Array[Player]]): Array[Array[Player]] = {
+        if (newArr eq arr) newArr.map(_.clone()) else newArr
+      }
+
+      def rowsCopy(): Array[Array[Player]] = copying(newRows, rows)
+
+      def colsCopy(): Array[Array[Player]] = copying(newCols, cols)
+
+      new CLookUps(rowsCopy(), colsCopy(), newLastPlayerIdx, newEnded)
+    }
 
     def inc(pos: Position, playerIdx: Int): Unit = {
-      val (x, y) = (pos.row, pos.col)
-
+      ended = None // reset, force to check
       lastPlayerIdx = playerIdx
-      rows(x)(playerIdx) = (1 + rows(x)(playerIdx)).toByte
-      assert(rows(x)(playerIdx) <= n)
 
-      cols(y)(playerIdx) = (1 + cols(y)(playerIdx)).toByte
-      //      assert(cols(y)(playerIdx) <= m, s"${cols(y)(playerIdx)} -- $playerIdx, $pos -- ${_board.flatten.mkString}")
+      rows(pos.row)(playerIdx) = (1 + rows(pos.row)(playerIdx)).toByte
+      assert(rows(pos.row)(playerIdx) <= n)
+
+      cols(pos.col)(playerIdx) = (1 + cols(pos.col)(playerIdx)).toByte
+      assert(cols(pos.col)(playerIdx) <= m, s"${cols(pos.col)(playerIdx)} -- $playerIdx, $pos")
       // TODO DIAG1 and DIAG2
     }
 
     def dec(pos: Position, playerIdx: Int): Unit = {
-      val (x, y) = (pos.row, pos.col)
+      ended = None
+      lastPlayerIdx = -1
 
-      rows(x)(playerIdx) = (rows(x)(playerIdx) - 1).toByte
-      assert(rows(x)(playerIdx) >= 0)
+      rows(pos.row)(playerIdx) = (rows(pos.row)(playerIdx) - 1).toByte
+      assert(rows(pos.row)(playerIdx) >= 0)
 
-      cols(y)(playerIdx) = (cols(y)(playerIdx) - 1).toByte
-      assert(cols(y)(playerIdx) >= 0, s"${cols(y)(playerIdx)} -- $playerIdx, $pos")
-    }
-
-    override def clone(): CLookUps = {
-      val clone = super.clone().asInstanceOf[CLookUps]
-
-      clone.rows = this.rows.map(_.clone())
-      clone.cols = this.cols.map(_.clone())
-      clone.lastPlayerIdx = lastPlayerIdx
-      clone.ended = ended
-
-      clone
+      cols(pos.col)(playerIdx) = (cols(pos.col)(playerIdx) - 1).toByte
+      assert(cols(pos.col)(playerIdx) >= 0, s"${cols(pos.col)(playerIdx)} -- $playerIdx, $pos")
     }
   }
+
 }

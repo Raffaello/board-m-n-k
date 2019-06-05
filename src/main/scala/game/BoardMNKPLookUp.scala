@@ -8,24 +8,21 @@ import game.types._
 abstract class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Player) extends BoardMNKP(m, n, k, p) with TLookUps {
 
   override def playMove(position: Position, player: Player): Boolean = {
-    lookUps.ended = None
     val res = super.playMove(position, player)
-    if (res) {
-      lookUps.inc(position, player - 1)
-    }
+    if (res) lookUps.inc(position, player - 1)
     res
   }
 
   override def undoMove(position: Position, player: Player): Boolean = {
-    lookUps.dec(position, player - 1)
-    lookUps.ended = None
-    super.undoMove(position, player)
+    val res = super.undoMove(position, player)
+    if (res) lookUps.dec(position, player - 1)
+    res
   }
 
   // Todo review this method and lookUps.ended ???
   // TODO !!!!!!!!!!! FIX, SHOULD BE REMOVED OR USE LOOKUPS !!!!!!!!!!!!!!
   override def gameEnded(depth: Int): Boolean = {
-    //    lookUps.ended.getOrElse(checkWin())
+//    lookUps.ended.getOrElse(checkWin())
     if (depth < minWinDepth) false
     else if (freePositions === 0) true
     else checkWin()
