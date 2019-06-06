@@ -1,7 +1,7 @@
 package bench
 
+import ai._
 import ai.old.GetBoard
-import ai.{alphaBeta => _, _}
 import bench.benchmarks.TicTacToeSolvers._
 import game._
 import game.boards.implementations.Board2dArray
