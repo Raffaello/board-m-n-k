@@ -1,12 +1,10 @@
 package game
 
 import cats.implicits._
-import game.boards.implementations.Board1dArray
-import game.boards.{BoardDepthAware, BoardPlayers, LastMoveTracker}
 import game.Implicit.convertToPlayer
+import game.boards.implementations.Board1dArray
 
-class BoardTicTacToe1dArray extends BoardMNK(3, 3, 3)
-  with Board1dArray with LastMoveTracker with BoardDepthAware with BoardPlayers {
+class BoardTicTacToe1dArray extends BoardTicTacToe with Board1dArray {
 
   val m2 = m * 2
 

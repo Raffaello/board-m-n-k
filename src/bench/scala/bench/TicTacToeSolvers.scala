@@ -240,7 +240,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = Math.round(Drafts.alphaBeta(new BoardTicTacToe1dArray)).toInt
+          _ => score = Math.round(ai.alphaBeta(new BoardTicTacToe1dArray)).toInt
         }
       }
     }
@@ -250,7 +250,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = Math.round(Drafts.alphaBetaBit(new BitBoardTicTacToe)).toInt
+          _ => score = Math.round(ai.alphaBeta(new BitBoardTicTacToe)).toInt
         }
       }
     }

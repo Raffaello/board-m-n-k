@@ -32,7 +32,7 @@ trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
     val player = nextPlayer()
 
     mainBlock(player) { status =>
-      val value = solve(nextPlayer() == aiPlayer)
+      val value = solve(nextPlayer() === aiPlayer)
       cmp(status.score, value)
     }
   }
@@ -47,6 +47,7 @@ trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
     var pBest: Position = Position(-1, -1)
     val player = nextPlayer()
 
+    // todo mainBlock should return to avoid var
     val score = mainBlock(player) { status: Status[Score] =>
       val newValue = solve(nextPlayer() === aiPlayer)
       val sig = signum(maximizing)

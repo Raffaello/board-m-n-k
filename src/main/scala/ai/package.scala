@@ -116,7 +116,14 @@ package object ai {
     }
   }
 
-  def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, ab: AlphaBetaValues[Score] = AlphaBetaValues.alphaBetaValueScore, maximizingPlayer: Boolean = true): Transposition = {
+  def alphaBetaWithMem(
+                        statuses: TranspositionTable,
+                        game: BoardMNK,
+                        depth: Int = 0,
+                        ab: AlphaBetaValues[Score] = AlphaBetaValues.alphaBetaValueScore,
+                        maximizingPlayer: Boolean = true
+                      ): Transposition = {
+
     statuses.get() match {
       case Some(t) =>
         Stats.cacheHits += 1

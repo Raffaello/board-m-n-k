@@ -52,7 +52,7 @@ class BoardTicTacToe1dArraySpec extends WordSpec with Matchers with GeneratorDri
     }
     "be solved (Drafts)" in new AiTicTacToeExpectedStats {
       val game = new BoardTicTacToe1dArray
-      Drafts.alphaBeta(game)shouldBe 0.0
+      ai.alphaBeta(game)shouldBe 0.0
 //      expAlphaBeta()
     }
 

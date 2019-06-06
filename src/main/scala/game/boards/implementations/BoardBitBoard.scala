@@ -25,10 +25,11 @@ private[game] trait BoardBitBoard extends BoardMNTypeBitBoard with BoardMovesGen
   override protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(p - 1) ^= boardValue(pos)
 
   override def generateMoves(): IndexedSeq[Position] = {
+    val b = board.foldLeft(0)((acc, x) => acc | x)
     for {
       i <- mIndices
       j <- nIndices
-      if board(boardValue(Position(i, j))) === 0
+      if (boardValue(Position(i, j)) & b) === 0
     } yield Position(i, j)
   }
 }

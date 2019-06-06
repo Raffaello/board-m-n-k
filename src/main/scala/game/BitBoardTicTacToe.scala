@@ -2,11 +2,9 @@ package game
 
 import cats.implicits._
 import game.boards.implementations.BoardBitBoard
-import game.boards.{BoardDepthAware, BoardPlayers, LastMoveTracker}
 import game.types.Position
 
-class BitBoardTicTacToe extends BoardTicTacToe
-  with BoardBitBoard with BoardDepthAware with LastMoveTracker with BoardPlayers {
+class BitBoardTicTacToe extends BoardTicTacToe with BoardBitBoard {
 
   override def playMove(position: Position, player: Player): Boolean = {
     if (boardPlayer(position) > 0) false

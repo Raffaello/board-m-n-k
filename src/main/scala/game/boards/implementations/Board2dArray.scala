@@ -1,6 +1,7 @@
 package game.boards.implementations
 
 import cats.implicits._
+import game.Implicit.convertToPlayer
 import game.Player
 import game.boards.BoardMovesGenerator
 import game.types.{BoardMNType2dArray, Position}

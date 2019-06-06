@@ -68,7 +68,7 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
     var pBest: Position = Position(-1, -1)
     var best = if (maximizing) Int.MinValue else Int.MaxValue
     var (a1, b1) = (alphaBetaValues.alpha, alphaBetaValues.beta)
-
+    // TODO mainBlock should return to avoid var
     mainBlock(maximizing, alphaBetaValues) { abStatus: AlphaBetaStatus[Score] =>
       val value = solve(!maximizing, abStatus.alphaBetaValues)
       if (maximizing) {

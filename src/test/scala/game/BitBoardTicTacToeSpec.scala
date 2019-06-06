@@ -111,7 +111,35 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
       game.score() shouldBe 0
     }
 
-    "draw (Drafts)" in new AiTicTacToeExpectedStats {
+    "generate all moves correctly" in {
+      val game = new BitBoardTicTacToe
+      val i = {
+        for {
+          i <- 0 until 3
+          j <- 0 until 3
+        } yield Position(i.toShort, j.toShort)
+      }
+
+      game.generateMoves() shouldBe i
+    }
+
+    "generate some moves correctly" in {
+      val game = new BitBoardTicTacToe
+      game.playMove(Position(0,0), game.nextPlayer()) shouldBe true
+      game.playMove(Position(1,0), game.nextPlayer()) shouldBe true
+      game.playMove(Position(2,0), game.nextPlayer()) shouldBe true
+
+      val i = {
+        for {
+          i <- 0 until 3
+          j <- 1 until 3
+        } yield Position(i.toShort, j.toShort)
+      }
+
+      game.generateMoves() shouldBe i
+    }
+
+    "draw" in new AiTicTacToeExpectedStats {
       val game = new BitBoardTicTacToe
       Drafts.alphaBetaBit(game) shouldBe 0.0
       //      expAlphaBeta()
