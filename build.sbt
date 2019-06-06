@@ -39,7 +39,7 @@ libraryDependencies ++= Seq(
 // CATS -- end
 
 // Monocle
-val monocleVersion = "1.5.0" // 1.5.0-cats based on cats 1.0.x
+val monocleVersion = "1.5.0-cats" // 1.5.0-cats based on cats 1.0.x
 
 libraryDependencies ++= Seq(
   "com.github.julien-truffaut" %%  "monocle-core"  % monocleVersion,
