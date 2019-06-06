@@ -1,7 +1,6 @@
 package game
 
 import ai.AiTicTacToeExpectedStats
-import ai.old.Drafts
 import game.Implicit.convertToPlayer
 import game.boards.implementations.BoardBitBoard
 import game.types.Position
@@ -141,7 +140,7 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
 
     "draw" in new AiTicTacToeExpectedStats {
       val game = new BitBoardTicTacToe
-      Drafts.alphaBetaBit(game) shouldBe 0.0
+      ai.alphaBeta(game) shouldBe 0.0
       //      expAlphaBeta()
     }
 

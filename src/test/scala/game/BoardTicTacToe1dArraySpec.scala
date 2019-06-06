@@ -1,7 +1,6 @@
 package game
 
 import ai.AiTicTacToeExpectedStats
-import ai.old.Drafts
 import game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
@@ -50,7 +49,7 @@ class BoardTicTacToe1dArraySpec extends WordSpec with Matchers with GeneratorDri
         game.boardPlayer(pos) shouldBe 0
       }
     }
-    "be solved (Drafts)" in new AiTicTacToeExpectedStats {
+    "be solved" in new AiTicTacToeExpectedStats {
       val game = new BoardTicTacToe1dArray
       ai.alphaBeta(game)shouldBe 0.0
 //      expAlphaBeta()
