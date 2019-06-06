@@ -1,6 +1,7 @@
 package game.boards.implementations
 
 import cats.implicits._
+import game.Implicit.convertToPlayer
 import game.boards.BoardMovesGenerator
 import game.boards.lookups.BitBoardLookup
 import game.types.{BoardMNTypeBitBoard, Position}
@@ -16,9 +17,9 @@ private[game] trait BoardBitBoard extends BoardMNTypeBitBoard with BoardMovesGen
     for {
       p <- 0 until numPlayers
       if (board(p) & v) === v
-    } return (p + 1).toByte
+    } return p + 1
 
-    0.toByte
+    0
   }
 
   override protected def boardPlayer_=(pos: Position)(p: Player): Unit = board(p - 1) ^= boardValue(pos)

@@ -2,6 +2,7 @@ package game
 
 import ai.AiTicTacToeExpectedStats
 import ai.old.Drafts
+import game.Implicit.convertToPlayer
 import game.boards.implementations.BoardBitBoard
 import game.types.Position
 import org.scalacheck.Gen
@@ -66,18 +67,18 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
 
     for (p <- 1 to 2) {
       s"checkWins p$p" should {
-        val s = if (p == 1) 1 else -1
+        val s = if (p === 1) 1 else -1
         for (i <- 0 until 3) {
           s"be correct with row $i" in {
             val game = new BitBoardTicTacToe
-            for (j <- 0 until 3) game.playMove(Position(i.toShort, j.toShort), p.toByte) shouldBe true
+            for (j <- 0 until 3) game.playMove(Position(i.toShort, j.toShort), p) shouldBe true
             game.gameEnded() shouldBe true
             game.score() shouldBe s
           }
 
           s"be correct with col $i" in {
             val game = new BitBoardTicTacToe
-            for (j <- 0 until 3) game.playMove(Position(j.toShort, i.toShort), p.toByte) shouldBe true
+            for (j <- 0 until 3) game.playMove(Position(j.toShort, i.toShort), p) shouldBe true
             game.gameEnded() shouldBe true
             game.score() shouldBe s
           }
@@ -85,14 +86,14 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
 
         s"be correct with diag SE" in {
           val game = new BitBoardTicTacToe
-          for (j <- 0 until 3) game.playMove(Position(j.toShort, j.toShort), p.toByte) shouldBe true
+          for (j <- 0 until 3) game.playMove(Position(j.toShort, j.toShort), p) shouldBe true
           game.gameEnded() shouldBe true
           game.score() shouldBe s
         }
 
         s"be correct with diag NE" in {
           val game = new BitBoardTicTacToe
-          for (j <- 0 until 3) game.playMove(Position(j.toShort, (2 - j).toShort), p.toByte) shouldBe true
+          for (j <- 0 until 3) game.playMove(Position(j.toShort, (2 - j).toShort), p) shouldBe true
           game.gameEnded() shouldBe true
           game.score() shouldBe s
         }
@@ -113,19 +114,13 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
     "draw (Drafts)" in new AiTicTacToeExpectedStats {
       val game = new BitBoardTicTacToe
       Drafts.alphaBetaBit(game) shouldBe 0.0
-//      expAlphaBeta()
+      //      expAlphaBeta()
     }
 
     for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {
       "won by player " + p.toString must {
-        var score = 0
-        if (p === 1) {
-          score = 1
-        } else {
-          score = -1
-        }
+        val score = if (p === 1) 1 else -1
         "by rows player" in {
-
           for (i <- 0 until 3) {
             val game = new BitBoardTicTacToe()
             for (j <- 0 until 3) game.playMove(Position(i.toShort, j.toShort), p)

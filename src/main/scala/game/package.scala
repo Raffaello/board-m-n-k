@@ -1,8 +1,11 @@
-package object game {
-  // Todo generalize score to be numeric?
-  type Score = Int
+import scala.language.implicitConversions
 
-  // todo generalize as a numeric ?
+package object game {
+  object Implicit {
+    implicit def convertToPlayer(x: Int): Player = x.toByte
+  }
+
+  type Score = Int
   type Player = Byte
 
   type Board1d = Array[Player]

@@ -8,7 +8,7 @@ trait BoardDisplay extends BoardMNType {
   private[this] def value(player: Player): Char = {
     player match {
       case 0 => '_'
-      case x => x.toChar
+      case _ => player.toChar
     }
   }
 

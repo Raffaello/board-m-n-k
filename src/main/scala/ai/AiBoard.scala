@@ -1,10 +1,11 @@
 package ai
 
+import game.Implicit.convertToPlayer
 import game.types.Status
-import game.{BoardMNKP, Score}
+import game.{BoardMNKP, Player, Score}
 
 trait AiBoard extends BoardMNKP with AiStats {
-  final val aiPlayer: Byte = config.getInt("player").toByte
+  final val aiPlayer: Player = config.getInt("player")
 
   def solve: Score
 

@@ -58,12 +58,7 @@ class BoardTicTacToe1dArraySpec extends WordSpec with Matchers with GeneratorDri
 
     for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {
       "won by player " + p.toString must {
-        var score = 0
-        if (p === 1) {
-          score = 1
-        } else {
-          score = -1
-        }
+        val score = if (p === 1) 1 else -1
         "by rows player" in {
           for (i <- 0 until 3) {
             val game = new BoardTicTacToe1dArray()

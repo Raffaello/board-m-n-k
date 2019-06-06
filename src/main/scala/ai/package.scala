@@ -1,9 +1,9 @@
-import ai.old.StatusOld
-import ai.types.AlphaBetaValues
+import ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.Logger
+import game.Implicit.convertToPlayer
 import game._
-import game.types.Position
+import game.types.{Position, Status}
 
 package object ai {
 
@@ -13,35 +13,32 @@ package object ai {
     var cacheHits: Int = 0
   }
 
-  // TODO review the type definitions.... they are not ok.
-  //  final case class AlphaBeta[T](alpha: T, Beta: T)
-  // todo refactor with a case class alpha, beta
-
-  type AB[T] = (T, T) // Alpha, Beta values
-
-  type ABStatus[T] = (AB[T], StatusOld) // Alpha, Beta values plus Status: Score, Position
-  type ABScore = (AB[Score], Score)
-
   private[ai] val logger = Logger("ai")
 
   val config: Config = settings.Loader.config.getConfig("ai")
 
-  def alphaBeta(game: BoardMNK, depth: Int = 0, alpha: Double = Double.MinValue, beta: Double = Double.MaxValue, maximizingPlayer: Boolean = true): Double = {
+  def alphaBeta(
+                 game: BoardMNK, depth: Int = 0,
+                 ab: AlphaBetaValues[Double] = AlphaBetaValues.alphaBetaValueDouble,
+                 maximizingPlayer: Boolean = true
+               ): Double = {
+
     if (game.gameEnded(depth)) {
       game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
     } else {
       Stats.totalCalls += 1
       if (maximizingPlayer) {
         var best = Double.MinValue
-        var a = alpha
+        var a = ab.alpha
+        val player: Player = 1
         for {
           p <- game.generateMoves()
-          if game.playMove(p, 1)
+          if game.playMove(p, player)
         } {
-          best = Math.max(best, alphaBeta(game, depth + 1, a, beta, false))
+          best = Math.max(best, alphaBeta(game, depth + 1, AlphaBetaValues(a, ab.beta), false))
           a = Math.max(a, best)
-          game.undoMove(p, 1)
-          if (a >= beta) {
+          game.undoMove(p, player)
+          if (a >= ab.beta) {
             return best
           }
         }
@@ -49,15 +46,16 @@ package object ai {
         best
       } else {
         var best = Double.MaxValue
-        var b = beta
+        var b = ab.beta
+        val player: Player = 2
         for {
           p <- game.generateMoves()
-          if game.playMove(p, 2)
+          if game.playMove(p, player)
         } {
-          best = Math.min(best, alphaBeta(game, depth + 1, alpha, b, true))
+          best = Math.min(best, alphaBeta(game, depth + 1, AlphaBetaValues(ab.alpha, b), true))
           b = Math.min(b, best)
-          game.undoMove(p, 2)
-          if (alpha >= b) {
+          game.undoMove(p, player)
+          if (ab.alpha >= b) {
             return best
           }
         }
@@ -67,22 +65,17 @@ package object ai {
     }
   }
 
-  /**
-    * TODO replace return type with a case class.
-    *
-    * @return (score, x pos, y pos, alpha, beta)
-    */
-  def alphaBetaNextMove(game: BoardMNK, depth: Int = 0, alpha: Double, beta: Double, maximizingPlayer: Boolean): old.ABMove = {
-    var ibest: Short = -1
-    var jbest: Short = -1
+  def alphaBetaNextMove(game: BoardMNK, depth: Int = 0, ab: AlphaBetaValues[Double], maximizingPlayer: Boolean): AlphaBetaStatus[Double] = {
+    var pBest = Position(-1, -1)
 
     if (game.gameEnded(depth)) {
-      (game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0))), Position(ibest, jbest), (alpha, beta))
+      val score = game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
+      AlphaBetaStatus(ab, Status(score, pBest))
     } else {
       var best: Double = 0.0
-      var player: Byte = 0
-      var a = alpha
-      var b = beta
+      var player: Player = 0
+      var a = ab.alpha
+      var b = ab.beta
 
       if (maximizingPlayer) {
         best = Double.MinValue
@@ -96,38 +89,34 @@ package object ai {
         p <- game.generateMoves()
         if game.playMove(p, player)
       } {
-        val newBest = alphaBeta(game, depth + 1, a, b, !maximizingPlayer)
+        val newBest = alphaBeta(game, depth + 1, AlphaBetaValues(a, b), !maximizingPlayer)
 
         if (maximizingPlayer) {
           if (newBest > best) {
             best = newBest
-            // TODO fix those 2 vars
-            ibest = p.row
-            jbest = p.col
+            pBest = p
           }
           a = Math.max(a, best)
         } else {
           if (newBest < best) {
             best = newBest
-            // TODO fix those 2 vars
-            ibest = p.row
-            jbest = p.col
+            pBest = p
           }
 
           b = Math.min(b, best)
         }
 
         game.undoMove(p, player)
-        if (a >= beta) {
-          return (best, Position(ibest, jbest), (a, b))
+        if (a >= ab.beta) {
+          return AlphaBetaStatus(AlphaBetaValues(a, b), Status(best, pBest))
         }
       }
 
-      (best, Position(ibest, jbest), (a, b))
+      AlphaBetaStatus(AlphaBetaValues(a, b), Status(best, pBest))
     }
   }
 
-  def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, alpha: Int = Int.MinValue, beta: Int = Int.MaxValue, maximizingPlayer: Boolean = true): Transposition = {
+  def alphaBetaWithMem(statuses: TranspositionTable, game: BoardMNK, depth: Int = 0, ab: AlphaBetaValues[Score] = AlphaBetaValues.alphaBetaValueScore, maximizingPlayer: Boolean = true): Transposition = {
     statuses.get() match {
       case Some(t) =>
         Stats.cacheHits += 1
@@ -155,40 +144,42 @@ package object ai {
         Stats.totalCalls += 1
         if (maximizingPlayer) {
           var best = Int.MinValue
-          var a = alpha
+          var a = ab.alpha
+          val player: Player = 1
           for {
             p <- game.generateMoves()
-            if game.playMove(p, 1)
+            if game.playMove(p, player)
           } {
-            val t = alphaBetaWithMem(statuses, game, depth + 1, a, beta, false)
+            val t = alphaBetaWithMem(statuses, game, depth + 1, AlphaBetaValues(a, ab.beta), false)
             best = Math.max(best, t.score)
             a = Math.max(a, best)
-            game.undoMove(p, 1)
-            if (a >= beta) {
+            game.undoMove(p, player)
+            if (a >= ab.beta) {
               return t
             }
           }
 
-          val t = Transposition(best, depth, AlphaBetaValues(a, beta), maximizingPlayer)
+          val t = Transposition(best, depth, AlphaBetaValues(a, ab.beta), maximizingPlayer)
           statuses.add(t)
           t
         } else {
           var best = Int.MaxValue
-          var b = beta
+          var b = ab.beta
+          val player: Player = 2
           for {
             p <- game.generateMoves()
-            if game.playMove(p, 2)
+            if game.playMove(p, player)
           } {
-            val t = alphaBetaWithMem(statuses, game, depth + 1, alpha, b, true)
+            val t = alphaBetaWithMem(statuses, game, depth + 1, AlphaBetaValues(ab.alpha, b), true)
             best = Math.min(best, t.score)
             b = Math.max(b, best)
-            game.undoMove(p, 2)
-            if (alpha >= b) {
+            game.undoMove(p, player)
+            if (ab.alpha >= b) {
               return t
             }
           }
 
-          val t = Transposition(best, depth, AlphaBetaValues(alpha, b), maximizingPlayer)
+          val t = Transposition(best, depth, AlphaBetaValues(ab.alpha, b), maximizingPlayer)
           statuses.add(t)
           t
         }

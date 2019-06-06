@@ -1,5 +1,6 @@
 import ai._
 import ai.old.negamaxNextMove
+import ai.types.AlphaBetaValues
 import game.BoardTicTacToe2
 import game.boards.BoardDisplay
 import game.types.Position
@@ -60,8 +61,7 @@ object TitTacToe extends App {
         game.stdoutPrintln()
         var color: Byte = 0
         var player: Byte = 0
-        var a = Double.MinValue
-        var b = Double.MaxValue
+        var ab = AlphaBetaValues.alphaBetaValueDouble
         if (joshuaPlay) {
           color = 1
           player = joshuaPlayer
@@ -71,12 +71,11 @@ object TitTacToe extends App {
           player = computerPlayer
         }
 
-        val (_, pos, (a2, b2)) = alphaBetaNextMove(game, depth, a, b, joshuaPlay)
-        a = a2
-        b = b2
+        val abs = alphaBetaNextMove(game, depth, ab, joshuaPlay)
+        ab = abs.alphaBetaValues
         depth += 1
 
-        game.playMove(pos, player)
+        game.playMove(abs.status.position, player)
         joshuaPlay = !joshuaPlay
       }
 

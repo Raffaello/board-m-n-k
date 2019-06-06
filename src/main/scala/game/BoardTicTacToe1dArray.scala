@@ -1,56 +1,18 @@
 package game
 
+import cats.implicits._
 import game.boards.implementations.Board1dArray
-import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
-import game.types.Position
+import game.boards.{BoardDepthAware, BoardPlayers, LastMoveTracker}
+import game.Implicit.convertToPlayer
 
-/**
-  * TODO: DRAFT extends BoardMNK
-  */
-class BoardTicTacToe1dArray extends BoardMN(3, 3)
+class BoardTicTacToe1dArray extends BoardMNK(3, 3, 3)
   with Board1dArray with LastMoveTracker with BoardDepthAware with BoardPlayers {
-  override val numPlayers: Player = 2
-
-  protected val minWinDepth: Int = 5
 
   val m2 = m * 2
 
-  // TODO duplicate code
-  override def playMove(position: Position, player: Byte): Boolean = {
-    if (boardPlayer(position) > 0) false
-    else {
-      boardPlayer_=(position)(player)
-      freePositions -= 1
-      _depth += 1
-      _lastMove = position
-      _lastPlayer = player
-      true
-    }
-  }
-
-  // TODO duplicate code
-  override def undoMove(position: Position, player: Player): Boolean = {
-    if (boardPlayer(position) == player) {
-      boardPlayer_=(position)(0)
-      freePositions += 1
-      _depth -= 1
-      true
-    } else false
-  }
-
-  override def gameEnded(depth: Score): Boolean = {
-    if (depth < minWinDepth) false
-    else if (freePositions == 0) true
-    else checkWin()
-  }
-
-  def opponent(player: Player): Player = ???
-
-  def nextPlayer(): Player = ???
-
   protected def scoreRow(row: Int): Int = {
     val i = mLookups(row)
-    if (board(i) == board(i + 1) && board(i) == board(i + 2)) board(i)
+    if (board(i) === board(i + 1) && board(i) === board(i + 2)) board(i)
     else 0
   }
 
@@ -60,50 +22,39 @@ class BoardTicTacToe1dArray extends BoardMN(3, 3)
     val i = mLookups(row)
     val head = board(i)
 
-    if ((i+1 until i+k).forall(v => head == board(v))) head
+    if ((i + 1 until i + k).forall(v => head === board(v))) head
     else 0
   }
 
   protected def scoreCol(col: Short): Int = {
-    if (board(col) == board(m + col) && board(col) == board(m2 + col)) board(col)
+    if (board(col) === board(m + col) && board(col) === board(m2 + col)) board(col)
     else 0
   }
 
   // TODO generalized for k and p, move where appropriate
   protected def scoreCol2(col: Short): Player = {
     val k = 3
-    val head = board(col)
+    val head: Player = board(col)
 
-    if ((col+m until col+ m*k).forall(v => head == v)) head
+    if ((col + m until col + m * k).forall(v => head === v)) head
     else 0
   }
 
   protected def scoreDiagsTL(): Int = {
-    if (board(0) == board(m + 1) && board(0) == board(m2 + 2)) board(0)
+    if (board(0) === board(m + 1) && board(0) === board(m2 + 2)) board(0)
     else 0
   }
 
   protected def scoreDiagsBR(): Int = {
-    if (board(m2) == board(m + 1) && board(m2) == board(2)) board(2)
+    if (board(m2) === board(m + 1) && board(m2) === board(2)) board(2)
     else 0
   }
 
-  override def gameEnded(): Boolean = freePositions == 0 || checkWin()
+  // TODO this should be removed
+  override def gameEnded(): Boolean = freePositions === 0 || checkWin()
 
-  protected def checkWin(): Boolean = {
+  // TODO this should be removed. (problems with lookups)
+  override protected def checkWin(): Boolean = {
     scoreDiagsTL() > 0 || scoreDiagsBR() > 0 || mIndices.exists(i => scoreRow(i) > 0 || scoreCol(i) > 0)
-  }
-
-  final protected def score2players(player: Byte): Int = {
-    player match {
-      case 2 => -1
-      case 1 => 1
-      case _ => ??? // could be zero, but should never reach here.
-    }
-  }
-
-  override def score(): Score = {
-    if (checkWin()) score2players(_lastPlayer)
-    else 0
   }
 }

@@ -1,7 +1,7 @@
 package game.boards
 
-import game.{Player, Score}
 import game.types.Position
+import game.{Player, Score}
 
 trait GameBoard {
 

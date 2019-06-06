@@ -1,5 +1,6 @@
 package game.boards.lookups
 
+import game.Implicit.convertToPlayer
 import game.Player
 import game.boards.BoardPlayers
 import game.types.{BoardMNType, Position}
@@ -17,13 +18,13 @@ trait TLookUps extends BoardMNType with BoardPlayers {
     * TODO rethink in a more general way.
     *
     * TODO the ended variable is not really significative:
-    *      check win once only for each playMove so it is just overhead the ended.
-    *      it is used because it might call in multiple times the check as a cache,
-    *      double checked it
-    *      ideally this internal states of rows and cols and lastplayers
-    *      should be encapsulated and just the ended returned true/false
-    *      so it means the LookUps must known the rules m,n,k,p .....
-    *      and call gameEnded() / checkWin(), otherwise it is just a data structure and it is ok.
+    * check win once only for each playMove so it is just overhead the ended.
+    * it is used because it might call in multiple times the check as a cache,
+    * double checked it
+    * ideally this internal states of rows and cols and lastplayers
+    * should be encapsulated and just the ended returned true/false
+    * so it means the LookUps must known the rules m,n,k,p .....
+    * and call gameEnded() / checkWin(), otherwise it is just a data structure and it is ok.
     */
   final class CLookUps(
                         val rows: Array[Array[Player]] = Array.ofDim[Player](m, numPlayers),
@@ -53,10 +54,10 @@ trait TLookUps extends BoardMNType with BoardPlayers {
       ended = None // reset, force to check
       lastPlayerIdx = playerIdx
 
-      rows(pos.row)(playerIdx) = (1 + rows(pos.row)(playerIdx)).toByte
+      rows(pos.row)(playerIdx) = 1 + rows(pos.row)(playerIdx)
       assert(rows(pos.row)(playerIdx) <= n)
 
-      cols(pos.col)(playerIdx) = (1 + cols(pos.col)(playerIdx)).toByte
+      cols(pos.col)(playerIdx) = 1 + cols(pos.col)(playerIdx)
       assert(cols(pos.col)(playerIdx) <= m, s"${cols(pos.col)(playerIdx)} -- $playerIdx, $pos")
       // TODO DIAG1 and DIAG2
     }
@@ -65,10 +66,10 @@ trait TLookUps extends BoardMNType with BoardPlayers {
       ended = None
       lastPlayerIdx = -1
 
-      rows(pos.row)(playerIdx) = (rows(pos.row)(playerIdx) - 1).toByte
+      rows(pos.row)(playerIdx) = rows(pos.row)(playerIdx) - 1
       assert(rows(pos.row)(playerIdx) >= 0)
 
-      cols(pos.col)(playerIdx) = (cols(pos.col)(playerIdx) - 1).toByte
+      cols(pos.col)(playerIdx) = cols(pos.col)(playerIdx) - 1
       assert(cols(pos.col)(playerIdx) >= 0, s"${cols(pos.col)(playerIdx)} -- $playerIdx, $pos")
     }
   }

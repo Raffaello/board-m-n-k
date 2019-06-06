@@ -10,8 +10,8 @@ import game.types.{Position, Status}
 
 import scala.util.Random
 
-// TODO remove board2darray
-// TODO remove boarddisplay
+// TODO remove board2darray (used in clone method)
+// TODO remove boarddisplay (used in self playing game)
 // todo remove clonable
 trait MctsBoard extends BoardMNKPLookUp
   with BoardDisplay with Board2dArray with AiBoard with Cloneable {

@@ -1,9 +1,11 @@
 package game.boards
 
+import game.Player
+
 trait BoardPlayers {
-  val numPlayers: Byte
+  val numPlayers: Player
 
-  protected var _lastPlayer: Byte = numPlayers
+  protected var _lastPlayer: Player = numPlayers
 
-  def lastPlayer: Byte = _lastPlayer
+  def lastPlayer: Player = _lastPlayer
 }

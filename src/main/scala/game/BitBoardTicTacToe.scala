@@ -2,18 +2,11 @@ package game
 
 import cats.implicits._
 import game.boards.implementations.BoardBitBoard
-import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
+import game.boards.{BoardDepthAware, BoardPlayers, LastMoveTracker}
 import game.types.Position
 
-/**
-  * TODO should extend BoardMNKP, but the code is not clean yet
-  */
-class BitBoardTicTacToe
-  extends BoardMN(3, 3) with BoardBitBoard with BoardDepthAware with LastMoveTracker with BoardPlayers {
-
-  override val numPlayers: Player = 2
-
-  protected val minWinDepth: Int = 5
+class BitBoardTicTacToe extends BoardTicTacToe
+  with BoardBitBoard with BoardDepthAware with LastMoveTracker with BoardPlayers {
 
   override def playMove(position: Position, player: Player): Boolean = {
     if (boardPlayer(position) > 0) false
@@ -35,16 +28,6 @@ class BitBoardTicTacToe
       true
     } else false
   }
-
-  override def gameEnded(depth: Score): Boolean = {
-    if (depth < minWinDepth) false
-    else if (freePositions == 0) true
-    else checkWin()
-  }
-
-  override def opponent(player: Player): Player = ???
-
-  override def nextPlayer(): Player = ???
 
   protected def scoreDiagsTL(): Int = {
     // 1 0 0 | 0 1 0 | 0 0 1 || 1 0 0 | 0 1 0 | 0 0 1
@@ -86,20 +69,7 @@ class BitBoardTicTacToe
 
   override def gameEnded(): Boolean = freePositions === 0 || checkWin()
 
-  protected def checkWin(): Boolean = {
+  override protected def checkWin(): Boolean = {
     scoreDiagsTL() > 0 || scoreDiagsBR() > 0 || scoreRows > 0 || scoreCols > 0
-  }
-
-  final protected def score2players(player: Byte): Int = {
-    player match {
-      case 2 => -1
-      case 1 => 1
-      case _ => ??? // could be zero, but should never reach here.
-    }
-  }
-
-  override def score(): Score = {
-    if (checkWin()) score2players(_lastPlayer)
-    else 0
   }
 }

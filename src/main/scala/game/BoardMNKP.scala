@@ -1,11 +1,12 @@
 package game
 
 import cats.implicits._
+import game.Implicit.convertToPlayer
 import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
 import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
 import game.types._
 
-abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte) extends BoardMN(m, n)
+abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Player) extends BoardMN(m, n)
   with BoardDepthAware with LastMoveTracker with BoardPlayers {
 
   require(k <= m || k <= n)
@@ -15,7 +16,7 @@ abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte)
 
   final val minWinDepth: Int = numPlayers * k1 + 1 //(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
 
-  def playMove(position: Position, player: Byte): Boolean = {
+  def playMove(position: Position, player: Player): Boolean = {
     assert(player >= 1 && player <= numPlayers)
     if (boardPlayer(position) > 0) false
     else {
@@ -28,7 +29,7 @@ abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte)
     }
   }
 
-  def undoMove(position: Position, player: Byte): Boolean = {
+  def undoMove(position: Position, player: Player): Boolean = {
 
     if (boardPlayer(position) === player) {
       boardPlayer_=(position)(0)
@@ -62,12 +63,12 @@ abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Byte)
     else checkWin()
   }
 
-  def opponent(player: Byte): Byte = {
+  def opponent(player: Player): Player = {
     assert(player >= 1 && player <= numPlayers)
-    ((player % numPlayers) + 1).toByte
+    (player % numPlayers) + 1
   }
 
-  def nextPlayer(): Byte = opponent(lastPlayer)
+  def nextPlayer(): Player = opponent(lastPlayer)
 }
 
 object BoardMNKP {

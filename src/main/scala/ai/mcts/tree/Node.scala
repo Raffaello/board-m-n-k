@@ -5,7 +5,7 @@ import cats.implicits._
 
 import scala.annotation.tailrec
 
-protected[mcts] final class Node(val state: State, private[mcts] var parent: Option[Node], val children: Children) {
+protected[mcts] final case class Node(state: State, private[mcts] var parent: Option[Node], children: Children) {
 
   def isLeaf: Boolean = children.isEmpty
 
@@ -15,14 +15,9 @@ protected[mcts] final class Node(val state: State, private[mcts] var parent: Opt
 
   def nonTerminalLeaf: Boolean = !isTerminal && isLeaf
 
-  def copy(state: State = state, parent: Option[Node] = parent, children: Children = children): Node = {
-    new Node(state, parent, children)
-  }
-
-  // TODO: Use Lens / Monocle Library with case classes?
   def deepCopy(state: State = state, parent: Option[Node] = parent, children: Children = children): Node = {
     val tempState = this.state.copy(board = this.state.board.clone())
-    this.copy(state = tempState)
+    copy(state = tempState)
   }
 
   def addChild(child: Node): Unit = children.append(child)

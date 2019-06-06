@@ -27,7 +27,7 @@ abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m,
     * @return
     */
   override def score(): Int = {
-    if (checkWin()) score2players(lastPlayer)
+    if (checkWin()) score2players(_lastPlayer)
     else 0
   }
 
@@ -37,10 +37,10 @@ abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m,
     * TODO checkWinDiagonals /w lookup
     */
   override protected def checkWin(): Boolean = {
-    lookUps.ended match {
+    _lookUps.ended match {
       case None =>
         val w = checkScore()
-        lookUps.ended = Some(w)
+        _lookUps.ended = Some(w)
         w
       case Some(x) => x
     }
@@ -121,7 +121,7 @@ abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m,
       else acc
     }
 
-    if (lookUps.cols(j)(lookUps.lastPlayerIdx) >= k) {
+    if (_lookUps.cols(j)(lookUps.lastPlayerIdx) >= k) {
 
       val countD = foldDown(0, i + 1, Math.min(m, i + k))
       val countU = foldUp(0, i - 1, Math.max(0, i - k))

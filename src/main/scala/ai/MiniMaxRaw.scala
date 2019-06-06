@@ -11,7 +11,7 @@ trait MiniMaxRaw extends MiniMax {
       Stats.totalCalls += 1
       val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
       var value: Int = if (maximizing) Int.MinValue else Int.MaxValue
-      val pl = player(maximizing)
+      val pl = if (maximizing) aiPlayer else nextPlayer()
       consumeMoves() { p =>
 
         playMove(p, pl)

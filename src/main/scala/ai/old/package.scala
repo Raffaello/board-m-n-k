@@ -9,8 +9,9 @@ import game.{Board2d, BoardMNK, Score}
   * Used for bench.benchmarks.
   */
 package object old {
-  type ABMove = (Double, Position, AB[Double]) // score, position, Alpha, Beta
-  type StatusOld = (Score, Position)
+  type AB[T] = (T, T) // Alpha, Beta values // === AlphaBetaValues
+  type ABMove = (Double, Position, AB[Double]) // score, position, Alpha, Beta // === AlphaBetaStatus
+  type StatusOld = (Score, Position) // === Status
 
   def minimax(game: BoardMNK, isMaximizingPlayer: Boolean): Score = {
     def minMaxLoop(maximizing: Boolean): Int = {
@@ -81,8 +82,7 @@ package object old {
     } else {
 
       var value = Int.MinValue
-      var ibest: Short = -1
-      var jbest: Short = -1
+      var pBest = Position(-1, -1)
       var player = color
       if (player === -1) player = 2
       for {
@@ -92,14 +92,12 @@ package object old {
         val newValue = -negamax(game, (-color).toByte)
         if (value < newValue) {
           value = newValue
-          // TODO fix those 2 vars i,j best
-          ibest = p.row
-          jbest = p.col
+          pBest = p
         }
         game.undoMove(p, player)
       }
 
-      (value, Position(ibest, jbest))
+      (value, pBest)
     }
   }
 

@@ -9,13 +9,13 @@ abstract class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Player) extends 
 
   override def playMove(position: Position, player: Player): Boolean = {
     val res = super.playMove(position, player)
-    if (res) lookUps.inc(position, player - 1)
+    if (res) _lookUps.inc(position, player - 1)
     res
   }
 
   override def undoMove(position: Position, player: Player): Boolean = {
     val res = super.undoMove(position, player)
-    if (res) lookUps.dec(position, player - 1)
+    if (res) _lookUps.dec(position, player - 1)
     res
   }
 

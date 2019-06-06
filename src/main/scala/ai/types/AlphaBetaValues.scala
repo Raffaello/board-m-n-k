@@ -8,7 +8,8 @@ final case class AlphaBetaValues[T: Numeric](alpha: T, beta: T) {
   def isAlphaGteBeta: Boolean = alpha >= beta
 }
 
-// TODO score cannot be used instead of Int.... is ambiguos.
 object AlphaBetaValues {
-  lazy val alphaBetaValueScore: AlphaBetaValues[Score] = AlphaBetaValues[Score](Int.MinValue, Int.MaxValue)
+  lazy val alphaBetaValueScore: AlphaBetaValues[Score] = AlphaBetaValues(Int.MinValue, Int.MaxValue)
+  lazy val alphaBetaValueInt: AlphaBetaValues[Int] = AlphaBetaValues(Int.MinValue, Int.MaxValue)
+  lazy val alphaBetaValueDouble: AlphaBetaValues[Double] = AlphaBetaValues(Double.MinValue, Double.MaxValue)
 }

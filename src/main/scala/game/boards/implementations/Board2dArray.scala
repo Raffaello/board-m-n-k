@@ -5,7 +5,6 @@ import game.Player
 import game.boards.BoardMovesGenerator
 import game.types.{BoardMNType2dArray, Position}
 
-// TODO: decouple the 2 used traits if it is possible. Type Classes?
 trait Board2dArray extends BoardMNType2dArray with BoardMovesGenerator {
   protected def boardPlayer(pos: Position): Player = board(pos.row)(pos.col)
 

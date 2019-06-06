@@ -6,7 +6,8 @@ import game.boards.implementations.Board2dArray
 import scala.collection.mutable
 
 // TODO: Use a more performant hash
-// TODO: at the moment force 2d array due to _board as a 2d array.. how to solve it??
+// TODO: at the moment force 2d array due to _board as a 2d array.. how to solve it??/
+// Redesign it. this works only with hash String and board2d array
 trait TranspositionTable extends BoardMNKP with Board2dArray {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 

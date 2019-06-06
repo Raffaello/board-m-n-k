@@ -1,8 +1,9 @@
 package ai
 
-import ai.types.AlphaBetaValues
+import ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import game.BoardTicTacToe2
-import game.types.Position
+import game.Implicit.convertToPlayer
+import game.types.{Position, Status}
 import org.scalatest.{FlatSpec, Matchers}
 
 
@@ -11,18 +12,18 @@ class PackageSpec extends FlatSpec with Matchers {
     val game = new BoardTicTacToe2()
     alphaBeta(game) shouldEqual 0.0
     val p: Position = Position(0, 0)
-    val abm1: old.ABMove = (0.0, p, (0.0, Double.MaxValue))
-    val abm2: old.ABMove = (0.0, p, (Double.MinValue, 0.0))
+    val abs1: AlphaBetaStatus[Double] = AlphaBetaStatus(AlphaBetaValues(0.0, Double.MaxValue), Status(0.0, p))
+    val abs2: AlphaBetaStatus[Double] = AlphaBetaStatus(AlphaBetaValues(Double.MinValue, 0.0), Status(0.0, p))
 
-    alphaBetaNextMove(game, 0, Double.MinValue, Double.MaxValue, maximizingPlayer = true) shouldEqual abm1
-    alphaBetaNextMove(game, 0, Double.MinValue, Double.MaxValue, maximizingPlayer = false) shouldEqual abm2
+    alphaBetaNextMove(game, 0, AlphaBetaValues.alphaBetaValueDouble, maximizingPlayer = true) shouldEqual abs1
+    alphaBetaNextMove(game, 0, AlphaBetaValues.alphaBetaValueDouble, maximizingPlayer = false) shouldEqual abs2
   }
 
   "TicTacToe2 alphaBeta with Memory" should "solve the game" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2() with TranspositionTable
     alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, AlphaBetaValues(0, Int.MaxValue), isMaximizing = true)
 
-//    expAlphaBetaWithMemStats(game.transpositions.size)
+    //    expAlphaBetaWithMemStats(game.transpositions.size)
     game.score() shouldBe 0.0
   }
 
@@ -36,9 +37,9 @@ class PackageSpec extends FlatSpec with Matchers {
     game.playMove(Position(2, 2), 2)
 
     game.depth shouldBe 6
-    alphaBeta(game, 6) should be >= 1.0
-//    ai.Stats.totalCalls shouldBe 5
-//    ai.Stats.cacheHits shouldBe 0
+    alphaBeta(game, game.depth) should be >= 1.0
+    //    ai.Stats.totalCalls shouldBe 5
+    //    ai.Stats.cacheHits shouldBe 0
   }
 
   "Player 2 TicTacToe2" should "win" in new AiTicTacToeExpectedStats {
@@ -52,8 +53,8 @@ class PackageSpec extends FlatSpec with Matchers {
     game.playMove(Position(1, 2), 2)
 
     game.depth shouldBe 7
-    alphaBeta(game, depth = 7, maximizingPlayer = false) should be < 0.0
-//    ai.Stats.totalCalls shouldBe 1
-//    ai.Stats.cacheHits shouldBe 0
+    alphaBeta(game, game.depth, maximizingPlayer = false) should be < 0.0
+    //    ai.Stats.totalCalls shouldBe 1
+    //    ai.Stats.cacheHits shouldBe 0
   }
 }
