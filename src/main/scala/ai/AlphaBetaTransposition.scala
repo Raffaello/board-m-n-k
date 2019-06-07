@@ -46,3 +46,4 @@ trait AlphaBetaTransposition extends AlphaBeta with TranspositionTable {
     }
   }
 }
+

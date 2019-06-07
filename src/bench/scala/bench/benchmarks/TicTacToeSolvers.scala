@@ -10,5 +10,5 @@ object TicTacToeSolvers {
 
   def aiBoardSolver(board: AiBoard): Score = board.solve
 
-  def alphaBeta(board: BoardTicTacToe): Score = Math.round(ai.alphaBeta(board)).toInt
+  def alphaBetaInt(board: BoardTicTacToe): Score = Math.round(ai.alphaBeta(board)).toInt
 }

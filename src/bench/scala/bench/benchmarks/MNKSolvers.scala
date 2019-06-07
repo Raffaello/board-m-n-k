@@ -74,7 +74,7 @@ object MNKSolvers {
   }
 
   def alphaBetaWithMem(m: Int, n: Int, k: Int): (Double, Int) = {
-    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with TranspositionTable
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with TranspositionTable with TranspositionTable2dArrayString
     Stats.totalCalls = 0
     Stats.cacheHits = 0
     val t = ai.alphaBetaWithMem(board, board)
@@ -82,7 +82,7 @@ object MNKSolvers {
   }
 
   def traitAlphaBetaTT(m: Int, n: Int, k: Int): AlphaBetaTransposition = {
-    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with AlphaBetaTransposition
+    val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with AlphaBetaTransposition with TranspositionTable2dArrayString
     board
   }
 }

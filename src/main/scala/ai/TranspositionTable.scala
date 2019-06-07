@@ -1,28 +1,47 @@
 package ai
 
-import game.BoardMNKP
-import game.boards.implementations.Board2dArray
+import game.{BitBoard, BoardMNKP}
+import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
 
 import scala.collection.mutable
 
-// TODO: Use a more performant hash
-// TODO: at the moment force 2d array due to _board as a 2d array.. how to solve it??/
-// Redesign it. this works only with hash String and board2d array
-trait TranspositionTable extends BoardMNKP with Board2dArray {
-  val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
+trait TranspositionTable extends BoardMNKP {
+  type T
+  val transpositions: mutable.Map[T, Transposition] = mutable.Map.empty
 
-  // TODO can be done only with array 2d at the moment
-  def hash(): String = _board.flatten.mkString
+  def hash: T
 
   def add(t: Transposition): Unit = {
-    transpositions.update(hash(), t)
+    transpositions.update(hash, t)
   }
 
   def del(): Option[Transposition] = {
-    transpositions.remove(hash())
+    transpositions.remove(hash)
   }
 
   def get(): Option[Transposition] = {
-    transpositions.get(hash())
+    transpositions.get(hash)
   }
+}
+
+trait TranspositionTable2dArrayString extends TranspositionTable with Board2dArray {
+  type T = String
+
+  override def hash: String = board.flatten.mkString
+}
+
+trait TranspositionTable1dArrayString extends TranspositionTable with Board1dArray {
+  type T = String
+
+  override def hash: String = board.mkString
+}
+
+trait TranspositionTableBitInt extends TranspositionTable with BoardBitBoard {
+  assert(mn <= 15, "BitBoardTransposition cannot work with boardMN s.t m*n > 15")
+  assert(numPlayers <= 2, "cannot work for more than 2 players at the moment")
+  type T = BitBoard
+
+  // cannot be flatten, but can be shifted of m*n moves in a Int (if it is max mn=16)
+  // at the moment would be ok....
+  override def hash: BitBoard = (board(1) << mn) + board(0)
 }

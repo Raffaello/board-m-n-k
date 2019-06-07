@@ -10,7 +10,8 @@ object BoardTicTacToe {
     boardType match {
       case BOARD_1D_ARRAY => new BoardTicTacToe with Board1dArray
       case BOARD_2D_ARRAY => new BoardTicTacToe with Board2dArray
-      case BOARD_BIT_BOARD => new BoardTicTacToe with BoardBitBoard
+      // Working with subClassing.
+      case BOARD_BIT_BOARD => new BitBoardTicTacToe with BoardBitBoard
     }
   }
 }

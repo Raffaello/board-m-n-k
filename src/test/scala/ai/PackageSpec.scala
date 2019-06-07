@@ -1,13 +1,14 @@
 package ai
 
 import ai.types.{AlphaBetaStatus, AlphaBetaValues}
-import game.BoardTicTacToe2
+import game.{BitBoardTicTacToe, BoardTicTacToe, BoardTicTacToe1dArray, BoardTicTacToe2}
 import game.Implicit.convertToPlayer
-import game.types.{Position, Status}
+import game.types.{BOARD_BIT_BOARD, Position, Status}
 import org.scalatest.{FlatSpec, Matchers}
 
 
 class PackageSpec extends FlatSpec with Matchers {
+
   "TicTacToe2 alphaBeta" should "returning the following first moves" in {
     val game = new BoardTicTacToe2()
     alphaBeta(game) shouldEqual 0.0
@@ -20,7 +21,7 @@ class PackageSpec extends FlatSpec with Matchers {
   }
 
   "TicTacToe2 alphaBeta with Memory" should "solve the game" in new AiTicTacToeExpectedStats {
-    val game = new BoardTicTacToe2() with TranspositionTable
+    val game = new BoardTicTacToe2() with TranspositionTable with TranspositionTable2dArrayString
     alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, AlphaBetaValues(0, Int.MaxValue), isMaximizing = true)
 
     //    expAlphaBetaWithMemStats(game.transpositions.size)
@@ -56,5 +57,20 @@ class PackageSpec extends FlatSpec with Matchers {
     alphaBeta(game, game.depth, maximizingPlayer = false) should be < 0.0
     //    ai.Stats.totalCalls shouldBe 1
     //    ai.Stats.cacheHits shouldBe 0
+  }
+
+  "alphaBeta bitBoard" should "draw" in {
+    val game = BoardTicTacToe(BOARD_BIT_BOARD)
+    alphaBeta(game) shouldBe 0.0
+  }
+
+  it should "draw with transposition" in {
+    val game = new BitBoardTicTacToe() with TranspositionTableBitInt
+    alphaBetaWithMem(game, game) shouldBe Transposition(0, 0, AlphaBetaValues(0, Int.MaxValue), isMaximizing = true)
+  }
+
+  "alphaBeta 1dBoard" should "draw with transposition" in {
+    val game = new BoardTicTacToe1dArray with TranspositionTable1dArrayString
+    alphaBetaWithMem(game, game) shouldBe Transposition(0, 0, AlphaBetaValues(0, Int.MaxValue), isMaximizing = true)
   }
 }

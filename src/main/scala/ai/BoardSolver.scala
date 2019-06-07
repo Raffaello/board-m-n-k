@@ -4,6 +4,7 @@ import ai.old.BoardMNKwithGetBoard
 import game.BoardMNK
 import game.boards.implementations.Board2dArray
 
+
 object BoardSolver extends App {
 
   sealed trait _Stats {
@@ -62,7 +63,7 @@ object BoardSolver extends App {
     def result(): old.Transposition = ai.old.alphaBetaWithMem(this, this)
   }
 
-  sealed class AlphaBetaTT(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) with ai.TranspositionTable {
+  sealed class AlphaBetaTT(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) with ai.TranspositionTable2dArrayString {
     def result(): Transposition = ai.alphaBetaWithMem(this, this)
   }
 
@@ -74,7 +75,7 @@ object BoardSolver extends App {
     def result(): Int = this.solve
   }
 
-  sealed class AlphaBetaTraitTT(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with TranspositionTable {
+  sealed class AlphaBetaTraitTT(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with TranspositionTable2dArrayString {
     def result(): Int = this.solve
   }
 

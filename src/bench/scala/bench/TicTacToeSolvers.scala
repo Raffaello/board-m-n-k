@@ -87,7 +87,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = alphaBeta(new BoardTicTacToe with Board2dArray)
+          _ => score = alphaBetaInt(new BoardTicTacToe with Board2dArray)
         }
       }
       measure method s"traitAlphaBeta" in {
@@ -116,7 +116,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe with TranspositionTable
+            val board = new BoardTicTacToe with TranspositionTable with TranspositionTable2dArrayString
             val t = ai.alphaBetaWithMem(board, board)
             score = Math.round(t.score)
             cacheSize = board.transpositions.size
@@ -127,7 +127,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
           println(s"Score: $score --- totalCalls: $totalCalls --- cacheHits: $cacheHits --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe2 with AlphaBetaTransposition
+            val board = new BoardTicTacToe2 with AlphaBetaTransposition with TranspositionTable2dArrayString
             val s = board.solve
             score = s
             totalCalls = board.Stats.totalCalls
@@ -186,7 +186,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = alphaBeta(new BoardTicTacToe2)
+          _ => score = alphaBetaInt(new BoardTicTacToe2)
         }
       }
       measure method s"traitAlphaBeta" in {
@@ -215,7 +215,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe2 with TranspositionTable
+            val board = new BoardTicTacToe2 with TranspositionTable with TranspositionTable2dArrayString
             val t = ai.alphaBetaWithMem(board, board)
             score = Math.round(t.score)
             cacheSize = board.transpositions.size
@@ -226,7 +226,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
           println(s"Score: $score --- totalCalls: $totalCalls --- cacheHits: $cacheHits --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe2 with AlphaBetaTransposition
+            val board = new BoardTicTacToe2 with AlphaBetaTransposition with TranspositionTable2dArrayString
             score = board.solve
             totalCalls = board.Stats.totalCalls
             cacheHits = board.Stats.cacheHits

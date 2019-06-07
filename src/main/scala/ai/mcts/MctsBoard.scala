@@ -67,11 +67,11 @@ trait MctsBoard extends BoardMNKPLookUp
 
   override def clone(): MctsBoard = {
     val clone = super.clone().asInstanceOf[MctsBoard]
-    clone._board = _board.map(_.clone()) // <= check benchmark result
+    clone._board = board.map(_.clone()) // <= check benchmark result
     clone._lookUps = _lookUps.deepCopy().asInstanceOf[clone.CLookUps]
 
     assert(clone ne this)
-    assert(clone._board ne _board)
+    assert(clone.board ne board)
     assert(_lookUps ne clone._lookUps)
     assert(_lookUps.rows ne clone._lookUps.rows)
 
