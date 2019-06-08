@@ -1,10 +1,10 @@
 package bench.benchmarks
 
-import bench.benchmarks.Array1dCopy.ns
 import org.scalameter.api.Gen
 
 object Array2dCopy {
 
+  val ns: Gen[Int] = Gen.range("n")(3, 5, 1)
   val arrays2d: Gen[(Int, Int, Array[Array[Int]])] = for {
     //    m <- ms
     n <- ns
@@ -27,6 +27,12 @@ object Array2dCopy {
   }
 
   def mapClone2d(a: Array[Array[Int]]): Array[Array[Int]] = a.map(_.clone)
+
+  def forClone2d(m: Int, n: Int, a: Array[Array[Int]]): Array[Array[Int]] = {
+    val b = Array.ofDim[Int](m, n)
+    for (i <- a.indices) b(i) = a(i).clone()
+    b
+  }
 
   def array2dCopy(m: Int, n: Int, a: Array[Array[Int]]): Array[Array[Int]] = {
     val b = Array.ofDim[Int](m, n)

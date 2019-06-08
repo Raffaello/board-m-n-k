@@ -1,12 +1,17 @@
 package bench
 
-import ai.old.WithGetBoard
-import ai.{alphaBeta => _, _}
+import ai._
+import ai.old.GetBoard
 import bench.benchmarks.TicTacToeSolvers._
-import game.{BoardTicTacToe, BoardTicTacToe2, Score}
+import game._
+import game.boards.implementations.Board2dArray
+import game.types.BOARD_2D_ARRAY
 import org.scalameter.api._
 
-object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
+
+// TODO find a better method to test, have to test only solve method
+// initialization and assignment of other variable has to been move out.
+object TicTacToeSolvers extends Bench.OfflineRegressionReport {
   var score: Score = 0
   var totalCalls: Int = 0
   var cacheHits: Int = 0
@@ -20,108 +25,109 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
   }
 
   performance of "TicTacToeSolversBench" config(
-    exec.benchRuns -> 9,
-    exec.minWarmupRuns -> 3,
-    exec.maxWarmupRuns -> 3,
+    exec.benchRuns -> 25,
+    exec.minWarmupRuns -> 5,
+    exec.maxWarmupRuns -> 5,
     exec.warmupCovThreshold -> 0.3,
-    exec.independentSamples -> 3,
+    exec.independentSamples -> 5,
     exec.requireGC -> true,
     exec.outliers.retries -> 1,
     exec.outliers.suspectPercent -> 10,
     exec.outliers.covMultiplier -> 2.0,
     exec.reinstantiation.fullGC -> true,
-    exec.reinstantiation.frequency -> 1
+    exec.reinstantiation.frequency -> 5,
+    reports.resultDir -> (reports.resultDir + this.getClass.getName)
   ) in {
-    performance of "TicTacToe" in {
+    performance of "TicTacToe (lookups)" in {
       measure method "old.minimax" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = ai.old.minimax(new BoardTicTacToe, true)
+          _ => score = ai.old.minimax(BoardTicTacToe(BOARD_2D_ARRAY), true)
         }
       }
       measure method "traitMinimax" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls")
         } in {
           _ =>
-            val board = new BoardTicTacToe() with MiniMax
+            val board = new BoardTicTacToe() with Board2dArray with MiniMax
             score = aiBoardSolver(board)
             totalCalls = board.Stats.totalCalls
         }
       }
       measure method "traitMinimaxRaw" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls")
         } in {
           _ =>
-            val board = new BoardTicTacToe with MiniMaxRaw
+            val board = new BoardTicTacToe with Board2dArray  with MiniMaxRaw
             score = aiBoardSolver(board)
             totalCalls = board.Stats.totalCalls
         }
       }
       measure method "old.negamax" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = ai.old.negamax(new BoardTicTacToe(), 1)
+          _ => score = ai.old.negamax(new BoardTicTacToe() with Board2dArray, 1)
         }
       }
       measure method "traitNegamax" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls")
         } in {
           _ =>
-            val board = new BoardTicTacToe with NegaMax
+            val board = new BoardTicTacToe with Board2dArray with NegaMax
             score = aiBoardSolver(board)
             totalCalls = board.Stats.totalCalls
         }
       }
       measure method s"alphaBeta" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = alphaBeta(new BoardTicTacToe)
+          _ => score = alphaBetaInt(new BoardTicTacToe with Board2dArray)
         }
       }
       measure method s"traitAlphaBeta" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls")
         } in {
           _ =>
-            val board = new BoardTicTacToe with AlphaBeta
+            val board = new BoardTicTacToe with Board2dArray with AlphaBeta
             score = aiBoardSolver(board)
             totalCalls = board.Stats.totalCalls
         }
       }
       measure method s"oldAlphaBetaTTOld" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe with WithGetBoard with old.TranspositionTable
+            val board = new BoardTicTacToe with Board2dArray with GetBoard with old.TranspositionTable
             val t = old.alphaBetaWithMem(board, board)
             score = Math.round(t.score).toInt
             cacheSize = board.transpositions.size
         }
       }
       measure method s"alphaBetaWithMem" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe with TranspositionTable
+            val board = new BoardTicTacToe with TranspositionTable with TranspositionTable2dArrayString
             val t = ai.alphaBetaWithMem(board, board)
             score = Math.round(t.score)
             cacheSize = board.transpositions.size
         }
       }
       measure method s"traitAlphaBetaTT" in {
-        using(ticTacToe1) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls --- cacheHits: $cacheHits --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe2 with AlphaBetaTransposition
+            val board = new BoardTicTacToe2 with AlphaBetaTransposition with TranspositionTable2dArrayString
             val s = board.solve
             score = s
             totalCalls = board.Stats.totalCalls
@@ -131,16 +137,16 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
       }
     }
 
-    performance of "TicTacToe2" in {
+    performance of "TicTacToe2 (specific checks)" in {
       measure method s"old.minimax" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
           _ => score = ai.old.minimax(new BoardTicTacToe2, true)
         }
       }
       measure method s"traitMinimax" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls")
         } in {
           _ =>
@@ -150,7 +156,7 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
         }
       }
       measure method s"traitMinimaxRaw" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls")
         } in {
           _ =>
@@ -160,14 +166,14 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
         }
       }
       measure method s"old.negamax" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
           _ => score = ai.old.negamax(new BoardTicTacToe2(), 1)
         }
       }
       measure method s"traitNegamax" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls")
         } in {
           _ =>
@@ -177,14 +183,14 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
         }
       }
       measure method s"alphaBeta" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = alphaBeta(new BoardTicTacToe2)
+          _ => score = alphaBetaInt(new BoardTicTacToe2)
         }
       }
       measure method s"traitAlphaBeta" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls")
         } in {
           _ =>
@@ -194,38 +200,57 @@ object TicTacToeSolversBench extends Bench.OfflineRegressionReport {
         }
       }
       measure method s"oldAlphaBetaTTOld" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe2 with WithGetBoard with old.TranspositionTable
+            val board = new BoardTicTacToe2 with GetBoard with old.TranspositionTable
             val t = old.alphaBetaWithMem(board, board)
             score = Math.round(t.score).toInt
             cacheSize = board.transpositions.size
         }
       }
       measure method s"alphaBetaWithMem" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe2 with TranspositionTable
+            val board = new BoardTicTacToe2 with TranspositionTable with TranspositionTable2dArrayString
             val t = ai.alphaBetaWithMem(board, board)
             score = Math.round(t.score)
             cacheSize = board.transpositions.size
         }
       }
       measure method s"traitAlphaBetaTT" in {
-        using(ticTacToe2) beforeTests reset afterTests {
+        using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: $totalCalls --- cacheHits: $cacheHits --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe2 with AlphaBetaTransposition
-            val s = board.solve
-            score = s
+            val board = new BoardTicTacToe2 with AlphaBetaTransposition with TranspositionTable2dArrayString
+            score = board.solve
             totalCalls = board.Stats.totalCalls
             cacheHits = board.Stats.cacheHits
             cacheSize = board.transpositions.size
+        }
+      }
+    }
+
+    performance of "TicTacToeArray1dBoard (dedicated)" in {
+      measure method s"alphaBeta" in {
+        using(board) beforeTests reset afterTests {
+          println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
+        } in {
+          _ => score = Math.round(ai.alphaBeta(new BoardTicTacToe1dArray)).toInt
+        }
+      }
+    }
+
+    performance of "TicTacToeBitBoard (dedicated)" in {
+      measure method s"alphaBeta" in {
+        using(board) beforeTests reset afterTests {
+          println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
+        } in {
+          _ => score = Math.round(ai.alphaBeta(new BitBoardTicTacToe)).toInt
         }
       }
     }

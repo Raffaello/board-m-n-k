@@ -1,29 +1,35 @@
 package game
 
 import cats.implicits._
+import game.boards.implementations.Board2dArray
+import game.types.Position
 
 /**
   * Used for testing and benchmarking.
   */
-class BoardTicTacToe2 extends BoardTicTacToe {
+class BoardTicTacToe2 extends BoardTicTacToe with Board2dArray {
 
   protected def scoreRow(row: Short): Int = {
-    if (_board(row)(0) === _board(row)(1) && _board(row)(0) === _board(row)(2)) _board(row)(0)
+    if (boardPlayer(Position(row, 0)) === boardPlayer(Position(row, 1)) &&
+      boardPlayer(Position(row, 0)) === boardPlayer(Position(row, 2))) boardPlayer(Position(row, 0))
     else 0
   }
 
   protected def scoreCol(col: Short): Int = {
-    if (_board(0)(col) === _board(1)(col) && _board(0)(col) === _board(2)(col)) _board(0)(col)
+    if (boardPlayer(Position(0, col)) === boardPlayer(Position(1, col)) &&
+      boardPlayer(Position(0, col)) === boardPlayer(Position(2, col))) boardPlayer(Position(0, col))
     else 0
   }
 
   protected def scoreDiagsTL(): Int = {
-    if (_board(0)(0) === _board(1)(1) && _board(0)(0) === _board(2)(2)) _board(0)(0)
+    if (boardPlayer(Position(0, 0)) === boardPlayer(Position(1, 1)) &&
+      boardPlayer(Position(0, 0)) === boardPlayer(Position(2, 2))) board(0)(0)
     else 0
   }
 
   protected def scoreDiagsBR(): Int = {
-    if (_board(2)(0) === _board(1)(1) && _board(2)(0) === _board(0)(2)) _board(2)(0)
+    if (boardPlayer(Position(2, 0)) === boardPlayer(Position(1, 1)) &&
+      boardPlayer(Position(2, 0)) === boardPlayer(Position(0, 2))) boardPlayer(Position(2, 0))
     else 0
   }
 

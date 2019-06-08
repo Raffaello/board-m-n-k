@@ -1,6 +1,6 @@
 package ai.old
 
-import game.Board
+import game.Board2d
 
 import scala.collection.mutable
 
@@ -10,13 +10,13 @@ import scala.collection.mutable
 trait TranspositionTable {
   val transpositions: mutable.Map[String, Transposition] = mutable.Map.empty
 
-  def hash(b: Board): String = b.flatten.mkString
+  def hash(b: Board2d): String = b.flatten.mkString
 
-  def add(b: Board, t: Transposition): Unit = {
+  def add(b: Board2d, t: Transposition): Unit = {
     transpositions.update(hash(b), t)
   }
 
-  def get(b: Board): Option[Transposition] = {
+  def get(b: Board2d): Option[Transposition] = {
     transpositions.get(hash(b))
   }
 }

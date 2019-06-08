@@ -1,24 +1,21 @@
 package game
 
 import cats.implicits._
+import game.boards.BoardDisplay
+import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
+import game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BOARD_BIT_BOARD, BoardMNTypeEnum, Position}
 
 import scala.annotation.tailrec
 
 /**
   * TODO: potentially split in BoardNMK and BoardMNKLookUp (traits)
-  *
-  * @param m number of rows
-  * @param n number of cols
-  * @param k number of same move of a player "in a row" (or col or diagonal)
   */
-class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k, 2) {
-  require(k > 2)
+abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) with BoardDisplay {
 
   final protected def score2players(player: Byte): Int = {
     player match {
       case 2 => -1
       case 1 => 1
-      case _ => ??? // could be zero, but should never reach here.
     }
   }
 
@@ -40,20 +37,20 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
     * TODO checkWinDiagonals /w lookup
     */
   override protected def checkWin(): Boolean = {
-    lookUps.ended match {
+    _lookUps.ended match {
       case None =>
         val w = checkScore()
-        lookUps.ended = Some(w)
+        _lookUps.ended = Some(w)
         w
       case Some(x) => x
     }
   }
 
   /**
-    * South-East direction checking: bottom-right to top-left
+    * South-East direction checking: top-left to bottom-right
     */
   protected def scoreDiagSE(): Int = {
-    val (i, j) = _lastMove
+    val (i, j) = (_lastMove.row, _lastMove.col)
     val bMin = Math.min(n - j, m - i)
     lazy val stopU = Math.min(k, bMin)
     lazy val stopD = Math.min(i, j) + 1
@@ -61,14 +58,14 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
     @tailrec
     def foldDownRight(acc: Int, offset: Int): Int = {
       if (offset === stopU) acc
-      else if (_board(i + offset)(j + offset) === _lastPlayer) foldDownRight(acc + 1, offset + 1)
+      else if (boardPlayer(Position((i + offset).toShort, (j + offset).toShort)) === _lastPlayer) foldDownRight(acc + 1, offset + 1)
       else acc
     }
 
     @tailrec
     def foldUpLeft(acc: Int, offset: Int): Int = {
       if (offset === stopD) acc
-      else if (_board(i - offset)(j - offset) === _lastPlayer) foldUpLeft(acc + 1, offset + 1)
+      else if (boardPlayer(Position((i - offset).toShort, (j - offset).toShort)) === _lastPlayer) foldUpLeft(acc + 1, offset + 1)
       else acc
     }
 
@@ -82,21 +79,19 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
 
   /**
     * North-East direction checking: bottom-left to top-right
-    *
-    * @return
     */
   protected def scoreDiagNE(): Int = {
-    val (i, j) = _lastMove
+    val (i, j) = (_lastMove.row, _lastMove.col)
 
     @tailrec
     def foldUpRight(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth === 0 || i < 0 || j >= n || _board(i)(j) =!= _lastPlayer) acc
+      if (depth === 0 || i < 0 || j >= n || boardPlayer(Position(i.toShort, j.toShort)) =!= _lastPlayer) acc
       else foldUpRight(acc + 1, i - 1, j + 1, depth - 1)
     }
 
     @tailrec
     def foldDownLeft(acc: Int, i: Int, j: Int, depth: Int): Int = {
-      if (depth === 0 || i >= m || j < 0 || _board(i)(j) =!= _lastPlayer) acc
+      if (depth === 0 || i >= m || j < 0 || boardPlayer(Position(i.toShort, j.toShort)) =!= _lastPlayer) acc
       else foldDownLeft(acc + 1, i + 1, j - 1, depth - 1)
     }
 
@@ -108,24 +103,25 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
     else 0
   }
 
+  // TODO this is using lookup, need to be decoupled
   protected def scoreCol(): Int = {
-    val (i, j) = _lastMove
+    val (i, j) = (_lastMove.row, _lastMove.col)
 
     @tailrec
     def foldDown(acc: Int, i: Int, stop: Int): Int = {
       if (i === stop) acc
-      else if (_board(i)(j) === _lastPlayer) foldDown(acc + 1, i + 1, stop)
+      else if (boardPlayer(Position(i.toShort, j.toShort)) === _lastPlayer) foldDown(acc + 1, i + 1, stop)
       else acc
     }
 
     @tailrec
     def foldUp(acc: Int, i: Int, stop: Int): Int = {
       if (i < stop) acc
-      else if (_board(i)(j) === _lastPlayer) foldUp(acc + 1, i - 1, stop)
+      else if (boardPlayer(Position(i.toShort, j.toShort)) === _lastPlayer) foldUp(acc + 1, i - 1, stop)
       else acc
     }
 
-    if (lookUps.cols(j)(lookUps.lastPlayerIdx) >= k) {
+    if (_lookUps.cols(j)(lookUps.lastPlayerIdx) >= k) {
 
       val countD = foldDown(0, i + 1, Math.min(m, i + k))
       val countU = foldUp(0, i - 1, Math.max(0, i - k))
@@ -134,20 +130,21 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
     } else 0
   }
 
+  // TODO this is using lookup, need to be decoupled
   protected def scoreRow(): Int = {
-    val (i, j) = _lastMove
+    val (i, j) = (_lastMove.row, _lastMove.col)
 
     @tailrec
     def foldRight(acc: Int, j: Int, stop: Int): Int = {
       if (j === stop) acc
-      else if (_board(i)(j) === _lastPlayer) foldRight(acc + 1, j + 1, stop)
+      else if (boardPlayer(Position(i.toShort, j.toShort)) === _lastPlayer) foldRight(acc + 1, j + 1, stop)
       else acc
     }
 
     @tailrec
     def foldLeft(acc: Int, j: Int, stop: Int): Int = {
       if (j < stop) acc
-      else if (_board(i)(j) === _lastPlayer) foldLeft(acc + 1, j - 1, stop)
+      else if (boardPlayer(Position(i.toShort, j.toShort)) === _lastPlayer) foldLeft(acc + 1, j - 1, stop)
       else acc
     }
 
@@ -161,29 +158,30 @@ class BoardMNK(m: Short, n: Short, val k: Short) extends BoardMNKPLookUp(m, n, k
     } else 0
   }
 
-
   override def display(): String = {
     val str: StringBuilder = new StringBuilder()
     val newLine = sys.props("line.separator")
-
-    def value(p: Byte): Char = {
-      p match {
-        case 0 => '_'
-        case 1 => 'X'
-        case 2 => 'O'
-        case _ => ???
-      }
-    }
-
+    val n1 = n - 1
+    val value: IndexedSeq[Char] = IndexedSeq('_', 'X', 'O')
     for (i <- mIndices) {
-      for (j <- 0 until n - 1) {
-        str ++= s" ${value(_board(i)(j))} |"
+      for (j <- 0 until n1) {
+        str ++= s" ${value(boardPlayer(Position(i.toShort, j.toShort)))} |"
       }
 
-      str ++= s" ${value(_board(i)(n - 1))}" + newLine
+      str ++= s" ${value(boardPlayer(Position(i.toShort, n1.toShort)))}" + newLine
     }
 
     str ++= newLine
     str.toString()
+  }
+}
+
+object BoardMNK {
+  def apply(m: Short, n: Short, k: Short, boardType: BoardMNTypeEnum): BoardMNK = {
+    boardType match {
+      case BOARD_1D_ARRAY => new BoardMNK(m, n, k) with Board1dArray
+      case BOARD_2D_ARRAY => new BoardMNK(m, n, k) with Board2dArray
+      case BOARD_BIT_BOARD => new BoardMNK(m, n, k) with BoardBitBoard
+    }
   }
 }

@@ -1,21 +1,21 @@
 package ai
 
 import cats.implicits._
-import game.{BoardMNK, Position, Score, Status}
+import game.types.{Position, Status}
+import game.{BoardMNKP, Score}
 
-trait MiniMax extends BoardMNK with AiBoard with AiScoreEval {
-  protected def player(maximizing: Boolean): Byte = if (maximizing) 1 else 2
+trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
 
-  protected def mainBlock(player: Byte)(eval: Status => Score): Score = {
+  protected def mainBlock(player: Byte)(eval: Status[Score] => Score): Score = {
     if (gameEnded()) {
       scoreEval
     } else {
       Stats.totalCalls += 1
-      var value = if (player == 1) Int.MinValue else Int.MaxValue
+      var value = if (player === aiPlayer) Int.MinValue else Int.MaxValue
 
       consumeMoves() { p =>
         playMove(p, player)
-        value = eval((value, p))
+        value = eval(Status(value, p))
         undoMove(p, player)
       }
 
@@ -25,14 +25,15 @@ trait MiniMax extends BoardMNK with AiBoard with AiScoreEval {
 
 
   /**
-    * Only for 2 players at the moment
+    * aiPlayer to max
     */
   def solve(maximizing: Boolean): Score = {
-    val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
+    lazy val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
+    val player = nextPlayer()
 
-    mainBlock(player(maximizing)) { status =>
-      val value = solve(!maximizing)
-      cmp(status._1, value)
+    mainBlock(player) { status =>
+      val value = solve(nextPlayer() === aiPlayer)
+      cmp(status.score, value)
     }
   }
 
@@ -40,19 +41,22 @@ trait MiniMax extends BoardMNK with AiBoard with AiScoreEval {
 
   private[this] def signum(value: Boolean): Byte = if (value) +1 else -1
 
-  override def nextMove: Status = nextMove(nextPlayer() === aiPlayer)
+  override def nextMove: Status[Score] = nextMove(nextPlayer() === aiPlayer)
 
-  protected def nextMove(maximizing: Boolean): Status = {
-    var pBest: Position = (-1, -1)
-    val score = mainBlock(player(maximizing)) { case (score: Score, pos: Position) =>
-      val newValue = solve(!maximizing)
+  protected def nextMove(maximizing: Boolean): Status[Score] = {
+    var pBest: Position = Position(-1, -1)
+    val player = nextPlayer()
+
+    // todo mainBlock should return to avoid var
+    val score = mainBlock(player) { status: Status[Score] =>
+      val newValue = solve(nextPlayer() === aiPlayer)
       val sig = signum(maximizing)
-      if (score * sig < newValue * sig) {
-        pBest = pos
+      if (status.score * sig < newValue * sig) {
+        pBest = status.position
         newValue
-      } else score
+      } else status.score
     }
 
-    (score, pBest)
+    Status(score, pBest)
   }
 }

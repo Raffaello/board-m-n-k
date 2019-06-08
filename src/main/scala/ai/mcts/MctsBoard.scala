@@ -3,11 +3,19 @@ package ai.mcts
 import ai.AiBoard
 import ai.mcts.tree.Tree
 import cats.implicits._
-import game.{Position, Score, Status}
+import game._
+import game.boards.BoardDisplay
+import game.boards.implementations.Board2dArray
+import game.types.{Position, Status}
 
 import scala.util.Random
 
-trait MctsBoard extends AiBoard with Cloneable {
+// TODO remove board2darray (used in clone method)
+// TODO remove boarddisplay (used in self playing game)
+// todo remove clonable
+trait MctsBoard extends BoardMNKPLookUp
+  with BoardDisplay with Board2dArray with AiBoard with Cloneable {
+
   final private[mcts] val random = ai.mcts.seed match {
     case Some(x) => new Random(x)
     case None => new Random()
@@ -29,12 +37,14 @@ trait MctsBoard extends AiBoard with Cloneable {
     tree.root.mostVisitedDescending().state.board.score()
   }
 
-  override def nextMove: Status = ??? /*{
-    val tree = Tree(this, 2)
-    iterate(tree)
-    val b = tree.root.mostVisited().state.board
-    (b.score(), b.lastMove) // ???
-  }*/
+  override def nextMove: Status[Score] = ???
+
+  /*{
+     val tree = Tree(this, 2)
+     iterate(tree)
+     val b = tree.root.mostVisited().state.board
+     (b.score(), b.lastMove) // ???
+   }*/
 
   // TODO: improve it non generating invalid moves (after game won?), or is redundant.
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()
@@ -48,7 +58,7 @@ trait MctsBoard extends AiBoard with Cloneable {
   }
 
   def playRandomMove(player: Byte): Boolean = {
-    require(player =!= _lastPlayer)
+    assert(player =!= _lastPlayer)
     randomMove() match {
       case Some(pos) => playMove(pos, player)
       case None => false
@@ -57,11 +67,11 @@ trait MctsBoard extends AiBoard with Cloneable {
 
   override def clone(): MctsBoard = {
     val clone = super.clone().asInstanceOf[MctsBoard]
-    clone._board = _board.map(_.clone()) // <= check benchmark result
-    clone._lookUps = _lookUps.clone().asInstanceOf[clone.CLookUps]
+    clone._board = board.map(_.clone()) // <= check benchmark result
+    clone._lookUps = _lookUps.deepCopy().asInstanceOf[clone.CLookUps]
 
     assert(clone ne this)
-    assert(clone._board ne _board)
+    assert(clone.board ne board)
     assert(_lookUps ne clone._lookUps)
     assert(_lookUps.rows ne clone._lookUps.rows)
 

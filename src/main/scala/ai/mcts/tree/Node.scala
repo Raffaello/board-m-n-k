@@ -5,7 +5,7 @@ import cats.implicits._
 
 import scala.annotation.tailrec
 
-protected[mcts] final class Node(val state: State, private[mcts] var parent: Option[Node], val children: Children) {
+protected[mcts] final case class Node(state: State, private[mcts] var parent: Option[Node], children: Children) {
 
   def isLeaf: Boolean = children.isEmpty
 
@@ -15,13 +15,9 @@ protected[mcts] final class Node(val state: State, private[mcts] var parent: Opt
 
   def nonTerminalLeaf: Boolean = !isTerminal && isLeaf
 
-  def copy(state: State = state, parent: Option[Node] = parent, children: Children = children): Node = {
-    new Node(state, parent, children)
-  }
-
   def deepCopy(state: State = state, parent: Option[Node] = parent, children: Children = children): Node = {
     val tempState = this.state.copy(board = this.state.board.clone())
-    this.copy(state = tempState)
+    copy(state = tempState)
   }
 
   def addChild(child: Node): Unit = children.append(child)
@@ -59,7 +55,6 @@ protected[mcts] final class Node(val state: State, private[mcts] var parent: Opt
 
   private[this] def bestChildScore(): Node =
     children.maxBy(c => uct(c.state.score, c.state.visitCount(), state.visitCount()))
-
 
   // TODO: improve this method after the first expansion, there are a lot of Double.Max UCT children and
   // TODO: one of those should be chosen randomly... In this case is sequential always:

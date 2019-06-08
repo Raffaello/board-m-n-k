@@ -1,7 +1,7 @@
 package benchmarks
 
 import ai._
-import ai.old.{TranspositionTable, WithGetBoard}
+import ai.old.{TranspositionTable, GetBoard}
 import game.{BoardTicTacToe2, Score}
 
 object TicTacToeSolvers extends App {
@@ -46,7 +46,7 @@ object TicTacToeSolvers extends App {
     println("\nMiniMax trait RAW: ")
     val board = new BoardTicTacToe2 with MiniMaxRaw
     val start = System.currentTimeMillis()
-    val score:Score = board.solve
+    val score: Score = board.solve
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
     println(s"Total calls: ${board.Stats.totalCalls}")
@@ -116,7 +116,7 @@ object TicTacToeSolvers extends App {
   }
   {
     println("\nAlpha Beta With TranspositionTableOld:")
-    val board = new BoardTicTacToe2 with TranspositionTable with WithGetBoard
+    val board = new BoardTicTacToe2 with TranspositionTable with GetBoard
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0
@@ -135,7 +135,7 @@ object TicTacToeSolvers extends App {
 
   {
     println("\nAlpha Beta With TranspositionTable:")
-    val board = new BoardTicTacToe2 with ai.TranspositionTable
+    val board = new BoardTicTacToe2 with ai.TranspositionTable2dArrayString
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0
@@ -154,7 +154,7 @@ object TicTacToeSolvers extends App {
 
   {
     println("\nAlpha Beta With TranspositionTable Trait:")
-    val board = new BoardTicTacToe2 with AlphaBetaTransposition
+    val board = new BoardTicTacToe2 with AlphaBetaTransposition with TranspositionTable2dArrayString
     val start = System.currentTimeMillis()
     val score = board.solve
     val end = System.currentTimeMillis()

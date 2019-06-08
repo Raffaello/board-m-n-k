@@ -1,5 +1,8 @@
 package game
 
+import ai.MiniMax
+import game.boards.implementations.Board2dArray
+import game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
@@ -18,15 +21,20 @@ class BoardMNKPSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
 
     forAll(ps) { p: Byte =>
       whenever(p >= 2) {
-        val game = new BoardMNKP(m, n, k, p)
+        val game = new BoardMNKP(m, n, k, p) with Board2dArray
         game.lastPlayer shouldBe p
 
         for (i <- NumericRange.inclusive[Short](1, p, 1)) {
           val np = game.nextPlayer()
           np shouldBe i
-          game.playMove((i, 0), np) shouldBe true
+          game.playMove(Position(i, 0), np) shouldBe true
         }
       }
     }
+  }
+
+  ignore should "draw using Minimax with 3, 3, 3, 2" in {
+    val game = new BoardMNKP(3, 3, 3, 2) with MiniMax with Board2dArray
+    game.solve shouldBe 0
   }
 }

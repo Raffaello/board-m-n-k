@@ -1,63 +1,64 @@
 package ai
 
-import game.{BoardTicTacToe, BoardTicTacToe2, Position, Score, Status}
+import ai.types.AlphaBetaValues
+import game.types.{Position, Status}
+import game.{BoardTicTacToe, BoardTicTacToe2, Score}
 import org.scalatest.{Matchers, WordSpec}
 
 class AlphaBetaTranspositionSpec extends WordSpec with Matchers {
 
   "TicTacToe2 Alpha Beta with Transposition" should {
-    "solve the game" in {
-      val game = new BoardTicTacToe2() with AlphaBetaTransposition
-      val score = game.solve
+    "solve the game" in new AiTicTacToeExpectedStats {
+      val game = new BoardTicTacToe2() with AlphaBetaTransposition with TranspositionTable2dArrayString
+      val score: Score = game.solve
       score shouldEqual 0
       game.depth shouldEqual 0
+      expAlphaBetaTTTrait(game.Stats.totalCalls, game.Stats.cacheHits, game.transpositions.size)
     }
     "have first move" in {
-      val game = new BoardTicTacToe2() with AlphaBetaTransposition
-      val (score, pos): Status = game.nextMove
-      val (a, b) = game.alphaBetaNextMove
-      score shouldEqual 0
-      val ab: AB[Score] = (0, Int.MaxValue)
-      (a, b) shouldEqual ab
+      val game = new BoardTicTacToe2() with AlphaBetaTransposition with TranspositionTable2dArrayString
+      val status: Status[Score] = game.nextMove
+      val ab = game.alphaBetaNextMove
+      status.score shouldEqual 0
+      ab shouldEqual AlphaBetaValues[Score](0, Int.MaxValue)
       game.depth shouldEqual 0
-      val p: Position = (0, 0)
-      pos shouldBe p
+      val p: Position = Position(0, 0)
+      status.position shouldBe p
 
     }
 
     "have 2nd move" in {
-      val game = new BoardTicTacToe2() with AlphaBetaTransposition
-      val s: Status = (0, (1, 1))
-      game.playMove((0, 0), 1)
-      val status: Status = game.nextMove
-      val (a, b) = game.alphaBetaNextMove
+      val game = new BoardTicTacToe2() with AlphaBetaTransposition with TranspositionTable2dArrayString
+      val s: Status[Score] = Status(0, Position(1, 1))
+      game.playMove(Position(0, 0), 1)
+      val status: Status[Score] = game.nextMove
+      val ab = game.alphaBetaNextMove
       status shouldEqual s
-      val ab: AB[Score] = (Int.MinValue, 0)
-      (a, b) shouldBe ab
+      ab shouldBe AlphaBetaValues[Score](Int.MinValue, 0)
     }
   }
 
   "BoardTicTacToe Alpha Beta with Transposition" should {
-    "draw the game" in {
-      val game = new BoardTicTacToe with AlphaBetaTransposition
+    "draw the game" in new AiTicTacToeExpectedStats {
+      val game = new BoardTicTacToe with AlphaBetaTransposition with TranspositionTable2dArrayString
       game.solve shouldBe 0
+      expAlphaBetaTTTrait(game.Stats.totalCalls, game.Stats.cacheHits, game.transpositions.size)
     }
 
     "solve the game" in {
-      val game = new BoardTicTacToe with AlphaBetaTransposition
+      val game = new BoardTicTacToe with AlphaBetaTransposition with TranspositionTable2dArrayString
 
       val score = game.solve
       score shouldEqual 0
     }
 
     "have first move" in {
-      val game = new BoardTicTacToe with AlphaBetaTransposition
-      val status: Status = game.nextMove
-      val (a, b) = game.alphaBetaNextMove
-      val s: Status = (0, (0, 0))
+      val game = new BoardTicTacToe with AlphaBetaTransposition with TranspositionTable2dArrayString
+      val status: Status[Score] = game.nextMove
+      val ab = game.alphaBetaNextMove
+      val s: Status[Score] = Status(0, Position(0, 0))
       status shouldEqual s
-      val ab: AB[Score] = (0, Int.MaxValue)
-      (a, b) shouldEqual ab
+      ab shouldEqual AlphaBetaValues[Score](0, Int.MaxValue)
       game.depth shouldEqual 0
     }
   }

@@ -2,6 +2,8 @@ package ai
 
 import ai.old.BoardMNKwithGetBoard
 import game.BoardMNK
+import game.boards.implementations.Board2dArray
+
 
 object BoardSolver extends App {
 
@@ -10,7 +12,7 @@ object BoardSolver extends App {
     var cacheHits: Int = 0
   }
 
-  sealed trait SolverBoardTrait {
+  sealed trait SolverBoardTrait extends Board2dArray {
     def result(): Any
 
     def stats(): _Stats
@@ -61,7 +63,7 @@ object BoardSolver extends App {
     def result(): old.Transposition = ai.old.alphaBetaWithMem(this, this)
   }
 
-  sealed class AlphaBetaTT(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) with ai.TranspositionTable {
+  sealed class AlphaBetaTT(m: Short, n: Short, k: Short) extends SolverBoardRaw(m, n, k) with ai.TranspositionTable2dArrayString {
     def result(): Transposition = ai.alphaBetaWithMem(this, this)
   }
 
@@ -73,7 +75,7 @@ object BoardSolver extends App {
     def result(): Int = this.solve
   }
 
-  sealed class AlphaBetaTraitTT(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with TranspositionTable {
+  sealed class AlphaBetaTraitTT(m: Short, n: Short, k: Short) extends SolverBoardAiTrait(m, n, k) with AlphaBeta with TranspositionTable2dArrayString {
     def result(): Int = this.solve
   }
 
@@ -108,7 +110,7 @@ object BoardSolver extends App {
   val choice = scala.io.StdIn.readInt()
   println()
   val (ck, cv) = choices(choice)
-  println(s"you choose: ${ck}")
+  println(s"you choose: $ck")
 
   println(s"Board size ${m}x${n}x$k")
   val startTime = System.currentTimeMillis()

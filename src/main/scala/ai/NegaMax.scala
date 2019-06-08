@@ -1,15 +1,16 @@
 package ai
 
 import cats.implicits._
-import game.{Position, Score, Status}
+import game.Score
+import game.types.{Position, Status}
 
 /**
   * Basically same class as
   *
   * @see MiniMax
   */
-trait NegaMax extends AiBoard with AiScoreEval {
-  protected def mainBlock(color: Byte)(eval: Status => Score): Score = {
+trait NegaMax extends AiBoard with AiBoardScoreEval {
+  protected def mainBlock(color: Byte)(eval: Status[Score] => Score): Score = {
     if (gameEnded()) {
       scoreEval * color
     } else {
@@ -19,7 +20,7 @@ trait NegaMax extends AiBoard with AiScoreEval {
 
       consumeMoves() { p =>
         playMove(p, player)
-        value = eval((value, p))
+        value = eval(Status(value, p))
         undoMove(p, player)
       }
 
@@ -28,25 +29,26 @@ trait NegaMax extends AiBoard with AiScoreEval {
   }
 
   def solve(color: Byte): Score = {
-    mainBlock(color) { case (score, _) =>
-      Math.max(score, -solve((-color).toByte))
+    mainBlock(color) { status: Status[Score] =>
+      Math.max(status.score, -solve((-color).toByte))
     }
   }
 
   def solve: Score = solve(1)
 
-  override def nextMove: Status = nextMove(if (nextPlayer() === aiPlayer) 1 else -1)
+  override def nextMove: Status[Score] = nextMove(if (nextPlayer() === aiPlayer) 1 else -1)
 
-  protected def nextMove(color: Byte): Status = {
-    var pBest: Position = (-1, -1)
-    val score = mainBlock(color) { case (score: Score, pos: Position) =>
+  protected def nextMove(color: Byte): Status[Score] = {
+    // todo made mainBlock returning more than just the score
+    var pBest: Position = Position(-1, -1)
+    val score = mainBlock(color) { status: Status[Score] =>
       val newValue = -solve((-color).toByte)
-      if (score < newValue) {
-        pBest = pos
+      if (status.score < newValue) {
+        pBest = status.position
         newValue
-      } else score
+      } else status.score
     }
 
-    (score, pBest)
+    Status(score, pBest)
   }
 }

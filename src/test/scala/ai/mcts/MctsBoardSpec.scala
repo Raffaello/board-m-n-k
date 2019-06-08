@@ -1,6 +1,8 @@
 package ai.mcts
 
-import game.{Board, BoardMNK, Position}
+import ai.old.GetBoard
+import game.BoardMNK
+import game.types.Position
 import org.scalatest.{FlatSpec, Matchers}
 
 class MctsBoardSpec extends FlatSpec with Matchers {
@@ -8,14 +10,13 @@ class MctsBoardSpec extends FlatSpec with Matchers {
   // This imply a non-well design traits/classes, re extend from itself
   // Mcts board already extending from BoardMNKPLookup, here some sort of cycle because of the missing parameter
   // for the constructor: m,n,k,p that cannot be passed in the trait (yet)
-  sealed class MctsBoardStub(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k) with MctsBoard {
-    def board: Board = _board
-  }
+  sealed class MctsBoardStub(m: Short, n: Short, k: Short) extends BoardMNK(m, n, k)
+    with MctsBoard with GetBoard
 
   def initBoard(m: Short, n: Short, k: Short): MctsBoard = new MctsBoardStub(m, n, k)
 
   "MctsBoard" should "be initialized" in {
-    val game = initBoard(3 ,3 ,3)
+    val game = initBoard(3, 3, 3)
     game shouldBe an[MctsBoard]
   }
 
@@ -23,16 +24,26 @@ class MctsBoardSpec extends FlatSpec with Matchers {
     val game = initBoard(3, 3, 3)
     val moves = game.allPossibleMoves()
     moves should have length 9
-    moves should equal(IndexedSeq[Position]((0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)))
+    moves should equal(IndexedSeq[Position](
+      Position(0, 0),
+      Position(0, 1),
+      Position(0, 2),
+      Position(1, 0),
+      Position(1, 1),
+      Position(1, 2),
+      Position(2, 0),
+      Position(2, 1),
+      Position(2, 2))
+    )
   }
 
   it should "generate a random move" in {
     val game = initBoard(3, 3, 3)
     val randomMove = game.randomMove()
     randomMove shouldNot be(None)
-    val (x, y) = randomMove.get
-    x shouldBe (1.toShort +- 1)
-    y shouldBe (1.toShort +- 1)
+    val pos = randomMove.get
+    pos.row shouldBe (1.toShort +- 1)
+    pos.col shouldBe (1.toShort +- 1)
   }
 
   it should "not generate a random move" in {
@@ -40,7 +51,7 @@ class MctsBoardSpec extends FlatSpec with Matchers {
     for {
       i <- game.mIndices
       j <- game.nIndices
-    } game.playMove((i, j), 1)
+    } game.playMove(Position(i, j), 1)
 
     val randomMove = game.randomMove()
     randomMove shouldBe None
@@ -57,7 +68,7 @@ class MctsBoardSpec extends FlatSpec with Matchers {
     for {
       i <- game.mIndices
       j <- game.nIndices
-    } game.playMove((i, j), 1)
+    } game.playMove(Position(i, j), 1)
 
     val randomMove = game.playRandomMove(2)
     randomMove shouldBe false

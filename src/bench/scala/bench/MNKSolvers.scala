@@ -3,9 +3,9 @@ package bench
 import ai.Stats
 import bench.benchmarks.MNKSolvers._
 import game.Score
-import org.scalameter.api.{Bench, exec}
+import org.scalameter.api.{Bench, exec, reports}
 
-object MNKSolversBench extends Bench.OfflineRegressionReport {
+object MNKSolvers extends Bench.OfflineRegressionReport {
 
   var score: Score = 0
   var totalCalls: Int = 0
@@ -23,7 +23,8 @@ object MNKSolversBench extends Bench.OfflineRegressionReport {
     exec.outliers.suspectPercent -> 10,
     exec.outliers.covMultiplier -> 2.0,
     exec.reinstantiation.fullGC -> true,
-    exec.reinstantiation.frequency -> 1
+    exec.reinstantiation.frequency -> 1,
+    reports.resultDir -> (reports.resultDir + this.getClass.getName)
   ) in {
     for (k <- 3 to 3) {
       performance of "MNKSolvers" in {

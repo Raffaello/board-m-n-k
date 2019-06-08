@@ -2,7 +2,8 @@ package ai.mcts
 
 import ai.mcts.tree.Tree
 import cats.implicits._
-import game.{BoardTicTacToe2, Position}
+import game.BoardTicTacToe2
+import game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
@@ -18,13 +19,13 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     }
   }
 
-  it should "throw an IllegalArgumentException" in {
+  it should "throw an AssertionError" in {
     val negativeInts = for (i <- Gen.choose(Int.MinValue, -1)) yield i
     val nonPositiveInts = for (i <- Gen.choose(Int.MinValue, 0)) yield i
     forAll(negativeInts, nonPositiveInts) {
       (visited: Int, parentVisited: Int) =>
         whenever(visited < 0 && parentVisited <= 0) {
-          assertThrows[IllegalArgumentException] {
+          assertThrows[AssertionError] {
             uct(0.0, visited, parentVisited)
           }
         }
@@ -125,7 +126,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
   it should "playNextMove from a began game" in {
     val game = new BoardTicTacToe2 with MctsBoard
-    game.playMove((0, 0), 1)
+    game.playMove(Position(0, 0), 1)
 
     val tree = Tree(game, 1)
     val newTree = playNextMove(tree).get
@@ -141,8 +142,8 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
   it should "playNextMove from a began game p2" in {
     val game = new BoardTicTacToe2 with MctsBoard
-    game.playMove((0, 0), 1)
-    game.playMove((1, 1), 2)
+    game.playMove(Position(0, 0), 1)
+    game.playMove(Position(1, 1), 2)
     val tree = Tree(game, 2)
     val newTree = playNextMove(tree).get
 
@@ -190,12 +191,12 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
   it should "move to (0,0) in this case" in {
     val game = new BoardTicTacToe2 with MctsBoard
-    game.playMove((2, 2), 1)
-    game.playMove((0, 1), 2)
-    game.playMove((1, 1), 1)
+    game.playMove(Position(2, 2), 1)
+    game.playMove(Position(0, 1), 2)
+    game.playMove(Position(1, 1), 1)
     val tree = Tree(game, 1)
     val subTree = playNextMove(tree).get
-    val p: Position = (0, 0)
+    val p: Position = Position(0, 0)
     subTree.root.state.board.lastMove shouldBe p
     subTree.root.state.board.lastPlayer shouldBe 2
     subTree.root.state.board.gameEnded() shouldBe false
@@ -204,13 +205,13 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
   it must "draw in this game (1,2),(1,0)" in {
     val game = new BoardTicTacToe2 with MctsBoard
-    game.playMove((0, 0), 1)
-    game.playMove((1, 1), 2)
-    game.playMove((2, 2), 1)
-    game.playMove((0, 1), 2)
-    game.playMove((2, 1), 1)
-    game.playMove((2, 0), 2)
-    game.playMove((0, 2), 1)
+    game.playMove(Position(0, 0), 1)
+    game.playMove(Position(1, 1), 2)
+    game.playMove(Position(2, 2), 1)
+    game.playMove(Position(0, 1), 2)
+    game.playMove(Position(2, 1), 1)
+    game.playMove(Position(2, 0), 2)
+    game.playMove(Position(0, 2), 1)
 
     val st = Tree(game, 1)
     iterate(st) //shouldBe 100
@@ -220,11 +221,11 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
   it should "draw p1" in {
     val game = new BoardTicTacToe2 with MctsBoard
-    game.playMove((0, 0), 1)
-    game.playMove((1, 1), 2)
-    game.playMove((2, 2), 1)
-    game.playMove((0, 1), 2)
-    game.playMove((2, 1), 1)
+    game.playMove(Position(0, 0), 1)
+    game.playMove(Position(1, 1), 2)
+    game.playMove(Position(2, 2), 1)
+    game.playMove(Position(0, 1), 2)
+    game.playMove(Position(2, 1), 1)
 
     val st = Tree(game, 1)
     iterate(st)
@@ -232,7 +233,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
 
   }
 
-  it should "Draw (always?)" in {
+  it should "Draw" in {
     val game = new BoardTicTacToe2 with MctsBoard
     var player: Byte = 2
     var tree = Tree(game, player)

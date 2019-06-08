@@ -1,81 +1,40 @@
 package game
 
 import cats.implicits._
+import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
+import game.boards.lookups.TLookUps
+import game.types._
 
-class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Byte) extends BoardMNKP(m, n, k, p) {
+abstract class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Player) extends BoardMNKP(m, n, k, p) with TLookUps {
 
-  /**
-    * TODO, refactor with a trait? (no parameter allowed yet)
-    * TODO also should be protected? test will be different
-    * TODO review....
-    *
-    * TODO all arrays must be cloned so at the moment using var :/
-    */
-  class CLookUps extends Cloneable {
-
-    var rows: Array[Array[Byte]] = Array.ofDim[Byte](m, numPlayers)
-    var cols: Array[Array[Byte]] = Array.ofDim[Byte](n, numPlayers)
-    var lastPlayerIdx: Int = 0
-    var ended: Option[Boolean] = Some(false)
-
-    def inc(pos: Position, playerIdx: Int): Unit = {
-      val (x, y) = pos
-
-      lastPlayerIdx = playerIdx
-      rows(x)(playerIdx) = (1 + rows(x)(playerIdx)).toByte
-      assert(rows(x)(playerIdx) <= n)
-
-      cols(y)(playerIdx) = (1 + cols(y)(playerIdx)).toByte
-      assert(cols(y)(playerIdx) <= m, s"${cols(y)(playerIdx)} -- $playerIdx, $pos -- ${_board.flatten.mkString}")
-      // TODO DIAG1 and DIAG2
-
-    }
-
-    def dec(pos: Position, playerIdx: Int): Unit = {
-      val (x, y) = pos
-
-      rows(x)(playerIdx) = (rows(x)(playerIdx) - 1).toByte
-      assert(rows(x)(playerIdx) >= 0)
-
-      cols(y)(playerIdx) = (cols(y)(playerIdx) - 1).toByte
-      assert(cols(y)(playerIdx) >= 0, s"${cols(y)(playerIdx)} -- $playerIdx, $pos")
-    }
-
-    override def clone(): CLookUps = {
-      val clone = super.clone().asInstanceOf[CLookUps]
-
-      clone.rows = this.rows.map(_.clone())
-      clone.cols = this.cols.map(_.clone())
-      clone.lastPlayerIdx = lastPlayerIdx
-      clone.ended = ended
-
-      clone
-    }
-  }
-
-  protected var _lookUps = new CLookUps
-
-  def lookUps: CLookUps = _lookUps
-
-  override def playMove(position: Position, player: Byte): Boolean = {
-    lookUps.ended = None
+  override def playMove(position: Position, player: Player): Boolean = {
     val res = super.playMove(position, player)
-    if (res) {
-      lookUps.inc(position, player - 1)
-    }
+    if (res) _lookUps.inc(position, player - 1)
     res
   }
 
-  override def undoMove(position: Position, player: Byte): Boolean = {
-    lookUps.dec(position, player - 1)
-    lookUps.ended = None
-    super.undoMove(position, player)
+  override def undoMove(position: Position, player: Player): Boolean = {
+    val res = super.undoMove(position, player)
+    if (res) _lookUps.dec(position, player - 1)
+    res
   }
 
   // Todo review this method and lookUps.ended ???
+  // TODO !!!!!!!!!!! FIX, SHOULD BE REMOVED OR USE LOOKUPS !!!!!!!!!!!!!!
   override def gameEnded(depth: Int): Boolean = {
+//    lookUps.ended.getOrElse(checkWin())
     if (depth < minWinDepth) false
     else if (freePositions === 0) true
     else checkWin()
+  }
+}
+
+object BoardMNKPLookUp {
+  def apply(m: Short, n: Short, k: Short, numPlayers: Player, boardType: BoardMNTypeEnum): BoardMNKPLookUp = {
+    boardType match {
+      case BOARD_1D_ARRAY => new BoardMNKPLookUp(m, n, k, numPlayers) with Board1dArray
+      case BOARD_2D_ARRAY => new BoardMNKPLookUp(m, n, k, numPlayers) with Board2dArray
+      case BOARD_BIT_BOARD => new BoardMNKPLookUp(m, n, k, numPlayers) with BoardBitBoard
+    }
   }
 }

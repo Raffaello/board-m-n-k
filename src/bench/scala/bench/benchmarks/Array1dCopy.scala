@@ -9,12 +9,13 @@ object Array1dCopy {
   val arrays1d: Gen[(Int, Array[Int])] = for {
     n <- ns
   } yield {
-    val a = Array.ofDim[Int](n)
-    (n, populateArray1d(n, a))
+    val n2 = n * n
+    val a = Array.ofDim[Int](n2)
+    (n2, populateArray1d(n, a))
   }
 
   def populateArray1d(n: Int, a: Array[Int]): Array[Int] = {
-    for {i <- 0 until n} a(i) = i+1
+    for {i <- 0 until n} a(i) = i + 1
     a
   }
 

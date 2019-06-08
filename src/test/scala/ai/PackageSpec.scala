@@ -1,45 +1,76 @@
 package ai
 
-import game.{BoardTicTacToe2, Position}
+import ai.types.{AlphaBetaStatus, AlphaBetaValues}
+import game.{BitBoardTicTacToe, BoardTicTacToe, BoardTicTacToe1dArray, BoardTicTacToe2}
+import game.Implicit.convertToPlayer
+import game.types.{BOARD_BIT_BOARD, Position, Status}
 import org.scalatest.{FlatSpec, Matchers}
 
+
 class PackageSpec extends FlatSpec with Matchers {
-  "TicTacToe2 alphaBeta" should "solve the game" in {
+
+  "TicTacToe2 alphaBeta" should "returning the following first moves" in {
     val game = new BoardTicTacToe2()
     alphaBeta(game) shouldEqual 0.0
-    val p: Position = (0, 0)
-    val abm1: old.ABMove = (0.0, p, (0.0, Double.MaxValue))
-    val abm2: old.ABMove = (0.0, p, (Double.MinValue, 0.0))
+    val p: Position = Position(0, 0)
+    val abs1: AlphaBetaStatus[Double] = AlphaBetaStatus(AlphaBetaValues(0.0, Double.MaxValue), Status(0.0, p))
+    val abs2: AlphaBetaStatus[Double] = AlphaBetaStatus(AlphaBetaValues(Double.MinValue, 0.0), Status(0.0, p))
 
-    alphaBetaNextMove(game, 0, Double.MinValue, Double.MaxValue, maximizingPlayer = true) shouldEqual abm1
-    alphaBetaNextMove(game, 0, Double.MinValue, Double.MaxValue, maximizingPlayer = false) shouldEqual abm2
+    alphaBetaNextMove(game, 0, AlphaBetaValues.alphaBetaValueDouble, maximizingPlayer = true) shouldEqual abs1
+    alphaBetaNextMove(game, 0, AlphaBetaValues.alphaBetaValueDouble, maximizingPlayer = false) shouldEqual abs2
   }
 
-  "TicTacToe2 alphaBeta with Memory" should "solve the game" in {
-    val game = new BoardTicTacToe2() with TranspositionTable
-    alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, (0, Int.MaxValue), isMaximizing = true)
+  "TicTacToe2 alphaBeta with Memory" should "solve the game" in new AiTicTacToeExpectedStats {
+    val game = new BoardTicTacToe2() with TranspositionTable with TranspositionTable2dArrayString
+    alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, AlphaBetaValues(0, Int.MaxValue), isMaximizing = true)
+
+    //    expAlphaBetaWithMemStats(game.transpositions.size)
+    game.score() shouldBe 0.0
   }
 
-  "Player 1 TicTacToe2" should "win" in {
+  "Player 1 TicTacToe2" should "win" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2()
-    game.playMove((0, 0), 1)
-    game.playMove((0, 1), 1)
-    game.playMove((1, 0), 2)
-    game.playMove((1, 1), 1)
-    game.playMove((2, 1), 2)
-    game.playMove((2, 2), 2)
-    alphaBeta(game) should be >= 1.0
+    game.playMove(Position(0, 0), 1)
+    game.playMove(Position(0, 1), 1)
+    game.playMove(Position(1, 0), 2)
+    game.playMove(Position(1, 1), 1)
+    game.playMove(Position(2, 1), 2)
+    game.playMove(Position(2, 2), 2)
+
+    game.depth shouldBe 6
+    alphaBeta(game, game.depth) should be >= 1.0
+    //    ai.Stats.totalCalls shouldBe 5
+    //    ai.Stats.cacheHits shouldBe 0
   }
 
-  "Player 2 TicTacToe2" should "win" in {
+  "Player 2 TicTacToe2" should "win" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2()
-    game.playMove((0, 0), 1)
-    game.playMove((0, 1), 1)
-    game.playMove((1, 0), 1)
-    game.playMove((1, 1), 1)
-    game.playMove((2, 1), 2)
-    game.playMove((2, 2), 2)
-    game.playMove((1, 2), 2)
-    alphaBeta(game, depth = 6, maximizingPlayer = false) should be < 0.0
+    game.playMove(Position(0, 0), 1)
+    game.playMove(Position(0, 1), 1)
+    game.playMove(Position(1, 0), 1)
+    game.playMove(Position(1, 1), 1)
+    game.playMove(Position(2, 1), 2)
+    game.playMove(Position(2, 2), 2)
+    game.playMove(Position(1, 2), 2)
+
+    game.depth shouldBe 7
+    alphaBeta(game, game.depth, maximizingPlayer = false) should be < 0.0
+    //    ai.Stats.totalCalls shouldBe 1
+    //    ai.Stats.cacheHits shouldBe 0
+  }
+
+  "alphaBeta bitBoard" should "draw" in {
+    val game = BoardTicTacToe(BOARD_BIT_BOARD)
+    alphaBeta(game) shouldBe 0.0
+  }
+
+  it should "draw with transposition" in {
+    val game = new BitBoardTicTacToe() with TranspositionTableBitInt
+    alphaBetaWithMem(game, game) shouldBe Transposition(0, 0, AlphaBetaValues(0, Int.MaxValue), isMaximizing = true)
+  }
+
+  "alphaBeta 1dBoard" should "draw with transposition" in {
+    val game = new BoardTicTacToe1dArray with TranspositionTable1dArrayString
+    alphaBetaWithMem(game, game) shouldBe Transposition(0, 0, AlphaBetaValues(0, Int.MaxValue), isMaximizing = true)
   }
 }

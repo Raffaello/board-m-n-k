@@ -1,14 +1,13 @@
 package ai
 
-import game.{BoardMNK, Score, Status}
+import game.Implicit.convertToPlayer
+import game.types.Status
+import game.{BoardMNKP, Player, Score}
 
-/**
-  * Only for 2 player at the moment.
-  */
-trait AiBoard extends BoardMNK with AiStats {
-  final val aiPlayer: Byte = config.getInt("player").toByte
+trait AiBoard extends BoardMNKP with AiStats {
+  final val aiPlayer: Player = config.getInt("player")
 
   def solve: Score
 
-  def nextMove: Status
+  def nextMove: Status[Score]
 }

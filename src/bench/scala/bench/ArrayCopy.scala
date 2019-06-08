@@ -1,28 +1,35 @@
 package bench
 
 import bench.benchmarks.Array1dCopy.{array1dCopy, arrays1d, clone1d, forLoop1d}
-import bench.benchmarks.Array2dCopy.{array2dCopy, arrays2d, forLoop2d, mapClone2d}
-import org.scalameter.api.{Bench, exec}
+import bench.benchmarks.Array2dCopy._
+import org.scalameter.api.{Bench, exec, reports}
 
-object ArrayCopyBench extends Bench.OfflineRegressionReport {
+object ArrayCopy extends Bench.OfflineRegressionReport {
 
   performance of "ArrayCopyBench" config(
-    exec.benchRuns -> 100,
+    exec.benchRuns -> 500,
     exec.minWarmupRuns -> 10,
     exec.maxWarmupRuns -> 10,
     exec.warmupCovThreshold -> 0.5,
-    exec.independentSamples -> 3,
+    exec.independentSamples -> 5,
     exec.requireGC -> true,
     exec.outliers.retries -> 3,
     exec.outliers.suspectPercent -> 15,
     exec.outliers.covMultiplier -> 2.0,
     exec.reinstantiation.fullGC -> true,
-    exec.reinstantiation.frequency -> 3
+    exec.reinstantiation.frequency -> 3,
+    reports.resultDir -> (reports.resultDir + this.getClass.getName)
   ) in {
     performance of "Array2dCopy" in {
       measure method "mapClone" in {
         using(arrays2d) in {
           case (_, _, a) => mapClone2d(a)
+        }
+      }
+
+      measure method "forClone" in {
+        using(arrays2d) in {
+          case (m, n, a) => forClone2d(m, n, a)
         }
       }
 

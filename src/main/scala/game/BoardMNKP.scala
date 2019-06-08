@@ -1,40 +1,26 @@
 package game
 
-import scala.collection.immutable.NumericRange
 import cats.implicits._
+import game.Implicit.convertToPlayer
+import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
+import game.boards.{BoardDepthAware, BoardMN, BoardPlayers, LastMoveTracker}
+import game.types._
 
-/**
-  * @param m          number of rows
-  * @param n          number of cols
-  * @param k          number of same move of a player "in a row" (or col or diagonal)
-  * @param numPlayers 0 is not used, 1 or 2 is the player using the cell
-  */
-class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends BoardMN(m, n) {
+abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Player) extends BoardMN(m, n)
+  with BoardDepthAware with LastMoveTracker with BoardPlayers {
+
   require(k <= m || k <= n)
   require(numPlayers >= 2)
 
   protected val k1: Short = (k - 1).toShort
-  protected val nkDiff: Short = (n - k).toShort
-  protected val mkDiff: Short = (m - k).toShort
 
-  protected val mkDiffIncIndices: NumericRange.Inclusive[Int] = NumericRange.inclusive(0, mkDiff, 1)
-  protected val nkDiffIncIndices: NumericRange.Inclusive[Short] = NumericRange.inclusive[Short](0, nkDiff, 1)
-  protected val k1mIndices = NumericRange(k1, m, 1)
+  final val minWinDepth: Int = numPlayers * k1 + 1 //(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
 
-  protected var _lastPlayer: Byte = numPlayers
-  protected val minWinDepth: Int = numPlayers*k1+1//(numPlayers * k) - (numPlayers-1) // np*(k - 1)+1
-  protected var _depth: Int = 0
-
-  def depth: Int = _depth
-
-  def lastPlayer: Byte = this._lastPlayer
-
-  def playMove(position: Position, player: Byte): Boolean = {
-    require(player>=1 && player <= numPlayers)
-    val (row, col) = position
-    if (_board(row)(col) > 0) false
+  def playMove(position: Position, player: Player): Boolean = {
+    assert(player >= 1 && player <= numPlayers)
+    if (boardPlayer(position) > 0) false
     else {
-      _board(row)(col) = player
+      boardPlayer_=(position)(player)
       freePositions -= 1
       _depth += 1
       _lastMove = position
@@ -43,11 +29,10 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
     }
   }
 
-  def undoMove(position: Position, player: Byte): Boolean = {
-    val (i, j) = position
+  def undoMove(position: Position, player: Player): Boolean = {
 
-    if (_board(i)(j) === player) {
-      _board(i)(j) = 0
+    if (boardPlayer(position) === player) {
+      boardPlayer_=(position)(0)
       freePositions += 1
       _depth -= 1
       true
@@ -57,35 +42,41 @@ class BoardMNKP(m: Short, n: Short, k: Short, val numPlayers: Byte) extends Boar
   // last player win? 1
   // last player lost? -1
   // else 0
-  override def score(): Int = ???
-
-  // check if board has k in a row of last player then return true otherwise false
-  // create a general method to check player p if won.
-  protected def checkWin(): Boolean = ???
-
-
-  override def gameEnded(): Boolean = gameEnded(_depth)
+  override def score(): Int = score(lastPlayer)
 
   /**
-    * TODO: not sure is well designed here,
-    * every call is calling gameEnded to check, and if depth is not enough
-    * would re-set every time the lookups won Some(false).
-    * It is used just for the score function mainly
-    *
-    * TODO: reconsider the Lookups.won Option[Boolean] for is usage case.
+    * if player won 1
+    * if player lost -1
+    * if it is a draw 0
     */
+  def score(player: Player): Int = ???
+
+  // check if board has k in a row of any player then return true otherwise false
+  // create a general method to check player p if won.
+  override protected def checkWin(): Boolean = ???
+
+  override def gameEnded(): Boolean = gameEnded(depth)
+
   def gameEnded(depth: Int): Boolean = {
     if (depth < minWinDepth) false
     else if (freePositions === 0) true
     else checkWin()
   }
 
-  def opponent(player: Byte): Byte = {
-    require(player >= 1 && player <= numPlayers)
-    ((player % numPlayers) + 1).toByte
+  def opponent(player: Player): Player = {
+    assert(player >= 1 && player <= numPlayers)
+    (player % numPlayers) + 1
   }
 
-  def nextPlayer(): Byte = opponent(_lastPlayer)
+  def nextPlayer(): Player = opponent(lastPlayer)
+}
 
-  override def display(): String = ???
+object BoardMNKP {
+  def apply(m: Short, n: Short, k: Short, numPlayers: Player, boardType: BoardMNTypeEnum): BoardMNKP = {
+    boardType match {
+      case BOARD_1D_ARRAY => new BoardMNKP(m, n, k, numPlayers) with Board1dArray
+      case BOARD_2D_ARRAY => new BoardMNKP(m, n, k, numPlayers) with Board2dArray
+      case BOARD_BIT_BOARD => new BoardMNKP(m, n, k, numPlayers) with BoardBitBoard
+    }
+  }
 }

@@ -30,8 +30,8 @@ package object mcts {
     * if visited is non zero then parentVisited is non zero
     */
   def uct(score: Double, visited: Int, parentVisited: Int): Double = {
-    require(visited >= 0)
-    require(parentVisited > 0)
+    assert(visited >= 0)
+    assert(parentVisited > 0)
 
     visited match {
       case 0 => Double.MaxValue
