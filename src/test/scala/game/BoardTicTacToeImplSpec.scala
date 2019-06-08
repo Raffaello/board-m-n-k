@@ -1,8 +1,8 @@
 package game
 
 import game.types.Position
-import org.scalatest.{Matchers, WordSpec}
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
+import org.scalatest.{Matchers, WordSpec}
 
 import scala.collection.immutable.NumericRange
 
@@ -27,7 +27,7 @@ abstract class BoardTicTacToeImplSpec extends WordSpec with Matchers with Genera
 
           for (i <- 0 until 3) {
             val game = new BoardTicTacToe2()
-            for(j <- 0 until  3) game.playMove(Position(i.toShort, j.toShort), p)
+            for (j <- 0 until 3) game.playMove(Position(i.toShort, j.toShort), p)
             game.gameEnded() should be(true)
             game.score() should be(score)
           }
@@ -51,7 +51,7 @@ abstract class BoardTicTacToeImplSpec extends WordSpec with Matchers with Genera
 
         "by diagonals Bottom Left -> Top Right" in {
           val game = new BoardTicTacToe2()
-          for (i <- 0 until 3) game.playMove(Position((2 - i).toShort, i.toShort),  p)
+          for (i <- 0 until 3) game.playMove(Position((2 - i).toShort, i.toShort), p)
           game.gameEnded() should be(true)
           game.score() should be(score)
         }
