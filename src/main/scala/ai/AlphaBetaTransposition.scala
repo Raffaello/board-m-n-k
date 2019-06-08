@@ -9,6 +9,7 @@ import scala.util.control.Breaks._
 trait AlphaBetaTransposition extends AlphaBeta with TranspositionTable {
 
   // TODO could be refactored to reuse the super.mainBlock
+  // TODO has to return transposition
   override protected def mainBlock(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score])
                                   (eval: AlphaBetaStatus[Score] => AlphaBetaStatus[Score]): Score = {
     get() match {

@@ -1,6 +1,7 @@
 package game
 
 import ai.MiniMax
+import game.Implicit.convertToPlayer
 import game.boards.implementations.Board2dArray
 import game.types.Position
 import org.scalacheck.Gen

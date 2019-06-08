@@ -99,8 +99,8 @@ libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
 logBuffered in Test := false
 //parallelExecution in Test := false
 // end - Tests
-libraryDependencies += "com.typesafe" % "config" % "1.3.2"
 
+libraryDependencies += "com.typesafe" % "config" % "1.3.2"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
