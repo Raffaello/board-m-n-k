@@ -1,43 +1,14 @@
 package ai
 
 import game.boards.implementations.Board2dArray
-import game.types.{Position, Status}
-import game.{BoardTicTacToe, BoardTicTacToe2, Score}
-import org.scalatest.{Matchers, WordSpec}
+import game.{BoardTicTacToe, BoardTicTacToe2}
 
-class NegaMaxSpec extends WordSpec with Matchers {
+class NegaMaxSpec extends TicTacToeSpec {
 
-  "TicTacToe2 negamax" should {
-    val game = new BoardTicTacToe2() with NegaMax
-    "solve the game" in new AiTicTacToeExpectedStats {
-      game.solve shouldEqual 0
-      expNegamax(game.Stats.totalCalls)
-    }
+  sealed class BoardTicTacToe2NegaMax extends BoardTicTacToe2 with NegaMax
 
-    "have first move" in {
-      val s: Status[Score] = Status(0, Position(0, 0))
-      game.nextMove shouldEqual s
-    }
+  sealed class BoardTicTacToeNegaMax extends BoardTicTacToe with NegaMax with Board2dArray
 
-    "have 2nd move" in {
-      val s: Status[Score] = Status(0, Position(1, 1))
-      game.playMove(Position(0, 0), 1)
-      game.depth shouldBe 1
-      game.nextMove shouldEqual s
-    }
-  }
-
-  "BoardTicTacToe negamax" should {
-    "solve the game" in new AiTicTacToeExpectedStats {
-      val game = new BoardTicTacToe with Board2dArray with NegaMax
-      game.solve shouldEqual 0
-      expNegamax(game.Stats.totalCalls)
-    }
-
-    "have first move" in {
-      val game = new BoardTicTacToe with Board2dArray with NegaMax
-      val s: Status[Score] = Status(0, Position(0, 0))
-      game.nextMove shouldEqual s
-    }
-  }
+  aiBoard(new BoardTicTacToe2NegaMax)
+  aiBoard(new BoardTicTacToeNegaMax)
 }
