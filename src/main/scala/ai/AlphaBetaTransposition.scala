@@ -27,7 +27,7 @@ trait AlphaBetaTransposition extends AlphaBeta with TranspositionTable {
         lazy val player: Byte = if (maximizing) 1 else 2
 
         breakable {
-          consumeMoves() { p =>
+          consumeMoves { p =>
             playMove(p, player)
             val abStatus = eval(AlphaBetaStatus[Score](ab, Status(best, p)))
             best = abStatus.status.score

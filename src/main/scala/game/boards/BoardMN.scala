@@ -7,5 +7,5 @@ abstract class BoardMN(val m: Short, val n: Short) extends GameBoard
   lazy val mnMin: Short = Math.min(m, n).toShort
   protected var freePositions: Int = mn
 
-  def consumeMoves()(f: Position => Unit): Unit = generateMoves().foreach(f)
+  def consumeMoves(f: Position => Unit): Unit = generateMoves().foreach(f)
 }

@@ -1,6 +1,5 @@
 package game
 
-import game.boards.lookups.TLookUps
 import game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BOARD_BIT_BOARD, Position}
 import org.scalatest.{Matchers, WordSpec}
 
@@ -23,7 +22,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 1
 
         // FIX IT
-        if (game.isInstanceOf[TLookUps]) {
+        if (b !== BOARD_BIT_BOARD) {
           game.lookUps.ended shouldEqual Some(true)
           game.lookUps.lastPlayerIdx shouldEqual 0
           game.lookUps.rows shouldBe Array(Array(3, 0), Array(0, 2), Array(0, 0))
@@ -45,7 +44,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual -1
 
         // FIX IT
-        if (game.isInstanceOf[TLookUps]) {
+        if (b !== BOARD_BIT_BOARD) {
           game.lookUps.ended shouldEqual Some(true)
           game.lookUps.lastPlayerIdx shouldEqual 1
           game.lookUps.rows shouldBe Array(Array(2, 0), Array(0, 3), Array(1, 0))
@@ -70,7 +69,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 0
 
         // FIX IT
-        if (game.isInstanceOf[TLookUps]) {
+        if (b !== BOARD_BIT_BOARD) {
           game.lookUps.ended shouldEqual Some(false)
           game.lookUps.lastPlayerIdx shouldEqual 0
           game.lookUps.rows shouldBe Array(Array(2, 1), Array(2, 1), Array(1, 2))
@@ -91,7 +90,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 1
 
         // FIX IT
-        if (game.isInstanceOf[TLookUps]) {
+        if (b !== BOARD_BIT_BOARD) {
           game.lookUps.ended shouldEqual Some(true)
           game.lookUps.lastPlayerIdx shouldEqual 0
           game.lookUps.rows shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
@@ -112,7 +111,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 1
 
         // FIX IT
-        if (game.isInstanceOf[TLookUps]) {
+        if (b !== BOARD_BIT_BOARD) {
           game.lookUps.ended shouldEqual Some(true)
           game.lookUps.lastPlayerIdx shouldEqual 0
           game.lookUps.rows shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
@@ -152,7 +151,7 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 1
 
         // FIX IT
-        if (game.isInstanceOf[TLookUps]) {
+        if (b !== BOARD_BIT_BOARD) {
           game.lookUps.ended shouldEqual Some(true)
           game.lookUps.lastPlayerIdx shouldEqual 0
           game.lookUps.rows shouldBe Array(Array(2, 1), Array(1, 2), Array(1, 1), Array(1, 0))

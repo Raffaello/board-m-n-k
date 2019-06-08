@@ -2,7 +2,7 @@ package ai
 
 import cats.implicits._
 import game.types.Position
-import game.{Board2d, BoardMNK, Score}
+import game.{Board2d, BoardMNK, Score, nilPosition}
 
 /**
   * @deprecated
@@ -82,7 +82,7 @@ package object old {
     } else {
 
       var value = Int.MinValue
-      var pBest = Position(-1, -1)
+      var pBest = nilPosition
       var player = color
       if (player === -1) player = 2
       for {

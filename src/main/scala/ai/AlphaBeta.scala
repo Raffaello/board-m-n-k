@@ -2,7 +2,7 @@ package ai
 
 import ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import cats.implicits._
-import game.Score
+import game.{Score, nilPosition}
 import game.types.{Position, Status}
 
 import scala.util.control.Breaks._
@@ -22,7 +22,7 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
 
       breakable {
         // TODO consumeMoves should return here a value to be assigned instead
-        consumeMoves() { p =>
+        consumeMoves { p =>
           playMove(p, player)
           val abStatus: AlphaBetaStatus[Score] = AlphaBetaStatus(ab, Status(best, p))
           val newAbStatus = eval(abStatus)
@@ -65,7 +65,7 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
   }
 
   protected def nextMove(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score]): AlphaBetaStatus[Score] = {
-    var pBest: Position = Position(-1, -1)
+    var pBest: Position = nilPosition
     var best = if (maximizing) Int.MinValue else Int.MaxValue
     var (a1, b1) = (alphaBetaValues.alpha, alphaBetaValues.beta)
     // TODO mainBlock should return to avoid var

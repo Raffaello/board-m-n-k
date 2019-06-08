@@ -1,7 +1,7 @@
 package ai
 
 import cats.implicits._
-import game.Score
+import game.{Score, nilPosition}
 import game.types.{Position, Status}
 
 /**
@@ -18,7 +18,7 @@ trait NegaMax extends AiBoard with AiBoardScoreEval {
       var value = Int.MinValue
       val player: Byte = if (color == -1) 2 else 1
 
-      consumeMoves() { p =>
+      consumeMoves { p =>
         playMove(p, player)
         value = eval(Status(value, p))
         undoMove(p, player)
@@ -40,7 +40,7 @@ trait NegaMax extends AiBoard with AiBoardScoreEval {
 
   protected def nextMove(color: Byte): Status[Score] = {
     // todo made mainBlock returning more than just the score
-    var pBest: Position = Position(-1, -1)
+    var pBest: Position = nilPosition
     val score = mainBlock(color) { status: Status[Score] =>
       val newValue = -solve((-color).toByte)
       if (status.score < newValue) {

@@ -12,7 +12,7 @@ trait MiniMaxRaw extends MiniMax {
       val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
       var value: Int = if (maximizing) Int.MinValue else Int.MaxValue
       val pl = if (maximizing) aiPlayer else nextPlayer()
-      consumeMoves() { p =>
+      consumeMoves { p =>
 
         playMove(p, pl)
         value = cmp(value, solve(!maximizing))

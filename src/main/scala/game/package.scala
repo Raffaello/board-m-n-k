@@ -1,9 +1,14 @@
+import game.types.Position
+
 import scala.language.implicitConversions
 
 package object game {
+
   object Implicit {
     implicit def convertToPlayer(x: Int): Player = x.toByte
   }
+
+  val nilPosition: Position = nilPosition
 
   type Score = Int
   type Player = Byte
