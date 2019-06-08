@@ -34,7 +34,7 @@ class BoardMNKPSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
     }
   }
 
-  ignore should "draw using Minimax with 3, 3, 3, 2" in {
+  it should "draw using Minimax with 3, 3, 3, 2" in {
     val game = new BoardMNKP(3, 3, 3, 2) with MiniMax with Board2dArray
     game.solve shouldBe 0
   }
