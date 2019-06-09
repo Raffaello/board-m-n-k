@@ -27,7 +27,7 @@ It includes an easter egg.
 ## Generalized M,N,K game
 
 - [x] 2 players
-- [ ] p players (MNKP)
+- [x] p players (MNKP)
 
 ## Connect 4
 
@@ -117,14 +117,14 @@ and check only around the move done instead of all the board.
 
 from 2D array to 1D.
 
-- [ ] replace with 1D array and compute the moves as `i*n+j` for the exact index position
+- [X] add 1D array and compute the moves as `i*n+j` for the exact index position
 - [ ] simplify the checking of end game looking around the value and moving trough the array.
 - [ ] simplify hashing.
-- [ ] consider to use a bit board for each player to represent the game.
+- [X] consider to use a bit board for each player to represent the game.
 
 #### BitBoards
 
-- [ ] only TicTacToe 2 players (represent with 18 bit => 32 (Int32/Short x64))
+- [X] only TicTacToe 2 players (represent with 18 bit => 32 (Int32/Short x64))
 
 ## Principal Variation
 
