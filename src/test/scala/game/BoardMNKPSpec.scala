@@ -118,4 +118,10 @@ class BoardMNKPSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
     game.nextPlayer() shouldBe 2
     game.nextMove shouldEqual Status(0, Position(1, 1))
   }
+
+  "BoardMNKP(3,3,3,3)" should "draw" in {
+    val game = new BoardMNKP(3, 3, 3, 3) with MiniMax with Board2dArray
+    game.nextPlayer() shouldBe 1
+    game.solve shouldBe 0
+  }
 }

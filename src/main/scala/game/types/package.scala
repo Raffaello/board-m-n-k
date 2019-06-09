@@ -18,6 +18,9 @@ package types {
 
   case object BOARD_1D_ARRAY extends BoardMNTypeEnum
 
+  /**
+    * This one is only for 2 players at the moment
+    */
   case object BOARD_BIT_BOARD extends BoardMNTypeEnum
 
 }

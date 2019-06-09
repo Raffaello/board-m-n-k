@@ -1,5 +1,7 @@
 package game.boards
 
+import java.nio.charset.StandardCharsets
+
 import game.Implicit.convertIntToShort
 import game.Player
 import game.types.{BoardMNType, Position}
@@ -9,7 +11,7 @@ trait BoardDisplay extends BoardMNType {
   private[boards] def valueDisplay(player: Player): Char = {
     player match {
       case 0 => '_'
-      case _ => player.toChar
+      case x => Character.forDigit(x, 10)
     }
   }
 
