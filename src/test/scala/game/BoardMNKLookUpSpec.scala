@@ -157,12 +157,7 @@ class BoardMNKLookUpSpec extends WordSpec with Matchers {
 
         for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {
           "won by player " + p.toString should {
-            var score = 0
-            if (p == 1) {
-              score = 1
-            } else {
-              score = -1
-            }
+            val score: Score = if (p === 1) 1 else -1
             "by rows and" should {
               for (i <- 0 until m) {
                 s"row $i and " should {

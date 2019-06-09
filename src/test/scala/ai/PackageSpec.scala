@@ -2,8 +2,8 @@ package ai
 
 import ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import game.Implicit.convertToPlayer
-import game.types._
 import game._
+import game.types._
 import org.scalatest.{FlatSpec, Matchers}
 
 
@@ -66,7 +66,7 @@ class PackageSpec extends FlatSpec with Matchers {
     game.playMove(Position(2, 2), 2) shouldBe true
     game.playMove(Position(0, 2), 1) shouldBe true
     game.depth shouldBe game.minWinDepth
-    val abs = AlphaBetaStatus[Double](AlphaBetaValues.alphaBetaValueDouble, Status(7.0/6.0, Position.nil))
+    val abs = AlphaBetaStatus[Double](AlphaBetaValues.alphaBetaValueDouble, Status(7.0 / 6.0, Position.nil))
     alphaBetaNextMove(game, game.depth, AlphaBetaValues.alphaBetaValueDouble, true) shouldBe abs
   }
 

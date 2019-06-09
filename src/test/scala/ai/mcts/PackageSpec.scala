@@ -2,7 +2,7 @@ package ai.mcts
 
 import ai.mcts.tree.Tree
 import cats.implicits._
-import game.{BoardTicTacToe2, BoardTicTacToeMcts}
+import game.BoardTicTacToeMcts
 import game.Implicit.convertToPlayer
 import game.types.Position
 import org.scalacheck.Gen
