@@ -20,15 +20,6 @@ abstract class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Player) extends 
     res
   }
 
-  // Todo review this method and lookUps.ended ???
-  // TODO !!!!!!!!!!! FIX, SHOULD BE REMOVED OR USE LOOKUPS !!!!!!!!!!!!!!
-  override def gameEnded(depth: Int): Boolean = {
-//    lookUps.ended.getOrElse(checkWin())
-    if (depth < minWinDepth) false
-    else if (freePositions === 0) true
-    else checkWin()
-  }
-
   override protected def scoreCol(): Player = {
     if (_lookUps.cols(_lastMove.col)(lookUps.lastPlayerIdx) >= k) super.scoreCol()
     else 0

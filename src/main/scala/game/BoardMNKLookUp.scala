@@ -4,7 +4,7 @@ import game.boards.BoardDisplay2Players
 import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
 import game.types._
 
-// TODO refactor with BoardMNK plus lookup trait.
+// TODO refactor with BoardMNK plus lookup trait?
 abstract class BoardMNKLookUp(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2)
   with BoardDisplay2Players {
 

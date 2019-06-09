@@ -13,7 +13,7 @@ trait AlphaBetaTransposition extends AlphaBeta with TranspositionTable {
   // TODO has to return transposition
   override protected def mainBlock(player: Player, alphaBetaValues: AlphaBetaValues[Score])
                                   (eval: AlphaBetaStatus[Score] => AlphaBetaStatus[Score]): Score = {
-    lazy val maximizing: Boolean = aiPlayer == player
+    lazy val maximizing: Boolean = aiPlayer === player
     get() match {
       case Some(t) =>
         Stats.cacheHits += 1

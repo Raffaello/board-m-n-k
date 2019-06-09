@@ -6,9 +6,9 @@ import game.types.{BoardMNKPType, Position}
 import game.{Player, Score}
 
 import scala.annotation.tailrec
-import scala.collection.immutable.NumericRange
 
 trait BoardPlayerScore extends BoardMNKPType with LastMoveTracker with BoardPlayers with GameBoard {
+
   /**
     * South-East direction checking: top-left to bottom-right
     */
