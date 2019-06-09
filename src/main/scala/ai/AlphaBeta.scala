@@ -13,12 +13,14 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
   protected def mainBlock(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score])
                          (eval: AlphaBetaStatus[Score] => AlphaBetaStatus[Score]): Score = {
 
-    if (gameEnded()) scoreEval
+    // todo refactor.... like trait MiniMax
+    lazy val player: Byte = if (maximizing) 1 else 2
+
+    if (gameEnded()) scoreEval(_lastPlayer)
     else {
       Stats.totalCalls += 1
       var best = if (maximizing) Int.MinValue else Int.MaxValue
       var ab = alphaBetaValues
-      val player: Byte = if (maximizing) 1 else 2
 
       breakable {
         // TODO consumeMoves should return here a value to be assigned instead

@@ -9,7 +9,12 @@ trait GameBoard {
 
   def undoMove(position: Position, player: Player): Boolean
 
-  def score(): Score
+  /**
+    * if player won 1
+    * if player lost -1
+    * if it is a draw 0
+    */
+  def score(player: Player): Score
 
   def gameEnded(): Boolean
 

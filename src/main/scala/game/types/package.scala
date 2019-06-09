@@ -2,7 +2,9 @@ package game
 
 package types {
 
-  final case class Position(row: Short, col: Short)
+  final case class Position(row: Short, col: Short) {
+    def min: Short = Math.min(row, col).toShort
+  }
 
   final case class Status[T: Numeric](score: T, position: Position)
 

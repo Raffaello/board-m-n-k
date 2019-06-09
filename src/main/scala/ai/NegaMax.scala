@@ -12,7 +12,7 @@ import game.types.{Position, Status}
 trait NegaMax extends AiBoard with AiBoardScoreEval {
   protected def mainBlock(color: Byte)(eval: Status[Score] => Score): Score = {
     if (gameEnded()) {
-      scoreEval * color
+      scoreEval(_lastPlayer) * color
     } else {
       Stats.totalCalls += 1
       var value = Int.MinValue

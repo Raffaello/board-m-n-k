@@ -1,6 +1,7 @@
 package ai
 
 import ai.types.{AlphaBetaStatus, AlphaBetaValues}
+import cats.implicits._
 import game.Score
 import game.types.Status
 
@@ -12,19 +13,21 @@ trait AlphaBetaTransposition extends AlphaBeta with TranspositionTable {
   // TODO has to return transposition
   override protected def mainBlock(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score])
                                   (eval: AlphaBetaStatus[Score] => AlphaBetaStatus[Score]): Score = {
+    // todo refactor.... like trait MiniMax
+    lazy val player: Byte = if (maximizing) 1 else 2
+
     get() match {
       case Some(t) =>
         Stats.cacheHits += 1
         t.score
       case None if gameEnded() =>
-        val s2 = scoreEval
+        val s2 = scoreEval(_lastPlayer)
         add(Transposition(s2, depth, AlphaBetaValues(s2, s2), maximizing))
         s2
       case _ =>
         Stats.totalCalls += 1
         var best = if (maximizing) Int.MinValue else Int.MaxValue
         var ab = alphaBetaValues
-        lazy val player: Byte = if (maximizing) 1 else 2
 
         breakable {
           consumeMoves { p =>

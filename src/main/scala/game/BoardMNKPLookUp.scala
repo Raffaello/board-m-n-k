@@ -1,6 +1,7 @@
 package game
 
 import cats.implicits._
+import game.Implicit._
 import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
 import game.boards.lookups.TLookUps
 import game.types._
@@ -26,6 +27,31 @@ abstract class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Player) extends 
     if (depth < minWinDepth) false
     else if (freePositions === 0) true
     else checkWin()
+  }
+
+  // TODO this is using lookup, need to be decoupled [need refactor/rename]
+  override protected def scoreCol(): Player = {
+    if (_lookUps.cols(_lastMove.col)(lookUps.lastPlayerIdx) >= k) super.scoreCol()
+    else 0
+  }
+
+  // TODO this is using lookup, need to be decoupled [need refactor/rename]
+  override protected def scoreRow(): Player = {
+    if (lookUps.rows(_lastMove.row)(lookUps.lastPlayerIdx) >= k) super.scoreRow()
+    else 0
+  }
+
+  /**
+    * TODO checkWinDiagonals /w lookup [remove lookup]
+    */
+  override protected def checkWin(): Boolean = {
+    _lookUps.ended match {
+      case None =>
+        val w = checkScore(_lastPlayer) =!= emptyCell
+        _lookUps.ended = Some(w)
+        w
+      case Some(x) => x
+    }
   }
 }
 

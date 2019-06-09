@@ -15,6 +15,7 @@ package object mcts {
   final val maxIter: Int = config.getInt("max_iter")
   final val seed: Option[Long] =  if (config.getIsNull("seed")) None else Some(config.getLong("seed"))
 
+  // todo this is just for 2 players...
   protected def remapScore(score: Score, player: Byte): Double = {
     score match {
       case -1 => if (player === 2) 1.0 else 0.0

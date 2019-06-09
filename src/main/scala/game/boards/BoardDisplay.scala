@@ -1,5 +1,6 @@
 package game.boards
 
+import game.Implicit.convertIntToShort
 import game.Player
 import game.types.{BoardMNType, Position}
 
@@ -21,10 +22,10 @@ trait BoardDisplay extends BoardMNType {
 
     for (i <- mIndices) {
       for (j <- 0 until n1) {
-        str ++= s" ${value(boardPlayer(Position(i.toShort, j.toShort)))} |"
+        str ++= s" ${value(boardPlayer(Position(i, j)))} |"
       }
 
-      str ++= s" ${value(boardPlayer(Position(i.toShort, n1.toShort)))}" + newLine
+      str ++= s" ${value(boardPlayer(Position(i, n1)))}" + newLine
     }
 
     str ++= newLine

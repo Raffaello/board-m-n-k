@@ -8,7 +8,7 @@ trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
 
   protected def mainBlock(player: Byte)(eval: Status[Score] => Score): Score = {
     if (gameEnded()) {
-      scoreEval
+      scoreEval(aiPlayer)
     } else {
       Stats.totalCalls += 1
       var value = if (player === aiPlayer) Int.MinValue else Int.MaxValue
@@ -38,8 +38,6 @@ trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
   }
 
   def solve: Score = solve(nextPlayer() === aiPlayer)
-
-  private[this] def signum(value: Boolean): Byte = if (value) +1 else -1
 
   override def nextMove: Status[Score] = nextMove(nextPlayer() === aiPlayer)
 

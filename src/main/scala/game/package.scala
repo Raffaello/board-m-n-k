@@ -6,9 +6,10 @@ package object game {
 
   object Implicit {
     implicit def convertToPlayer(x: Int): Player = x.toByte
+    implicit def convertIntToShort(x: Int): Short = x.toShort
   }
 
-  val nilPosition: Position = nilPosition
+  final val nilPosition: Position = Position(-1, -1)
 
   type Score = Int
   type Player = Byte

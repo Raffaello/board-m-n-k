@@ -3,6 +3,7 @@ package ai.mcts
 import ai.mcts.tree.Tree
 import cats.implicits._
 import game.BoardTicTacToe2
+import game.Implicit.convertToPlayer
 import game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks

@@ -13,7 +13,8 @@ import scala.util.Random
 // TODO remove board2darray (used in clone method)
 // TODO remove boarddisplay (used in self playing game)
 // todo remove clonable
-trait MctsBoard extends BoardMNKPLookUp
+// todo should extends BoardMNKP
+trait MctsBoard extends BoardMNK
   with BoardDisplay with Board2dArray with AiBoard with Cloneable {
 
   final private[mcts] val random = ai.mcts.seed match {
@@ -34,6 +35,7 @@ trait MctsBoard extends BoardMNKPLookUp
   def solve: Score = {
     val tree = Tree(this, 2)
     iterate(tree)
+    // todo this aiPlayer should be created on a Agent based not on a board.
     tree.root.mostVisitedDescending().state.board.score()
   }
 
