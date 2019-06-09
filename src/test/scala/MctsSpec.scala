@@ -1,6 +1,5 @@
-import ai.mcts.MctsBoard
 import ai.mcts.tree.Tree
-import game.{BoardTicTacToe2, BoardTicTacToeLookUps, BoardTicTacToeMcts}
+import game.BoardTicTacToeMcts
 import org.scalatest.{FeatureSpec, GivenWhenThen, Matchers}
 
 class MctsSpec extends FeatureSpec with GivenWhenThen with Matchers {
@@ -39,9 +38,9 @@ class MctsSpec extends FeatureSpec with GivenWhenThen with Matchers {
       expBoard.gameEnded() shouldBe true
       expBoard.lastPlayer shouldBe 1
       expBoard.display() shouldBe
-        """ O | O | X
-          | X | X | O
-          | O | X | X
+        """ X | X | O
+          | O | O | X
+          | X | O | X
           |
           |""".stripMargin
 

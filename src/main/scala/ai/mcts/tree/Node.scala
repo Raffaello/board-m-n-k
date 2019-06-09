@@ -2,6 +2,7 @@ package ai.mcts.tree
 
 import ai.mcts.{MctsBoard, State, uct}
 import cats.implicits._
+import game.Player
 
 import scala.annotation.tailrec
 
@@ -72,13 +73,25 @@ protected[mcts] final case class Node(state: State, private[mcts] var parent: Op
     else bestChildScore().descending()
   }
 
+
   @tailrec
-  def ascending(): Node = {
+  def foldAsc(op: Node => Node): Node = {
+    op(this)
     parent match {
       case None => this
-      case Some(x) => x.ascending()
+      case Some(x) => x.foldAsc(op)
     }
   }
+
+  def ascending(): Node = foldAsc(x => x)
+
+  //  @tailrec
+  //  def ascending(): Node = {
+  //    parent match {
+  //      case None => this
+  //      case Some(x) => x.ascending()
+  //    }
+  //  }
 
   /**
     * Improve performances
@@ -96,16 +109,25 @@ protected[mcts] final case class Node(state: State, private[mcts] var parent: Op
     loop(this, this)
   }
 
-  @tailrec
-  def backPropagate(player: Byte, deltaScore: Double): Node = {
-    state.incVisitCount()
-    if (state.player === player) state.addScore(deltaScore)
-
-    parent match {
-      case None => this
-      case Some(x) => x.backPropagate(player, deltaScore)
-    }
+  def backPropagate(player: Byte, deltaScore: Double): Node = foldAsc { x =>
+    x.state.incVisitCount()
+    if (deltaScore < 1.0) x.state.addScore(deltaScore)
+    else
+    if(player == x.state.player) x.state.addScore(deltaScore)
+    x
   }
+
+  //    @tailrec
+  //    def backPropagate(player: Byte, deltaScore: Double): Node = {
+  //      state.incVisitCount()
+  //      if (state.player === player) state.addScore(deltaScore)
+  //      parent match {
+  //        case None => this
+  //        case Some(x) =>
+  //
+  //          x.backPropagate(player, deltaScore)
+  //      }
+  //    }
 }
 
 object Node {
