@@ -1,7 +1,7 @@
 package ai
 
 import cats.implicits._
-import game.{Score, nilPosition}
+import game.Score
 import game.types.{Position, Status}
 
 /**
@@ -40,7 +40,7 @@ trait NegaMax extends AiBoard with AiBoardScoreEval {
 
   protected def nextMove(color: Byte): Status[Score] = {
     // todo made mainBlock returning more than just the score
-    var pBest: Position = nilPosition
+    var pBest: Position = Position.nil
     val score = mainBlock(color) { status: Status[Score] =>
       val newValue = -solve((-color).toByte)
       if (status.score < newValue) {

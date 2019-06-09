@@ -3,7 +3,7 @@ import com.typesafe.config.Config
 import com.typesafe.scalalogging.Logger
 import game.Implicit.convertToPlayer
 import game._
-import game.types.Status
+import game.types.{Position, Status}
 
 import scala.util.control.Breaks._
 
@@ -84,7 +84,7 @@ package object ai {
   }
 
   def alphaBetaNextMove(game: BoardMNK, depth: Int = 0, ab: AlphaBetaValues[Double], maximizingPlayer: Boolean): AlphaBetaStatus[Double] = {
-    var pBest = nilPosition
+    var pBest = Position.nil
 
     if (game.gameEnded(depth)) {
       val score = scoreEval(game, depth)

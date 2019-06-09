@@ -3,7 +3,7 @@ package ai
 import ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import cats.implicits._
 import game.types.{Position, Status}
-import game.{Player, Score, nilPosition}
+import game.{Player, Score}
 
 import scala.util.control.Breaks._
 
@@ -65,7 +65,7 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
   }
 
   protected def nextMove(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score]): AlphaBetaStatus[Score] = {
-    var pBest: Position = nilPosition
+    var pBest: Position = Position.nil
     var best = if (maximizing) Int.MinValue else Int.MaxValue
     var (a1, b1) = (alphaBetaValues.alpha, alphaBetaValues.beta)
     val player: Player = nextPlayer()

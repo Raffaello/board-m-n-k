@@ -2,7 +2,7 @@ package ai
 
 import cats.implicits._
 import game.types.{Position, Status}
-import game.{BoardMNKP, Score, nilPosition}
+import game.{BoardMNKP, Score}
 
 trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
 
@@ -42,7 +42,7 @@ trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
   override def nextMove: Status[Score] = nextMove(nextPlayer() === aiPlayer)
 
   protected def nextMove(maximizing: Boolean): Status[Score] = {
-    var pBest: Position = nilPosition
+    var pBest: Position = Position.nil
     val player = nextPlayer()
 
     // todo mainBlock should return to avoid var

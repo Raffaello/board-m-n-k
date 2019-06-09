@@ -1,7 +1,7 @@
 package ai
 
 import game.boards.implementations.Board2dArray
-import game.{BoardTicTacToe, BoardTicTacToe2}
+import game.{BoardMNKLookUp, BoardTicTacToe, BoardTicTacToe2}
 
 class MiniMaxSpec extends TicTacToeSpec {
 
@@ -11,4 +11,11 @@ class MiniMaxSpec extends TicTacToeSpec {
 
   aiBoard(new BoardTicTacToe2MiniMax)
   aiBoard(new BoardTicTacToeMiniMax)
+
+  "BoardMNKLookup(3, 3, 3)" should {
+    "draw" in {
+      val game = new BoardMNKLookUp(3, 3, 3) with Board2dArray with MiniMax
+      game.solve shouldBe 0
+    }
+  }
 }

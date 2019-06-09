@@ -44,18 +44,30 @@ class PackageSpec extends FlatSpec with Matchers {
 
   "Player 2 TicTacToe2" should "win" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2()
-    game.playMove(Position(0, 0), 1)
-    game.playMove(Position(0, 1), 1)
-    game.playMove(Position(1, 0), 1)
-    game.playMove(Position(1, 1), 1)
-    game.playMove(Position(2, 1), 2)
-    game.playMove(Position(2, 2), 2)
-    game.playMove(Position(1, 2), 2)
+    game.playMove(Position(0, 0), 1) shouldBe true
+    game.playMove(Position(0, 1), 1) shouldBe true
+    game.playMove(Position(1, 0), 1) shouldBe true
+    game.playMove(Position(1, 1), 1) shouldBe true
+    game.playMove(Position(2, 1), 2) shouldBe true
+    game.playMove(Position(2, 2), 2) shouldBe true
+    game.playMove(Position(1, 2), 2) shouldBe true
 
     game.depth shouldBe 7
     alphaBeta(game, game.depth, maximizingPlayer = false) should be < 0.0
     //    ai.Stats.totalCalls shouldBe 1
     //    ai.Stats.cacheHits shouldBe 0
+  }
+
+  "alphaBetaNextMove" should "return nilPosition" in {
+    val game = new BoardTicTacToe2
+    game.playMove(Position(0, 0), 1) shouldBe true
+    game.playMove(Position(2, 1), 2) shouldBe true
+    game.playMove(Position(0, 1), 1) shouldBe true
+    game.playMove(Position(2, 2), 2) shouldBe true
+    game.playMove(Position(0, 2), 1) shouldBe true
+    game.depth shouldBe game.minWinDepth
+    val abs = AlphaBetaStatus[Double](AlphaBetaValues.alphaBetaValueDouble, Status(7.0/6.0, Position.nil))
+    alphaBetaNextMove(game, game.depth, AlphaBetaValues.alphaBetaValueDouble, true) shouldBe abs
   }
 
   def draw(boardType: BoardMNTypeEnum): Unit = {

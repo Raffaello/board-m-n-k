@@ -6,6 +6,10 @@ package types {
     def min: Short = Math.min(row, col).toShort
   }
 
+  object Position {
+    val nil: Position = Position(-1, -1)
+  }
+
   final case class Status[T: Numeric](score: T, position: Position)
 
   sealed trait BoardMNTypeEnum

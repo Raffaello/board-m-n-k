@@ -10,20 +10,6 @@ import game.types._
 abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2)
   with BoardDisplay2Players {
 
-  //    player match {
-  //      case 2 => -1
-  //      case 1 => 1
-  //    }
-  //  }
-
-  /**
-    * TODO better generalization: score()(player: Byte => score: Int) ???
-    */
-  //  def score(): Score = {
-  //    if (checkWin()) score2players(_lastPlayer)
-  //    else 0
-  //  }
-
   // todo remove
   override def score(player: Player): Score = score()
 }
