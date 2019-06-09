@@ -2,8 +2,8 @@ package ai
 
 import ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import game.Implicit.convertToPlayer
-import game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BOARD_BIT_BOARD, BoardMNTypeEnum, Position, Status}
-import game.{BitBoardTicTacToe, BoardMNK, BoardTicTacToe, BoardTicTacToe1dArray, BoardTicTacToe2}
+import game.types._
+import game._
 import org.scalatest.{FlatSpec, Matchers}
 
 

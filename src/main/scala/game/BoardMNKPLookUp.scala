@@ -29,13 +29,11 @@ abstract class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Player) extends 
     else checkWin()
   }
 
-  // TODO this is using lookup, need to be decoupled [need refactor/rename]
   override protected def scoreCol(): Player = {
     if (_lookUps.cols(_lastMove.col)(lookUps.lastPlayerIdx) >= k) super.scoreCol()
     else 0
   }
 
-  // TODO this is using lookup, need to be decoupled [need refactor/rename]
   override protected def scoreRow(): Player = {
     if (lookUps.rows(_lastMove.row)(lookUps.lastPlayerIdx) >= k) super.scoreRow()
     else 0
