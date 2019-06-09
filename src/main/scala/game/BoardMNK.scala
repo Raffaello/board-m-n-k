@@ -7,7 +7,7 @@ import game.types._
 /**
   * TODO: potentially split in BoardNMK and BoardMNKLookUp (traits)
   */
-abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m, n, k, 2) with BoardDisplay {
+abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKP(m, n, k, 2) with BoardDisplay {
 
   final protected def score2players(player: Player): Int = {
     player match {
@@ -18,10 +18,6 @@ abstract class BoardMNK(m: Short, n: Short, k: Short) extends BoardMNKPLookUp(m,
 
   /**
     * TODO better generalization: score()(player: Byte => score: Int) ???
-    * implicit score2players here
-    * in the P>2 ??? no implicit but required a function?
-    *
-    * @return
     */
   def score(): Score = {
     if (checkWin()) score2players(_lastPlayer)

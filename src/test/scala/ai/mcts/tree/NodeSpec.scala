@@ -1,13 +1,12 @@
 package ai.mcts.tree
 
-import ai.mcts.MctsBoard
-import game.BoardTicTacToe2
+import game.BoardTicTacToeMcts
 import org.scalatest.{Matchers, WordSpec}
 
 class NodeSpec extends WordSpec with Matchers {
 
   def emptyNode(): Node = {
-    val game = new BoardTicTacToe2() with MctsBoard
+    val game = new BoardTicTacToeMcts
     val player: Byte = 2 // starting with 2, next will be 1.
     Node(game, player)
   }

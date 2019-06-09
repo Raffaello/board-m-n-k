@@ -1,6 +1,6 @@
 import ai.mcts.MctsBoard
 import ai.mcts.tree.Tree
-import game.BoardTicTacToe2
+import game.{BoardTicTacToe2, BoardTicTacToeLookUps, BoardTicTacToeMcts}
 import org.scalatest.{FeatureSpec, GivenWhenThen, Matchers}
 
 class MctsSpec extends FeatureSpec with GivenWhenThen with Matchers {
@@ -14,7 +14,7 @@ class MctsSpec extends FeatureSpec with GivenWhenThen with Matchers {
 
       Given("Mcts App with def selfPlaying")
       //Mcts.game
-      val game = new BoardTicTacToe2 with MctsBoard
+      val game = new BoardTicTacToeMcts
       //Mcts.t
       val tree = Tree(game, 2)
       And("seed = 0")

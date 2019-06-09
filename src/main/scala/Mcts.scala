@@ -1,7 +1,8 @@
 
 import ai.mcts.tree.Tree
 import ai.mcts.{MctsBoard, playNextMove}
-import game.BoardTicTacToe2
+import game.{BoardMNK, BoardMNKLookUp, BoardTicTacToe2, BoardTicTacToeMcts}
+import game.boards.implementations.Board2dArray
 
 import scala.annotation.tailrec
 
@@ -21,7 +22,7 @@ object Mcts extends App {
     }
   }
 
-  val game = new BoardTicTacToe2 with MctsBoard
+  val game = new BoardTicTacToeMcts
   val t = Tree(game, 2)
   val t1 = System.currentTimeMillis()
   selfPlaying(Some(t))

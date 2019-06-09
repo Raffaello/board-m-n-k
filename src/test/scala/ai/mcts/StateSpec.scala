@@ -1,12 +1,12 @@
 package ai.mcts
 
-import game.BoardTicTacToe2
+import game.BoardTicTacToeMcts
 import org.scalatest.{Matchers, WordSpec}
 
 class StateSpec extends WordSpec with Matchers {
 
   def initState(): State = {
-    val game = new BoardTicTacToe2() with MctsBoard
+    val game = new BoardTicTacToeMcts
     val player: Byte = 2
     State(game, player)
   }

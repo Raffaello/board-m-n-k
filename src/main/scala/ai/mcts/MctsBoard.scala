@@ -14,7 +14,7 @@ import scala.util.Random
 // TODO remove boarddisplay (used in self playing game)
 // todo remove clonable
 // todo should extends BoardMNKP
-trait MctsBoard extends BoardMNK
+trait MctsBoard extends BoardMNKLookUp
   with BoardDisplay with Board2dArray with AiBoard with Cloneable {
 
   final private[mcts] val random = ai.mcts.seed match {
