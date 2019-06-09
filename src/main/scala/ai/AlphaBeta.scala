@@ -2,24 +2,21 @@ package ai
 
 import ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import cats.implicits._
-import game.{Score, nilPosition}
 import game.types.{Position, Status}
+import game.{Player, Score, nilPosition}
 
 import scala.util.control.Breaks._
 
 // TODO define the trait with a [T : Numeric] later on...?
 trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
 
-  protected def mainBlock(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score])
+  protected def mainBlock(player: Player, alphaBetaValues: AlphaBetaValues[Score])
                          (eval: AlphaBetaStatus[Score] => AlphaBetaStatus[Score]): Score = {
 
-    // todo refactor.... like trait MiniMax
-    lazy val player: Byte = if (maximizing) 1 else 2
-
-    if (gameEnded()) scoreEval(_lastPlayer)
+    if (gameEnded()) scoreEval(aiPlayer)
     else {
       Stats.totalCalls += 1
-      var best = if (maximizing) Int.MinValue else Int.MaxValue
+      var best = initValue(player)
       var ab = alphaBetaValues
 
       breakable {
@@ -43,15 +40,16 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
   }
 
   def solve(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score]): Score = {
-    lazy val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
+    lazy val cmp: (Int, Int) => Score = super.cmp(maximizing)
     var a = alphaBetaValues.alpha
     var b = alphaBetaValues.beta
-    val score = mainBlock(maximizing, alphaBetaValues) { abStatus: AlphaBetaStatus[Score] =>
-      val value = solve(!maximizing, abStatus.alphaBetaValues)
+    val player: Player = nextPlayer()
+
+    val score = mainBlock(player, alphaBetaValues) { abStatus: AlphaBetaStatus[Score] =>
+      val value = solve(nextPlayer() === aiPlayer, abStatus.alphaBetaValues)
       val best = cmp(abStatus.status.score, value)
       if (maximizing) a = Math.max(abStatus.alphaBetaValues.alpha, best)
       else b = Math.min(abStatus.alphaBetaValues.beta, best)
-      // TODO use LENSES / Monocle for deep copy
       AlphaBetaStatus(AlphaBetaValues(a, b), Status(best, abStatus.status.position))
     }
 
@@ -70,9 +68,11 @@ trait AlphaBeta extends AiBoard with AlphaBetaNextMove with AiBoardScoreEval {
     var pBest: Position = nilPosition
     var best = if (maximizing) Int.MinValue else Int.MaxValue
     var (a1, b1) = (alphaBetaValues.alpha, alphaBetaValues.beta)
+    val player: Player = nextPlayer()
+
     // TODO mainBlock should return to avoid var
-    mainBlock(maximizing, alphaBetaValues) { abStatus: AlphaBetaStatus[Score] =>
-      val value = solve(!maximizing, abStatus.alphaBetaValues)
+    mainBlock(player, alphaBetaValues) { abStatus: AlphaBetaStatus[Score] =>
+      val value = solve(aiPlayer === nextPlayer(), abStatus.alphaBetaValues)
       if (maximizing) {
         if (value > abStatus.status.score) {
           best = value

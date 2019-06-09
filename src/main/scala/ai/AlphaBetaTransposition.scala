@@ -2,7 +2,7 @@ package ai
 
 import ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import cats.implicits._
-import game.Score
+import game.{Player, Score}
 import game.types.Status
 
 import scala.util.control.Breaks._
@@ -11,22 +11,20 @@ trait AlphaBetaTransposition extends AlphaBeta with TranspositionTable {
 
   // TODO could be refactored to reuse the super.mainBlock
   // TODO has to return transposition
-  override protected def mainBlock(maximizing: Boolean, alphaBetaValues: AlphaBetaValues[Score])
+  override protected def mainBlock(player: Player, alphaBetaValues: AlphaBetaValues[Score])
                                   (eval: AlphaBetaStatus[Score] => AlphaBetaStatus[Score]): Score = {
-    // todo refactor.... like trait MiniMax
-    lazy val player: Byte = if (maximizing) 1 else 2
-
+    lazy val maximizing: Boolean = aiPlayer == player
     get() match {
       case Some(t) =>
         Stats.cacheHits += 1
         t.score
       case None if gameEnded() =>
-        val s2 = scoreEval(_lastPlayer)
+        val s2 = scoreEval(aiPlayer)
         add(Transposition(s2, depth, AlphaBetaValues(s2, s2), maximizing))
         s2
       case _ =>
         Stats.totalCalls += 1
-        var best = if (maximizing) Int.MinValue else Int.MaxValue
+        var best = initValue(player)
         var ab = alphaBetaValues
 
         breakable {

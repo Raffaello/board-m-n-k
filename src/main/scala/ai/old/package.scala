@@ -116,7 +116,7 @@ package object old {
         Stats.cacheHits += 1
         t
       case None if game.gameEnded(depth) =>
-        val score = game.score + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
+        val score = game.score() + (Math.signum(game.score()) * (1.0 / (depth + 1.0)))
         val t = Transposition(
           score,
           depth,

@@ -11,7 +11,7 @@ trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
       scoreEval(aiPlayer)
     } else {
       Stats.totalCalls += 1
-      var value = if (player === aiPlayer) Int.MinValue else Int.MaxValue
+      var value = initValue(player)
 
       consumeMoves { p =>
         playMove(p, player)
@@ -28,7 +28,7 @@ trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
     * aiPlayer to max
     */
   def solve(maximizing: Boolean): Score = {
-    lazy val cmp: (Int, Int) => Int = if (maximizing) Math.max else Math.min
+    lazy val cmp: (Int, Int) => Int = super.cmp(maximizing)
     val player = nextPlayer()
 
     mainBlock(player) { status =>

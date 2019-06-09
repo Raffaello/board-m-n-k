@@ -6,7 +6,7 @@ import game.types.{BoardMNType, Position}
 
 trait BoardDisplay extends BoardMNType {
 
-  private[this] def value(player: Player): Char = {
+  private[boards] def valueDisplay(player: Player): Char = {
     player match {
       case 0 => '_'
       case _ => player.toChar
@@ -22,10 +22,10 @@ trait BoardDisplay extends BoardMNType {
 
     for (i <- mIndices) {
       for (j <- 0 until n1) {
-        str ++= s" ${value(boardPlayer(Position(i, j)))} |"
+        str ++= s" ${valueDisplay(boardPlayer(Position(i, j)))} |"
       }
 
-      str ++= s" ${value(boardPlayer(Position(i, n1)))}" + newLine
+      str ++= s" ${valueDisplay(boardPlayer(Position(i, n1)))}" + newLine
     }
 
     str ++= newLine

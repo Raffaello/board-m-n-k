@@ -34,63 +34,16 @@ abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Playe
     } else false
   }
 
-  // last player win? 1
-  // last player lost? -1
-  // else 0
-//  def score(): Score = checkScore(_lastPlayer)
-
+  // TODO 1 should be aiPlayer
+  def score(): Score = {
+    if (checkWin()) _lastPlayer match {
+      case 1 => 1
+      case _ => -1
+    }
+    else 0
+  }
 
   override def score(player: Player): Score = checkScore(player)
-
-//  def score(): Score = score(_lastPlayer)
-
-  // check if board has k in a row of any player then return true otherwise false
-  // create a general method to check player p if won.
-  //  override protected def checkWin(): Boolean = {
-  //    // trivial implementation
-  //
-  //    // check rows
-  //    var count: Short = 0
-  //
-  //    for {
-  //      p <- 1 until numPlayers
-  //      i <- mIndices
-  //    } {
-  //      for (j <- nIndices) {
-  //        if (boardPlayer(Position(i, j)) === p) count += 1
-  //        else count = 0
-  //
-  //        if (count === k) return true
-  //      }
-  //    }
-  //
-  //    // check cols
-  //    count = 0
-  //    for {
-  //      p <- 1 until numPlayers
-  //      j <- nIndices
-  //    } {
-  //     for (i <- mIndices) {
-  //       if (boardPlayer(Position(i, j)) === p) count += 1
-  //       else count = 0
-  //
-  //       if (count === k) return true
-  //     }
-  //    }
-  //
-  //    // check diag SE
-  //
-  //    // check diag NE
-  //    for {
-  //      p <- 1 until numPlayers
-  //      i <- mIndices
-  //      j <- nIndices
-  //      if scoreDiagNE(p, Position(i, j)) > 0
-  //    } return true
-  //
-  //    // else
-  //    false
-  //  }
 
   override def gameEnded(): Boolean = gameEnded(depth)
 
@@ -105,7 +58,7 @@ abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Playe
     (player % numPlayers) + 1
   }
 
-  def nextPlayer(): Player = opponent(lastPlayer)
+  def nextPlayer(): Player = opponent(_lastPlayer)
 }
 
 object BoardMNKP {
