@@ -138,7 +138,8 @@ trait BoardPlayerScore extends BoardMNKPType with LastMoveTracker with BoardPlay
     evaluate(scoreRow())
       .getOrElse(evaluate(scoreCol())
         .getOrElse(evaluate(scoreDiagSE())
-          .getOrElse(scoreDiagNE())))
+          .getOrElse(evaluate(scoreDiagNE())
+            .getOrElse(0))))
   }
 
   override protected def checkWin(): Boolean = {

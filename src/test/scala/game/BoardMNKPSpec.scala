@@ -34,24 +34,65 @@ class BoardMNKPSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
     }
   }
 
-  "BoardMNKP(3,3,3,2)" should "compute valid score P1 win" in {
+  "BoardMNKP(3,3,3,2)" should "compute valid score P1 win By Row" in {
     val game = new BoardMNKP(3, 3, 3, 2) with Board2dArray
-    game.playMove(Position(0,0),1)
-    game.playMove(Position(0,1),1)
-    game.playMove(Position(0,2),1)
+    game.playMove(Position(0, 0), 1) shouldBe true
+    game.playMove(Position(1, 0), 2) shouldBe true
+    game.playMove(Position(0, 1), 1) shouldBe true
+    game.playMove(Position(2, 0), 2) shouldBe true
+    game.playMove(Position(0, 2), 1) shouldBe true
 
     game.score(1) shouldEqual 1
     game.score(2) shouldEqual -1
   }
 
-  it should "compute valid score P2 win" in {
+  "BoardMNKP(3,3,3,2)" should "compute valid score P1 win By Col" in {
     val game = new BoardMNKP(3, 3, 3, 2) with Board2dArray
-    game.playMove(Position(0,0),2)
-    game.playMove(Position(0,1),2)
-    game.playMove(Position(0,2),2)
+    game.playMove(Position(0, 0), 1) shouldBe true
+    game.playMove(Position(0, 1), 2) shouldBe true
+    game.playMove(Position(1, 0), 1) shouldBe true
+    game.playMove(Position(0, 2), 2) shouldBe true
+    game.playMove(Position(2, 0), 1) shouldBe true
 
-    game.score(1) shouldEqual -1
+    game.score(1) shouldEqual 1
+    game.score(2) shouldEqual -1
+  }
+
+  "BoardMNKP(3,3,3,2)" should "compute valid score P1 win By DiagSE" in {
+    val game = new BoardMNKP(3, 3, 3, 2) with Board2dArray
+    game.playMove(Position(0, 0), 1) shouldBe true
+    game.playMove(Position(1, 0), 2) shouldBe true
+    game.playMove(Position(1, 1), 1) shouldBe true
+    game.playMove(Position(2, 0), 2) shouldBe true
+    game.playMove(Position(2, 2), 1) shouldBe true
+
+    game.score(1) shouldEqual 1
+    game.score(2) shouldEqual -1
+  }
+
+  "BoardMNKP(3,3,3,2)" should "compute valid score P1 win By DiagNE" in {
+    val game = new BoardMNKP(3, 3, 3, 2) with Board2dArray
+    game.playMove(Position(0, 2), 1) shouldBe true
+    game.playMove(Position(1, 0), 2) shouldBe true
+    game.playMove(Position(1, 1), 1) shouldBe true
+    game.playMove(Position(1, 2), 2) shouldBe true
+    game.playMove(Position(2, 0), 1) shouldBe true
+
+    game.score(1) shouldEqual 1
+    game.score(2) shouldEqual -1
+  }
+
+  it should "compute valid score P2 win by Col" in {
+    val game = new BoardMNKP(3, 3, 3, 2) with Board2dArray
+    game.playMove(Position(0, 0), 1) shouldBe true
+    game.playMove(Position(0, 1), 2) shouldBe true
+    game.playMove(Position(1, 0), 1) shouldBe true
+    game.playMove(Position(1, 1), 2) shouldBe true
+    game.playMove(Position(2, 2), 1) shouldBe true
+    game.playMove(Position(2, 1), 2) shouldBe true
+
     game.score(2) shouldEqual 1
+    game.score(1) shouldEqual -1
   }
 
   it should "compute valid score draw" in {
@@ -73,7 +114,7 @@ class BoardMNKPSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
 
   it should "compute next second move" in {
     val game = new BoardMNKP(3, 3, 3, 2) with MiniMax with Board2dArray
-    game.playMove(Position(0,0), game.nextPlayer()) shouldBe true
+    game.playMove(Position(0, 0), game.nextPlayer()) shouldBe true
     game.nextPlayer() shouldBe 2
     game.nextMove shouldEqual Status(0, Position(1, 1))
   }
