@@ -109,10 +109,9 @@ protected[mcts] final case class Node(state: State, private[mcts] var parent: Op
     loop(this, this)
   }
 
+  // TODO miss the draw status to be back propagated, to both?
   def backPropagate(player: Byte, deltaScore: Double): Node = foldAsc { x =>
     x.state.incVisitCount()
-    if (deltaScore < 1.0) x.state.addScore(deltaScore)
-    else
     if(player == x.state.player) x.state.addScore(deltaScore)
     x
   }

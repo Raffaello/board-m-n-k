@@ -21,6 +21,7 @@ class MctsSpec extends FeatureSpec with GivenWhenThen with Matchers {
       And("maxIter = 100")
       val maxIter = 100
 
+      // TODO this 2 lines are not working... debug them
       tree.root.state.board.setSeed(seed)
       tree.root.state.board.maxIter = maxIter
 

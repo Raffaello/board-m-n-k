@@ -101,5 +101,20 @@ class TreeSpec extends WordSpec with Matchers {
         }
       }
     }
+
+//    "backpropagate correctly" in {
+//      val tree = emptyTree()
+//      (0 until 21).foreach(_ => tree.root.state.incVisitCount())
+//      tree.root.state.addScore(11)
+//      tree.root.expandChildren()
+//      tree.root.children.foreach(c => c.state.incVisitCount())
+//      val child1= tree.root.children.head
+//      (0 until 9).foreach(_ = child1.state.incVisitCount())
+//      child1.state.addScore(7)
+//      child1.expandChildren()
+//      child1.children.foreach(c => c.state.incVisitCount())
+//      val child2 = child1.children.head
+//
+//    }
   }
 }

@@ -7,6 +7,7 @@ import scala.annotation.tailrec
 
 object Mcts extends App {
 
+  // TODO check the root is the current state of the game.
   @tailrec
   def selfPlaying(t: Option[Tree]): Option[Tree] = {
     t match {
