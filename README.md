@@ -20,6 +20,10 @@
 
 Special case is (3,3,3) that is tic-tac-toe
 
+## Structure
+
+- `cakes` package: implementation using mainly the Cake Pattern.
+
 ## Tic-tac-toe
 
 It includes an easter egg.
