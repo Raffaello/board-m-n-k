@@ -35,6 +35,7 @@ package object mcts {
     }
 
     // current player?
+    // seems not ok
     def result(playerJustMove: Player): Double = {
       val winMoves: Seq[(Player, Player, Player)] = Seq(
         (0, 1, 2), (3, 4, 5), (6, 7, 8), // rows
@@ -49,18 +50,19 @@ package object mcts {
         }
       }
 
-      assert(allRemainingMoves().isEmpty)
+//      assert(allRemainingMoves().isEmpty)
       0.5
     }
 
     def copy(): TicTacToeState = {
       val c = new TicTacToeState
       Array.copy(board, 0, c.board, 0, 9)
+      c.lastPlayer = this.lastPlayer
       c
     }
 
     override def toString: String = {
-      var str = new StringBuffer()
+      val str = new StringBuffer()
 
       for (i <- board.indices) {
         if (i % 3 == 0) str.append("\n")
@@ -82,7 +84,7 @@ package object mcts {
     var visits: Int = 0
     var untriedMoves = state.allRemainingMoves()
     var children: ListBuffer[Node] = new ListBuffer[Node]()
-    var lastPlayer = state.lastPlayer
+    val lastPlayer = state.lastPlayer
 
     def UCTSelectChild(): Node = {
       children.maxBy {
@@ -104,7 +106,7 @@ package object mcts {
     }
 
     override def toString: String = {
-      s"[M: $move | W/V: $wins/$visits (${wins/visits})| U: $untriedMoves]\n"
+      s"[LP: $lastPlayer | M: $move | W/V: $wins/$visits (${wins/visits})| U: $untriedMoves]\n"
     }
 
     def indentString(indent: Int): String = {
@@ -133,6 +135,7 @@ package object mcts {
     for (_ <- 0 until itermax) {
       var node = rootNode
       val state = rootState.copy()
+      val player = node.state.currentPlayer()
 
       // select
       while (node.untriedMoves.isEmpty && node.children.nonEmpty) {
@@ -147,11 +150,11 @@ package object mcts {
         val m = node.untriedMoves(randomIndex)
 
         state.playMove(m)
-        node.addChild(Some(m), state)
+        node = node.addChild(Some(m), state)
       }
 
       // simulation
-      while (state.allRemainingMoves().nonEmpty) {
+      while (state.allRemainingMoves().nonEmpty && state.result(state.currentPlayer()) == 0.5) {
         val moves = state.allRemainingMoves()
         val indexes = moves.indices
         val randomIndex = Random.nextInt(indexes.length)
@@ -160,7 +163,8 @@ package object mcts {
 
       // backpropagation
       while (node != null) {
-        node.update(state.result(node.lastPlayer))
+        val score = state.result(node.lastPlayer)
+        node.update(score)
         node = node.parent.orNull
       }
     }
