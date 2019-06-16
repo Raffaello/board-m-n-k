@@ -1,8 +1,8 @@
 package cakes.ai.mcts
 
-import game.{BoardTicTacToeMcts, Score}
-import game.Implicit.convertToPlayer
-import game.types.{Position, Status}
+import cakes.game.{BoardTicTacToeMcts, Score}
+import cakes.game.Implicit.convertToPlayer
+import cakes.game.types.{Position, Status}
 import org.scalatest.{FlatSpec, Matchers}
 
 class MctsBoardSpec extends FlatSpec with Matchers {

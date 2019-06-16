@@ -1,9 +1,9 @@
 package cakes.ai
 
 import cakes.ai.types.{AlphaBetaStatus, AlphaBetaValues}
-import game.Implicit.convertToPlayer
-import game._
-import game.types._
+import cakes.game.Implicit.convertToPlayer
+import cakes.game._
+import cakes.game.types._
 import org.scalatest.{FlatSpec, Matchers}
 
 
@@ -20,10 +20,10 @@ class PackageSpec extends FlatSpec with Matchers {
     alphaBetaNextMove(game, 0, AlphaBetaValues.alphaBetaValueDouble, maximizingPlayer = false) shouldEqual abs2
   }
 
-  "TicTacToe2 alphaBeta with Memory" should "solve the game" in new AiTicTacToeExpectedStats {
+  "TicTacToe2 alphaBeta with Memory" should "solve the cakes.game" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2() with TranspositionTable with TranspositionTable2dArrayString
     alphaBetaWithMem(game, game) shouldEqual Transposition(0, 0, AlphaBetaValues(0, Int.MaxValue), isMaximizing = true)
-    //    expAlphaBetaWithMemStats(game.transpositions.size)
+    //    expAlphaBetaWithMemStats(cakes.game.transpositions.size)
     game.score() shouldBe 0.0
   }
 

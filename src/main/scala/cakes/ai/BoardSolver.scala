@@ -1,8 +1,8 @@
 package cakes.ai
 
 import cakes.ai.old.BoardMNKwithGetBoard
-import game.BoardMNK
-import game.boards.implementations.Board2dArray
+import cakes.game.BoardMNK
+import cakes.game.boards.implementations.Board2dArray
 
 object BoardSolver extends App {
 

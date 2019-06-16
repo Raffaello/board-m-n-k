@@ -1,7 +1,7 @@
 package cakes.ai
 
-import game.boards.{BoardDepthAware, GameBoard}
-import game.{Player, Score}
+import cakes.game.boards.{BoardDepthAware, GameBoard}
+import cakes.game.{Player, Score}
 
 trait AiBoardScoreEval extends GameBoard with BoardDepthAware {
   protected def scoreEval(player: Player): Score = {

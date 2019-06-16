@@ -1,13 +1,13 @@
 package cakes.ai
 
 import cats.implicits._
-import game.Implicit.convertToPlayer
-import game.types.Position
-import game.{Board2d, BoardMNK, Score}
+import cakes.game.Implicit.convertToPlayer
+import cakes.game.types.Position
+import cakes.game.{Board2d, BoardMNK, Score}
 
 /**
   * @deprecated
-  * Used for bench.benchmarks.
+  * Used for bench.cakes.benchmarks.
   */
 package object old {
   type AB[T] = (T, T) // Alpha, Beta values // === AlphaBetaValues

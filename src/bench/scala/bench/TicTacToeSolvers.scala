@@ -3,9 +3,9 @@ package bench
 import cakes.ai.old.GetBoard
 import cakes.ai._
 import bench.benchmarks.TicTacToeSolvers._
-import game._
-import game.boards.implementations.Board2dArray
-import game.types.BOARD_2D_ARRAY
+import cakes.game._
+import cakes.game.boards.implementations.Board2dArray
+import cakes.game.types.BOARD_2D_ARRAY
 import org.scalameter.api._
 
 

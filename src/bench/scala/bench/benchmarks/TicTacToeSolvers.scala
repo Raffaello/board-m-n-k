@@ -1,7 +1,7 @@
 package bench.benchmarks
 
 import cakes.ai.{AiBoard, alphaBeta}
-import game.{BoardTicTacToe, Score}
+import cakes.game.{BoardTicTacToe, Score}
 import org.scalameter.api._
 import org.scalameter.picklers.Implicits._
 

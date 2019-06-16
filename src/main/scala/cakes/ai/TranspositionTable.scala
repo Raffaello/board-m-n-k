@@ -1,7 +1,7 @@
 package cakes.ai
 
-import game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
-import game.{BitBoard, BoardMNKP}
+import cakes.game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
+import cakes.game.{BitBoard, BoardMNKP}
 
 import scala.collection.mutable
 

@@ -1,6 +1,6 @@
 package cakes.ai.old
 
-import game.Board2d
+import cakes.game.Board2d
 
 import scala.collection.mutable
 

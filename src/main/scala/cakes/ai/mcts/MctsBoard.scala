@@ -3,15 +3,15 @@ package cakes.ai.mcts
 import cakes.ai.{AiBoard, mcts}
 import cakes.ai.mcts.tree.Tree
 import cats.implicits._
-import game._
-import game.boards.BoardDisplay
-import game.boards.implementations.Board2dArray
-import game.types.{Position, Status}
+import cakes.game._
+import cakes.game.boards.BoardDisplay
+import cakes.game.boards.implementations.Board2dArray
+import cakes.game.types.{Position, Status}
 
 import scala.util.Random
 
 // TODO remove board2darray (used in clone method)
-// TODO remove boarddisplay (used in self playing game)
+// TODO remove boarddisplay (used in self playing cakes.game)
 // todo remove clonable
 // todo should extends BoardMNKP
 trait MctsBoard extends BoardMNKLookUp
@@ -66,7 +66,7 @@ trait MctsBoard extends BoardMNKLookUp
      (b.score(), b.lastMove) // ???
    }*/
 
-  // TODO: improve it non generating invalid moves (after game won?), or is redundant.
+  // TODO: improve it non generating invalid moves (after cakes.game won?), or is redundant.
   def allPossibleMoves(): IndexedSeq[Position] = generateMoves()
 
   def setSeed(seed: Long): Unit = random.setSeed(seed)

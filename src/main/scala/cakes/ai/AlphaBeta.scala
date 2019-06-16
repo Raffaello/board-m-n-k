@@ -2,8 +2,8 @@ package cakes.ai
 
 import cakes.ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import cats.implicits._
-import game.types.{Position, Status}
-import game.{Player, Score}
+import cakes.game.types.{Position, Status}
+import cakes.game.{Player, Score}
 
 import scala.util.control.Breaks.{break, breakable}
 

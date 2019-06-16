@@ -1,6 +1,6 @@
 package cakes.ai.old
 
-import game.{Board2d, BoardTicTacToe2}
+import cakes.game.{Board2d, BoardTicTacToe2}
 import org.scalatest.{FlatSpec, Matchers}
 
 import scala.collection.mutable

@@ -2,9 +2,9 @@ package bench.benchmarks
 
 import cakes.ai._
 import cakes.ai.old.BoardMNKwithGetBoard
-import game.boards.implementations.Board2dArray
-import game.types.BOARD_2D_ARRAY
-import game.{BoardMNK, Score}
+import cakes.game.boards.implementations.Board2dArray
+import cakes.game.types.BOARD_2D_ARRAY
+import cakes.game.{BoardMNK, Score}
 import org.scalameter.api.Gen
 
 object MNKSolvers {

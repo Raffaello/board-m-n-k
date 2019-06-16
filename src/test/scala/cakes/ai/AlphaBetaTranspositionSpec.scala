@@ -1,6 +1,6 @@
 package cakes.ai
 
-import game.{BoardTicTacToe, BoardTicTacToe2}
+import cakes.game.{BoardTicTacToe, BoardTicTacToe2}
 
 class AlphaBetaTranspositionSpec extends TicTacToeSpec {
 

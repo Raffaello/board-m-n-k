@@ -1,6 +1,6 @@
 package cakes.ai
 
-import game.Score
+import cakes.game.Score
 
 trait MiniMaxRaw extends MiniMax {
 

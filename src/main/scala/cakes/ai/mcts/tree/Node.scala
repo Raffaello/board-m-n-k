@@ -2,7 +2,7 @@ package cakes.ai.mcts.tree
 
 import cakes.ai.mcts.{MctsBoard, State, uct}
 import cats.implicits._
-import game.Player
+import cakes.game.Player
 
 import scala.annotation.tailrec
 

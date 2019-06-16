@@ -1,20 +1,20 @@
 package cakes.ai.old
 
 import cakes.ai.AiTicTacToeExpectedStats
-import game.BoardTicTacToe2
-import game.Implicit.convertToPlayer
-import game.types.Position
+import cakes.game.BoardTicTacToe2
+import cakes.game.Implicit.convertToPlayer
+import cakes.game.types.Position
 import org.scalatest.{FlatSpec, Matchers}
 
 class PackageSpec extends FlatSpec with Matchers {
-  "TicTacToe2 game with minimax" should "solve the game" in new AiTicTacToeExpectedStats {
+  "TicTacToe2 cakes.game with minimax" should "solve the cakes.game" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2()
 
     minimax(game, isMaximizingPlayer = true) shouldEqual 0
     //    expMiniMax()
   }
 
-  "TicTacToe2 negamax" should "solve the game" in new AiTicTacToeExpectedStats {
+  "TicTacToe2 negamax" should "solve the cakes.game" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2()
     negamax(game, 1) shouldEqual 0
     //    expNegamax()
@@ -26,10 +26,10 @@ class PackageSpec extends FlatSpec with Matchers {
     negamaxNextMove(game, 1) shouldEqual s
   }
 
-  "TicTacToe2 Alpha-Beta with Memory" should "solve the game" in new AiTicTacToeExpectedStats {
+  "TicTacToe2 Alpha-Beta with Memory" should "solve the cakes.game" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2() with TranspositionTable with GetBoard
     alphaBetaWithMem(game, game) shouldEqual Transposition(0.0, 0, 0.0, Double.MaxValue, isMaximizing = true)
-    //    expAlphaBetaWithMemStats(game.transpositions.size)
+    //    expAlphaBetaWithMemStats(cakes.game.transpositions.size)
   }
 
   "Player 1 TicTacToe2" should "win" in {
@@ -59,7 +59,7 @@ class PackageSpec extends FlatSpec with Matchers {
     game.playMove(Position(1, 2), 2)
 
     game.depth shouldEqual 7
-    //    negamax(game, -1) should be (-1) // cannot return -1 from the first step.
+    //    negamax(cakes.game, -1) should be (-1) // cannot return -1 from the first step.
     minimax(game, isMaximizingPlayer = false) should be(-1)
   }
 }

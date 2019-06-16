@@ -1,15 +1,15 @@
 package simple
 
-import game.types.Position
-import game.{Board1d, Player}
-import game.Implicit._
+import cakes.game.types.Position
+import cakes.game.{Board1d, Player}
+import cakes.game.Implicit._
 
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 package object mcts {
 
-  // Implementation of a basic MCTS Tic-Tac-Toe game
+  // Implementation of a basic MCTS Tic-Tac-Toe cakes.game
   Random.setSeed(0)
 
   class TicTacToeState() {

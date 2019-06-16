@@ -1,6 +1,6 @@
 package cakes.ai.mcts.tree
 
-import game.BoardTicTacToeMcts
+import cakes.game.BoardTicTacToeMcts
 import org.scalatest.{Matchers, WordSpec}
 
 class NodeSpec extends WordSpec with Matchers {

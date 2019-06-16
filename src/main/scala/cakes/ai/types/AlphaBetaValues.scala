@@ -1,5 +1,5 @@
 package cakes.ai.types
-import game.Score
+import cakes.game.Score
 
 import Ordering.Implicits._
 

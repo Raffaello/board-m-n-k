@@ -4,7 +4,7 @@ import cakes.ai.mcts.tree._
 import cats.implicits._
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.Logger
-import game.Score
+import cakes.game.Score
 import settings.Loader.Ai.Mcts.config
 
 import scala.annotation.tailrec
@@ -78,7 +78,7 @@ package object mcts {
     val bestRoot = root.mostVisited()
 
     logger.debug(
-      s"""Simulated game:
+      s"""Simulated cakes.game:
          |${bestRoot.mostVisitedDescending().state.board.display()}
          |next move:
          |${bestRoot.state.board.display()}

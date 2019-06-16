@@ -2,7 +2,7 @@ package bench
 
 import cakes.ai.Stats
 import bench.benchmarks.MNKSolvers._
-import game.Score
+import cakes.game.Score
 import org.scalameter.api.{Bench, exec, reports}
 
 object MNKSolvers extends Bench.OfflineRegressionReport {

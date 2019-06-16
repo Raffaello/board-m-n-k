@@ -1,7 +1,7 @@
 package cakes.ai
 
-import game.boards.implementations.Board2dArray
-import game.{BoardTicTacToe, BoardTicTacToe2}
+import cakes.game.boards.implementations.Board2dArray
+import cakes.game.{BoardTicTacToe, BoardTicTacToe2}
 
 class NegaMaxSpec extends TicTacToeSpec {
 

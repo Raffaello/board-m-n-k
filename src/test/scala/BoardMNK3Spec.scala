@@ -1,8 +1,8 @@
 import cakes.ai.{TranspositionTable1dArrayString, _}
-import game.BoardMNKP
-import game.Implicit.convertToPlayer
-import game.boards.implementations.{Board1dArray, Board2dArray}
-import game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BoardMNTypeEnum}
+import cakes.game.BoardMNKP
+import cakes.game.Implicit.convertToPlayer
+import cakes.game.boards.implementations.{Board1dArray, Board2dArray}
+import cakes.game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BoardMNTypeEnum}
 import org.scalatest.{Matchers, WordSpec}
 
 class BoardMNK3Spec extends WordSpec with Matchers {

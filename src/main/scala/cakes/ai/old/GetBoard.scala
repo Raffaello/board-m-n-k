@@ -1,6 +1,6 @@
 package cakes.ai.old
 
-import game.BoardMNK
+import cakes.game.BoardMNK
 
 // TODO remove/refactor
 trait GetBoard extends BoardMNK {

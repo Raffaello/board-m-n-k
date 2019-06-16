@@ -1,18 +1,19 @@
+import cakes.Mcts
 import cakes.ai.mcts.tree.Tree
-import game.BoardTicTacToeMcts
+import cakes.game.BoardTicTacToeMcts
 import org.scalatest.{FeatureSpec, GivenWhenThen, Matchers}
 
 class MctsSpec extends FeatureSpec with GivenWhenThen with Matchers {
 
   info("As a User")
-  info("I want to run a MCTS self-playing game")
+  info("I want to run a MCTS self-playing cakes.game")
   info("So I can enjoy AI")
 
-  feature("MCTS self-playing game") {
+  feature("MCTS self-playing cakes.game") {
     scenario("User execute Mcts App") {
 
       Given("Mcts App with def selfPlaying")
-      //Mcts.game
+      //Mcts.cakes.game
       val game = new BoardTicTacToeMcts
       //Mcts.t
       val tree = Tree(game, 2)

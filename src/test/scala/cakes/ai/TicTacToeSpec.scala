@@ -1,14 +1,14 @@
 package cakes.ai
 
-import game.Implicit.convertToPlayer
-import game.Score
-import game.types.{Position, Status}
+import cakes.game.Implicit.convertToPlayer
+import cakes.game.Score
+import cakes.game.types.{Position, Status}
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 
 abstract class TicTacToeSpec extends WordSpec with Matchers with BeforeAndAfterEach {
 
   def solveTheGame(game: AiBoard): Unit = {
-    "solve the game" in new AiTicTacToeExpectedStats {
+    "solve the cakes.game" in new AiTicTacToeExpectedStats {
       game.solve shouldEqual 0
       game match {
         case game: MiniMax => expMiniMax(game.Stats.totalCalls)
@@ -21,7 +21,7 @@ abstract class TicTacToeSpec extends WordSpec with Matchers with BeforeAndAfterE
   }
 
   def drawTheGame(game: AiBoard, exp: Int => Unit): Unit = {
-    "draw the game" in new AiTicTacToeExpectedStats {
+    "draw the cakes.game" in new AiTicTacToeExpectedStats {
       game.solve shouldEqual 0
       exp(game.Stats.totalCalls)
     }

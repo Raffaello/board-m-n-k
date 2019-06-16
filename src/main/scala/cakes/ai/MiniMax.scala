@@ -1,8 +1,8 @@
 package cakes.ai
 
 import cats.implicits._
-import game.types.{Position, Status}
-import game.{BoardMNKP, Score}
+import cakes.game.types.{Position, Status}
+import cakes.game.{BoardMNKP, Score}
 
 trait MiniMax extends BoardMNKP with AiBoard with AiBoardScoreEval {
 

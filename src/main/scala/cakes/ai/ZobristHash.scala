@@ -1,6 +1,6 @@
 package cakes.ai
 
-//import game.Board
+//import cakes.game.Board
 
 class ZobristHash {
 //  type ZobristTable = Array[Array[Array[Int]]]

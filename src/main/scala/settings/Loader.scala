@@ -1,8 +1,8 @@
 package settings
 
 import com.typesafe.config.{Config, ConfigFactory}
-import game.Implicit.convertToPlayer
-import game.Player
+import cakes.game.Implicit.convertToPlayer
+import cakes.game.Player
 
 object Loader {
   lazy val config: Config = {

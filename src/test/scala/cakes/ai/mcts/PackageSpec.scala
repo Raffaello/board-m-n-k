@@ -3,9 +3,9 @@ package cakes.ai.mcts
 import cakes.ai.mcts
 import cakes.ai.mcts.tree.Tree
 import cats.implicits._
-import game.BoardTicTacToeMcts
-import game.Implicit.convertToPlayer
-import game.types.Position
+import cakes.game.BoardTicTacToeMcts
+import cakes.game.Implicit.convertToPlayer
+import cakes.game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
@@ -126,7 +126,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     //    newTree.root.bestChild().parent shouldBe Some(newTree.root)
   }
 
-  it should "playNextMove from a began game" in {
+  it should "playNextMove from a began cakes.game" in {
     val game = new BoardTicTacToeMcts
     game.playMove(Position(0, 0), 1)
 
@@ -142,7 +142,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     //    newTree.root.bestChild().parent shouldBe Some(newTree.root)
   }
 
-  it should "playNextMove from a began game p2" in {
+  it should "playNextMove from a began cakes.game p2" in {
     val game = new BoardTicTacToeMcts
     game.playMove(Position(0, 0), 1)
     game.playMove(Position(1, 1), 2)
@@ -177,7 +177,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     newTree.root.state.board.lastMove should not be newTree2.root.state.board.lastMove
   }
 
-  it should "Play a game" in {
+  it should "Play a cakes.game" in {
     val game = new BoardTicTacToeMcts
     val tree = Tree(game, 2)
     var t: Option[Tree] = Some(tree)
@@ -205,7 +205,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
     subTree.root.state.player shouldBe 2
   }
 
-  it must "draw in this game (1,2),(1,0)" in {
+  it must "draw in this cakes.game (1,2),(1,0)" in {
     val game = new BoardTicTacToeMcts
     game.playMove(Position(0, 0), 1)
     game.playMove(Position(1, 1), 2)

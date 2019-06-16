@@ -1,8 +1,8 @@
 package cakes.ai
 
 import cats.implicits._
-import game.types.Status
-import game.{BoardMNKP, Player, Score}
+import cakes.game.types.Status
+import cakes.game.{BoardMNKP, Player, Score}
 
 trait AiBoard extends BoardMNKP with AiStats {
   protected def signum(value: Boolean): Byte = if (value) +1 else -1

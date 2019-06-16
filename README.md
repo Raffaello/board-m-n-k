@@ -23,6 +23,7 @@ Special case is (3,3,3) that is tic-tac-toe
 ## Structure
 
 - `cakes` package: implementation using mainly the Cake Pattern.
+- `simple` package: basic implementation used for comparison.
 
 ## Tic-tac-toe
 
