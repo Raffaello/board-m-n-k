@@ -1,16 +1,16 @@
 package cakes
 
 import cakes.ai.types.{AlphaBetaStatus, AlphaBetaValues}
+import cakes.game.Implicit.convertToPlayer
+import cakes.game.types.{Position, Status}
+import cakes.game.{BoardMNK, Player, Score}
 import com.typesafe.scalalogging.Logger
-import game.Implicit.convertToPlayer
-import game.types.{Position, Status}
-import game.{BoardMNK, Player, Score}
-import settings.Loader.Ai.{player => aiPlayer}
 
 import scala.util.control.Breaks.{break, breakable}
 
 package object ai {
-  private[ai] val logger = Logger("ai")
+  private[ai] val logger = Logger("cakes.ai")
+  val aiPlayer: Player = settings.Loader.Ai.player
 
   // TODO refactor/remove
   object Stats {

@@ -1,11 +1,10 @@
 package cakes.ai.mcts
 
-import cakes.ai.mcts
 import cakes.ai.mcts.tree.Tree
-import cats.implicits._
 import cakes.game.BoardTicTacToeMcts
 import cakes.game.Implicit.convertToPlayer
 import cakes.game.types.Position
+import cats.implicits._
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
@@ -65,7 +64,7 @@ class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChe
   }
 
   it should "have seed 0" in {
-    mcts.seed shouldBe Some(0)
+    seed shouldBe Some(0)
   }
 
   it should "return the sub-tree" in {

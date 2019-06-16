@@ -1,12 +1,12 @@
 package cakes.ai.mcts
 
-import cakes.ai.{AiBoard, mcts}
 import cakes.ai.mcts.tree.Tree
-import cats.implicits._
+import cakes.ai.{AiBoard, mcts}
 import cakes.game._
 import cakes.game.boards.BoardDisplay
 import cakes.game.boards.implementations.Board2dArray
 import cakes.game.types.{Position, Status}
+import cats.implicits._
 
 import scala.util.Random
 
@@ -47,6 +47,7 @@ trait MctsBoard extends BoardMNKLookUp
     val tree = Tree(this, this.lastPlayer)
     iterate(tree)
 
+    // TODO FIX
     val bestnodeUCt = tree.root.bestChild()
     val bestNode = tree.root.mostVisited()
     val score = bestNode.state.board.score()

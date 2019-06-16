@@ -17,6 +17,9 @@ object Loader {
 
     object Mcts {
       lazy val config: Config = Ai.config.getConfig("mcts")
+      lazy val uctParameter: Double = config.getDouble("uct.c")
+      lazy val maxIter: Int = config.getInt("max_iter")
+      lazy val seed: Option[Long] =  if (config.getIsNull("seed")) None else Some(config.getLong("seed"))
     }
   }
 }

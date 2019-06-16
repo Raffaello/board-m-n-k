@@ -1,19 +1,19 @@
 package cakes.ai
 
 import cakes.ai.mcts.tree._
-import cats.implicits._
-import com.typesafe.config.Config
-import com.typesafe.scalalogging.Logger
 import cakes.game.Score
-import settings.Loader.Ai.Mcts.config
+import cats.implicits._
+import com.typesafe.scalalogging.Logger
+import settings.Loader.Ai.Mcts
 
 import scala.annotation.tailrec
 
 package object mcts {
-  final private[mcts] val logger = Logger("cakes.ai.mcts")
-  final private[this] val uctParameter: Double = config.getDouble("uct.c")
-  final val maxIter: Int = config.getInt("max_iter")
-  final val seed: Option[Long] =  if (config.getIsNull("seed")) None else Some(config.getLong("seed"))
+  final private[mcts] val logger = Logger("cakes.ai.mcts"
+  )
+  final private[this] val uctParameter: Double = Mcts.uctParameter
+  final val maxIter: Int = Mcts.maxIter
+  final val seed: Option[Long] = Mcts.seed
 
   // todo this is just for 2 players...
   protected def remapScore(score: Score, player: Byte): Double = {
