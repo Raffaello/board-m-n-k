@@ -192,6 +192,6 @@ from 2D array to 1D.
 - [MCTS Part III](http://ccg.doc.gold.ac.uk/ccg_old/teaching/ludic_computing/ludic16.pdf)
 - [MCTS Intro](https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/)
 - [Wiki MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search)
-- [MCTS Survey](http://mcts.ai/pubs/mcts-survey-master.pdf)
+- [MCTS Survey](http://mcts.cakes.ai/pubs/mcts-survey-master.pdf)
 - [Simple AlphaZero](https://web.stanford.edu/~surag/posts/alphazero.html)
 - [Deep Learning and the game of GO](https://www.oreilly.com/library/view/deep-learning-and/9781617295324/)

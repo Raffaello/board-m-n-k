@@ -1,7 +1,7 @@
 package bench
 
-import ai.old.GetBoard
-import ai._
+import cakes.ai.old.GetBoard
+import cakes.ai._
 import bench.benchmarks.TicTacToeSolvers._
 import game._
 import game.boards.implementations.Board2dArray
@@ -105,7 +105,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe with Board2dArray with GetBoard with ai.old.TranspositionTable
+            val board = new BoardTicTacToe with Board2dArray with GetBoard with cakes.ai.old.TranspositionTable
             val t = old.alphaBetaWithMem(board, board)
             score = Math.round(t.score).toInt
             cacheSize = board.transpositions.size
@@ -204,7 +204,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe2 with GetBoard with ai.old.TranspositionTable
+            val board = new BoardTicTacToe2 with GetBoard with cakes.ai.old.TranspositionTable
             val t = old.alphaBetaWithMem(board, board)
             score = Math.round(t.score).toInt
             cacheSize = board.transpositions.size

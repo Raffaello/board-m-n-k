@@ -1,6 +1,6 @@
 package game
 
-import ai.{AiTicTacToeExpectedStats, alphaBeta}
+import cakes.ai.{AiTicTacToeExpectedStats, alphaBeta}
 import game.Implicit.convertToPlayer
 import game.boards.implementations.BoardBitBoard
 import game.types.Position

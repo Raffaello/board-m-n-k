@@ -1,4 +1,4 @@
-import ai.{TranspositionTable1dArrayString, _}
+import cakes.ai.{TranspositionTable1dArrayString, _}
 import game.BoardMNKP
 import game.Implicit.convertToPlayer
 import game.boards.implementations.{Board1dArray, Board2dArray}

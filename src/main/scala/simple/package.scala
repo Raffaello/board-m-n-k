@@ -1,4 +1,4 @@
-package ai
+package cakes.ai
 
 /**
   * Package used for Debug and comparison

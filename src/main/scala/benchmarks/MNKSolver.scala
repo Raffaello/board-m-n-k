@@ -1,5 +1,7 @@
 package benchmarks
 
+import cakes.ai
+import cakes.ai.Stats
 import cats.implicits._
 import game.BoardMNK
 import game.types.BOARD_2D_ARRAY
@@ -18,7 +20,7 @@ object MNKSolver extends App {
   val time = System.currentTimeMillis()
   val score = ai.alphaBeta(board)
   println(s"total time: ${System.currentTimeMillis() - time}")
-  println(s"Total calls: ${ai.Stats.totalCalls}")
+  println(s"Total calls: ${Stats.totalCalls}")
   println({
     s"score value = $score => "
   } + {

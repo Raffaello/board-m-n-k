@@ -1,6 +1,6 @@
 
-import ai.mcts.playNextMove
-import ai.mcts.tree.Tree
+import cakes.ai.mcts.playNextMove
+import cakes.ai.mcts.tree.Tree
 import game.BoardTicTacToeMcts
 
 import scala.annotation.tailrec

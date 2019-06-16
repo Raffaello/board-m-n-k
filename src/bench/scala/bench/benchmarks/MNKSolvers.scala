@@ -1,7 +1,7 @@
 package bench.benchmarks
 
-import ai._
-import ai.old.BoardMNKwithGetBoard
+import cakes.ai._
+import cakes.ai.old.BoardMNKwithGetBoard
 import game.boards.implementations.Board2dArray
 import game.types.BOARD_2D_ARRAY
 import game.{BoardMNK, Score}
@@ -57,7 +57,7 @@ object MNKSolvers {
   def alphaBeta(m: Int, n: Int, k: Int): Score = {
     val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with Board2dArray
     Stats.totalCalls = 0
-    Math.round(ai.alphaBeta(board)).toInt
+    Math.round(cakes.ai.alphaBeta(board)).toInt
   }
 
   def traitAlphaBeta(m: Int, n: Int, k: Int): AlphaBeta = {
@@ -66,7 +66,7 @@ object MNKSolvers {
   }
 
   def oldAlphaBetaTTOld(m: Int, n: Int, k: Int): (Double, Int) = {
-    val board = new BoardMNKwithGetBoard(m.toShort, n.toShort, k.toShort) with ai.old.TranspositionTable
+    val board = new BoardMNKwithGetBoard(m.toShort, n.toShort, k.toShort) with cakes.ai.old.TranspositionTable
     Stats.totalCalls = 0
     Stats.cacheHits = 0
     val t = old.alphaBetaWithMem(board, board)
@@ -77,7 +77,7 @@ object MNKSolvers {
     val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with TranspositionTable with TranspositionTable2dArrayString
     Stats.totalCalls = 0
     Stats.cacheHits = 0
-    val t = ai.alphaBetaWithMem(board, board)
+    val t = cakes.ai.alphaBetaWithMem(board, board)
     (t.score, board.transpositions.size)
   }
 

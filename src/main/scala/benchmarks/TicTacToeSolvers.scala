@@ -1,7 +1,7 @@
 package benchmarks
 
-import ai._
-import ai.old.{GetBoard, TranspositionTable}
+import cakes.ai._
+import cakes.ai.old.{GetBoard, TranspositionTable}
 import game.{BoardTicTacToe2, Score}
 
 object TicTacToeSolvers extends App {
