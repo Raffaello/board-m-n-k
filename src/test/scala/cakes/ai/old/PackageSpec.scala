@@ -28,7 +28,11 @@ class PackageSpec extends FlatSpec with Matchers {
 
   "TicTacToe2 Alpha-Beta with Memory" should "solve the cakes.game" in new AiTicTacToeExpectedStats {
     val game = new BoardTicTacToe2() with TranspositionTable with GetBoard
-    alphaBetaWithMem(game, game) shouldEqual Transposition(0.0, 0, 0.0, Double.MaxValue, isMaximizing = true)
+    alphaBetaWithMem(game, game) shouldEqual Transposition(0.0,
+                                                           0,
+                                                           0.0,
+                                                           Double.MaxValue,
+                                                           isMaximizing = true)
     //    expAlphaBetaWithMemStats(cakes.game.transpositions.size)
   }
 
@@ -50,6 +54,7 @@ class PackageSpec extends FlatSpec with Matchers {
 
   "Player 2 TicTacToe2" should "win" in {
     val game = new BoardTicTacToe2()
+    /*_*/
     game.playMove(Position(0, 0), 1)
     game.playMove(Position(0, 1), 1)
     game.playMove(Position(1, 0), 1)
@@ -57,6 +62,7 @@ class PackageSpec extends FlatSpec with Matchers {
     game.playMove(Position(2, 1), 2)
     game.playMove(Position(2, 2), 2)
     game.playMove(Position(1, 2), 2)
+    /*_*/
 
     game.depth shouldEqual 7
     //    negamax(cakes.game, -1) should be (-1) // cannot return -1 from the first step.

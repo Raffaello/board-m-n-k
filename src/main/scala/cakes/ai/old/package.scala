@@ -1,7 +1,7 @@
 package cakes.ai
 
 import _root_.types.Position
-import cakes.game.Implicit.convertToPlayer
+import cakes.game.Implicit._
 import cakes.game.{Board2d, BoardMNK, Score}
 import cats.implicits._
 

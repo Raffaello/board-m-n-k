@@ -14,7 +14,6 @@ package object mcts {
     for (_ <- 0 until itermax) {
       var node = rootNode
       val state = rootState.copy()
-      val player = node.state.currentPlayer()
 
       // select
       while (node.untriedMoves.isEmpty && node.children.nonEmpty) {

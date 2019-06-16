@@ -23,6 +23,7 @@ class BoardMNK3Spec extends WordSpec with Matchers {
       boardType match {
         case BOARD_2D_ARRAY => new BoardMNKP(3, 3, 3, 3) with Board2dArray with MiniMax
         case BOARD_1D_ARRAY => new BoardMNKP(3, 3, 3, 3) with Board1dArray with MiniMax
+        case _ => ???
       }
     }
 
@@ -37,6 +38,7 @@ class BoardMNK3Spec extends WordSpec with Matchers {
       boardType match {
         case BOARD_2D_ARRAY => new BoardMNKP(3, 3, 3, 3) with Board2dArray with AlphaBeta
         case BOARD_1D_ARRAY => new BoardMNKP(3, 3, 3, 3) with Board1dArray with AlphaBeta
+        case _ => ???
       }
     }
 
@@ -46,6 +48,7 @@ class BoardMNK3Spec extends WordSpec with Matchers {
           with Board2dArray with AlphaBetaTransposition with TranspositionTable2dArrayString
         case BOARD_1D_ARRAY => new BoardMNKP(3, 3, 3, 3)
           with Board1dArray with AlphaBetaTransposition with TranspositionTable1dArrayString
+        case _ => ???
       }
     }
   }
