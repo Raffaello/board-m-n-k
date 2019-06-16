@@ -3,8 +3,8 @@ package cakes.ai.old
 import cakes.ai.AiTicTacToeExpectedStats
 import cakes.game.BoardTicTacToe2
 import cakes.game.Implicit.convertToPlayer
-import cakes.game.types.Position
 import org.scalatest.{FlatSpec, Matchers}
+import types.Position
 
 class PackageSpec extends FlatSpec with Matchers {
   "TicTacToe2 cakes.game with minimax" should "solve the cakes.game" in new AiTicTacToeExpectedStats {

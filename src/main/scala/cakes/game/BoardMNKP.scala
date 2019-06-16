@@ -1,10 +1,11 @@
 package cakes.game
 
-import cats.implicits._
+import _root_.types.Position
 import cakes.game.Implicit.convertToPlayer
 import cakes.game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
 import cakes.game.boards.{BoardDepthAware, BoardMN, BoardPlayerScore}
-import cakes.game.types._
+import cakes.game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BOARD_BIT_BOARD, BoardMNTypeEnum}
+import cats.implicits._
 
 abstract class BoardMNKP(m: Short, n: Short, val k: Short, val numPlayers: Player) extends BoardMN(m, n)
   with BoardDepthAware with BoardPlayerScore {

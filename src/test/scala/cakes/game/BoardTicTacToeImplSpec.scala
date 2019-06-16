@@ -1,6 +1,6 @@
 package cakes.game
 
-import cakes.game.types.Position
+import _root_.types.Position
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{Matchers, WordSpec}
 

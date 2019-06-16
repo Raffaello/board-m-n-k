@@ -1,6 +1,6 @@
 package cakes.game.boards
 
-import cakes.game.types.Position
+import types.Position
 
 trait BoardMovesConsumer {
   // TODO should return something.... ?

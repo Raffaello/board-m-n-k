@@ -1,9 +1,10 @@
 package cakes.ai.mcts
 
-import cakes.game.{BoardTicTacToeMcts, Score}
 import cakes.game.Implicit.convertToPlayer
-import cakes.game.types.{Position, Status}
+import cakes.game.types.Status
+import cakes.game.{BoardTicTacToeMcts, Score}
 import org.scalatest.{FlatSpec, Matchers}
+import types.Position
 
 class MctsBoardSpec extends FlatSpec with Matchers {
 
@@ -118,13 +119,13 @@ class MctsBoardSpec extends FlatSpec with Matchers {
   it should "have next move" in {
     val game = initBoard(3, 3, 3)
     game.nextMove shouldBe Status[Score](0, Position(0, 0))
-    game.playMove(Position(0,0), game.nextPlayer())
-    game.nextMove shouldBe Status[Score](0, Position(1,1))
+    game.playMove(Position(0, 0), game.nextPlayer())
+    game.nextMove shouldBe Status[Score](0, Position(1, 1))
   }
 
   it should "have 2nd next Move" in {
     val game = initBoard(3, 3, 3)
-    game.playMove(Position(0,0), game.nextPlayer()) shouldBe true
-    game.nextMove shouldBe Status[Score](0, Position(1,1))
+    game.playMove(Position(0, 0), game.nextPlayer()) shouldBe true
+    game.nextMove shouldBe Status[Score](0, Position(1, 1))
   }
 }

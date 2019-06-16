@@ -1,6 +1,7 @@
 package cakes.game
 
-import cakes.game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BOARD_BIT_BOARD, Position}
+import _root_.types.Position
+import cakes.game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BOARD_BIT_BOARD}
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.collection.immutable.NumericRange
@@ -22,12 +23,12 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 1
 
         // FIX IT
-//        if (b !== BOARD_BIT_BOARD) {
-//          cakes.game.lookUps.ended shouldEqual Some(true)
-//          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
-//          cakes.game.lookUps.rows shouldBe Array(Array(3, 0), Array(0, 2), Array(0, 0))
-//          cakes.game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
-//        }
+        //        if (b !== BOARD_BIT_BOARD) {
+        //          cakes.game.lookUps.ended shouldEqual Some(true)
+        //          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
+        //          cakes.game.lookUps.rows shouldBe Array(Array(3, 0), Array(0, 2), Array(0, 0))
+        //          cakes.game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
+        //        }
       }
 
       "P2 win" in {
@@ -44,12 +45,12 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual -1
 
         // FIX IT
-//        if (b !== BOARD_BIT_BOARD) {
-//          cakes.game.lookUps.ended shouldEqual Some(true)
-//          cakes.game.lookUps.lastPlayerIdx shouldEqual 1
-//          cakes.game.lookUps.rows shouldBe Array(Array(2, 0), Array(0, 3), Array(1, 0))
-//          cakes.game.lookUps.cols shouldBe Array(Array(2, 1), Array(0, 1), Array(1, 1))
-//        }
+        //        if (b !== BOARD_BIT_BOARD) {
+        //          cakes.game.lookUps.ended shouldEqual Some(true)
+        //          cakes.game.lookUps.lastPlayerIdx shouldEqual 1
+        //          cakes.game.lookUps.rows shouldBe Array(Array(2, 0), Array(0, 3), Array(1, 0))
+        //          cakes.game.lookUps.cols shouldBe Array(Array(2, 1), Array(0, 1), Array(1, 1))
+        //        }
       }
 
       "STALE" in {
@@ -69,12 +70,12 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 0
 
         // FIX IT
-//        if (b !== BOARD_BIT_BOARD) {
-//          cakes.game.lookUps.ended shouldEqual Some(false)
-//          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
-//          cakes.game.lookUps.rows shouldBe Array(Array(2, 1), Array(2, 1), Array(1, 2))
-//          cakes.game.lookUps.cols shouldBe Array(Array(2, 1), Array(1, 2), Array(2, 1))
-//        }
+        //        if (b !== BOARD_BIT_BOARD) {
+        //          cakes.game.lookUps.ended shouldEqual Some(false)
+        //          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
+        //          cakes.game.lookUps.rows shouldBe Array(Array(2, 1), Array(2, 1), Array(1, 2))
+        //          cakes.game.lookUps.cols shouldBe Array(Array(2, 1), Array(1, 2), Array(2, 1))
+        //        }
       }
 
       "P1 win diagonalTL" in {
@@ -90,12 +91,12 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 1
 
         // FIX IT
-//        if (b !== BOARD_BIT_BOARD) {
-//          cakes.game.lookUps.ended shouldEqual Some(true)
-//          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
-//          cakes.game.lookUps.rows shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
-//          cakes.game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
-//        }
+        //        if (b !== BOARD_BIT_BOARD) {
+        //          cakes.game.lookUps.ended shouldEqual Some(true)
+        //          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
+        //          cakes.game.lookUps.rows shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
+        //          cakes.game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
+        //        }
       }
 
       "P1 win diagonalBR" in {
@@ -111,12 +112,12 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 1
 
         // FIX IT
-//        if (b !== BOARD_BIT_BOARD) {
-//          cakes.game.lookUps.ended shouldEqual Some(true)
-//          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
-//          cakes.game.lookUps.rows shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
-//          cakes.game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
-//        }
+        //        if (b !== BOARD_BIT_BOARD) {
+        //          cakes.game.lookUps.ended shouldEqual Some(true)
+        //          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
+        //          cakes.game.lookUps.rows shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
+        //          cakes.game.lookUps.cols shouldBe Array(Array(1, 1), Array(1, 1), Array(1, 0))
+        //        }
       }
 
       "display" in {
@@ -151,12 +152,12 @@ class BoardMNKSpec extends WordSpec with Matchers {
         game.score() shouldEqual 1
 
         // FIX IT
-//        if (b !== BOARD_BIT_BOARD) {
-//          cakes.game.lookUps.ended shouldEqual Some(true)
-//          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
-//          cakes.game.lookUps.rows shouldBe Array(Array(2, 1), Array(1, 2), Array(1, 1), Array(1, 0))
-//          cakes.game.lookUps.cols shouldBe Array(Array(1, 2), Array(0, 2), Array(4, 0))
-//        }
+        //        if (b !== BOARD_BIT_BOARD) {
+        //          cakes.game.lookUps.ended shouldEqual Some(true)
+        //          cakes.game.lookUps.lastPlayerIdx shouldEqual 0
+        //          cakes.game.lookUps.rows shouldBe Array(Array(2, 1), Array(1, 2), Array(1, 1), Array(1, 0))
+        //          cakes.game.lookUps.cols shouldBe Array(Array(1, 2), Array(0, 2), Array(4, 0))
+        //        }
       }
     }
 

@@ -2,13 +2,7 @@ package cakes.game
 
 package types {
 
-  final case class Position(row: Short, col: Short) {
-    def min: Short = Math.min(row, col).toShort
-  }
-
-  object Position {
-    val nil: Position = Position(-1, -1)
-  }
+  import _root_.types.Position
 
   final case class Status[T: Numeric](score: T, position: Position)
 

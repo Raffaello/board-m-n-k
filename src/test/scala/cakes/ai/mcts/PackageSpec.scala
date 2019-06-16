@@ -3,11 +3,11 @@ package cakes.ai.mcts
 import cakes.ai.mcts.tree.Tree
 import cakes.game.BoardTicTacToeMcts
 import cakes.game.Implicit.convertToPlayer
-import cakes.game.types.Position
 import cats.implicits._
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
+import types.Position
 
 class PackageSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
 

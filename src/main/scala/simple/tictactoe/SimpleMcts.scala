@@ -1,19 +1,18 @@
-package simple
+package simple.tictactoe
 
-import simple.mcts._
-import cakes.game.types.Position
-import cakes.game.Implicit._
+import simple.tictactoe.mcts.mctsMove
+import types.Position
 
 object SimpleMcts extends App {
-  val gameState = new TicTacToeState()
+  val gameState = new mcts.GameState()
 
-  while(gameState.allRemainingMoves().nonEmpty) {
+  while (gameState.allRemainingMoves().nonEmpty) {
     var m: Option[Position] = None
-//    if (gameState.lastPlayer == 1) {
-      m = mctsMove(gameState, 1000, false)
-//    } else {
-//      m = mctsMove(gameState, 10000)
-//    }
+    //    if (gameState.lastPlayer == 1) {
+    m = mctsMove(gameState, 1000, false)
+    //    } else {
+    //      m = mctsMove(gameState, 10000)
+    //    }
     assert(m.isDefined)
     gameState.playMove(m.get)
     println(s"Best Move: $m")

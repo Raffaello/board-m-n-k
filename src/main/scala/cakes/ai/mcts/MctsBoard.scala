@@ -1,11 +1,12 @@
 package cakes.ai.mcts
 
+import _root_.types.Position
 import cakes.ai.mcts.tree.Tree
 import cakes.ai.{AiBoard, mcts}
 import cakes.game._
 import cakes.game.boards.BoardDisplay
 import cakes.game.boards.implementations.Board2dArray
-import cakes.game.types.{Position, Status}
+import cakes.game.types.Status
 import cats.implicits._
 
 import scala.util.Random
@@ -39,9 +40,9 @@ trait MctsBoard extends BoardMNKLookUp
     tree.root.mostVisitedDescending().state.board.score()
   }
 
-//  override def playMove(position: Position, player: Player): Boolean = {
-//    super.playMove(position, player)
-//  }
+  //  override def playMove(position: Position, player: Player): Boolean = {
+  //    super.playMove(position, player)
+  //  }
 
   override def nextMove: Status[Score] = {
     val tree = Tree(this, this.lastPlayer)
@@ -51,7 +52,7 @@ trait MctsBoard extends BoardMNKLookUp
     val bestnodeUCt = tree.root.bestChild()
     val bestNode = tree.root.mostVisited()
     val score = bestNode.state.board.score()
-    val score2  = bestNode.mostVisitedDescending().state.board.score()
+    val score2 = bestNode.mostVisitedDescending().state.board.score()
     val score3 = bestnodeUCt.mostVisitedDescending().state.board.score()
     val pos2 = bestnodeUCt.state.board.lastMove
     val pos = bestNode.state.board.lastMove

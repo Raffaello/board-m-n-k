@@ -1,7 +1,7 @@
 package cakes.game
 
+import _root_.types.Position
 import cakes.ai.{AiTicTacToeExpectedStats, alphaBeta}
-import cakes.game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{Matchers, WordSpec}
@@ -51,8 +51,8 @@ class BoardTicTacToe1dArraySpec extends WordSpec with Matchers with GeneratorDri
     }
     "be solved" in new AiTicTacToeExpectedStats {
       val game = new BoardTicTacToe1dArray
-      alphaBeta(game)shouldBe 0.0
-//      expAlphaBeta()
+      alphaBeta(game) shouldBe 0.0
+      //      expAlphaBeta()
     }
 
     for (p <- NumericRange.inclusive[Byte](1, 2, 1)) {
@@ -61,7 +61,7 @@ class BoardTicTacToe1dArraySpec extends WordSpec with Matchers with GeneratorDri
         "by rows player" in {
           for (i <- 0 until 3) {
             val game = new BoardTicTacToe1dArray()
-            for(j <- 0 until  3) game.playMove(Position(i.toShort, j.toShort), p)
+            for (j <- 0 until 3) game.playMove(Position(i.toShort, j.toShort), p)
             game.gameEnded() should be(true)
             game.score() should be(score)
           }
@@ -85,7 +85,7 @@ class BoardTicTacToe1dArraySpec extends WordSpec with Matchers with GeneratorDri
 
         "by diagonals Bottom Left -> Top Right" in {
           val game = new BoardTicTacToe1dArray()
-          for (i <- 0 until 3) game.playMove(Position((2 - i).toShort, i.toShort),  p)
+          for (i <- 0 until 3) game.playMove(Position((2 - i).toShort, i.toShort), p)
           game.gameEnded() should be(true)
           game.score() should be(score)
         }

@@ -1,6 +1,6 @@
 package cakes
 
-import cakes.game.types.Position
+import types.Position
 
 import scala.language.implicitConversions
 
@@ -8,7 +8,6 @@ package object game {
 
   object Implicit {
     implicit def convertToPlayer(x: Int): Player = x.toByte
-    implicit def convertIntToShort(x: Int): Short = x.toShort
   }
 
   final val nilPosition: Position = Position.nil

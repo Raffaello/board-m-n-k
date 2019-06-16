@@ -3,8 +3,8 @@ package cakes.game.boards.lookups
 import cakes.game.Implicit.convertToPlayer
 import cakes.game.Player
 import cakes.game.boards.BoardPlayers
-import cakes.game.types.{BoardMNType, Position}
-
+import cakes.game.types.BoardMNType
+import types.Position
 // TODO this file is strictly designed for a 2d array board implementation not for a general one, need to be rewritten
 
 trait TLookUps extends BoardMNType with BoardPlayers {

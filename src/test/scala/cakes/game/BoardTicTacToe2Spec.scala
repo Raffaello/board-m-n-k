@@ -1,6 +1,6 @@
 package cakes.game
 
-import cakes.game.types.Position
+import _root_.types.Position
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.collection.immutable.NumericRange
@@ -26,7 +26,7 @@ class BoardTicTacToe2Spec extends WordSpec with Matchers {
 
           for (i <- 0 until 3) {
             val game = new BoardTicTacToe2()
-            for(j <- 0 until  3) game.playMove(Position(i.toShort, j.toShort), p)
+            for (j <- 0 until 3) game.playMove(Position(i.toShort, j.toShort), p)
             game.gameEnded() should be(true)
             game.score() should be(score)
           }
@@ -50,7 +50,7 @@ class BoardTicTacToe2Spec extends WordSpec with Matchers {
 
         "by diagonals Bottom Left -> Top Right" in {
           val game = new BoardTicTacToe2()
-          for (i <- 0 until 3) game.playMove(Position((2 - i).toShort, i.toShort),  p)
+          for (i <- 0 until 3) game.playMove(Position((2 - i).toShort, i.toShort), p)
           game.gameEnded() should be(true)
           game.score() should be(score)
         }

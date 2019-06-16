@@ -1,9 +1,10 @@
 package cakes.game
 
+import _root_.types.Position
 import cakes.ai.MiniMax
 import cakes.game.Implicit.convertToPlayer
 import cakes.game.boards.implementations.Board2dArray
-import cakes.game.types.{Position, Status}
+import cakes.game.types.Status
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}

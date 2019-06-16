@@ -3,6 +3,7 @@ package cakes.game.types
 import cakes.game.Implicit._
 import cakes.game.Player
 import cakes.game.boards.BoardPlayers
+import types.implicits.convertIntToShort
 
 private[game] trait BoardMNKPType extends BoardMNType with BoardPlayers {
 

@@ -1,10 +1,9 @@
 package cakes.game.boards
 
-import java.nio.charset.StandardCharsets
-
-import cakes.game.Implicit.convertIntToShort
 import cakes.game.Player
-import cakes.game.types.{BoardMNType, Position}
+import cakes.game.types.BoardMNType
+import types.Position
+import types.implicits.convertIntToShort
 
 trait BoardDisplay extends BoardMNType {
 

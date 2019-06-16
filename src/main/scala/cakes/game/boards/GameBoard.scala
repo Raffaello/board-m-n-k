@@ -1,7 +1,7 @@
 package cakes.game.boards
 
-import cakes.game.types.Position
 import cakes.game.{Player, Score}
+import types.Position
 
 trait GameBoard {
 

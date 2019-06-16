@@ -1,6 +1,7 @@
 package cakes.game.types
 
 import cakes.game.Player
+import types.Position
 
 import scala.collection.immutable.NumericRange
 

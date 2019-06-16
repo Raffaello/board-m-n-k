@@ -1,8 +1,8 @@
 package cakes.game
 
-import cats.implicits._
+import _root_.types.Position
 import cakes.game.boards.implementations.BoardBitBoard
-import cakes.game.types.Position
+import cats.implicits._
 
 class BitBoardTicTacToe extends BoardTicTacToe with BoardBitBoard {
 

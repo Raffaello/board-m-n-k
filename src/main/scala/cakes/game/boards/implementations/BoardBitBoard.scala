@@ -1,11 +1,12 @@
 package cakes.game.boards.implementations
 
-import cats.implicits._
 import cakes.game.Implicit.convertToPlayer
 import cakes.game.boards.BoardMovesGenerator
 import cakes.game.boards.lookups.BitBoardLookup
-import cakes.game.types.{BoardMNTypeBitBoard, Position}
+import cakes.game.types.BoardMNTypeBitBoard
 import cakes.game.{BitBoard, Player}
+import cats.implicits._
+import types.Position
 
 trait BoardBitBoard extends BoardMNTypeBitBoard with BoardMovesGenerator with BitBoardLookup {
 

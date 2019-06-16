@@ -1,11 +1,11 @@
 package cakes.ai
 
+import _root_.types.Position
 import cakes.ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import cakes.game.Implicit.convertToPlayer
 import cakes.game._
 import cakes.game.types._
 import org.scalatest.{FlatSpec, Matchers}
-
 
 class PackageSpec extends FlatSpec with Matchers {
 

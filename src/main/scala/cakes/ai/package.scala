@@ -2,9 +2,10 @@ package cakes
 
 import cakes.ai.types.{AlphaBetaStatus, AlphaBetaValues}
 import cakes.game.Implicit.convertToPlayer
-import cakes.game.types.{Position, Status}
+import cakes.game.types.Status
 import cakes.game.{BoardMNK, Player, Score}
 import com.typesafe.scalalogging.Logger
+import types.Position
 
 import scala.util.control.Breaks.{break, breakable}
 

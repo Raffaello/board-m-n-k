@@ -1,9 +1,9 @@
 package cakes.ai
 
-import cats.implicits._
+import _root_.types.Position
 import cakes.game.Implicit.convertToPlayer
-import cakes.game.types.Position
 import cakes.game.{Board2d, BoardMNK, Score}
+import cats.implicits._
 
 /**
   * @deprecated

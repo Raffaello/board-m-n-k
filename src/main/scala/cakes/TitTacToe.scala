@@ -5,7 +5,7 @@ import cakes.ai.old.negamaxNextMove
 import cakes.ai.types.AlphaBetaValues
 import cakes.game.BoardTicTacToe2
 import cakes.game.boards.BoardDisplay
-import cakes.game.types.Position
+import types.Position
 
 object TitTacToe extends App {
   val humanPlayer: Byte = 1

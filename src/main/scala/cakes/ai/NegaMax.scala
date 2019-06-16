@@ -1,8 +1,9 @@
 package cakes.ai
 
-import cats.implicits._
+import _root_.types.Position
 import cakes.game.Score
-import cakes.game.types.{Position, Status}
+import cakes.game.types.Status
+import cats.implicits._
 
 /**
   * Basically same class as

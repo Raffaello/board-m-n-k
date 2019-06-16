@@ -1,9 +1,11 @@
 package cakes.game.boards
 
-import cats.implicits._
-import cakes.game.Implicit.{convertIntToShort, convertToPlayer}
-import cakes.game.types.{BoardMNKPType, Position}
+import cakes.game.Implicit.convertToPlayer
+import cakes.game.types.BoardMNKPType
 import cakes.game.{Player, Score}
+import cats.implicits._
+import types.Position
+import types.implicits.convertIntToShort
 
 import scala.annotation.tailrec
 

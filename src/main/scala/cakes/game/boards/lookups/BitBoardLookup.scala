@@ -1,7 +1,7 @@
 package cakes.game.boards.lookups
 
 import cakes.game.BitBoard
-import cakes.game.types.Position
+import types.Position
 
 import scala.annotation.tailrec
 

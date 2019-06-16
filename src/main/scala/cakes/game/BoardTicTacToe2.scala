@@ -1,8 +1,8 @@
 package cakes.game
 
-import cats.implicits._
+import _root_.types.Position
 import cakes.game.boards.implementations.Board2dArray
-import cakes.game.types.Position
+import cats.implicits._
 
 /**
   * Used for testing and benchmarking.

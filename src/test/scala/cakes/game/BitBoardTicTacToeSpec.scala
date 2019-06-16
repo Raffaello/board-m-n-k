@@ -1,9 +1,9 @@
 package cakes.game
 
+import _root_.types.Position
 import cakes.ai.{AiTicTacToeExpectedStats, alphaBeta}
 import cakes.game.Implicit.convertToPlayer
 import cakes.game.boards.implementations.BoardBitBoard
-import cakes.game.types.Position
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{Matchers, WordSpec}
@@ -124,9 +124,9 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
 
     "generate some moves correctly" in {
       val game = new BitBoardTicTacToe
-      game.playMove(Position(0,0), game.nextPlayer()) shouldBe true
-      game.playMove(Position(1,0), game.nextPlayer()) shouldBe true
-      game.playMove(Position(2,0), game.nextPlayer()) shouldBe true
+      game.playMove(Position(0, 0), game.nextPlayer()) shouldBe true
+      game.playMove(Position(1, 0), game.nextPlayer()) shouldBe true
+      game.playMove(Position(2, 0), game.nextPlayer()) shouldBe true
 
       val i = {
         for {

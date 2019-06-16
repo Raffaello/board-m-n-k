@@ -1,10 +1,11 @@
 package cakes.game.boards.implementations
 
-import cats.implicits._
 import cakes.game.Implicit.convertToPlayer
 import cakes.game.Player
 import cakes.game.boards.BoardMovesGenerator
-import cakes.game.types.{BoardMNType2dArray, Position}
+import cakes.game.types.BoardMNType2dArray
+import cats.implicits._
+import types.Position
 
 trait Board2dArray extends BoardMNType2dArray with BoardMovesGenerator {
   protected def boardPlayer(pos: Position): Player = board(pos.row)(pos.col)

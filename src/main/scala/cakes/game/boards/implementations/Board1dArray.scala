@@ -1,10 +1,11 @@
 package cakes.game.boards.implementations
 
-import cats.implicits._
 import cakes.game.Player
 import cakes.game.boards.BoardMovesGenerator
 import cakes.game.boards.lookups.MLookup
-import cakes.game.types.{BoardMNType1dArray, Position}
+import cakes.game.types.BoardMNType1dArray
+import cats.implicits._
+import types.Position
 
 trait Board1dArray extends BoardMNType1dArray with BoardMovesGenerator with MLookup {
 

@@ -1,8 +1,9 @@
 package cakes.ai
 
+import _root_.types.Position
 import cakes.game.Implicit.convertToPlayer
 import cakes.game.Score
-import cakes.game.types.{Position, Status}
+import cakes.game.types.Status
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 
 abstract class TicTacToeSpec extends WordSpec with Matchers with BeforeAndAfterEach {

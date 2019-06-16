@@ -1,8 +1,8 @@
 package cakes.game.boards.lookups
 
 import cakes.game.BitBoard
-import cakes.game.types.{BoardMNType, Position}
-
+import cakes.game.types.BoardMNType
+import types.Position
 
 trait BitBoardValueLookup extends BoardMNType with MLookup {
 

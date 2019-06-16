@@ -1,6 +1,7 @@
 package cakes.game
 
-import cakes.game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BOARD_BIT_BOARD, Position}
+import _root_.types.Position
+import cakes.game.types.{BOARD_1D_ARRAY, BOARD_2D_ARRAY, BOARD_BIT_BOARD}
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.collection.immutable.NumericRange

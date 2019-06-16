@@ -1,10 +1,11 @@
 package cakes.game
 
-import cats.implicits._
+import _root_.types.Position
 import cakes.game.Implicit._
 import cakes.game.boards.implementations.{Board1dArray, Board2dArray, BoardBitBoard}
 import cakes.game.boards.lookups.TLookUps
 import cakes.game.types._
+import cats.implicits._
 
 abstract class BoardMNKPLookUp(m: Short, n: Short, k: Short, p: Player) extends BoardMNKP(m, n, k, p) with TLookUps {
 
