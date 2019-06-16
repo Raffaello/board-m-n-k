@@ -1,4 +1,4 @@
-package bench.benchmarks
+package cakes.benchmarks
 
 import cakes.ai._
 import cakes.ai.old.BoardMNKwithGetBoard

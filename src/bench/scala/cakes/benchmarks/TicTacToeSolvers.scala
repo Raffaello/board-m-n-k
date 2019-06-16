@@ -1,4 +1,4 @@
-package bench.benchmarks
+package cakes.benchmarks
 
 import cakes.ai.{AiBoard, alphaBeta}
 import cakes.game.{BoardTicTacToe, Score}

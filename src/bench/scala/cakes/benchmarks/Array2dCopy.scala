@@ -1,4 +1,4 @@
-package bench.benchmarks
+package cakes.benchmarks
 
 import org.scalameter.api.Gen
 

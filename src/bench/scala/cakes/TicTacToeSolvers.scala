@@ -1,8 +1,8 @@
-package bench
+package cakes
 
 import cakes.ai.old.GetBoard
 import cakes.ai._
-import bench.benchmarks.TicTacToeSolvers._
+import cakes.benchmarks.TicTacToeSolvers._
 import cakes.game._
 import cakes.game.boards.implementations.Board2dArray
 import cakes.game.types.BOARD_2D_ARRAY

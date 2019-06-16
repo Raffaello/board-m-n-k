@@ -1,7 +1,7 @@
-package bench
+package cakes
 
-import bench.benchmarks.Array1dCopy.{array1dCopy, arrays1d, clone1d, forLoop1d}
-import bench.benchmarks.Array2dCopy._
+import cakes.benchmarks.Array1dCopy.{array1dCopy, arrays1d, clone1d, forLoop1d}
+import cakes.benchmarks.Array2dCopy._
 import org.scalameter.api.{Bench, exec, reports}
 
 object ArrayCopy extends Bench.OfflineRegressionReport {

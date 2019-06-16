@@ -1,7 +1,7 @@
-package bench
+package cakes
 
 import cakes.ai.Stats
-import bench.benchmarks.MNKSolvers._
+import cakes.benchmarks.MNKSolvers._
 import cakes.game.Score
 import org.scalameter.api.{Bench, exec, reports}
 
