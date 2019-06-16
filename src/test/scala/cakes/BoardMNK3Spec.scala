@@ -1,3 +1,5 @@
+package cakes
+
 import cakes.ai.{TranspositionTable1dArrayString, _}
 import cakes.game.BoardMNKP
 import cakes.game.Implicit.convertToPlayer
