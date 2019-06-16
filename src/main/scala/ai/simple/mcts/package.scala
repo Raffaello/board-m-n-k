@@ -87,7 +87,7 @@ package object mcts {
     def UCTSelectChild(): Node = {
       children.maxBy {
         case c if c.visits == 0 => Double.MaxValue
-        case c => c.wins / c.visits + Math.sqrt(2.0 * Math.log(this.visits / c.visits))
+        case c => c.wins / c.visits.toDouble + Math.sqrt(2.0 * Math.log(this.visits.toDouble / c.visits.toDouble))
       }
     }
 
@@ -102,9 +102,32 @@ package object mcts {
       visits += 1
       wins += score
     }
+
+    override def toString: String = {
+      s"[M: $move | W/V: $wins/$visits (${wins/visits})| U: $untriedMoves]\n"
+    }
+
+    def indentString(indent: Int): String = {
+      val str = new StringBuffer()
+      (0 until indent).foreach(_ => str.append("| "))
+      str.toString
+    }
+
+    def treeToString(indent: Int): String = {
+      val str = new StringBuffer()
+      str.append(indentString(indent)).append(toString)
+      children.foldLeft(str)((acc,c) => acc.append(c.treeToString(indent + 1)))
+      str.toString
+    }
+
+    def childrenToString(): String = {
+      val str = new StringBuffer()
+      children.foldLeft(str.append(toString))((acc,c) => acc.append(indentString(1)).append(c.toString))
+      str.toString
+    }
   }
 
-  def mctsMove(rootState: TicTacToeState, itermax: Int): Option[Position] = {
+  def mctsMove(rootState: TicTacToeState, itermax: Int, verbose: Boolean): Option[Position] = {
     val rootNode = new Node(None, None, rootState)
 
     for (_ <- 0 until itermax) {
@@ -142,6 +165,9 @@ package object mcts {
       }
     }
 
-    rootNode.children.maxBy(c => c.visits).move
+    if (verbose) println(rootNode.treeToString(0))
+    else println(rootNode.childrenToString())
+
+    rootNode.children.maxBy(c => c.wins/c.visits.toDouble).move
   }
 }

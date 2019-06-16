@@ -4,19 +4,20 @@ import ai.simple.mcts._
 import game.types.Position
 import game.Implicit._
 
-object SimpleMcts  extends App {
+object SimpleMcts extends App {
   val gameState = new TicTacToeState()
 
   while(gameState.allRemainingMoves().nonEmpty) {
     var m: Option[Position] = None
-    if (gameState.lastPlayer == 1) {
-      m = mctsMove(gameState, 1000)
-    } else {
-      m = mctsMove(gameState, 1000)
-    }
+//    if (gameState.lastPlayer == 1) {
+      m = mctsMove(gameState, 1000, false)
+//    } else {
+//      m = mctsMove(gameState, 10000)
+//    }
     assert(m.isDefined)
     gameState.playMove(m.get)
-    print(gameState)
+    println(s"Best Move: $m")
+    println(gameState)
   }
 
   gameState.result(gameState.lastPlayer) match {
