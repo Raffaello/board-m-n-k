@@ -39,7 +39,25 @@ trait MctsBoard extends BoardMNKLookUp
     tree.root.mostVisitedDescending().state.board.score()
   }
 
-  override def nextMove: Status[Score] = ???
+//  override def playMove(position: Position, player: Player): Boolean = {
+//    super.playMove(position, player)
+//  }
+
+  override def nextMove: Status[Score] = {
+    val tree = Tree(this, this.lastPlayer)
+    iterate(tree)
+
+    val bestnodeUCt = tree.root.bestChild()
+    val bestNode = tree.root.mostVisited()
+    val score = bestNode.state.board.score()
+    val score2  = bestNode.mostVisitedDescending().state.board.score()
+    val score3 = bestnodeUCt.mostVisitedDescending().state.board.score()
+    val pos2 = bestnodeUCt.state.board.lastMove
+    val pos = bestNode.state.board.lastMove
+
+    Status[Score](score, pos)
+    Status[Score](score3, pos2)
+  }
 
   /*{
      val tree = Tree(this, 2)

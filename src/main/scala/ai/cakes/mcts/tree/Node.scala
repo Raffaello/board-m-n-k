@@ -8,6 +8,14 @@ import scala.annotation.tailrec
 
 protected[mcts] final case class Node(state: State, private[mcts] var parent: Option[Node], children: Children) {
 
+  override def toString: String = {
+    val uctStr = parent match {
+      case None => "NONE"
+      case Some(p) => uct(state.score, state.visitCount(), p.state.visitCount()).formatted("%.5f")
+    }
+    state.toString + " | " + uctStr
+  }
+
   def isLeaf: Boolean = children.isEmpty
 
   def isTerminal: Boolean = state.board.gameEnded()
@@ -39,9 +47,10 @@ protected[mcts] final case class Node(state: State, private[mcts] var parent: Op
     else Some(children.maxBy(c => c.state.visitCount()))
   }
 
+
   def mostVisited(): Node = {
     mostVisitedChild() match {
-      case None => this
+      case None => ???
       case Some(x) => x
     }
   }
@@ -109,24 +118,24 @@ protected[mcts] final case class Node(state: State, private[mcts] var parent: Op
     loop(this, this)
   }
 
-  // TODO miss the draw status to be back propagated, to both?
-  def backPropagate(player: Byte, deltaScore: Double): Node = foldAsc { x =>
-    x.state.incVisitCount()
-    if(player == x.state.player) x.state.addScore(deltaScore)
-    x
-  }
+//  def backPropagate(player: Byte, deltaScore: Double): Node = foldAsc { x =>
+//    x.state.incVisitCount()
+//    if (deltaScore === 0.5) x.state.addScore(deltaScore)
+//    else if (player === x.state.player) x.state.addScore(deltaScore)
+//    x
+//  }
 
-  //    @tailrec
-  //    def backPropagate(player: Byte, deltaScore: Double): Node = {
-  //      state.incVisitCount()
-  //      if (state.player === player) state.addScore(deltaScore)
-  //      parent match {
-  //        case None => this
-  //        case Some(x) =>
-  //
-  //          x.backPropagate(player, deltaScore)
-  //      }
-  //    }
+      @tailrec
+      def backPropagate(player: Byte, deltaScore: Double): Node = {
+        state.incVisitCount()
+        state.addScore(deltaScore)
+//        if (deltaScore === 0.5) state.addScore(deltaScore)
+//        else if (state.player === player) state.addScore(deltaScore)
+        parent match {
+          case None => this
+          case Some(x) => x.backPropagate(player, 1.0 - deltaScore)
+        }
+      }
 }
 
 object Node {

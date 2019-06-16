@@ -1,8 +1,8 @@
 package ai.cakes.mcts
 
-import ai.cakes.old.GetBoard
-import game.{Board2d, BoardMNK, BoardTicTacToeMcts}
-import game.types.Position
+import game.{BoardTicTacToeMcts, Score}
+import game.Implicit.convertToPlayer
+import game.types.{Position, Status}
 import org.scalatest.{FlatSpec, Matchers}
 
 class MctsBoardSpec extends FlatSpec with Matchers {
@@ -76,7 +76,7 @@ class MctsBoardSpec extends FlatSpec with Matchers {
     randomMove shouldBe false
   }
 
-  it should "deep cloned" in {
+  it should "be deep cloned" in {
     val game = initBoard(3, 3, 3).asInstanceOf[MctsBoardStub]
     game.playRandomMove(1)
     val gameClone = game.clone().asInstanceOf[MctsBoardStub]
@@ -113,5 +113,18 @@ class MctsBoardSpec extends FlatSpec with Matchers {
   it should "solve" in {
     val game = initBoard(3, 3, 3)
     game.solve shouldBe 0
+  }
+
+  it should "have next move" in {
+    val game = initBoard(3, 3, 3)
+    game.nextMove shouldBe Status[Score](0, Position(0, 0))
+    game.playMove(Position(0,0), game.nextPlayer())
+    game.nextMove shouldBe Status[Score](0, Position(1,1))
+  }
+
+  it should "have 2nd next Move" in {
+    val game = initBoard(3, 3, 3)
+    game.playMove(Position(0,0), game.nextPlayer()) shouldBe true
+    game.nextMove shouldBe Status[Score](0, Position(1,1))
   }
 }

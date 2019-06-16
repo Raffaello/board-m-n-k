@@ -99,6 +99,8 @@ package object mcts {
         val selNode = selection(node)
         val expNode = expansion(selNode)
         val gameScore = simulation(expNode)
+        assert(gameScore == 0.0 || gameScore == 0.5 || gameScore == 1.0)
+
         backPropagation(expNode, gameScore)
         loop(iter + 1)
       } else iter
