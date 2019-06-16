@@ -1,4 +1,4 @@
-import ai.cakes.mcts.tree.Tree
+import ai.mcts.tree.Tree
 import game.BoardTicTacToeMcts
 import org.scalatest.{FeatureSpec, GivenWhenThen, Matchers}
 

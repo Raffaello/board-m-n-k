@@ -1,6 +1,6 @@
 package game
 
-import ai.cakes.AiTicTacToeExpectedStats
+import ai.{AiTicTacToeExpectedStats, alphaBeta}
 import game.Implicit.convertToPlayer
 import game.boards.implementations.BoardBitBoard
 import game.types.Position
@@ -140,7 +140,7 @@ class BitBoardTicTacToeSpec extends WordSpec with Matchers with GeneratorDrivenP
 
     "draw" in new AiTicTacToeExpectedStats {
       val game = new BitBoardTicTacToe
-      ai.cakes.alphaBeta(game) shouldBe 0.0
+      alphaBeta(game) shouldBe 0.0
       //      expAlphaBeta()
     }
 

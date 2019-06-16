@@ -1,6 +1,6 @@
-import ai.cakes.alphaBetaNextMove
-import ai.cakes.old.negamaxNextMove
-import ai.cakes.types.AlphaBetaValues
+import ai.alphaBetaNextMove
+import ai.old.negamaxNextMove
+import ai.types.AlphaBetaValues
 import game.BoardTicTacToe2
 import game.boards.BoardDisplay
 import game.types.Position
