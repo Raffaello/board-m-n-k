@@ -1,6 +1,6 @@
 package bench.benchmarks
 
-import ai.AiBoard
+import ai.cakes.AiBoard
 import game.{BoardTicTacToe, Score}
 import org.scalameter.api._
 import org.scalameter.picklers.Implicits._
@@ -10,5 +10,5 @@ object TicTacToeSolvers {
 
   def aiBoardSolver(board: AiBoard): Score = board.solve
 
-  def alphaBetaInt(board: BoardTicTacToe): Score = Math.round(ai.alphaBeta(board)).toInt
+  def alphaBetaInt(board: BoardTicTacToe): Score = Math.round(ai.cakes.alphaBeta(board)).toInt
 }

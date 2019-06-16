@@ -1,6 +1,6 @@
 package game
 
-import ai.MiniMax
+import ai.cakes.MiniMax
 import game.Implicit.convertToPlayer
 import game.boards.implementations.Board2dArray
 import game.types.{Position, Status}

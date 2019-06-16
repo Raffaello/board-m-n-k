@@ -1,6 +1,6 @@
 package game
 
-import ai.mcts.MctsBoard
+import ai.cakes.mcts.MctsBoard
 import game.boards.implementations.Board2dArray
 
 // TODO should not have Board2dArray

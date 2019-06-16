@@ -1,7 +1,8 @@
 package bench.benchmarks
 
 import ai._
-import ai.old.BoardMNKwithGetBoard
+import ai.cakes.{AlphaBeta, AlphaBetaTransposition, MiniMax, MiniMaxRaw, NegaMax, Stats, TranspositionTable, TranspositionTable2dArrayString}
+import ai.cakes.old.BoardMNKwithGetBoard
 import game.boards.implementations.Board2dArray
 import game.types.BOARD_2D_ARRAY
 import game.{BoardMNK, Score}
@@ -29,7 +30,7 @@ object MNKSolvers {
   def oldMinimax(m: Int, n: Int, k: Int): Score = {
     val board = BoardMNK(m.toShort, n.toShort, k.toShort, BOARD_2D_ARRAY)
     Stats.totalCalls = 0
-    ai.old.minimax(board, true)
+    ai.cakes.old.minimax(board, true)
   }
 
   def traitMinimax(m: Int, n: Int, k: Int): MiniMax = {
@@ -45,7 +46,7 @@ object MNKSolvers {
   def oldNegamax(m: Int, n: Int, k: Int): Score = {
     val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with Board2dArray
     Stats.totalCalls = 0
-    ai.old.negamax(board, 1)
+    ai.cakes.old.negamax(board, 1)
   }
 
 
@@ -57,7 +58,7 @@ object MNKSolvers {
   def alphaBeta(m: Int, n: Int, k: Int): Score = {
     val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with Board2dArray
     Stats.totalCalls = 0
-    Math.round(ai.alphaBeta(board)).toInt
+    Math.round(ai.cakes.alphaBeta(board)).toInt
   }
 
   def traitAlphaBeta(m: Int, n: Int, k: Int): AlphaBeta = {
@@ -66,10 +67,10 @@ object MNKSolvers {
   }
 
   def oldAlphaBetaTTOld(m: Int, n: Int, k: Int): (Double, Int) = {
-    val board = new BoardMNKwithGetBoard(m.toShort, n.toShort, k.toShort) with old.TranspositionTable
+    val board = new BoardMNKwithGetBoard(m.toShort, n.toShort, k.toShort) with ai.cakes.old.TranspositionTable
     Stats.totalCalls = 0
     Stats.cacheHits = 0
-    val t = ai.old.alphaBetaWithMem(board, board)
+    val t = ai.cakes.old.alphaBetaWithMem(board, board)
     (t.score, board.transpositions.size)
   }
 
@@ -77,7 +78,7 @@ object MNKSolvers {
     val board = new BoardMNK(m.toShort, n.toShort, k.toShort) with TranspositionTable with TranspositionTable2dArrayString
     Stats.totalCalls = 0
     Stats.cacheHits = 0
-    val t = ai.alphaBetaWithMem(board, board)
+    val t = ai.cakes.alphaBetaWithMem(board, board)
     (t.score, board.transpositions.size)
   }
 

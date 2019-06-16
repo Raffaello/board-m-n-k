@@ -1,7 +1,7 @@
 package bench
 
-import ai._
-import ai.old.GetBoard
+import ai.cakes.old.GetBoard
+import ai.cakes._
 import bench.benchmarks.TicTacToeSolvers._
 import game._
 import game.boards.implementations.Board2dArray
@@ -43,7 +43,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = ai.old.minimax(BoardTicTacToe(BOARD_2D_ARRAY), true)
+          _ => score = ai.cakes.old.minimax(BoardTicTacToe(BOARD_2D_ARRAY), true)
         }
       }
       measure method "traitMinimax" in {
@@ -70,7 +70,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = ai.old.negamax(new BoardTicTacToe() with Board2dArray, 1)
+          _ => score = ai.cakes.old.negamax(new BoardTicTacToe() with Board2dArray, 1)
         }
       }
       measure method "traitNegamax" in {
@@ -105,7 +105,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe with Board2dArray with GetBoard with old.TranspositionTable
+            val board = new BoardTicTacToe with Board2dArray with GetBoard with ai.cakes.old.TranspositionTable
             val t = old.alphaBetaWithMem(board, board)
             score = Math.round(t.score).toInt
             cacheSize = board.transpositions.size
@@ -117,7 +117,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         } in {
           _ =>
             val board = new BoardTicTacToe with TranspositionTable with TranspositionTable2dArrayString
-            val t = ai.alphaBetaWithMem(board, board)
+            val t = ai.cakes.alphaBetaWithMem(board, board)
             score = Math.round(t.score)
             cacheSize = board.transpositions.size
         }
@@ -142,7 +142,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = ai.old.minimax(new BoardTicTacToe2, true)
+          _ => score = ai.cakes.old.minimax(new BoardTicTacToe2, true)
         }
       }
       measure method s"traitMinimax" in {
@@ -169,7 +169,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = ai.old.negamax(new BoardTicTacToe2(), 1)
+          _ => score = ai.cakes.old.negamax(new BoardTicTacToe2(), 1)
         }
       }
       measure method s"traitNegamax" in {
@@ -204,7 +204,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls} --- cacheHits: ${Stats.cacheHits} --- cacheSize: $cacheSize")
         } in {
           _ =>
-            val board = new BoardTicTacToe2 with GetBoard with old.TranspositionTable
+            val board = new BoardTicTacToe2 with GetBoard with ai.cakes.old.TranspositionTable
             val t = old.alphaBetaWithMem(board, board)
             score = Math.round(t.score).toInt
             cacheSize = board.transpositions.size
@@ -216,7 +216,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         } in {
           _ =>
             val board = new BoardTicTacToe2 with TranspositionTable with TranspositionTable2dArrayString
-            val t = ai.alphaBetaWithMem(board, board)
+            val t = ai.cakes.alphaBetaWithMem(board, board)
             score = Math.round(t.score)
             cacheSize = board.transpositions.size
         }
@@ -240,7 +240,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = Math.round(ai.alphaBeta(new BoardTicTacToe1dArray)).toInt
+          _ => score = Math.round(ai.cakes.alphaBeta(new BoardTicTacToe1dArray)).toInt
         }
       }
     }
@@ -250,7 +250,7 @@ object TicTacToeSolvers extends Bench.OfflineRegressionReport {
         using(board) beforeTests reset afterTests {
           println(s"Score: $score --- totalCalls: ${Stats.totalCalls}")
         } in {
-          _ => score = Math.round(ai.alphaBeta(new BitBoardTicTacToe)).toInt
+          _ => score = Math.round(ai.cakes.alphaBeta(new BitBoardTicTacToe)).toInt
         }
       }
     }

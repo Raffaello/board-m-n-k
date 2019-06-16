@@ -16,9 +16,9 @@ object MNKSolver extends App {
 
   val board = BoardMNK(m, n, k, BOARD_2D_ARRAY)
   val time = System.currentTimeMillis()
-  val score = ai.alphaBeta(board)
+  val score = ai.cakes.alphaBeta(board)
   println(s"total time: ${System.currentTimeMillis() - time}")
-  println(s"Total calls: ${ai.Stats.totalCalls}")
+  println(s"Total calls: ${ai.cakes.Stats.totalCalls}")
   println({
     s"score value = $score => "
   } + {

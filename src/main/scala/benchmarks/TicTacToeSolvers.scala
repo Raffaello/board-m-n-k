@@ -1,7 +1,8 @@
 package benchmarks
 
 import ai._
-import ai.old.{TranspositionTable, GetBoard}
+import ai.cakes.{AlphaBeta, AlphaBetaTransposition, MiniMax, MiniMaxRaw, NegaMax, Stats, TranspositionTable2dArrayString}
+import ai.cakes.old.{GetBoard, TranspositionTable}
 import game.{BoardTicTacToe2, Score}
 
 object TicTacToeSolvers extends App {
@@ -18,10 +19,10 @@ object TicTacToeSolvers extends App {
     val board = new BoardTicTacToe2
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
-    val score = ai.old.minimax(board, isMaximizingPlayer = true)
+    val score = ai.cakes.old.minimax(board, isMaximizingPlayer = true)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
-    println(s"Total calls: ${ai.Stats.totalCalls}")
+    println(s"Total calls: ${Stats.totalCalls}")
     println({
       s"score value = $score => "
     } + {
@@ -61,10 +62,10 @@ object TicTacToeSolvers extends App {
     val board = new BoardTicTacToe2
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
-    val score = ai.old.negamax(board, 1)
+    val score = ai.cakes.old.negamax(board, 1)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
-    println(s"Total calls: ${ai.Stats.totalCalls}")
+    println(s"Total calls: ${ai.cakes.Stats.totalCalls}")
     println({
       s"score value = $score => "
     } + {
@@ -90,10 +91,10 @@ object TicTacToeSolvers extends App {
     val board = new BoardTicTacToe2
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
-    val score = ai.alphaBeta(board)
+    val score = ai.cakes.alphaBeta(board)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
-    println(s"Total calls: ${ai.Stats.totalCalls}")
+    println(s"Total calls: ${ai.cakes.Stats.totalCalls}")
     println({
       s"score value = $score => "
     } + {
@@ -120,12 +121,12 @@ object TicTacToeSolvers extends App {
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0
-    val transposition = ai.old.alphaBetaWithMem(board, board)
+    val transposition = ai.cakes.old.alphaBetaWithMem(board, board)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
-    println(s"Total calls: ${ai.Stats.totalCalls}")
+    println(s"Total calls: ${ai.cakes.Stats.totalCalls}")
     println(s"Total cache: ${board.transpositions.size}")
-    println(s"Total cache Hit: ${ai.Stats.cacheHits}")
+    println(s"Total cache Hit: ${ai.cakes.Stats.cacheHits}")
     println({
       s"score value = $transposition => "
     } + {
@@ -135,16 +136,16 @@ object TicTacToeSolvers extends App {
 
   {
     println("\nAlpha Beta With TranspositionTable:")
-    val board = new BoardTicTacToe2 with ai.TranspositionTable2dArrayString
+    val board = new BoardTicTacToe2 with TranspositionTable2dArrayString
     val start = System.currentTimeMillis()
     Stats.totalCalls = 0
     Stats.cacheHits = 0
-    val transposition = ai.alphaBetaWithMem(board, board)
+    val transposition = ai.cakes.alphaBetaWithMem(board, board)
     val end = System.currentTimeMillis()
     println(s"total time: ${end - start}")
-    println(s"Total calls: ${ai.Stats.totalCalls}")
+    println(s"Total calls: ${ai.cakes.Stats.totalCalls}")
     println(s"Total cache: ${board.transpositions.size}")
-    println(s"Total cache Hit: ${ai.Stats.cacheHits}")
+    println(s"Total cache Hit: ${ai.cakes.Stats.cacheHits}")
     println({
       s"score value = $transposition => "
     } + {
